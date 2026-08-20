@@ -36,3 +36,14 @@
 ## 交接给下一阶段
 
 交接运行数据、用户影响、事故/工单时间线、已采取措施和待办行动，供度量与复盘验证效果并改进系统。
+
+## 固化为 SKILL
+
+| 行为 | SKILL | 适用边界 | 产出 |
+| --- | --- | --- | --- |
+| 定义、检查并改进服务健康信号 | [`service-health-monitoring`](../../skills/service-health-monitoring/SKILL.md) | 需要持续理解服务可靠性和业务健康时 | 健康信号、告警质量结论和观测缺口 |
+| 对告警和重大用户影响进行分诊、缓解、通报与关闭 | [`incident-triage-and-response`](../../skills/incident-triage-and-response/SKILL.md) | 异常可能需要事件级响应时 | 事件记录、处置状态、时间线和升级/复盘输入 |
+| 处置非事件级支持请求并识别重复模式 | [`support-case-resolution`](../../skills/support-case-resolution/SKILL.md) | 用户工单、反馈或已知问题不构成事故时 | 工单结论、知识库更新或改进需求 |
+| 定期验证告警、恢复、容量、依赖、权限和运行手册 | [`operational-readiness-maintenance`](../../skills/operational-readiness-maintenance/SKILL.md) | 需要主动维持运行能力时 | 运行就绪检查结果和改进任务 |
+
+安全或隐私事件必须转入专门响应与证据保全流程，不以通用运行 SKILL 代替。
