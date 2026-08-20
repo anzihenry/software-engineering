@@ -40,8 +40,8 @@
 
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
-| 将问题拆为可验收的最小交付项 | [`requirements-refinement`](../../skills/requirements-refinement/SKILL.md) | 已有问题框架，需要形成需求包时 | 用户故事/任务、验收标准与非功能要求 |
-| 依据影响面确定变更级别与必需门禁 | [`change-risk-assessment`](../../skills/change-risk-assessment/SKILL.md) | 需求包可能涉及高影响领域时 | 风险等级、触发原因、必需评审与控制措施 |
-| 明确范围、依赖、责任与待决事项 | [`delivery-scope-alignment`](../../skills/delivery-scope-alignment/SKILL.md) | 需要判断工作是否可投入、可协同时 | 对齐结论、依赖清单及进入设计的条件 |
+| 将问题拆为可验收的最小交付项 | [`requirements-refinement`](../../skills/02-refinement-and-initiation/requirements-refinement/SKILL.md) | 已有问题框架，需要形成需求包时 | 用户故事/任务、验收标准与非功能要求 |
+| 依据影响面确定变更级别与必需门禁 | [`change-risk-assessment`](../../skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md) | 需求包可能涉及高影响领域时 | 风险等级、触发原因、必需评审与控制措施 |
+| 明确范围、依赖、责任与待决事项 | [`delivery-scope-alignment`](../../skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md) | 需要判断工作是否可投入、可协同时 | 对齐结论、依赖清单及进入设计的条件 |
 
 三者共同形成需求包。它们不设计技术方案，也不在未获授权时承诺排期或代表其他团队接受依赖。

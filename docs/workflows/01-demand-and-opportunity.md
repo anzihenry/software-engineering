@@ -40,8 +40,8 @@
 
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
-| 登记机会、去重与初步风险识别 | [`opportunity-intake`](../../skills/opportunity-intake/SKILL.md) | 原始信号尚未被规范记录时 | 可追溯的机会记录或待补充信息清单 |
-| 理解现状、界定问题与成功结果 | [`problem-framing`](../../skills/problem-framing/SKILL.md) | 已有机会记录，需判断是否值得投入澄清成本时 | 问题框架与研究/澄清建议 |
-| 依据价值与约束形成排序建议 | [`opportunity-prioritization`](../../skills/opportunity-prioritization/SKILL.md) | 多个问题框架需要比较投入顺序时 | 可由业务负责人确认的排序建议 |
+| 登记机会、去重与初步风险识别 | [`opportunity-intake`](../../skills/01-demand-and-opportunity/opportunity-intake/SKILL.md) | 原始信号尚未被规范记录时 | 可追溯的机会记录或待补充信息清单 |
+| 理解现状、界定问题与成功结果 | [`problem-framing`](../../skills/01-demand-and-opportunity/problem-framing/SKILL.md) | 已有机会记录，需判断是否值得投入澄清成本时 | 问题框架与研究/澄清建议 |
+| 依据价值与约束形成排序建议 | [`opportunity-prioritization`](../../skills/01-demand-and-opportunity/opportunity-prioritization/SKILL.md) | 多个问题框架需要比较投入顺序时 | 可由业务负责人确认的排序建议 |
 
 三个 SKILL 串联使用，但都不直接创建项目承诺：立项和最终优先级仍由明确的业务负责人确认。

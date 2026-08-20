@@ -42,10 +42,10 @@
 
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
-| 以可信口径评估交付带来的结果 | [`outcome-measurement`](../../skills/outcome-measurement/SKILL.md) | 需要判断目标、验收或护栏指标是否达成时 | 效果评估、数据限制和后续假设 |
-| 复盘重要交付或未达预期结果 | [`delivery-retrospective`](../../skills/delivery-retrospective/SKILL.md) | 非事故的项目、发布或协作学习时 | 无责备复盘结论与改进候选 |
-| 对运行事件进行无责备复盘 | [`incident-review`](../../skills/incident-review/SKILL.md) | 事件恢复后需要理解促成因素时 | 事实时间线、系统性改进与风险治理输入 |
-| 将改进项转化为可验证的闭环 | [`improvement-action-tracking`](../../skills/improvement-action-tracking/SKILL.md) | 已有复盘、评估或运行发现时 | 有所有者和效果判据的行动组合 |
-| 依据验证结果演进准则、workflow 和 SKILL | [`playbook-evolution`](../../skills/playbook-evolution/SKILL.md) | 稳定做法需要沉淀或现有规范需要修正时 | 版本化更新、试行与复审计划 |
+| 以可信口径评估交付带来的结果 | [`outcome-measurement`](../../skills/08-measurement-and-retrospective/outcome-measurement/SKILL.md) | 需要判断目标、验收或护栏指标是否达成时 | 效果评估、数据限制和后续假设 |
+| 复盘重要交付或未达预期结果 | [`delivery-retrospective`](../../skills/08-measurement-and-retrospective/delivery-retrospective/SKILL.md) | 非事故的项目、发布或协作学习时 | 无责备复盘结论与改进候选 |
+| 对运行事件进行无责备复盘 | [`incident-review`](../../skills/08-measurement-and-retrospective/incident-review/SKILL.md) | 事件恢复后需要理解促成因素时 | 事实时间线、系统性改进与风险治理输入 |
+| 将改进项转化为可验证的闭环 | [`improvement-action-tracking`](../../skills/08-measurement-and-retrospective/improvement-action-tracking/SKILL.md) | 已有复盘、评估或运行发现时 | 有所有者和效果判据的行动组合 |
+| 依据验证结果演进准则、workflow 和 SKILL | [`playbook-evolution`](../../skills/08-measurement-and-retrospective/playbook-evolution/SKILL.md) | 稳定做法需要沉淀或现有规范需要修正时 | 版本化更新、试行与复审计划 |
 
 复盘与流程更新必须以证据为基础，不将指标或复盘内容作为个人绩效的简化代理。

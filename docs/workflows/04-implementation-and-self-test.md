@@ -41,9 +41,9 @@
 
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
-| 在既有设计边界内实现最小可审查切片并自测 | [`implementation-and-self-test`](../../skills/implementation-and-self-test/SKILL.md) | 已有评审通过的设计与任务时 | 可构建变更、对应测试和自测结论 |
-| 安全地处理迁移、运行配置和密钥 | [`data-and-configuration-change`](../../skills/data-and-configuration-change/SKILL.md) | 变更涉及数据、配置、权限或密钥时 | 受控变更方案及恢复/验证说明 |
-| 执行并记录本地质量门禁 | [`local-quality-validation`](../../skills/local-quality-validation/SKILL.md) | 提交评审前需要验证变更时 | 可追溯的本地检查证据与限制 |
-| 补齐文档并准备评审交接材料 | [`change-handoff-preparation`](../../skills/change-handoff-preparation/SKILL.md) | 变更已具备提交评审条件时 | 完整 PR 描述、交接信息和已知限制 |
+| 在既有设计边界内实现最小可审查切片并自测 | [`implementation-and-self-test`](../../skills/04-implementation-and-self-test/implementation-and-self-test/SKILL.md) | 已有评审通过的设计与任务时 | 可构建变更、对应测试和自测结论 |
+| 安全地处理迁移、运行配置和密钥 | [`data-and-configuration-change`](../../skills/04-implementation-and-self-test/data-and-configuration-change/SKILL.md) | 变更涉及数据、配置、权限或密钥时 | 受控变更方案及恢复/验证说明 |
+| 执行并记录本地质量门禁 | [`local-quality-validation`](../../skills/04-implementation-and-self-test/local-quality-validation/SKILL.md) | 提交评审前需要验证变更时 | 可追溯的本地检查证据与限制 |
+| 补齐文档并准备评审交接材料 | [`change-handoff-preparation`](../../skills/04-implementation-and-self-test/change-handoff-preparation/SKILL.md) | 变更已具备提交评审条件时 | 完整 PR 描述、交接信息和已知限制 |
 
 这些 SKILL 不替代阶段 5 的独立评审、受控 CI 和系统级验证。

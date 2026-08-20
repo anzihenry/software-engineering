@@ -13,4 +13,4 @@
 
 该仓库首先维护流程基线，再依操作频率和风险优先级沉淀专题 workflow 与 SKILL。
 
-首批项目内 SKILL 位于 [skills](skills/)，覆盖「需求与机会」阶段的登记、问题界定与排序建议。
+项目内 SKILL 按研发阶段组织，使用入口见 [SKILL 导航](skills/README.md)。

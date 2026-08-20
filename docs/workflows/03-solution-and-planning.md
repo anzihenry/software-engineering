@@ -41,11 +41,11 @@
 
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
-| 比较备选方案并记录关键取舍 | [`solution-design-decision`](../../skills/solution-design-decision/SKILL.md) | 需求包已明确，需要选择实现路径时 | 选定方案与决策记录 |
-| 定义跨服务接口、数据契约和迁移方式 | [`contract-and-migration-design`](../../skills/contract-and-migration-design/SKILL.md) | 涉及跨服务/对外接口、数据模型或迁移时 | 契约、兼容性与迁移设计 |
-| 将要求映射为分层验证证据 | [`verification-strategy`](../../skills/verification-strategy/SKILL.md) | 方案需证明功能和非功能要求可被验证时 | 测试与验收策略 |
-| 设计渐进发布、观测和恢复路径 | [`release-recovery-planning`](../../skills/release-recovery-planning/SKILL.md) | 变更需进入任何受控环境或生产时 | 发布、监控、回滚/前滚预案 |
-| 拆分工作、处理不确定性并形成可计划交付序列 | [`implementation-planning`](../../skills/implementation-planning/SKILL.md) | 方案已选定，需要判断可交付性时 | 工作分解、依赖与估算范围 |
-| 独立评审设计和风险处置 | [`technical-design-review`](../../skills/technical-design-review/SKILL.md) | 中高风险或跨边界设计进入开发前 | 评审结论与待解决事项 |
+| 比较备选方案并记录关键取舍 | [`solution-design-decision`](../../skills/03-solution-and-planning/solution-design-decision/SKILL.md) | 需求包已明确，需要选择实现路径时 | 选定方案与决策记录 |
+| 定义跨服务接口、数据契约和迁移方式 | [`contract-and-migration-design`](../../skills/03-solution-and-planning/contract-and-migration-design/SKILL.md) | 涉及跨服务/对外接口、数据模型或迁移时 | 契约、兼容性与迁移设计 |
+| 将要求映射为分层验证证据 | [`verification-strategy`](../../skills/03-solution-and-planning/verification-strategy/SKILL.md) | 方案需证明功能和非功能要求可被验证时 | 测试与验收策略 |
+| 设计渐进发布、观测和恢复路径 | [`release-recovery-planning`](../../skills/03-solution-and-planning/release-recovery-planning/SKILL.md) | 变更需进入任何受控环境或生产时 | 发布、监控、回滚/前滚预案 |
+| 拆分工作、处理不确定性并形成可计划交付序列 | [`implementation-planning`](../../skills/03-solution-and-planning/implementation-planning/SKILL.md) | 方案已选定，需要判断可交付性时 | 工作分解、依赖与估算范围 |
+| 独立评审设计和风险处置 | [`technical-design-review`](../../skills/03-solution-and-planning/technical-design-review/SKILL.md) | 中高风险或跨边界设计进入开发前 | 评审结论与待解决事项 |
 
 这些 SKILL 定义设计和计划证据；实际开发、CI 验证和生产发布分别属于后续阶段。

@@ -1,0 +1,16 @@
+# SKILL 导航
+
+按你当前所处的研发阶段选择目录；进入阶段后，再根据要完成的行为选择 SKILL。每个阶段的 workflow 也有同样的映射表。
+
+| 阶段 | 何时进入 | SKILL |
+| --- | --- | --- |
+| [01 需求与机会](01-demand-and-opportunity/) | 收到需求、反馈、缺陷或改进线索 | [登记与分诊](01-demand-and-opportunity/opportunity-intake/SKILL.md)、[问题界定](01-demand-and-opportunity/problem-framing/SKILL.md)、[机会排序](01-demand-and-opportunity/opportunity-prioritization/SKILL.md) |
+| [02 澄清与立项](02-refinement-and-initiation/) | 需要把问题变为可投入的需求包 | [需求细化](02-refinement-and-initiation/requirements-refinement/SKILL.md)、[风险评估](02-refinement-and-initiation/change-risk-assessment/SKILL.md)、[范围与依赖对齐](02-refinement-and-initiation/delivery-scope-alignment/SKILL.md) |
+| [03 方案与计划](03-solution-and-planning/) | 需要选择技术路径、验证和交付计划 | [方案决策](03-solution-and-planning/solution-design-decision/SKILL.md)、[契约与迁移](03-solution-and-planning/contract-and-migration-design/SKILL.md)、[验证策略](03-solution-and-planning/verification-strategy/SKILL.md)、[发布恢复预案](03-solution-and-planning/release-recovery-planning/SKILL.md)、[实现计划](03-solution-and-planning/implementation-planning/SKILL.md)、[设计评审](03-solution-and-planning/technical-design-review/SKILL.md) |
+| [04 开发与自测](04-implementation-and-self-test/) | 已有设计，正在实现并准备交付评审 | [实现与自测](04-implementation-and-self-test/implementation-and-self-test/SKILL.md)、[数据与配置变更](04-implementation-and-self-test/data-and-configuration-change/SKILL.md)、[本地质量验证](04-implementation-and-self-test/local-quality-validation/SKILL.md)、[交接准备](04-implementation-and-self-test/change-handoff-preparation/SKILL.md) |
+| [05 集成验证](05-integration-validation/) | PR 需要 CI、独立评审和系统验证 | [CI 门禁](05-integration-validation/ci-quality-gate-evaluation/SKILL.md)、[PR 评审](05-integration-validation/pull-request-review/SKILL.md)、[系统级验证](05-integration-validation/system-level-validation/SKILL.md)、[合入就绪](05-integration-validation/merge-readiness/SKILL.md) |
+| [06 发布与变更管理](06-release-and-change-management/) | 可合入版本准备进入目标环境或生产 | [发布就绪](06-release-and-change-management/release-readiness/SKILL.md)、[渐进发布](06-release-and-change-management/progressive-release-execution/SKILL.md)、[健康评估](06-release-and-change-management/release-health-assessment/SKILL.md)、[发布收口](06-release-and-change-management/release-closure/SKILL.md) |
+| [07 运行与支持](07-operations-and-support/) | 服务已运行，需要监测、响应或支持用户 | [健康监测](07-operations-and-support/service-health-monitoring/SKILL.md)、[事件响应](07-operations-and-support/incident-triage-and-response/SKILL.md)、[支持处置](07-operations-and-support/support-case-resolution/SKILL.md)、[运行维护](07-operations-and-support/operational-readiness-maintenance/SKILL.md) |
+| [08 度量与复盘](08-measurement-and-retrospective/) | 需要验证结果、复盘并推动流程改进 | [效果度量](08-measurement-and-retrospective/outcome-measurement/SKILL.md)、[交付复盘](08-measurement-and-retrospective/delivery-retrospective/SKILL.md)、[事件复盘](08-measurement-and-retrospective/incident-review/SKILL.md)、[行动跟踪](08-measurement-and-retrospective/improvement-action-tracking/SKILL.md)、[手册演进](08-measurement-and-retrospective/playbook-evolution/SKILL.md) |
+
+若不确定阶段，从“当前最需要做出的决定”开始：先判断价值用阶段 1，先确认可验收性用阶段 2，先确认技术可行性用阶段 3；进入代码、评审、发布、运行后依次使用阶段 4 至 8。
