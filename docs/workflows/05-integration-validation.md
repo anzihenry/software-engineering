@@ -35,3 +35,14 @@
 ## 交接给下一阶段
 
 交接已合入的版本标识、验证证据、豁免记录及发布候选的风险说明。
+
+## 固化为 SKILL
+
+| 行为 | SKILL | 适用边界 | 产出 |
+| --- | --- | --- | --- |
+| 在受控 CI 中解释和处置自动门禁结果 | [`ci-quality-gate-evaluation`](../../skills/ci-quality-gate-evaluation/SKILL.md) | PR 已触发构建、测试和安全检查时 | 门禁结论、失败处置与限制 |
+| 以独立视角审查变更及其测试证据 | [`pull-request-review`](../../skills/pull-request-review/SKILL.md) | 变更需人工评审时 | 可追溯的评审发现与审批结论 |
+| 验证跨组件、跨环境和非功能系统行为 | [`system-level-validation`](../../skills/system-level-validation/SKILL.md) | 风险要求集成、契约、端到端或专项验证时 | 系统验证证据与适用范围 |
+| 汇总反馈、豁免与最新状态以判断可合入性 | [`merge-readiness`](../../skills/merge-readiness/SKILL.md) | 准备合入目标分支时 | 可合入/阻塞结论及剩余事项 |
+
+这些 SKILL 只形成验证与合入结论；生产发布控制由阶段 6 负责。
