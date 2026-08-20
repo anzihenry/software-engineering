@@ -35,3 +35,14 @@
 ## 交接给下一阶段
 
 交接生产版本、上线范围、监控链接、观察期限、已知问题和支持指引给运行与支持团队。
+
+## 固化为 SKILL
+
+| 行为 | SKILL | 适用边界 | 产出 |
+| --- | --- | --- | --- |
+| 核对版本、环境、审批、观测和恢复条件 | [`release-readiness`](../../skills/release-readiness/SKILL.md) | 发布候选进入目标环境前 | Go/No-Go 结论及未满足条件 |
+| 按授权预案分批推进并记录每一步 | [`progressive-release-execution`](../../skills/progressive-release-execution/SKILL.md) | 需要执行灰度、金丝雀、开关或分批发布时 | 发布步骤记录与当前范围 |
+| 基于预设指标判断继续、暂停或恢复 | [`release-health-assessment`](../../skills/release-health-assessment/SKILL.md) | 每个发布批次及观察窗口内 | 健康判定与处置建议 |
+| 收口稳定发布并交接运行信息 | [`release-closure`](../../skills/release-closure/SKILL.md) | 观察窗口稳定、准备完成发布时 | 发布结论、变更记录和支持交接 |
+
+实际部署、回滚、前滚和审批均须由具备权限的人员或自动化在明确授权下执行。
