@@ -1,6 +1,6 @@
 ---
 name: language-coding-standards
-description: "为 TypeScript 7、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20 的实现、重构与代码评审应用编码规范和最佳实践。"
+description: "为 TypeScript 7、ArkTS、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20 的实现、重构与代码评审应用编码规范和最佳实践。"
 ---
 
 # 编程语言编码规范
@@ -12,6 +12,7 @@ description: "为 TypeScript 7、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27�
 1. 始终先读 [通用规则](references/common.md)。
 2. 只读取本次实际修改语言对应的参考；混合语言变更读取所有涉及项：
    - `.ts`、`.tsx`、`.mts`、`.cts`：[TypeScript 7](references/typescript.md)
+   - `.ets`：[ArkTS](references/arkts.md)
    - `.py`、`.pyi`：[Python 3.14](references/python.md)
    - `.swift`：[Swift 6.2](references/swift.md)
    - `.kt`、`.kts`：[Kotlin 2.4](references/kotlin.md)

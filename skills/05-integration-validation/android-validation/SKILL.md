@@ -5,7 +5,7 @@ description: "验证 Android 变更在目标 API、设备形态、厂商环境�
 
 # Android 验证
 
-验证 Android 自测无法充分覆盖的 API、设备、安装升级、系统集成和非功能风险，并界定结论适用范围。跨 Android/iOS 的一致性和整体矩阵由 `mobile-validation` 汇总；本 SKILL 不执行 Play Console 或商店发布。
+验证 Android 自测无法充分覆盖的 API、设备、安装升级、系统集成和非功能风险，并界定结论适用范围。跨 iOS/Android/HarmonyOS 的一致性和整体矩阵由 `mobile-validation` 汇总；本 SKILL 不执行 Play Console 或商店发布。
 
 ## 输入
 

@@ -1,25 +1,26 @@
 ---
 name: mobile-cli-execution
-description: "通过 Apple 或 Android 官方命令行工具执行移动端环境检查、构建、测试、模拟器/设备操作和证据采集；适用于 Agent 需要实际运行 iOS/Android 工具链时，不替代平台实现或验证结论。"
+description: "通过 Apple、Android 或 HarmonyOS 官方命令行工具执行移动端环境检查、构建、测试、模拟器/设备操作和证据采集；适用于 Agent 需要实际运行平台工具链时，不替代实现或验证结论。"
 ---
 
 # 移动端 CLI 执行
 
-将 iOS/Android 开发与验证任务转化为可重复、目标明确且可审计的命令行执行。平台实现范围和验证结论仍由对应开发/验证 SKILL 负责；本 SKILL 只负责工具调用、目标生命周期和原始证据。
+将 iOS、Android 和 HarmonyOS 开发与验证任务转化为可重复、目标明确且可审计的命令行执行。平台实现范围和验证结论仍由对应开发/验证 SKILL 负责；本 SKILL 只负责工具调用、目标生命周期和原始证据。
 
 ## 使用方式
 
 1. 始终先读 [通用执行与证据规则](references/common.md)。
-2. 只读取任务涉及的平台参考；跨平台任务读取两者：
+2. 只读取任务涉及的平台参考；跨平台任务读取所有涉及项：
    - Apple 平台：[iOS CLI](references/ios.md)
    - Android 平台：[Android CLI](references/android.md)
+   - HarmonyOS 平台：[HarmonyOS CLI](references/harmonyos.md)
 3. 从仓库脚本、构建配置和 CI 获取真实命令、scheme/variant、设备范围及产物路径；本文示例中的占位符不能直接执行。
 4. 先执行只读发现，再锁定单一目标和任务专属产物目录；执行后收集退出状态、结构化结果、日志和环境身份。
 
 ## 职责边界
 
-- 使用 `ios-implementation-and-self-test` 或 `android-implementation-and-self-test` 决定如何实现与自测。
-- 使用 `ios-validation` 或 `android-validation` 决定矩阵、风险覆盖和通过结论。
+- 使用 `ios-implementation-and-self-test`、`android-implementation-and-self-test` 或 `harmonyos-implementation-and-self-test` 决定如何实现与自测。
+- 使用 `ios-validation`、`android-validation` 或 `harmonyos-validation` 决定矩阵、风险覆盖和通过结论。
 - 本 SKILL 不修改业务代码，不自行扩大设备矩阵，也不执行签名、商店上传、生产发布或未经授权的云设备测试。
 
 ## 停止条件

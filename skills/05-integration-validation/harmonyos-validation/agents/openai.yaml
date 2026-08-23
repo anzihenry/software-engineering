@@ -1,0 +1,4 @@
+interface:
+  display_name: "HarmonyOS Validation"
+  short_description: "Validate HarmonyOS compatibility and system behavior"
+  default_prompt: "Use $harmonyos-validation to validate this HarmonyOS change across its required APIs and devices."

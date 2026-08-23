@@ -5,7 +5,7 @@ description: "实现并自测 Android 原生或平台专属变更；适用于涉
 
 # Android 实现与自测
 
-在既有 Android 架构和支持范围内实现可审查的平台变更，并形成 Android 专属自测证据。跨平台共享逻辑和两端一致性由 `mobile-implementation-and-self-test` 协调；本 SKILL 不负责 Play Console、签名审批或商店发布。
+在既有 Android 架构和支持范围内实现可审查的平台变更，并形成 Android 专属自测证据。跨 iOS/Android/HarmonyOS 的共享逻辑和一致性由 `mobile-implementation-and-self-test` 协调；本 SKILL 不负责 Play Console、签名审批或商店发布。
 
 ## 输入
 

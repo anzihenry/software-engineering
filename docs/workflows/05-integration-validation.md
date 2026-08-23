@@ -42,10 +42,11 @@
 | --- | --- | --- | --- |
 | 在受控 CI 中解释和处置自动门禁结果 | [`ci-quality-gate-evaluation`](../../skills/05-integration-validation/ci-quality-gate-evaluation/SKILL.md) | PR 已触发构建、测试和安全检查时 | 门禁结论、失败处置与限制 |
 | 以独立视角审查变更及其测试证据 | [`pull-request-review`](../../skills/05-integration-validation/pull-request-review/SKILL.md) | 变更需人工评审时 | 可追溯的评审发现与审批结论 |
-| 规划并汇总跨平台移动验证 | [`mobile-validation`](../../skills/05-integration-validation/mobile-validation/SKILL.md) | 风险跨越 iOS/Android，或需验证共享行为、两端一致性与整体设备矩阵时 | 移动端整体结论、两端证据和支持范围 |
-| 执行移动端 CLI 并采集原始验证证据 | [`mobile-cli-execution`](../../skills/04-implementation-and-self-test/mobile-cli-execution/SKILL.md) | iOS/Android 验证需要实际运行官方工具链、锁定设备或保存测试/日志/性能产物时 | 与提交、构建和目标设备关联的原始执行记录 |
+| 规划并汇总跨平台移动验证 | [`mobile-validation`](../../skills/05-integration-validation/mobile-validation/SKILL.md) | 风险跨越 iOS/Android/HarmonyOS，或需验证共享行为、平台一致性与整体设备矩阵时 | 移动端整体结论、各平台证据和支持范围 |
+| 执行移动端 CLI 并采集原始验证证据 | [`mobile-cli-execution`](../../skills/04-implementation-and-self-test/mobile-cli-execution/SKILL.md) | iOS/Android/HarmonyOS 验证需要实际运行官方工具链、锁定设备或保存测试/日志/性能产物时 | 与提交、构建和目标设备关联的原始执行记录 |
 | 验证 iOS/iPadOS 平台行为 | [`ios-validation`](../../skills/05-integration-validation/ios-validation/SKILL.md) | 风险涉及 Apple 系统/设备、安装升级、权限、后台、VoiceOver 或端侧性能时 | iOS 专项验证证据与适用范围 |
 | 验证 Android 平台行为 | [`android-validation`](../../skills/05-integration-validation/android-validation/SKILL.md) | 风险涉及 API/OEM/设备、进程恢复、后台限制、TalkBack 或端侧性能时 | Android 专项验证证据与适用范围 |
+| 验证 HarmonyOS 平台行为 | [`harmonyos-validation`](../../skills/05-integration-validation/harmonyos-validation/SKILL.md) | 风险涉及 API/设备形态、Ability 生命周期、安装升级、分布式能力、辅助功能或端侧性能时 | HarmonyOS 专项验证证据与适用范围 |
 | 规划并汇总 Web 前端验证 | [`web-frontend-validation`](../../skills/05-integration-validation/web-frontend-validation/SKILL.md) | 需要综合功能兼容、视觉可访问性和性能证据时 | Web 前端整体结论、缺陷映射与浏览器范围 |
 | 验证 Web 功能和浏览器兼容性 | [`web-functional-compatibility-validation`](../../skills/05-integration-validation/web-functional-compatibility-validation/SKILL.md) | 风险涉及端到端路径、真实数据、导航、认证、存储或浏览器运行时差异时 | 功能/兼容专项证据与支持范围 |
 | 验证 Web 视觉和可访问性 | [`web-visual-accessibility-validation`](../../skills/05-integration-validation/web-visual-accessibility-validation/SKILL.md) | 风险涉及视觉回归、响应式、键盘、屏幕阅读器、缩放或内容适配时 | 视觉/可访问性专项证据与已审查差异 |
@@ -59,4 +60,4 @@
 | 验证并汇总跨领域、跨环境系统行为 | [`system-level-validation`](../../skills/05-integration-validation/system-level-validation/SKILL.md) | 风险跨越客户端、服务和外部依赖，或需完整用户旅程证据时 | 跨域系统验证证据与适用范围 |
 | 汇总反馈、豁免与最新状态以判断可合入性 | [`merge-readiness`](../../skills/05-integration-validation/merge-readiness/SKILL.md) | 准备合入目标分支时 | 可合入/阻塞结论及剩余事项 |
 
-领域专项验证提供各自风险证据；`mobile-cli-execution` 负责执行官方工具并保存原始产物，但不做通过判断；`mobile-validation` 汇总 iOS/Android，`web-frontend-validation` 汇总前端三类专项，`backend-validation` 汇总后端五类专项，`system-level-validation` 再保持客户端、服务和外部依赖的跨域汇总责任。所有这些 SKILL 只形成验证与合入结论；生产发布控制由阶段 6 负责。
+领域专项验证提供各自风险证据；`mobile-cli-execution` 负责执行官方工具并保存原始产物，但不做通过判断；`mobile-validation` 汇总 iOS/Android/HarmonyOS，`web-frontend-validation` 汇总前端三类专项，`backend-validation` 汇总后端五类专项，`system-level-validation` 再保持客户端、服务和外部依赖的跨域汇总责任。所有这些 SKILL 只形成验证与合入结论；生产发布控制由阶段 6 负责。

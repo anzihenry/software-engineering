@@ -5,7 +5,7 @@ description: "实现并自测 iOS/iPadOS 原生或平台专属变更；适用于
 
 # iOS 实现与自测
 
-在既有 Apple 平台架构和支持范围内实现可审查的 iOS/iPadOS 变更，并形成平台专属自测证据。跨平台共享逻辑和两端一致性由 `mobile-implementation-and-self-test` 协调；本 SKILL 不负责签名审批、TestFlight 或 App Store 发布。
+在既有 Apple 平台架构和支持范围内实现可审查的 iOS/iPadOS 变更，并形成平台专属自测证据。跨 iOS/Android/HarmonyOS 的共享逻辑和一致性由 `mobile-implementation-and-self-test` 协调；本 SKILL 不负责签名审批、TestFlight 或 App Store 发布。
 
 ## 输入
 

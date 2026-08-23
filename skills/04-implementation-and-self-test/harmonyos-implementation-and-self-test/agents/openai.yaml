@@ -1,0 +1,4 @@
+interface:
+  display_name: "HarmonyOS Implementation and Self Test"
+  short_description: "Implement and self-test HarmonyOS platform changes"
+  default_prompt: "Use $harmonyos-implementation-and-self-test to implement and verify this HarmonyOS change."

@@ -5,7 +5,7 @@ description: "验证 iOS/iPadOS 变更在目标系统、Apple 设备和真实系
 
 # iOS 验证
 
-验证 iOS 自测无法充分覆盖的系统版本、设备、安装升级、系统集成和非功能风险，并界定结论适用范围。跨 iOS/Android 的一致性和整体矩阵由 `mobile-validation` 汇总；本 SKILL 不执行 TestFlight 或 App Store 发布。
+验证 iOS 自测无法充分覆盖的系统版本、设备、安装升级、系统集成和非功能风险，并界定结论适用范围。跨 iOS/Android/HarmonyOS 的一致性和整体矩阵由 `mobile-validation` 汇总；本 SKILL 不执行 TestFlight 或 App Store 发布。
 
 ## 输入
 

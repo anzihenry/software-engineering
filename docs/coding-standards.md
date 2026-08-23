@@ -2,7 +2,7 @@
 
 ## 目标
 
-让 Coding Agent 在 TypeScript 7、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20 项目中按一致底线工作，同时尊重项目实际版本、方言和自动化配置。
+让 Coding Agent 在 TypeScript 7、ArkTS、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20 项目中按一致底线工作，同时尊重项目实际版本、SDK/API、方言和自动化配置。
 
 ## 结构
 
@@ -26,6 +26,7 @@ Codex 在工作前读取 `AGENTS.md`，并按全局、仓库根到当前目录�
 
 - 列出的版本是新项目和升级目标，不授权 Agent 自动升级既有项目。
 - 现有项目以版本文件、构建清单和 CI 镜像为准；不兼容时使用现有版本支持的写法并报告差异。
+- ArkTS 语言能力跟随项目 DevEco/HarmonyOS SDK 与 API，不从 TypeScript 版本推导兼容性，也不授权 Agent 自动升级 SDK。
 - SQL 必须由项目补充数据库方言和主版本。没有方言上下文时，只能给出标准 SQL 层面的实现，不假设 PostgreSQL/MySQL/SQLite 特性等价。
 - TypeScript 7 不提供旧版编译器 API；依赖嵌入式 TypeScript API 的工具可能仍需 TypeScript 6 兼容路径，必须按项目工具链验证。
 

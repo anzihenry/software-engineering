@@ -5,6 +5,7 @@
 | 语言 | 目标基线 | 版本处理 |
 | --- | --- | --- |
 | TypeScript | 7.x | 新项目使用 7.x；嵌入式语言工具尚不兼容时允许按项目配置并行使用 TypeScript 6 工具链 |
+| ArkTS | 项目 HarmonyOS SDK/API | ArkTS 编译器和语言能力随项目 DevEco/HarmonyOS SDK 约束；`.ets` 不按普通 TypeScript 兼容性推断 |
 | Python | 3.14.x | 新代码可使用 3.14 语法；库的最低支持版本由项目配置决定 |
 | Swift | 6.2 | 采用 Swift 6 语言模式和严格并发；具体平台 deployment target 由项目决定 |
 | Kotlin | 2.4.x | 遵循项目目标平台及 Kotlin/JVM、Android、Native 或 Multiplatform 配置 |
