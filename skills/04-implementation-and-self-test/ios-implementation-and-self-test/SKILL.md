@@ -18,7 +18,7 @@ description: "实现并自测 iOS/iPadOS 原生或平台专属变更；适用于
 2. 让视图、导航和状态所有权保持单一；处理 scene/app 生命周期、前后台、中断、状态恢复和系统终止后的重建，不依赖只在理想启动路径成立的内存状态。
 3. 遵守 Swift 并发隔离、主线程 UI 更新和任务取消边界；避免非结构化任务、循环引用及在视图生命周期外继续持有资源。
 4. 对权限、Universal Link/URL Scheme、通知、后台任务、Keychain/Data Protection、文件与系统框架同步所需 entitlement、Info.plist 和隐私声明；已有安装的数据演进须向前兼容。
-5. 添加单元、状态/视图或 UI 测试，并在适用的 Simulator 和真机上检查主流程、失败恢复、Dynamic Type、VoiceOver、安全区、键盘及深色模式；记录构建配置和环境限制。
+5. 添加单元、状态/视图或 UI 测试，并在适用的 Simulator 和真机上检查主流程、失败恢复、Dynamic Type、VoiceOver、安全区、键盘及深色模式；实际调用 `xcodebuild`、`simctl`、`devicectl`、`xcresulttool` 或 `xctrace` 时组合 `mobile-cli-execution`，记录命令、目标、构建配置、原始产物和环境限制。
 
 ## 输出格式
 

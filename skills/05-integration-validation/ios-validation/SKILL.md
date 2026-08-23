@@ -18,7 +18,7 @@ description: "验证 iOS/iPadOS 变更在目标系统、Apple 设备和真实系
 2. 验证全新安装、覆盖升级、冷/热启动、scene 切换、前后台、中断、内存压力和系统终止后的恢复；检查本地数据、Keychain 与会话兼容性。
 3. 覆盖权限的未决定/允许/拒绝/受限状态，以及 Universal Link、通知、后台任务、系统分享和适用 extension；真实设备能力不得只靠 Simulator 外推。
 4. 检查不同尺寸、方向、安全区、Dynamic Type、深色模式、键盘和本地化；使用 VoiceOver 验证关键路径的语义、焦点和动态反馈。
-5. 按风险测量启动、响应、卡顿、内存、能耗、崩溃与挂起，并核对 entitlement、使用说明和隐私声明与实际能力一致。
+5. 按风险测量启动、响应、卡顿、内存、能耗、崩溃与挂起，并核对 entitlement、使用说明和隐私声明与实际能力一致；实际通过 Apple CLI 执行矩阵、采集 `.xcresult`、日志、截图或 trace 时组合 `mobile-cli-execution`，保留目标和构建身份。
 
 ## 输出格式
 

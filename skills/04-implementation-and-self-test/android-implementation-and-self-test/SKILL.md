@@ -18,7 +18,7 @@ description: "实现并自测 Android 原生或平台专属变更；适用于涉
 2. 明确 UI、导航和状态所有权；处理 Activity/Fragment/Compose 生命周期、配置变化、进程死亡与状态恢复，不将短生命周期对象泄漏到长生命周期作用域。
 3. 将 coroutine/Flow 绑定到正确作用域并处理取消、异常和重复收集；避免阻塞主线程、无界任务和不受控并发更新。
 4. 对运行时权限、Intent/App Link、通知、WorkManager/后台限制、Room/DataStore、Keystore 和系统 API 处理 API 级差异；Manifest、资源和已有安装数据保持兼容。
-5. 添加单元、组件或 UI 测试，并在适用的 Emulator 和真机上检查主流程、失败恢复、字体缩放、TalkBack、不同窗口尺寸、键盘及主题；记录变体、API 和环境限制。
+5. 添加单元、组件或 UI 测试，并在适用的 Emulator 和真机上检查主流程、失败恢复、字体缩放、TalkBack、不同窗口尺寸、键盘及主题；实际调用 Gradle Wrapper、`adb`、Emulator 或 SDK 工具时组合 `mobile-cli-execution`，记录命令、目标、变体、API、原始产物和环境限制。
 
 ## 输出格式
 

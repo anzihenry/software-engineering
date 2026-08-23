@@ -44,6 +44,7 @@
 | 编排领域不明确或跨领域的实现切片与整体自测 | [`implementation-and-self-test`](../../skills/04-implementation-and-self-test/implementation-and-self-test/SKILL.md) | 已有评审通过的设计与任务，需维持整体范围和证据关联时 | 可构建变更、对应测试和整体自测结论 |
 | 应用语言编码规范和最佳实践 | [`language-coding-standards`](../../skills/04-implementation-and-self-test/language-coding-standards/SKILL.md) | 编写、修改或评审 TypeScript、Python、Swift、Kotlin、Go、SQL、zsh 或 C++ 代码时 | 与项目配置一致的实现、检查证据和已知偏差 |
 | 实现共享移动逻辑或协调两端交付 | [`mobile-implementation-and-self-test`](../../skills/04-implementation-and-self-test/mobile-implementation-and-self-test/SKILL.md) | 涉及跨平台框架、共享业务逻辑或 iOS/Android 一致性时 | 跨平台移动变更、两端影响和整体自测证据 |
+| 通过官方移动端 CLI 执行构建、测试和证据采集 | [`mobile-cli-execution`](../../skills/04-implementation-and-self-test/mobile-cli-execution/SKILL.md) | Agent 需要实际调用 Apple/Android 工具链、管理目标设备或保存原始产物时 | 可重复命令、目标身份、原始结果与安全收口记录 |
 | 实现并自测 iOS/iPadOS 平台行为 | [`ios-implementation-and-self-test`](../../skills/04-implementation-and-self-test/ios-implementation-and-self-test/SKILL.md) | 涉及 Apple 生命周期、并发、系统能力、数据保护或 Xcode target 时 | iOS 平台变更、测试和代表性设备自测证据 |
 | 实现并自测 Android 平台行为 | [`android-implementation-and-self-test`](../../skills/04-implementation-and-self-test/android-implementation-and-self-test/SKILL.md) | 涉及 Android 生命周期、协程、后台限制、API 差异或 Gradle 变体时 | Android 平台变更、测试和代表性设备自测证据 |
 | 协调完整 Web 前端页面切片 | [`web-frontend-implementation-and-self-test`](../../skills/04-implementation-and-self-test/web-frontend-implementation-and-self-test/SKILL.md) | 变更跨越 UI/交互与路由/状态/数据边界，或需汇总前端证据时 | 完整前端变更、跨边界测试和整体自测结论 |
@@ -57,4 +58,4 @@
 | 执行并记录本地质量门禁 | [`local-quality-validation`](../../skills/04-implementation-and-self-test/local-quality-validation/SKILL.md) | 提交评审前需要验证变更时 | 可追溯的本地检查证据与限制 |
 | 补齐文档并准备评审交接材料 | [`change-handoff-preparation`](../../skills/04-implementation-and-self-test/change-handoff-preparation/SKILL.md) | 变更已具备提交评审条件时 | 完整 PR 描述、交接信息和已知限制 |
 
-领域 SKILL 负责其特有的实现风险；移动端共享层协调两端，iOS/Android 层处理平台语义；Web 前端协调层组合 UI/交互与状态/数据；后端协调层组合 API、领域数据与异步集成。数据/配置、本地门禁和交接仍是共享能力。它们不替代阶段 5 的独立评审、受控 CI 和系统级验证。
+领域 SKILL 负责其特有的实现风险；移动端共享层协调两端，iOS/Android 层处理平台语义，`mobile-cli-execution` 只提供官方工具链执行和原始证据；Web 前端协调层组合 UI/交互与状态/数据；后端协调层组合 API、领域数据与异步集成。数据/配置、本地门禁和交接仍是共享能力。它们不替代阶段 5 的独立评审、受控 CI 和系统级验证。

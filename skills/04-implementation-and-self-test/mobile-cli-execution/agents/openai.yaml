@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mobile CLI Execution"
+  short_description: "Run auditable iOS and Android CLI workflows"
+  default_prompt: "Use $mobile-cli-execution to run this mobile build or test and capture reproducible evidence."
