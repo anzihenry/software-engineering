@@ -42,6 +42,7 @@
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
 | 编排领域不明确或跨领域的实现切片与整体自测 | [`implementation-and-self-test`](../../skills/04-implementation-and-self-test/implementation-and-self-test/SKILL.md) | 已有评审通过的设计与任务，需维持整体范围和证据关联时 | 可构建变更、对应测试和整体自测结论 |
+| 应用语言编码规范和最佳实践 | [`language-coding-standards`](../../skills/04-implementation-and-self-test/language-coding-standards/SKILL.md) | 编写、修改或评审 TypeScript、Python、Swift、Kotlin、Go、SQL、zsh 或 C++ 代码时 | 与项目配置一致的实现、检查证据和已知偏差 |
 | 实现共享移动逻辑或协调两端交付 | [`mobile-implementation-and-self-test`](../../skills/04-implementation-and-self-test/mobile-implementation-and-self-test/SKILL.md) | 涉及跨平台框架、共享业务逻辑或 iOS/Android 一致性时 | 跨平台移动变更、两端影响和整体自测证据 |
 | 实现并自测 iOS/iPadOS 平台行为 | [`ios-implementation-and-self-test`](../../skills/04-implementation-and-self-test/ios-implementation-and-self-test/SKILL.md) | 涉及 Apple 生命周期、并发、系统能力、数据保护或 Xcode target 时 | iOS 平台变更、测试和代表性设备自测证据 |
 | 实现并自测 Android 平台行为 | [`android-implementation-and-self-test`](../../skills/04-implementation-and-self-test/android-implementation-and-self-test/SKILL.md) | 涉及 Android 生命周期、协程、后台限制、API 差异或 Gradle 变体时 | Android 平台变更、测试和代表性设备自测证据 |

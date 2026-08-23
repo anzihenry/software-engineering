@@ -1,0 +1,4 @@
+interface:
+  display_name: "Language Coding Standards"
+  short_description: "Apply versioned coding standards across languages"
+  default_prompt: "Use $language-coding-standards to implement or review this code under the repository's language rules."
