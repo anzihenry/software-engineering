@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mobile Implementation and Self Test"
+  short_description: "Coordinate cross-platform mobile implementation"
+  default_prompt: "Use $mobile-implementation-and-self-test to implement and coordinate this cross-platform mobile change."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Contract Integration Validation"
+  short_description: "Validate backend contracts and integrations"
+  default_prompt: "Use $backend-contract-integration-validation to validate these backend contracts and dependency versions."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web UI Implementation and Self Test"
+  short_description: "Implement accessible Web UI and interactions"
+  default_prompt: "Use $web-ui-implementation-and-self-test to implement and verify this Web UI change."

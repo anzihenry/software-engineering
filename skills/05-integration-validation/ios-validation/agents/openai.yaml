@@ -1,0 +1,4 @@
+interface:
+  display_name: "iOS Validation"
+  short_description: "Validate iOS compatibility and system behavior"
+  default_prompt: "Use $ios-validation to validate this iOS change across its required devices and system versions."

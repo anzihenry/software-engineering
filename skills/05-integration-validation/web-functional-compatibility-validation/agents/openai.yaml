@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Functional Compatibility Validation"
+  short_description: "Validate Web flows and browser compatibility"
+  default_prompt: "Use $web-functional-compatibility-validation to validate these Web user flows across the required browsers."

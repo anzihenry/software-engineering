@@ -1,0 +1,4 @@
+interface:
+  display_name: "iOS Implementation and Self Test"
+  short_description: "Implement and self-test Apple platform changes"
+  default_prompt: "Use $ios-implementation-and-self-test to implement and verify this iOS change."

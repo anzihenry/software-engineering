@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Domain and Data Implementation"
+  short_description: "Implement and test domain and data changes"
+  default_prompt: "Use $backend-domain-data-implementation-and-self-test to implement and verify this backend domain and data change."

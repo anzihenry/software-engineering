@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Performance Validation"
+  short_description: "Validate Web loading and runtime performance"
+  default_prompt: "Use $web-performance-validation to measure this Web change against its performance budgets."

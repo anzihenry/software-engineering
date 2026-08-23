@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Async Integration Implementation"
+  short_description: "Implement and test async backend integrations"
+  default_prompt: "Use $backend-async-integration-implementation-and-self-test to implement and verify this asynchronous backend integration."

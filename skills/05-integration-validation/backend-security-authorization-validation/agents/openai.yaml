@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Security Authorization Validation"
+  short_description: "Validate backend authorization and security boundaries"
+  default_prompt: "Use $backend-security-authorization-validation to validate this backend authorization boundary."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Data Consistency Validation"
+  short_description: "Validate backend data integrity and migration"
+  default_prompt: "Use $backend-data-consistency-validation to validate this backend data and migration behavior."

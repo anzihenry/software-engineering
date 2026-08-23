@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Resilience Recovery Validation"
+  short_description: "Validate backend failure and recovery behavior"
+  default_prompt: "Use $backend-resilience-recovery-validation to validate this backend service under dependency failures."

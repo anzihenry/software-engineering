@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Validation"
+  short_description: "Coordinate comprehensive backend validation"
+  default_prompt: "Use $backend-validation to coordinate and summarize this backend service validation."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Frontend Implementation and Self Test"
+  short_description: "Coordinate Web frontend implementation"
+  default_prompt: "Use $web-frontend-implementation-and-self-test to coordinate and verify this Web frontend change."

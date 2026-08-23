@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Visual and Accessibility Validation"
+  short_description: "Validate Web visuals and accessibility"
+  default_prompt: "Use $web-visual-accessibility-validation to validate this Web UI across its required viewports and assistive technologies."

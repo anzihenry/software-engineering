@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android Implementation and Self Test"
+  short_description: "Implement and self-test Android platform changes"
+  default_prompt: "Use $android-implementation-and-self-test to implement and verify this Android change."

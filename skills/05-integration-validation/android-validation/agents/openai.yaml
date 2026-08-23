@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android Validation"
+  short_description: "Validate Android compatibility and system behavior"
+  default_prompt: "Use $android-validation to validate this Android change across its required API and device matrix."

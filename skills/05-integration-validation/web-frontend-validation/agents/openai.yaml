@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Frontend Validation"
+  short_description: "Coordinate comprehensive Web frontend validation"
+  default_prompt: "Use $web-frontend-validation to coordinate and summarize this Web frontend validation."

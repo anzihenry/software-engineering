@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend API Implementation and Self Test"
+  short_description: "Implement and test backend API contracts"
+  default_prompt: "Use $backend-api-implementation-and-self-test to implement and verify this backend API change."

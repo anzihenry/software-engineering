@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web State and Data Implementation"
+  short_description: "Implement and test Web state and data flows"
+  default_prompt: "Use $web-state-data-implementation-and-self-test to implement and verify this Web state and data change."

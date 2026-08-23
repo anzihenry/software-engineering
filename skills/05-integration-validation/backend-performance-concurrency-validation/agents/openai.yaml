@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Performance Concurrency Validation"
+  short_description: "Validate backend load and concurrency behavior"
+  default_prompt: "Use $backend-performance-concurrency-validation to validate this backend change under its required load."
