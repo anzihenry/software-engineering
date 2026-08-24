@@ -8,14 +8,30 @@
 
 - PR、代码变更、自测证据、验收标准、设计和风险等级。
 - CI 配置、测试环境、契约、基线性能与安全要求。
+- GitHub 仓库规则、Actions 可用能力、团队规模和执行成本约束。
 
 ## 流程
 
-1. **执行自动门禁**：构建、格式化、静态/类型分析、单元测试、依赖与密钥扫描必须在受控环境执行；失败应定位并修复，而非忽略。
-2. **开展代码评审**：评审者检查正确性、边界和错误处理、兼容性、可维护性、数据/权限安全、测试充分性及对运行/发布的影响。
-3. **验证系统行为**：按风险进入移动端、Web 前端或后端专项验证，并执行必要的跨领域集成、契约、端到端、性能、并发、恢复或安全测试；验证测试环境与生产差异是否会影响结论。
-4. **处理反馈与回归**：作者逐项回应评审意见；每次实质修改重新执行受影响检查，必要时请求重新评审。
-5. **确认合入**：确认全部必需检查通过、审批达到项目规则、冲突已解决且目标分支仍适用。
+1. **创建 Draft PR**：从已完成自测的主题分支创建 PR，关联需求与设计，记录范围、风险、测试、迁移、发布和恢复信息；验证未完成前保持 Draft。
+2. **执行 CI 自动门禁**：GitHub Actions 在每个 PR 上执行构建、格式化、静态/类型分析、单元测试及适用的依赖与密钥检查；用固定名称的汇总检查作为 required check，失败应定位并修复，而非忽略。
+3. **开展独立代码评审**：微型团队由未参与实现的维护者评审；独立开发者使用全新上下文的 Agent 评审形成独立证据，但不将其冒充人工批准。评审覆盖正确性、边界、兼容、安全、测试和运行影响。
+4. **执行领域专项验证**：按风险进入移动端、Web 前端或后端专项验证；通过路径、标签或手动触发控制昂贵检查，但合入所需证据必须关联当前提交。
+5. **执行跨系统验证**：当风险跨越客户端、服务、数据库或外部依赖时，执行必要的契约、端到端、性能、并发、恢复或安全测试，并说明测试环境与生产差异。
+6. **处理反馈与回归**：作者在原分支逐项回应评审意见；每次实质修改重新执行受影响检查，并复审受影响代码，不沿用旧提交结果。
+7. **判断合入就绪**：确认 PR 已退出 Draft、最新提交的必需检查全绿、阻塞意见解决、专项/系统证据齐全、无冲突且目标分支仍适用。
+8. **通过项目机制合并**：由受保护分支规则执行合入，默认使用 squash merge 并删除主题分支；仅在并发合入频繁且 GitHub 套餐支持时使用 merge queue。合并不等于批准发布。
+
+## 独立开发者与微型团队的 GitHub 基线
+
+| 方面 | 独立开发者 | 微型团队 |
+| --- | --- | --- |
+| PR 审批 | Required approvals 设为 0，避免无法自批；保留全新上下文 Agent 评审和人类 Go/No-Go | 有第二位维护者时，中高风险要求 1 人批准；可要求最新推送由他人确认 |
+| 分支保护 | `main` 必须经 PR、required checks 和对话解决，禁止强推/删除 | 同左，可增加 CODEOWNERS 或按目录请求评审 |
+| CI 层级 | 每次提交跑快速层；按风险触发专项/系统/设备层 | 同左，可按责任领域并行验证 |
+| 合并方式 | 人工确认或 auto-merge，默认 squash | 默认 squash；并发 PR 明显增加后再考虑 merge queue |
+| 高风险变更 | 明确记录人类 Go/No-Go；不能由 Agent 自动批准风险例外 | 由非作者维护者或外部专家确认专项风险 |
+
+Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是否执行领域任务；不要让整个 required workflow 因路径过滤不触发。对同一 PR 的旧运行启用并发取消，所有合入证据以最新 head SHA 为准。Actions 默认使用只读最小权限，不让不可信 PR 通过高权限事件取得密钥。
 
 ## 决策门禁
 
@@ -40,6 +56,7 @@
 
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
+| 编排 GitHub PR 从 Draft 到受保护合入 | [`github-pr-integration`](../../skills/05-integration-validation/github-pr-integration/SKILL.md) | 独立开发者或微型团队需要在 GitHub 上串联 CI、评审、专项/系统验证和合入判断时 | 对应最新提交的 PR 集成状态与下一动作 |
 | 在受控 CI 中解释和处置自动门禁结果 | [`ci-quality-gate-evaluation`](../../skills/05-integration-validation/ci-quality-gate-evaluation/SKILL.md) | PR 已触发构建、测试和安全检查时 | 门禁结论、失败处置与限制 |
 | 以独立视角审查变更及其测试证据 | [`pull-request-review`](../../skills/05-integration-validation/pull-request-review/SKILL.md) | 变更需人工评审时 | 可追溯的评审发现与审批结论 |
 | 规划并汇总跨平台移动验证 | [`mobile-validation`](../../skills/05-integration-validation/mobile-validation/SKILL.md) | 风险跨越 iOS/Android/HarmonyOS，或需验证共享行为、平台一致性与整体设备矩阵时 | 移动端整体结论、各平台证据和支持范围 |
@@ -60,4 +77,4 @@
 | 验证并汇总跨领域、跨环境系统行为 | [`system-level-validation`](../../skills/05-integration-validation/system-level-validation/SKILL.md) | 风险跨越客户端、服务和外部依赖，或需完整用户旅程证据时 | 跨域系统验证证据与适用范围 |
 | 汇总反馈、豁免与最新状态以判断可合入性 | [`merge-readiness`](../../skills/05-integration-validation/merge-readiness/SKILL.md) | 准备合入目标分支时 | 可合入/阻塞结论及剩余事项 |
 
-领域专项验证提供各自风险证据；`mobile-cli-execution` 负责执行官方工具并保存原始产物，但不做通过判断；`mobile-validation` 汇总 iOS/Android/HarmonyOS，`web-frontend-validation` 汇总前端三类专项，`backend-validation` 汇总后端五类专项，`system-level-validation` 再保持客户端、服务和外部依赖的跨域汇总责任。所有这些 SKILL 只形成验证与合入结论；生产发布控制由阶段 6 负责。
+`github-pr-integration` 是面向 GitHub 小团队的阶段编排入口；领域专项验证提供各自风险证据，`mobile-cli-execution` 负责执行官方工具并保存原始产物但不做通过判断，`mobile-validation` 汇总 iOS/Android/HarmonyOS，`web-frontend-validation` 汇总前端三类专项，`backend-validation` 汇总后端五类专项，`system-level-validation` 再保持客户端、服务和外部依赖的跨域汇总责任。所有这些 SKILL 只形成验证与合入结论；生产发布控制由阶段 6 负责。

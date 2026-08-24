@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub PR Integration"
+  short_description: "Guide lightweight GitHub PR validation and merging"
+  default_prompt: "Use $github-pr-integration to move this GitHub pull request through validation and merge readiness."
