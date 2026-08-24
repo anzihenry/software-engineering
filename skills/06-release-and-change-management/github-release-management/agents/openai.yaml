@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Release Management"
+  short_description: "Orchestrate safe GitHub releases for small teams"
+  default_prompt: "Use $github-release-management to plan and control this GitHub release from candidate to closure."

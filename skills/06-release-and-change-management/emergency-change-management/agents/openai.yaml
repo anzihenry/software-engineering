@@ -1,0 +1,4 @@
+interface:
+  display_name: "Emergency Change Management"
+  short_description: "Control urgent production changes without hiding risk"
+  default_prompt: "Use $emergency-change-management to manage this urgent production change safely."

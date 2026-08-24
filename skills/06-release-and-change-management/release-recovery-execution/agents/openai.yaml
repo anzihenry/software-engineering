@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Recovery Execution"
+  short_description: "Execute an authorized rollback or forward recovery"
+  default_prompt: "Use $release-recovery-execution to carry out the authorized recovery plan for this release."

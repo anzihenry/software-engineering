@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Candidate Preparation"
+  short_description: "Prepare traceable release candidates and artifacts"
+  default_prompt: "Use $release-candidate-preparation to prepare a traceable release candidate and its artifacts."
