@@ -57,7 +57,7 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
 | 为新 GitHub 仓库建立稳定 CI 与适配真实能力的 CD 基线 | [`github-actions-bootstrap`](../../skills/05-integration-validation/github-actions-bootstrap/SKILL.md) | 项目已有可本地执行的质量命令，需要生成安全 Actions workflow 并通过首次 PR 自动取得真实 check-run 时 | CI/CD workflow、首次 PR 运行证据及仓库设置交接 |
-| 为新 GitHub 仓库建立 required check 与分支清理基线 | [`github-repository-bootstrap`](../../skills/05-integration-validation/github-repository-bootstrap/SKILL.md) | 仓库已具有成功、稳定的 CI check，需要一次性配置或审计默认分支 ruleset 和合并后删分支设置时 | 可验证的仓库治理设置、ruleset 记录和限制 |
+| 为新 GitHub 仓库建立安全仓库设置并收口首次 CI PR | [`github-repository-bootstrap`](../../skills/05-integration-validation/github-repository-bootstrap/SKILL.md) | Actions 引导 PR 已自动产生成功稳定 check，或需要审计 Actions 权限、environments、ruleset 和删分支设置时 | 可验证的仓库治理设置、首次 PR 收口与分支清理证据 |
 | 编排 GitHub PR 从 Draft 到受保护合入 | [`github-pr-integration`](../../skills/05-integration-validation/github-pr-integration/SKILL.md) | 独立开发者或微型团队需要在 GitHub 上串联 CI、评审、专项/系统验证和合入判断时 | 对应最新提交的 PR 集成状态与下一动作 |
 | 在受控 CI 中解释和处置自动门禁结果 | [`ci-quality-gate-evaluation`](../../skills/05-integration-validation/ci-quality-gate-evaluation/SKILL.md) | PR 已触发构建、测试和安全检查时 | 门禁结论、失败处置与限制 |
 | 以独立视角审查变更及其测试证据 | [`pull-request-review`](../../skills/05-integration-validation/pull-request-review/SKILL.md) | 变更需人工评审时 | 可追溯的评审发现与审批结论 |
