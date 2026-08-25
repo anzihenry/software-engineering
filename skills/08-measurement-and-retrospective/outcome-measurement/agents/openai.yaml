@@ -1,3 +1,4 @@
 interface:
   display_name: "Outcome Measurement"
-  short_description: "Help with Outcome Measurement tasks"
+  short_description: "Measure delivery outcomes with clear metrics and evidence"
+  default_prompt: "Use $outcome-measurement to evaluate whether this delivery achieved its product, reliability, or quality goals."

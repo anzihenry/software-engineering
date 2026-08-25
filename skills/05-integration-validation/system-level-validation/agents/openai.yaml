@@ -1,3 +1,4 @@
 interface:
   display_name: "System Level Validation"
-  short_description: "Help with System Level Validation tasks"
+  short_description: "Validate system behavior with real dependencies and constraints"
+  default_prompt: "Use $system-level-validation to validate this change across its real dependencies and system constraints."

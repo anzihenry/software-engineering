@@ -1,3 +1,4 @@
 interface:
   display_name: "Playbook Evolution"
-  short_description: "Help with Playbook Evolution tasks"
+  short_description: "Evolve playbooks from validated practices and review plans"
+  default_prompt: "Use $playbook-evolution to turn this validated practice into a scoped, reviewable playbook change."

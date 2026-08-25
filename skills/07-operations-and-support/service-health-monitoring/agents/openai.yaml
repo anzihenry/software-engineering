@@ -1,3 +1,4 @@
 interface:
   display_name: "Service Health Monitoring"
-  short_description: "Help with Service Health Monitoring tasks"
+  short_description: "Define and improve service health signals and alerts"
+  default_prompt: "Use $service-health-monitoring to define or evaluate health signals and actionable alerts for this service."

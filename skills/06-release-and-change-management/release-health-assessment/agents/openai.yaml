@@ -1,3 +1,4 @@
 interface:
   display_name: "Release Health Assessment"
-  short_description: "Help with Release Health Assessment tasks"
+  short_description: "Assess release health and recommend continue, pause, or recover"
+  default_prompt: "Use $release-health-assessment to evaluate this release batch and recommend whether to continue, pause, or recover."

@@ -1,3 +1,4 @@
 interface:
   display_name: "Opportunity Prioritization"
-  short_description: "Help with Opportunity Prioritization tasks"
+  short_description: "Prioritize opportunities using value, risk, and evidence"
+  default_prompt: "Use $opportunity-prioritization to rank these opportunities using value, risk, evidence, cost, and dependencies."
