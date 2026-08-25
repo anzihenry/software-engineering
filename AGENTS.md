@@ -16,4 +16,4 @@
 ## Repository checks
 
 - Install development tools with `python3 -m pip install --requirement requirements-dev.txt`.
-- Run `ruff check scripts tests`, `ruff format --check scripts tests`, `python3 -m unittest discover --start-directory tests`, and `python3 scripts/check_repository.py` after changing repository content or validation code.
+- Run `ruff check scripts tests skills/05-integration-validation/github-actions-bootstrap/scripts`, `ruff format --check scripts tests skills/05-integration-validation/github-actions-bootstrap/scripts`, `python3 -m unittest discover --start-directory tests`, and `python3 scripts/check_repository.py` after changing repository content or validation code.

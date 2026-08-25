@@ -72,6 +72,32 @@ class RepositoryCheckTests(unittest.TestCase):
 
             self.assertTrue(any("frontmatter name" in issue.message for issue in issues))
 
+    def test_standard_skill_resource_directories_are_allowed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            skills = root / "skills"
+            for phase in PHASES.values():
+                (skills / phase).mkdir(parents=True)
+            skill = skills / PHASES[1] / "example-skill"
+            (skill / "agents").mkdir(parents=True)
+            (skill / "assets").mkdir()
+            (skill / "references").mkdir()
+            (skill / "scripts").mkdir()
+            (skill / "SKILL.md").write_text(
+                "---\nname: example-skill\ndescription: Example\n---\n# Example\n",
+                encoding="utf-8",
+            )
+            (skill / "agents" / "openai.yaml").write_text(
+                "interface:\n"
+                '  display_name: "Example"\n'
+                '  short_description: "Example skill metadata description"\n',
+                encoding="utf-8",
+            )
+
+            issues = check_skill_structure(root)
+
+            self.assertFalse(any("unexpected entry" in issue.message for issue in issues))
+
     def test_missing_navigation_entries_are_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

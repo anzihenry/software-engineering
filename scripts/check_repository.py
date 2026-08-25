@@ -131,7 +131,13 @@ def check_skill_structure(root: Path) -> list[Issue]:
         ):
             issues.append(Issue(agent_path, "interface.default_prompt must be a non-empty string"))
 
-        allowed_children = {path, skill_dir / "agents", skill_dir / "references"}
+        allowed_children = {
+            path,
+            skill_dir / "agents",
+            skill_dir / "assets",
+            skill_dir / "references",
+            skill_dir / "scripts",
+        }
         for child in skill_dir.iterdir():
             if child not in allowed_children:
                 issues.append(Issue(child, "unexpected entry in skill directory"))
