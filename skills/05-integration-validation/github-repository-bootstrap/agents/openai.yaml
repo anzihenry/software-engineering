@@ -1,4 +1,4 @@
 interface:
   display_name: "GitHub Repository Bootstrap"
-  short_description: "Bootstrap GitHub required checks and branch cleanup"
-  default_prompt: "Use $github-repository-bootstrap to configure this repository's required checks and post-merge branch cleanup."
+  short_description: "Bootstrap secure GitHub repository governance settings"
+  default_prompt: "Use $github-repository-bootstrap to consume the CI bootstrap handoff, secure this repository, and finalize its bootstrap PR."
