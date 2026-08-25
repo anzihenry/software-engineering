@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Actions Bootstrap"
+  short_description: "Bootstrap stable GitHub CI and scoped CD workflows"
+  default_prompt: "Use $github-actions-bootstrap to establish this repository's GitHub Actions CI/CD baseline and produce its bootstrap handoff."

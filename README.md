@@ -27,8 +27,8 @@ Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md
 
 ```sh
 python3 -m pip install --requirement requirements-dev.txt
-ruff check scripts tests
-ruff format --check scripts tests
+ruff check scripts tests skills/05-integration-validation/github-actions-bootstrap/scripts
+ruff format --check scripts tests skills/05-integration-validation/github-actions-bootstrap/scripts
 python3 -m unittest discover --start-directory tests
 python3 scripts/check_repository.py
 ```
