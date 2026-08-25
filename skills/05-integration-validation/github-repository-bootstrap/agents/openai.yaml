@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Repository Bootstrap"
+  short_description: "Bootstrap GitHub required checks and branch cleanup"
+  default_prompt: "Use $github-repository-bootstrap to configure this repository's required checks and post-merge branch cleanup."
