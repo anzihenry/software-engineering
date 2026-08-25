@@ -20,3 +20,17 @@
 集成验证与发布阶段默认适配独立开发者或微型团队使用 GitHub 的场景：PR、Actions、Environments、Deployments 和 Releases 分别承载合入门禁、确定性执行、环境控制、部署追踪与对外版本记录；平台套餐不支持的审批能力使用明确的人类决策记录替代，不虚构自动化保证。
 
 Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md)，当前覆盖 TypeScript 7、ArkTS、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20。
+
+## 仓库自检
+
+仓库使用 Python 3.14 执行确定性的结构与格式门禁，覆盖 YAML 解析、SKILL frontmatter、目录与名称一致性、站内相对链接、导航/workflow 覆盖以及 Markdown 基础格式。
+
+```sh
+python3 -m pip install --requirement requirements-dev.txt
+ruff check scripts tests
+ruff format --check scripts tests
+python3 -m unittest discover --start-directory tests
+python3 scripts/check_repository.py
+```
+
+Pull Request 和推送到 `main` 时，[Repository checks](.github/workflows/repository-checks.yml) workflow 会执行同一组检查。

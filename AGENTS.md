@@ -12,3 +12,8 @@
 
 - Keep SKILL descriptions discriminating and instructions focused on decisions that improve execution.
 - Update workflow and `skills/README.md` routing whenever a SKILL is added, removed, or changes responsibility.
+
+## Repository checks
+
+- Install development tools with `python3 -m pip install --requirement requirements-dev.txt`.
+- Run `ruff check scripts tests`, `ruff format --check scripts tests`, `python3 -m unittest discover --start-directory tests`, and `python3 scripts/check_repository.py` after changing repository content or validation code.
