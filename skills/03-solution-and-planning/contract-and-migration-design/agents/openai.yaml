@@ -1,3 +1,4 @@
 interface:
   display_name: "Contract and Migration Design"
-  short_description: "Help with Contract and Migration Design tasks"
+  short_description: "Design compatible contracts, data changes, and migrations"
+  default_prompt: "Use $contract-and-migration-design to design compatible contracts and a safe migration path for this change."

@@ -1,3 +1,4 @@
 interface:
   display_name: "Incident Review"
-  short_description: "Help with Incident Review tasks"
+  short_description: "Run blameless incident reviews and define systemic actions"
+  default_prompt: "Use $incident-review to run a fact-based, blameless review of this recovered incident."

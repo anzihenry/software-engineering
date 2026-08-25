@@ -1,3 +1,4 @@
 interface:
   display_name: "Requirements Refinement"
-  short_description: "Help with Requirements Refinement tasks"
+  short_description: "Refine requirements into testable delivery criteria"
+  default_prompt: "Use $requirements-refinement to refine this problem into a minimal deliverable with testable acceptance criteria."

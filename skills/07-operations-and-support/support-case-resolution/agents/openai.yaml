@@ -1,3 +1,4 @@
 interface:
   display_name: "Support Case Resolution"
-  short_description: "Help with Support Case Resolution tasks"
+  short_description: "Resolve support cases and feed recurring issues into improvement"
+  default_prompt: "Use $support-case-resolution to triage this support case, resolve it, and capture reusable learning."

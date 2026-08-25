@@ -1,3 +1,4 @@
 interface:
   display_name: "Incident Triage and Response"
-  short_description: "Help with Incident Triage and Response tasks"
+  short_description: "Triage and coordinate mitigation for operational incidents"
+  default_prompt: "Use $incident-triage-and-response to classify this incident and coordinate mitigation, communication, and escalation."

@@ -1,3 +1,4 @@
 interface:
   display_name: "Solution Design Decision"
-  short_description: "Help with Solution Design Decision tasks"
+  short_description: "Compare implementation options and record design tradeoffs"
+  default_prompt: "Use $solution-design-decision to compare implementation options and record the selected design and tradeoffs."

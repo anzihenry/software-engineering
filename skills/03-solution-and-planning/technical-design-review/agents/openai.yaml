@@ -1,3 +1,4 @@
 interface:
   display_name: "Technical Design Review"
-  short_description: "Help with Technical Design Review tasks"
+  short_description: "Review technical designs for blocking risks and evidence"
+  default_prompt: "Use $technical-design-review to independently review this design for blocking risks, gaps, and missing evidence."

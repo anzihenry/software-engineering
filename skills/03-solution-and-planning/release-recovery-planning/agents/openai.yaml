@@ -1,3 +1,4 @@
 interface:
   display_name: "Release Recovery Planning"
-  short_description: "Help with Release Recovery Planning tasks"
+  short_description: "Plan controlled releases, observability, and recovery paths"
+  default_prompt: "Use $release-recovery-planning to define the release, observation, stop, and recovery plan for this change."

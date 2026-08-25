@@ -1,3 +1,4 @@
 interface:
   display_name: "Pull Request Review"
-  short_description: "Help with Pull Request Review tasks"
+  short_description: "Review pull requests for correctness, risk, and test quality"
+  default_prompt: "Use $pull-request-review to independently review this pull request's correctness, risks, and tests."

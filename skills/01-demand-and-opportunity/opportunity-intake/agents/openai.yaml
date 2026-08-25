@@ -1,3 +1,4 @@
 interface:
   display_name: "Opportunity Intake"
-  short_description: "Help with Opportunity Intake tasks"
+  short_description: "Turn raw signals into traceable opportunity records"
+  default_prompt: "Use $opportunity-intake to turn these raw signals into a traceable, triaged opportunity record."

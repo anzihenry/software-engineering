@@ -1,3 +1,4 @@
 interface:
   display_name: "Delivery Retrospective"
-  short_description: "Help with Delivery Retrospective tasks"
+  short_description: "Review delivery outcomes and identify systemic improvements"
+  default_prompt: "Use $delivery-retrospective to review this delivery's outcomes, collaboration, and systemic improvement opportunities."

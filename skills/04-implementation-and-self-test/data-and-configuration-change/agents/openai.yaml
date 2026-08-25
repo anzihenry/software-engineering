@@ -1,3 +1,4 @@
 interface:
   display_name: "Data and Configuration Change"
-  short_description: "Help with Data and Configuration Change tasks"
+  short_description: "Control data, configuration, permission, and secret changes"
+  default_prompt: "Use $data-and-configuration-change to plan and verify this stateful or sensitive configuration change."

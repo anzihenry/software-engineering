@@ -1,3 +1,4 @@
 interface:
   display_name: "Change Handoff Preparation"
-  short_description: "Help with Change Handoff Preparation tasks"
+  short_description: "Prepare reviewable change handoffs with evidence and risks"
+  default_prompt: "Use $change-handoff-preparation to prepare this change for independent review with evidence and risks."

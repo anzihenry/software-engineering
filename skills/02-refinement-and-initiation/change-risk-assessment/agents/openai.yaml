@@ -1,3 +1,4 @@
 interface:
   display_name: "Change Risk Assessment"
-  short_description: "Help with Change Risk Assessment tasks"
+  short_description: "Assess change risk and identify required delivery gates"
+  default_prompt: "Use $change-risk-assessment to classify this change and identify the delivery gates its risks require."

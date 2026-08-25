@@ -1,3 +1,4 @@
 interface:
   display_name: "Merge Readiness"
-  short_description: "Help with Merge Readiness tasks"
+  short_description: "Determine merge readiness from current validation evidence"
+  default_prompt: "Use $merge-readiness to determine whether this current commit has enough evidence to merge."

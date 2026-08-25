@@ -1,3 +1,4 @@
 interface:
   display_name: "Release Closure"
-  short_description: "Help with Release Closure tasks"
+  short_description: "Close stable releases and complete operational handoff"
+  default_prompt: "Use $release-closure to close this stable or stopped release and complete its operational handoff."
