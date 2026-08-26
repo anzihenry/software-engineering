@@ -1,0 +1,239 @@
+name: Open Lifecycle Retrospective
+
+"on":
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Source as incident:N or release:vMAJOR.MINOR.PATCH
+        required: true
+        type: string
+      stability_confirmed:
+        description: Explicitly confirm an incident is stable when it is not recovered or closed
+        required: true
+        default: false
+        type: boolean
+      timeline:
+        description: Sanitized factual timeline
+        required: true
+        type: string
+      visible_information:
+        description: Information available to responders at the time
+        required: true
+        type: string
+      contributing_factors:
+        description: System and process factors that contributed
+        required: true
+        type: string
+      guard_effectiveness:
+        description: Effective, missing, or failed guards
+        required: true
+        type: string
+      uncertainties:
+        description: Remaining uncertainty and evidence gaps
+        required: true
+        type: string
+      action_links:
+        description: Improvement action links or an explicit pending-action statement
+        required: true
+        type: string
+      dry_run:
+        description: Validate and render without creating an Issue
+        required: true
+        default: true
+        type: boolean
+      confirmation:
+        description: For creation, enter retrospective-incident-N or retrospective-release-vX.Y.Z
+        required: false
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: retrospective-${{ inputs.source }}
+  cancel-in-progress: false
+
+jobs:
+  dry-run:
+    if: ${{ inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: read
+    env:
+      ACTION_LINKS: ${{ inputs.action_links }}
+      ACTOR: ${{ github.actor }}
+      APPLY: "false"
+      CONFIRMATION: ${{ inputs.confirmation }}
+      CONTRIBUTING_FACTORS: ${{ inputs.contributing_factors }}
+      GH_TOKEN: ${{ github.token }}
+      GUARD_EFFECTIVENESS: ${{ inputs.guard_effectiveness }}
+      REPOSITORY: ${{ github.repository }}
+      SOURCE: ${{ inputs.source }}
+      STABILITY_CONFIRMED: ${{ inputs.stability_confirmed }}
+      TIMELINE: ${{ inputs.timeline }}
+      UNCERTAINTIES: ${{ inputs.uncertainties }}
+      VISIBLE_INFORMATION: ${{ inputs.visible_information }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - name: Validate retrospective inputs
+        run: |
+          python -m scripts.github_lifecycle render-retrospective \
+            --policy .github/lifecycle-policy.json \
+            --source "$SOURCE" \
+            --stability-confirmed "$STABILITY_CONFIRMED" \
+            --timeline "$TIMELINE" \
+            --visible-information "$VISIBLE_INFORMATION" \
+            --contributing-factors "$CONTRIBUTING_FACTORS" \
+            --guard-effectiveness "$GUARD_EFFECTIVENESS" \
+            --uncertainties "$UNCERTAINTIES" \
+            --action-links "$ACTION_LINKS" \
+            --actor "$ACTOR" \
+            --occurred-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --apply "$APPLY" \
+            --confirmation "$CONFIRMATION" \
+            --validate-only
+
+      - name: Read source and existing retrospectives
+        run: |
+          source_kind="${SOURCE%%:*}"
+          source_id="${SOURCE#*:}"
+          if [ "$source_kind" = "incident" ]; then
+            gh issue view "$source_id" --repo "$REPOSITORY" \
+              --json number,state,title,body,labels,url,updatedAt,comments > "$RUNNER_TEMP/source.json"
+          else
+            gh release view "$source_id" --repo "$REPOSITORY" \
+              --json tagName,name,url,isDraft,isPrerelease,publishedAt > "$RUNNER_TEMP/source.json"
+          fi
+          gh issue list --repo "$REPOSITORY" --state all --label type:retrospective \
+            --limit 1000 --json number,title,url,state,body,labels > "$RUNNER_TEMP/retrospectives.json"
+
+      - name: Render dry-run retrospective
+        run: |
+          python -m scripts.github_lifecycle render-retrospective \
+            --policy .github/lifecycle-policy.json \
+            --source "$SOURCE" \
+            --stability-confirmed "$STABILITY_CONFIRMED" \
+            --timeline "$TIMELINE" \
+            --visible-information "$VISIBLE_INFORMATION" \
+            --contributing-factors "$CONTRIBUTING_FACTORS" \
+            --guard-effectiveness "$GUARD_EFFECTIVENESS" \
+            --uncertainties "$UNCERTAINTIES" \
+            --action-links "$ACTION_LINKS" \
+            --actor "$ACTOR" \
+            --occurred-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --apply "$APPLY" \
+            --confirmation "$CONFIRMATION" \
+            --source-data "$RUNNER_TEMP/source.json" \
+            --existing "$RUNNER_TEMP/retrospectives.json" \
+            --output-dir "$RUNNER_TEMP/retrospective"
+
+      - name: Upload dry-run retrospective
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: retrospective-plan
+          path: ${{ runner.temp }}/retrospective
+          if-no-files-found: error
+          retention-days: 30
+
+  apply:
+    if: ${{ !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    env:
+      ACTION_LINKS: ${{ inputs.action_links }}
+      ACTOR: ${{ github.actor }}
+      APPLY: "true"
+      CONFIRMATION: ${{ inputs.confirmation }}
+      CONTRIBUTING_FACTORS: ${{ inputs.contributing_factors }}
+      GH_TOKEN: ${{ github.token }}
+      GUARD_EFFECTIVENESS: ${{ inputs.guard_effectiveness }}
+      REPOSITORY: ${{ github.repository }}
+      SOURCE: ${{ inputs.source }}
+      STABILITY_CONFIRMED: ${{ inputs.stability_confirmed }}
+      TIMELINE: ${{ inputs.timeline }}
+      UNCERTAINTIES: ${{ inputs.uncertainties }}
+      VISIBLE_INFORMATION: ${{ inputs.visible_information }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - name: Validate retrospective inputs
+        run: |
+          python -m scripts.github_lifecycle render-retrospective \
+            --policy .github/lifecycle-policy.json \
+            --source "$SOURCE" \
+            --stability-confirmed "$STABILITY_CONFIRMED" \
+            --timeline "$TIMELINE" \
+            --visible-information "$VISIBLE_INFORMATION" \
+            --contributing-factors "$CONTRIBUTING_FACTORS" \
+            --guard-effectiveness "$GUARD_EFFECTIVENESS" \
+            --uncertainties "$UNCERTAINTIES" \
+            --action-links "$ACTION_LINKS" \
+            --actor "$ACTOR" \
+            --occurred-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --apply "$APPLY" \
+            --confirmation "$CONFIRMATION" \
+            --validate-only
+
+      - name: Read source and existing retrospectives
+        run: |
+          source_kind="${SOURCE%%:*}"
+          source_id="${SOURCE#*:}"
+          if [ "$source_kind" = "incident" ]; then
+            gh issue view "$source_id" --repo "$REPOSITORY" \
+              --json number,state,title,body,labels,url,updatedAt,comments > "$RUNNER_TEMP/source.json"
+          else
+            gh release view "$source_id" --repo "$REPOSITORY" \
+              --json tagName,name,url,isDraft,isPrerelease,publishedAt > "$RUNNER_TEMP/source.json"
+          fi
+          gh issue list --repo "$REPOSITORY" --state all --label type:retrospective \
+            --limit 1000 --json number,title,url,state,body,labels > "$RUNNER_TEMP/retrospectives.json"
+
+      - name: Render retrospective
+        id: render
+        run: |
+          python -m scripts.github_lifecycle render-retrospective \
+            --policy .github/lifecycle-policy.json \
+            --source "$SOURCE" \
+            --stability-confirmed "$STABILITY_CONFIRMED" \
+            --timeline "$TIMELINE" \
+            --visible-information "$VISIBLE_INFORMATION" \
+            --contributing-factors "$CONTRIBUTING_FACTORS" \
+            --guard-effectiveness "$GUARD_EFFECTIVENESS" \
+            --uncertainties "$UNCERTAINTIES" \
+            --action-links "$ACTION_LINKS" \
+            --actor "$ACTOR" \
+            --occurred-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --apply "$APPLY" \
+            --confirmation "$CONFIRMATION" \
+            --source-data "$RUNNER_TEMP/source.json" \
+            --existing "$RUNNER_TEMP/retrospectives.json" \
+            --output-dir "$RUNNER_TEMP/retrospective" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Create retrospective Issue
+        if: ${{ steps.render.outputs.duplicate != 'true' }}
+        env:
+          BODY_PATH: ${{ steps.render.outputs.body_path }}
+          TITLE: ${{ steps.render.outputs.title }}
+        run: |
+          gh issue create --repo "$REPOSITORY" \
+            --title "$TITLE" \
+            --body-file "$BODY_PATH" \
+            --label type:retrospective

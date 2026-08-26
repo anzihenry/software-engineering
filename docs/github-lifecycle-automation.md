@@ -33,6 +33,14 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 
 若处理中发现安全或隐私风险，目标必须是 `escalated`。Python 会忽略普通决定和证据文本，只在公开记录保留安全字符组成的受限事件 ID，并引导到 `SECURITY.md`；后续安全、隐私、法律和取证内容不得回写普通 Issue。安全漏洞通过 GitHub Private Vulnerability Reporting 接收，隐私事件使用团队受限系统。
 
+## 复盘、改进行动与只读审计
+
+`Open Lifecycle Retrospective` 支持 `incident:N` 和 `release:vMAJOR.MINOR.PATCH`。事故须为 recovered/closed，或触发者明确确认已经稳定；Release 必须已正式发布且不能是 Draft/Prerelease。SEV1、SEV2、SEV3 分别按恢复锚点计算 7、14、30 天期限，SEV4 默认无强制期限，发布复盘为 30 天。
+
+复盘使用 `<!-- lifecycle-source:... -->` 隐藏标识去重，发现已有记录时返回原 Issue 而不重复创建。正文固定包含事实时间线、当时可见信息、促成因素、防护有效性、不确定性和行动链接。独立改进行动 Issue Form 强制复盘反链、单一所有者、期限、完成定义、效果判据和观察窗口。
+
+`Audit Lifecycle Records` 每周一 02:00 UTC 以及手动触发时只读运行，报告缺失/未完成且逾期的复盘以及逾期改进行动。它只写 Actions summary 和 job 结论，不评论、不改标签、不关闭 Issue。
+
 ## 可复制自动化包
 
 `automation/github-lifecycle-manifest.json` 列出公共配置、工作流、表单和脚本。使用固定 tag 或 commit SHA 检出本仓库后运行：
@@ -52,5 +60,6 @@ python3 -m scripts.github_lifecycle package \
 3. 若新检查误阻塞，先从 ruleset 移除该检查，不删除既有质量门禁；修复后通过新 PR 再恢复。
 4. 发布工作流合入后先对 `main` 上通过检查的完整 SHA 执行 dry-run；真实 Draft Release 仍需单独显式确认。
 5. 事故表单和工作流合入后，用 `gh label create --force` 建立配置中的标签，并用 `gh api` 启用、再读取确认 Private Vulnerability Reporting；事故状态工作流先 dry-run 再执行写入。
+6. 复盘和审计工作流合入后，先用标记 `automation:smoke` 的合成普通事故执行 dry-run，再完成恢复、复盘、行动和审计链路；关闭记录但保留为非敏感证据。
 
 GitHub 仓库查询和设置统一优先使用 `gh` 或 `gh api`，并在变更前读取现状、变更后重新核验。

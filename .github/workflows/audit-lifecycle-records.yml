@@ -1,0 +1,47 @@
+name: Audit Lifecycle Records
+
+"on":
+  schedule:
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: audit-lifecycle-records
+  cancel-in-progress: true
+
+jobs:
+  audit-records:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: ${{ github.repository }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - name: Read lifecycle records
+        run: |
+          gh issue list --repo "$REPOSITORY" --state all --limit 1000 \
+            --json number,title,url,state,body,labels,createdAt,updatedAt > "$RUNNER_TEMP/issues.json"
+          gh api --paginate --slurp "repos/$REPOSITORY/releases?per_page=100" \
+            > "$RUNNER_TEMP/releases.json"
+
+      - name: Audit overdue records
+        run: |
+          python -m scripts.github_lifecycle audit-records \
+            --policy .github/lifecycle-policy.json \
+            --issues "$RUNNER_TEMP/issues.json" \
+            --releases "$RUNNER_TEMP/releases.json" \
+            --as-of "$(date -u +%Y-%m-%d)" \
+            --output "$RUNNER_TEMP/lifecycle-audit.json"

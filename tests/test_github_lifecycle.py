@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 from scripts.github_lifecycle.common import LifecycleError, load_policy
@@ -17,6 +18,12 @@ from scripts.github_lifecycle.release import (
     ReleaseRequest,
     prepare_release,
     validate_release_inputs,
+)
+from scripts.github_lifecycle.retrospective import (
+    audit_records,
+    build_retrospective_request,
+    calculate_due_date,
+    render_retrospective,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -120,6 +127,17 @@ class PullRequestPolicyTests(unittest.TestCase):
         result = validate_pr_body(body, draft=False, policy=self.policy)
 
         self.assertIn("lifecycle metadata schema-version must be 1", result.issues)
+
+    def test_injected_second_metadata_block_is_rejected(self) -> None:
+        injected = (
+            pr_body("low") + "\n<!-- lifecycle-metadata\n"
+            "schema-version: 1\nchange-id: CHG-INJECTED-999\n"
+            "risk-level: low\n-->\n"
+        )
+
+        result = validate_pr_body(injected, draft=False, policy=self.policy)
+
+        self.assertIn("PR body must contain exactly one lifecycle-metadata block", result.issues)
 
 
 class AutomationPackageTests(unittest.TestCase):
@@ -481,6 +499,270 @@ class IncidentTransitionTests(unittest.TestCase):
             self.assertEqual(plan["target_label"], "status:mitigating")
             self.assertIn("severity:sev2", plan["severity_label"])
             self.assertIn("Incident state transition", comment_path.read_text(encoding="utf-8"))
+
+
+class RetrospectiveTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.policy = load_policy(POLICY_PATH)
+
+    def request(
+        self,
+        source: str = "incident:42",
+        *,
+        stable: bool = False,
+        apply: bool = False,
+    ):
+        confirmation = f"retrospective-{source.replace(':', '-', 1)}" if apply else ""
+        return build_retrospective_request(
+            source=source,
+            stability_confirmed=stable,
+            timeline="The alert fired, responders mitigated impact, and health recovered.",
+            visible_information="Responders saw elevated errors and the latest release record.",
+            contributing_factors="A dependency failure and insufficient fallback capacity.",
+            guard_effectiveness="Alerting worked; fallback capacity was insufficient.",
+            uncertainties="The initial dependency trigger remains uncertain.",
+            action_links="Pending creation through the improvement action form.",
+            actor="maintainer",
+            occurred_at="2026-08-26T08:00:00Z",
+            apply=apply,
+            confirmation=confirmation,
+        )
+
+    def write_json(self, root: Path, name: str, value: object) -> Path:
+        path = root / name
+        path.write_text(json.dumps(value), encoding="utf-8")
+        return path
+
+    def incident_source(
+        self,
+        root: Path,
+        *,
+        status: str = "recovered",
+        severity: str = "sev1",
+    ) -> Path:
+        return self.write_json(
+            root,
+            "source.json",
+            {
+                "number": 42,
+                "state": "OPEN",
+                "url": "https://example.test/issues/42",
+                "updatedAt": "2026-08-26T08:00:00Z",
+                "body": f"### Severity\n\n{severity.upper()}\n",
+                "labels": [
+                    {"name": "type:incident"},
+                    {"name": f"status:{status}"},
+                    {"name": f"severity:{severity}"},
+                ],
+                "comments": [
+                    {"body": "- Current status: `recovered`\n- Time: `2026-08-26T08:00:00Z`"}
+                ],
+            },
+        )
+
+    def test_deadline_boundaries_cover_severities_and_release(self) -> None:
+        anchor = datetime(2026, 8, 26, tzinfo=UTC)
+        expected = {
+            "sev1": date(2026, 9, 2),
+            "sev2": date(2026, 9, 9),
+            "sev3": date(2026, 9, 25),
+            "sev4": None,
+            "release": date(2026, 9, 25),
+        }
+
+        for source_type, due in expected.items():
+            with self.subTest(source_type=source_type):
+                self.assertEqual(calculate_due_date(anchor, source_type, self.policy), due)
+
+    def test_incident_retrospective_renders_required_sections(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = self.incident_source(root)
+            existing = self.write_json(root, "existing.json", [])
+
+            result = render_retrospective(self.request(), source, existing, self.policy)
+
+            self.assertEqual(result.due_date, date(2026, 9, 2))
+            self.assertIn("<!-- lifecycle-source:incident:42 -->", result.body)
+            self.assertIn("## Information visible at the time", result.body)
+            self.assertIn("## Guard effectiveness", result.body)
+
+    def test_unstable_incident_requires_explicit_confirmation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = self.incident_source(root, status="investigating")
+            existing = self.write_json(root, "existing.json", [])
+
+            with self.assertRaisesRegex(LifecycleError, "explicitly confirmed stable"):
+                render_retrospective(self.request(), source, existing, self.policy)
+
+            result = render_retrospective(self.request(stable=True), source, existing, self.policy)
+            self.assertEqual(result.due_date, date(2026, 9, 2))
+
+    def test_duplicate_retrospective_returns_existing_issue(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = self.incident_source(root)
+            existing = self.write_json(
+                root,
+                "existing.json",
+                [
+                    {
+                        "number": 99,
+                        "url": "https://example.test/issues/99",
+                        "body": "<!-- lifecycle-source:incident:42 -->",
+                    }
+                ],
+            )
+
+            result = render_retrospective(self.request(), source, existing, self.policy)
+
+            self.assertTrue(result.duplicate)
+            self.assertEqual(result.duplicate_number, 99)
+
+    def test_release_retrospective_requires_published_non_prerelease(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            existing = self.write_json(root, "existing.json", [])
+            source = self.write_json(
+                root,
+                "release.json",
+                {
+                    "tagName": "v1.2.3",
+                    "url": "https://example.test/releases/v1.2.3",
+                    "isDraft": False,
+                    "isPrerelease": False,
+                    "publishedAt": "2026-08-26T08:00:00Z",
+                },
+            )
+
+            result = render_retrospective(
+                self.request("release:v1.2.3"), source, existing, self.policy
+            )
+            self.assertEqual(result.due_date, date(2026, 9, 25))
+
+            raw = json.loads(source.read_text(encoding="utf-8"))
+            raw["isDraft"] = True
+            source.write_text(json.dumps(raw), encoding="utf-8")
+            with self.assertRaisesRegex(LifecycleError, "published non-prerelease"):
+                render_retrospective(self.request("release:v1.2.3"), source, existing, self.policy)
+
+    def test_applied_retrospective_requires_source_confirmation(self) -> None:
+        with self.assertRaisesRegex(LifecycleError, "retrospective-incident-42"):
+            build_retrospective_request(
+                source="incident:42",
+                stability_confirmed=False,
+                timeline="Timeline",
+                visible_information="Visible information",
+                contributing_factors="Contributing factors",
+                guard_effectiveness="Guard effectiveness",
+                uncertainties="Uncertainty",
+                action_links="Pending action",
+                actor="maintainer",
+                occurred_at="2026-08-26T08:00:00Z",
+                apply=True,
+                confirmation="wrong",
+            )
+
+    def test_audit_reports_missing_retrospective_and_overdue_action(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            issues = self.write_json(
+                root,
+                "issues.json",
+                [
+                    {
+                        "number": 42,
+                        "state": "OPEN",
+                        "url": "https://example.test/issues/42",
+                        "updatedAt": "2026-08-01T00:00:00Z",
+                        "body": "### Severity\n\nSEV1\n",
+                        "labels": [
+                            {"name": "type:incident"},
+                            {"name": "status:recovered"},
+                            {"name": "severity:sev1"},
+                        ],
+                    },
+                    {
+                        "number": 43,
+                        "state": "OPEN",
+                        "url": "https://example.test/issues/43",
+                        "updatedAt": "2026-08-01T00:00:00Z",
+                        "body": "### Due date\n\n2026-08-10\n",
+                        "labels": [{"name": "type:improvement-action"}],
+                    },
+                ],
+            )
+            releases = self.write_json(root, "releases.json", [])
+
+            findings = audit_records(issues, releases, self.policy, date(2026, 8, 26))
+
+            self.assertEqual(
+                {finding.kind for finding in findings},
+                {"retrospective-missing", "improvement-action-overdue"},
+            )
+
+    def test_audit_does_not_duplicate_linked_source(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            issues = self.write_json(
+                root,
+                "issues.json",
+                [
+                    {
+                        "number": 42,
+                        "state": "CLOSED",
+                        "url": "https://example.test/issues/42",
+                        "updatedAt": "2026-08-01T00:00:00Z",
+                        "body": "### Severity\n\nSEV1\n",
+                        "labels": [
+                            {"name": "type:incident"},
+                            {"name": "status:closed"},
+                            {"name": "severity:sev1"},
+                        ],
+                    },
+                    {
+                        "number": 99,
+                        "state": "CLOSED",
+                        "url": "https://example.test/issues/99",
+                        "body": "<!-- lifecycle-retrospective\n"
+                        "schema-version: 1\nsource: incident:42\n"
+                        "due-date: 2026-08-08\n-->",
+                        "labels": [{"name": "type:retrospective"}],
+                    },
+                ],
+            )
+            releases = self.write_json(root, "releases.json", [])
+
+            findings = audit_records(issues, releases, self.policy, date(2026, 8, 26))
+
+            self.assertEqual(findings, ())
+
+    def test_audit_reports_published_release_without_retrospective(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            issues = self.write_json(root, "issues.json", [])
+            releases = self.write_json(
+                root,
+                "releases.json",
+                [
+                    [
+                        {
+                            "tag_name": "v1.2.3",
+                            "html_url": "https://example.test/releases/v1.2.3",
+                            "draft": False,
+                            "prerelease": False,
+                            "published_at": "2026-07-01T00:00:00Z",
+                        }
+                    ]
+                ],
+            )
+
+            findings = audit_records(issues, releases, self.policy, date(2026, 8, 26))
+
+            self.assertEqual(len(findings), 1)
+            self.assertEqual(findings[0].record, "Release v1.2.3")
 
 
 if __name__ == "__main__":
