@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "default_branch": "main",
+  "pr_check_name": "lifecycle-policy",
+  "release_required_checks": [
+    "validate"
+  ],
+  "risk_levels": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "incident_severities": [
+    "sev1",
+    "sev2",
+    "sev3",
+    "sev4"
+  ],
+  "retrospective_deadlines_days": {
+    "sev1": 7,
+    "sev2": 14,
+    "sev3": 30,
+    "sev4": null,
+    "release": 30
+  },
+  "labels": [
+    "type:incident",
+    "type:retrospective",
+    "type:improvement-action",
+    "severity:sev1",
+    "severity:sev2",
+    "severity:sev3",
+    "severity:sev4",
+    "status:investigating",
+    "status:mitigating",
+    "status:recovered",
+    "status:escalated",
+    "status:closed",
+    "automation:smoke"
+  ]
+}
