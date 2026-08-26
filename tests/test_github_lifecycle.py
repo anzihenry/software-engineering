@@ -8,6 +8,11 @@ from pathlib import Path
 from scripts.github_lifecycle.common import LifecycleError, load_policy
 from scripts.github_lifecycle.package import load_manifest, package_bundle
 from scripts.github_lifecycle.pr import validate_pr_body
+from scripts.github_lifecycle.release import (
+    ReleaseRequest,
+    prepare_release,
+    validate_release_inputs,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_PATH = ROOT / ".github" / "lifecycle-policy.json"
@@ -146,6 +151,163 @@ class AutomationPackageTests(unittest.TestCase):
 
             with self.assertRaisesRegex(LifecycleError, "duplicate"):
                 load_manifest(manifest)
+
+
+class ReleasePreparationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.policy = load_policy(POLICY_PATH)
+
+    def request(self, version: str = "v1.2.3") -> ReleaseRequest:
+        return ReleaseRequest(
+            version=version,
+            source_sha="a" * 40,
+            risk_level="medium",
+            change_records="PR #9",
+            summary="Prepare lifecycle automation candidate.",
+            repository="example/software-engineering",
+            actor="maintainer",
+            run_url="https://github.example/actions/runs/1",
+            created_at="2026-08-26T00:00:00Z",
+        )
+
+    def github_state(
+        self,
+        root: Path,
+        *,
+        comparison_status: str = "ahead",
+        check_conclusion: str = "success",
+        tags: list[object] | None = None,
+        releases: list[object] | None = None,
+    ) -> tuple[Path, Path, Path, Path]:
+        paths = tuple(
+            root / name for name in ("compare.json", "checks.json", "tags.json", "releases.json")
+        )
+        values = (
+            {"status": comparison_status, "base_commit": {"sha": "a" * 40}},
+            {
+                "check_runs": [
+                    {
+                        "name": "validate",
+                        "status": "completed",
+                        "conclusion": check_conclusion,
+                    }
+                ]
+            },
+            tags or [],
+            releases or [],
+        )
+        for path, value in zip(paths, values, strict=True):
+            path.write_text(json.dumps(value), encoding="utf-8")
+        return paths
+
+    def test_release_inputs_require_semantic_version_and_full_sha(self) -> None:
+        request = self.request(version="1.2.3")
+
+        with self.assertRaisesRegex(LifecycleError, "vMAJOR.MINOR.PATCH"):
+            validate_release_inputs(
+                request.version,
+                request.source_sha,
+                request.risk_level,
+                self.policy,
+                dry_run=True,
+                confirmation="",
+            )
+
+        with self.assertRaisesRegex(LifecycleError, "40 lowercase"):
+            validate_release_inputs(
+                "v1.2.3",
+                "abc123",
+                request.risk_level,
+                self.policy,
+                dry_run=True,
+                confirmation="",
+            )
+
+    def test_real_draft_requires_exact_version_confirmation(self) -> None:
+        request = self.request()
+
+        with self.assertRaisesRegex(LifecycleError, "exactly match"):
+            validate_release_inputs(
+                request.version,
+                request.source_sha,
+                request.risk_level,
+                self.policy,
+                dry_run=False,
+                confirmation="v1.2.4",
+            )
+
+    def test_release_candidate_is_rendered_from_successful_state(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            comparison, checks, tags, releases = self.github_state(root)
+
+            result = prepare_release(
+                self.request(),
+                self.policy,
+                comparison,
+                checks,
+                tags,
+                releases,
+                root / "output",
+            )
+
+            self.assertTrue(result.record.is_file())
+            manifest = json.loads(result.manifest.read_text(encoding="utf-8"))
+            self.assertEqual(manifest["required_checks"], {"validate": "success"})
+
+    def test_unreachable_sha_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = self.github_state(root, comparison_status="diverged")
+
+            with self.assertRaisesRegex(LifecycleError, "not reachable"):
+                prepare_release(self.request(), self.policy, *state, root / "output")
+
+    def test_comparison_sha_must_match_request(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            comparison, checks, tags, releases = self.github_state(root)
+            comparison.write_text(
+                json.dumps({"status": "ahead", "base_commit": {"sha": "b" * 40}}),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(LifecycleError, "does not match"):
+                prepare_release(
+                    self.request(),
+                    self.policy,
+                    comparison,
+                    checks,
+                    tags,
+                    releases,
+                    root / "output",
+                )
+
+    def test_failed_required_check_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            state = self.github_state(root, check_conclusion="failure")
+
+            with self.assertRaisesRegex(LifecycleError, "validate=failure"):
+                prepare_release(self.request(), self.policy, *state, root / "output")
+
+    def test_existing_tag_or_release_is_rejected(self) -> None:
+        cases = (
+            ({"ref": "refs/tags/v1.2.3"}, None, "tag already exists"),
+            (None, {"tagName": "v1.2.3"}, "Release already exists"),
+        )
+        for tag, release, message in cases:
+            with self.subTest(message=message), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                state = self.github_state(
+                    root,
+                    tags=[tag] if tag else [],
+                    releases=[release] if release else [],
+                )
+
+                with self.assertRaisesRegex(LifecycleError, message):
+                    prepare_release(self.request(), self.policy, *state, root / "output")
 
 
 if __name__ == "__main__":
