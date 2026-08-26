@@ -6,6 +6,11 @@ import unittest
 from pathlib import Path
 
 from scripts.github_lifecycle.common import LifecycleError, load_policy
+from scripts.github_lifecycle.incident import (
+    build_transition_request,
+    transition_incident,
+    write_transition_outputs,
+)
 from scripts.github_lifecycle.package import load_manifest, package_bundle
 from scripts.github_lifecycle.pr import validate_pr_body
 from scripts.github_lifecycle.release import (
@@ -308,6 +313,174 @@ class ReleasePreparationTests(unittest.TestCase):
 
                 with self.assertRaisesRegex(LifecycleError, message):
                     prepare_release(self.request(), self.policy, *state, root / "output")
+
+
+class IncidentTransitionTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.policy = load_policy(POLICY_PATH)
+
+    def request(
+        self,
+        target: str,
+        *,
+        security_risk: bool = False,
+        apply: bool = False,
+    ):
+        return build_transition_request(
+            issue_number="42",
+            target_status=target,
+            decision="Evidence supports the next response state.",
+            evidence_links="https://example.test/evidence/42",
+            actor="maintainer",
+            occurred_at="2026-08-26T08:00:00Z",
+            security_or_privacy_risk=security_risk,
+            restricted_event_id="SEC-RESTRICTED-42" if security_risk else "",
+            apply=apply,
+            confirmation="incident-42" if apply else "",
+            policy=self.policy,
+        )
+
+    def issue(
+        self,
+        root: Path,
+        status: str,
+        *,
+        state: str | None = None,
+        severity: str = "SEV2",
+    ) -> Path:
+        path = root / "issue.json"
+        path.write_text(
+            json.dumps(
+                {
+                    "number": 42,
+                    "state": state or ("CLOSED" if status == "closed" else "OPEN"),
+                    "body": f"### Severity\n\n{severity}\n",
+                    "labels": [
+                        {"name": "type:incident"},
+                        {"name": f"status:{status}"},
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+        return path
+
+    def test_all_allowed_incident_transitions(self) -> None:
+        allowed = (
+            ("investigating", "mitigating"),
+            ("investigating", "recovered"),
+            ("investigating", "escalated"),
+            ("mitigating", "recovered"),
+            ("mitigating", "escalated"),
+            ("recovered", "closed"),
+            ("closed", "investigating"),
+        )
+        for current, target in allowed:
+            with (
+                self.subTest(current=current, target=target),
+                tempfile.TemporaryDirectory() as directory,
+            ):
+                root = Path(directory)
+                result = transition_incident(
+                    self.issue(root, current), self.request(target), self.policy
+                )
+
+                self.assertEqual(result.target_status, target)
+                self.assertFalse(result.noop)
+
+    def test_illegal_transition_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            with self.assertRaisesRegex(LifecycleError, "illegal incident transition"):
+                transition_incident(
+                    self.issue(root, "investigating"),
+                    self.request("closed"),
+                    self.policy,
+                )
+
+    def test_security_escalation_omits_public_decision_and_evidence(self) -> None:
+        request = build_transition_request(
+            issue_number="42",
+            target_status="escalated",
+            decision="private person@example.test",
+            evidence_links="not a public URL and must be ignored",
+            actor="maintainer",
+            occurred_at="2026-08-26T08:00:00Z",
+            security_or_privacy_risk=True,
+            restricted_event_id="PRIV-RESTRICTED-42",
+            apply=False,
+            confirmation="",
+            policy=self.policy,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            result = transition_incident(self.issue(root, "investigating"), request, self.policy)
+
+            self.assertIn("PRIV-RESTRICTED-42", result.comment)
+            self.assertNotIn("person@example.test", result.comment)
+            self.assertNotIn("not a public URL", result.comment)
+
+    def test_security_escalation_requires_restricted_id(self) -> None:
+        with self.assertRaisesRegex(LifecycleError, "restricted event ID"):
+            build_transition_request(
+                issue_number="42",
+                target_status="escalated",
+                decision="",
+                evidence_links="",
+                actor="maintainer",
+                occurred_at="2026-08-26T08:00:00Z",
+                security_or_privacy_risk=True,
+                restricted_event_id="",
+                apply=False,
+                confirmation="",
+                policy=self.policy,
+            )
+
+    def test_applied_transition_requires_issue_confirmation(self) -> None:
+        with self.assertRaisesRegex(LifecycleError, "incident-42"):
+            build_transition_request(
+                issue_number="42",
+                target_status="mitigating",
+                decision="Proceed with mitigation.",
+                evidence_links="https://example.test/evidence/42",
+                actor="maintainer",
+                occurred_at="2026-08-26T08:00:00Z",
+                security_or_privacy_risk=False,
+                restricted_event_id="",
+                apply=True,
+                confirmation="wrong",
+                policy=self.policy,
+            )
+
+    def test_retry_at_target_is_idempotent(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result = transition_incident(
+                self.issue(root, "recovered"), self.request("recovered"), self.policy
+            )
+
+            self.assertTrue(result.noop)
+            self.assertEqual(result.comment, "")
+
+    def test_transition_outputs_contain_one_current_and_target_label(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result = transition_incident(
+                self.issue(root, "investigating"),
+                self.request("mitigating"),
+                self.policy,
+            )
+
+            plan_path, comment_path = write_transition_outputs(result, root / "output", None)
+
+            plan = json.loads(plan_path.read_text(encoding="utf-8"))
+            self.assertEqual(plan["current_label"], "status:investigating")
+            self.assertEqual(plan["target_label"], "status:mitigating")
+            self.assertIn("severity:sev2", plan["severity_label"])
+            self.assertIn("Incident state transition", comment_path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

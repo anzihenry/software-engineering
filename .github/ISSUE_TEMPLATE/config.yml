@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/anzihenry/software-engineering/security/advisories/new
+    about: Use Private Vulnerability Reporting; never put sensitive details in a public Issue.
+  - name: Security and privacy incident guidance
+    url: https://github.com/anzihenry/software-engineering/security/policy
+    about: Read the restricted-record boundary before reporting an incident.

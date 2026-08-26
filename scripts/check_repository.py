@@ -174,9 +174,59 @@ def check_github_automation(root: Path) -> list[Issue]:
     manifest = root / "automation" / "github-lifecycle-manifest.json"
     pull_request_template = github_root / "PULL_REQUEST_TEMPLATE.md"
     documentation = root / "docs" / "github-lifecycle-automation.md"
-    for path in (policy, manifest, pull_request_template, documentation):
+    security_policy = root / "SECURITY.md"
+    incident_form = github_root / "ISSUE_TEMPLATE" / "incident.yml"
+    for path in (
+        policy,
+        manifest,
+        pull_request_template,
+        documentation,
+        security_policy,
+        incident_form,
+    ):
         if not path.is_file():
             issues.append(Issue(path, "missing GitHub lifecycle automation file"))
+
+    if incident_form.is_file():
+        form = load_yaml(incident_form, issues)
+        body = form.get("body") if isinstance(form, dict) else None
+        if not isinstance(body, list):
+            issues.append(Issue(incident_form, "incident Issue Form must contain a body array"))
+        else:
+            fields = {
+                item.get("id"): item
+                for item in body
+                if isinstance(item, dict) and isinstance(item.get("id"), str)
+            }
+            required_fields = {
+                "severity",
+                "started_at",
+                "environment_scope",
+                "user_impact",
+                "known_facts",
+                "unknowns",
+                "owner",
+                "version_release",
+                "evidence_links",
+                "safety_acknowledgement",
+            }
+            missing_fields = sorted(required_fields - set(fields))
+            if missing_fields:
+                issues.append(
+                    Issue(
+                        incident_form,
+                        f"incident Issue Form is missing fields: {', '.join(missing_fields)}",
+                    )
+                )
+            for field_name in required_fields & set(fields):
+                validations = fields[field_name].get("validations")
+                if not isinstance(validations, dict) or validations.get("required") is not True:
+                    issues.append(
+                        Issue(
+                            incident_form,
+                            f"incident Issue Form field {field_name!r} must be required",
+                        )
+                    )
 
     manifest_files: list[str] = []
     if manifest.is_file():
@@ -212,6 +262,7 @@ def check_github_automation(root: Path) -> list[Issue]:
         manifest,
         pull_request_template,
         documentation,
+        security_policy,
         root / "scripts" / "__init__.py",
     }
     public_files.update((root / "scripts" / "github_lifecycle").glob("*.py"))

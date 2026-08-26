@@ -6,6 +6,11 @@ import sys
 from pathlib import Path
 
 from .common import LifecycleError, load_policy
+from .incident import (
+    build_transition_request,
+    transition_incident,
+    write_transition_outputs,
+)
 from .package import package_bundle, render_package_result
 from .pr import validate_pr_event
 from .release import build_release_request, prepare_release, validate_release_inputs
@@ -102,6 +107,52 @@ def prepare_release_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def transition_incident_command(args: argparse.Namespace) -> int:
+    policy = load_policy(args.policy)
+    request = build_transition_request(
+        issue_number=args.issue_number,
+        target_status=args.target_status,
+        decision=args.decision,
+        evidence_links=args.evidence_links,
+        actor=args.actor,
+        occurred_at=args.occurred_at,
+        security_or_privacy_risk=args.security_risk == "true",
+        restricted_event_id=args.restricted_event_id,
+        apply=args.apply == "true",
+        confirmation=args.confirmation,
+        policy=policy,
+    )
+    if args.validate_only:
+        print("incident transition inputs are valid")
+        return 0
+    if args.issue is None or args.output_dir is None:
+        raise LifecycleError("incident transition requires issue and output-dir")
+    result = transition_incident(args.issue, request, policy)
+    plan_path, comment_path = write_transition_outputs(result, args.output_dir, args.github_output)
+    status = "no-op" if result.noop else "planned"
+    lines = [
+        "## Incident transition",
+        "",
+        f"Status: **{status}**",
+        f"Issue: `#{result.issue_number}`",
+        f"Transition: `{result.current_status} -> {result.target_status}`",
+        f"Plan: `{plan_path}`",
+    ]
+    if not result.noop:
+        lines.append(f"Comment: `{comment_path}`")
+    if result.security_escalation:
+        lines.extend(
+            [
+                "",
+                "Restricted security/privacy response boundary is active; "
+                "public details are omitted.",
+            ]
+        )
+    write_summary(lines)
+    print("\n".join(lines))
+    return 0
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -139,6 +190,26 @@ def parse_args() -> argparse.Namespace:
     release_parser.add_argument("--releases", type=Path)
     release_parser.add_argument("--output-dir", type=Path)
     release_parser.set_defaults(handler=prepare_release_command)
+
+    incident_parser = subparsers.add_parser(
+        "transition-incident", help="validate and render an incident state transition"
+    )
+    incident_parser.add_argument("--policy", type=Path, required=True)
+    incident_parser.add_argument("--issue-number", required=True)
+    incident_parser.add_argument("--target-status", required=True)
+    incident_parser.add_argument("--decision", default="")
+    incident_parser.add_argument("--evidence-links", default="")
+    incident_parser.add_argument("--actor", required=True)
+    incident_parser.add_argument("--occurred-at", required=True)
+    incident_parser.add_argument("--security-risk", choices=("true", "false"), required=True)
+    incident_parser.add_argument("--restricted-event-id", default="")
+    incident_parser.add_argument("--apply", choices=("true", "false"), required=True)
+    incident_parser.add_argument("--confirmation", default="")
+    incident_parser.add_argument("--validate-only", action="store_true")
+    incident_parser.add_argument("--issue", type=Path)
+    incident_parser.add_argument("--output-dir", type=Path)
+    incident_parser.add_argument("--github-output", type=Path)
+    incident_parser.set_defaults(handler=transition_incident_command)
     return parser.parse_args()
 
 

@@ -1,0 +1,104 @@
+name: Ordinary incident
+description: Record a non-sensitive availability, reliability, or operational incident.
+title: "[Incident]: "
+labels:
+  - type:incident
+  - status:investigating
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form only for ordinary incidents. If credentials, personal information,
+        restricted logs, forensic material, malicious payloads, or a security/privacy risk
+        may be involved, stop and follow SECURITY.md instead.
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Choose the current impact-based severity; it may be revised with evidence.
+      options:
+        - SEV1
+        - SEV2
+        - SEV3
+        - SEV4
+    validations:
+      required: true
+
+  - type: input
+    id: started_at
+    attributes:
+      label: Start time and timezone
+      description: Use an ISO-8601 timestamp with an explicit timezone.
+      placeholder: "2026-08-26T12:00:00+08:00"
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment_scope
+    attributes:
+      label: Environment and scope
+      description: Identify affected environments, regions, tenants, channels, or components.
+    validations:
+      required: true
+
+  - type: textarea
+    id: user_impact
+    attributes:
+      label: User impact
+      description: Describe observable impact, affected population, and current duration.
+    validations:
+      required: true
+
+  - type: textarea
+    id: known_facts
+    attributes:
+      label: Known facts
+      description: Record verified observations only; do not guess the root cause.
+    validations:
+      required: true
+
+  - type: textarea
+    id: unknowns
+    attributes:
+      label: Unknowns
+      description: Record material questions and assumptions that still require evidence.
+    validations:
+      required: true
+
+  - type: input
+    id: owner
+    attributes:
+      label: Incident owner
+      description: Name one accountable coordinator using a GitHub handle or team role.
+      placeholder: "@maintainer"
+    validations:
+      required: true
+
+  - type: input
+    id: version_release
+    attributes:
+      label: Version or release association
+      description: Link the source SHA, deployment, version, Release, or state why none applies.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence_links
+    attributes:
+      label: Evidence links
+      description: Link only non-sensitive dashboards, runs, PRs, or records accessible to intended readers.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety_acknowledgement
+    attributes:
+      label: Public-record safety acknowledgement
+      options:
+        - label: I have not included credentials, personal information, restricted logs, forensic content, or malicious payloads.
+          required: true
+        - label: I will stop ordinary automation and use SECURITY.md if a security or privacy risk is discovered.
+          required: true
+    validations:
+      required: true

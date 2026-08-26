@@ -1,0 +1,217 @@
+name: Transition Ordinary Incident
+
+"on":
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Ordinary incident Issue number
+        required: true
+        type: string
+      target_status:
+        description: Requested next status
+        required: true
+        type: choice
+        options:
+          - mitigating
+          - recovered
+          - escalated
+          - closed
+          - investigating
+      decision:
+        description: Sanitized decision; required for ordinary transitions and ignored for security/privacy escalation
+        required: false
+        type: string
+      evidence_links:
+        description: HTTPS evidence links, one per line; required for ordinary transitions and ignored for restricted escalation
+        required: false
+        type: string
+      security_or_privacy_risk:
+        description: Stop ordinary automation and retain only a restricted event ID
+        required: true
+        default: false
+        type: boolean
+      restricted_event_id:
+        description: Opaque restricted record ID; required only for security/privacy escalation
+        required: false
+        type: string
+      dry_run:
+        description: Validate and render the transition without changing the Issue
+        required: true
+        default: true
+        type: boolean
+      confirmation:
+        description: For an applied transition, enter incident-N using the Issue number
+        required: false
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: incident-${{ inputs.issue_number }}
+  cancel-in-progress: false
+
+jobs:
+  dry-run:
+    if: ${{ inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: read
+    env:
+      ACTOR: ${{ github.actor }}
+      APPLY: "false"
+      CONFIRMATION: ${{ inputs.confirmation }}
+      DECISION: ${{ inputs.decision }}
+      EVIDENCE_LINKS: ${{ inputs.evidence_links }}
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_NUMBER: ${{ inputs.issue_number }}
+      REPOSITORY: ${{ github.repository }}
+      RESTRICTED_EVENT_ID: ${{ inputs.restricted_event_id }}
+      SECURITY_RISK: ${{ inputs.security_or_privacy_risk }}
+      TARGET_STATUS: ${{ inputs.target_status }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - name: Validate transition inputs
+        run: |
+          python -m scripts.github_lifecycle transition-incident \
+            --policy .github/lifecycle-policy.json \
+            --issue-number "$ISSUE_NUMBER" \
+            --target-status "$TARGET_STATUS" \
+            --decision "$DECISION" \
+            --evidence-links "$EVIDENCE_LINKS" \
+            --actor "$ACTOR" \
+            --occurred-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --security-risk "$SECURITY_RISK" \
+            --restricted-event-id "$RESTRICTED_EVENT_ID" \
+            --apply "$APPLY" \
+            --confirmation "$CONFIRMATION" \
+            --validate-only
+
+      - name: Read ordinary incident
+        run: |
+          gh issue view "$ISSUE_NUMBER" \
+            --repo "$REPOSITORY" \
+            --json number,state,title,body,labels,url > "$RUNNER_TEMP/incident.json"
+
+      - name: Render dry-run transition
+        run: |
+          python -m scripts.github_lifecycle transition-incident \
+            --policy .github/lifecycle-policy.json \
+            --issue-number "$ISSUE_NUMBER" \
+            --target-status "$TARGET_STATUS" \
+            --decision "$DECISION" \
+            --evidence-links "$EVIDENCE_LINKS" \
+            --actor "$ACTOR" \
+            --occurred-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --security-risk "$SECURITY_RISK" \
+            --restricted-event-id "$RESTRICTED_EVENT_ID" \
+            --apply "$APPLY" \
+            --confirmation "$CONFIRMATION" \
+            --issue "$RUNNER_TEMP/incident.json" \
+            --output-dir "$RUNNER_TEMP/incident-transition"
+
+      - name: Upload dry-run transition plan
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: incident-${{ inputs.issue_number }}-transition-plan
+          path: ${{ runner.temp }}/incident-transition
+          if-no-files-found: error
+          retention-days: 30
+
+  apply:
+    if: ${{ !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    env:
+      ACTOR: ${{ github.actor }}
+      APPLY: "true"
+      CONFIRMATION: ${{ inputs.confirmation }}
+      DECISION: ${{ inputs.decision }}
+      EVIDENCE_LINKS: ${{ inputs.evidence_links }}
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_NUMBER: ${{ inputs.issue_number }}
+      REPOSITORY: ${{ github.repository }}
+      RESTRICTED_EVENT_ID: ${{ inputs.restricted_event_id }}
+      SECURITY_RISK: ${{ inputs.security_or_privacy_risk }}
+      TARGET_STATUS: ${{ inputs.target_status }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - name: Validate transition inputs
+        run: |
+          python -m scripts.github_lifecycle transition-incident \
+            --policy .github/lifecycle-policy.json \
+            --issue-number "$ISSUE_NUMBER" \
+            --target-status "$TARGET_STATUS" \
+            --decision "$DECISION" \
+            --evidence-links "$EVIDENCE_LINKS" \
+            --actor "$ACTOR" \
+            --occurred-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --security-risk "$SECURITY_RISK" \
+            --restricted-event-id "$RESTRICTED_EVENT_ID" \
+            --apply "$APPLY" \
+            --confirmation "$CONFIRMATION" \
+            --validate-only
+
+      - name: Read ordinary incident
+        run: |
+          gh issue view "$ISSUE_NUMBER" \
+            --repo "$REPOSITORY" \
+            --json number,state,title,body,labels,url > "$RUNNER_TEMP/incident.json"
+
+      - name: Render transition plan
+        id: plan
+        run: |
+          python -m scripts.github_lifecycle transition-incident \
+            --policy .github/lifecycle-policy.json \
+            --issue-number "$ISSUE_NUMBER" \
+            --target-status "$TARGET_STATUS" \
+            --decision "$DECISION" \
+            --evidence-links "$EVIDENCE_LINKS" \
+            --actor "$ACTOR" \
+            --occurred-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --security-risk "$SECURITY_RISK" \
+            --restricted-event-id "$RESTRICTED_EVENT_ID" \
+            --apply "$APPLY" \
+            --confirmation "$CONFIRMATION" \
+            --issue "$RUNNER_TEMP/incident.json" \
+            --output-dir "$RUNNER_TEMP/incident-transition" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Apply labels and append transition record
+        if: ${{ steps.plan.outputs.noop != 'true' }}
+        env:
+          COMMENT_PATH: ${{ steps.plan.outputs.comment_path }}
+          CURRENT_LABEL: ${{ steps.plan.outputs.current_label }}
+          ISSUE_ACTION: ${{ steps.plan.outputs.issue_action }}
+          SEVERITY_LABEL: ${{ steps.plan.outputs.severity_label }}
+          TARGET_LABEL: ${{ steps.plan.outputs.target_label }}
+        run: |
+          gh issue edit "$ISSUE_NUMBER" \
+            --repo "$REPOSITORY" \
+            --remove-label "$CURRENT_LABEL" \
+            --add-label "$TARGET_LABEL" \
+            --add-label "$SEVERITY_LABEL"
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPOSITORY" --body-file "$COMMENT_PATH"
+          if [ "$ISSUE_ACTION" = "close" ]; then
+            gh issue close "$ISSUE_NUMBER" --repo "$REPOSITORY"
+          elif [ "$ISSUE_ACTION" = "reopen" ]; then
+            gh issue reopen "$ISSUE_NUMBER" --repo "$REPOSITORY"
+          fi
