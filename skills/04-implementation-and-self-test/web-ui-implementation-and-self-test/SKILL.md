@@ -1,5 +1,10 @@
 ---
 name: web-ui-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "实现并自测 Web 页面、组件和交互；适用于涉及设计系统、语义结构、表单、焦点、响应式布局或可访问性的前端 UI 任务。"
 ---
 

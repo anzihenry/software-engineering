@@ -1,5 +1,10 @@
 ---
 name: contract-and-migration-design
+metadata:
+  owner: technical-lead
+  scope: "Lifecycle phase 3: solution and planning"
+  status: active
+  review_by: "2027-02-26"
 description: "定义跨服务接口、数据契约及安全兼容的迁移路径；适用于方案涉及共享边界或数据演进时。"
 ---
 

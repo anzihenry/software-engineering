@@ -1,3 +1,10 @@
+---
+owner: release-manager
+scope: "Lifecycle phase 6: release and change management"
+status: active
+review_by: "2027-02-26"
+---
+
 # 阶段 6：发布与变更管理
 
 ## 目标

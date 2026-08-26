@@ -1,5 +1,10 @@
 ---
 name: opportunity-intake
+metadata:
+  owner: product-owner
+  scope: "Lifecycle phase 1: demand and opportunity"
+  status: active
+  review_by: "2027-02-26"
 description: "将原始用户、业务或运行信号登记并分诊为可追溯的机会记录；适用于需求、缺陷和改进线索刚出现时。"
 ---
 

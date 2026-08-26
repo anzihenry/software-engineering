@@ -1,5 +1,10 @@
 ---
 name: harmonyos-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "实现并自测 HarmonyOS 原生或平台专属变更；适用于涉及 ArkTS/ArkUI、Ability 生命周期、权限、分布式能力、本地数据或 Hvigor 构建的开发任务。"
 ---
 

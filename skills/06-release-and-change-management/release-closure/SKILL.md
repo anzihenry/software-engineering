@@ -1,5 +1,10 @@
 ---
 name: release-closure
+metadata:
+  owner: release-manager
+  scope: "Lifecycle phase 6: release and change management"
+  status: active
+  review_by: "2027-02-26"
 description: "在稳定观察后收口发布、更新变更与运行信息并完成支持交接；适用于发布完成或停止推进时。"
 ---
 

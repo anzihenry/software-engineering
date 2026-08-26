@@ -1,5 +1,10 @@
 ---
 name: backend-contract-integration-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证后端 API、事件和外部依赖契约在真实协议与版本组合下的兼容性；适用于合入前消费者、序列化、错误和集成验证。"
 ---
 

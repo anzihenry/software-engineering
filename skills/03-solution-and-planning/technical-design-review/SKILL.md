@@ -1,5 +1,10 @@
 ---
 name: technical-design-review
+metadata:
+  owner: technical-lead
+  scope: "Lifecycle phase 3: solution and planning"
+  status: active
+  review_by: "2027-02-26"
 description: "独立审查技术方案、契约、验证和发布恢复证据，识别阻塞风险与待决事项；适用于中高风险设计进入开发前。"
 ---
 

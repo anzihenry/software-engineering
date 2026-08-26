@@ -1,3 +1,10 @@
+---
+owner: delivery-lead
+scope: "Lifecycle phase 2: refinement and initiation"
+status: active
+review_by: "2027-02-26"
+---
+
 # 阶段 2：澄清与立项
 
 ## 目标

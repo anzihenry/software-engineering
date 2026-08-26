@@ -1,5 +1,10 @@
 ---
 name: web-frontend-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "协调 Web 前端页面切片的实现与自测，或处理跨 UI 和状态/数据边界的变更；适用于需要汇总前端行为、测试和风险的开发任务。"
 ---
 

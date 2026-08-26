@@ -1,5 +1,10 @@
 ---
 name: ios-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "实现并自测 iOS/iPadOS 原生或平台专属变更；适用于涉及 Apple 生命周期、并发、权限、系统能力、本地数据或 Xcode 构建的开发任务。"
 ---
 

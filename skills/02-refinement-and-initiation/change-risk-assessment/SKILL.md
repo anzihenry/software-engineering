@@ -1,5 +1,10 @@
 ---
 name: change-risk-assessment
+metadata:
+  owner: delivery-lead
+  scope: "Lifecycle phase 2: refinement and initiation"
+  status: active
+  review_by: "2027-02-26"
 description: "根据变更影响和控制能力划分低、中、高风险并列出必需门禁；适用于需求包进入设计和交付前。"
 ---
 

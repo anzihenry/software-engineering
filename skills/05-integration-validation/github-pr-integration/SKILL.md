@@ -1,5 +1,10 @@
 ---
 name: github-pr-integration
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "在独立开发者或微型团队的 GitHub 仓库中，编排 PR 创建、Actions 门禁、独立评审、专项/系统验证、回归和受保护合入；适用于变更已完成本地自测并准备进入集成验证时。"
 ---
 

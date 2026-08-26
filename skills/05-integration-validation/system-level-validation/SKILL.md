@@ -1,5 +1,10 @@
 ---
 name: system-level-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证变更与真实依赖、契约及非功能约束的系统级行为，并说明环境限制；适用于集成验证阶段。"
 ---
 

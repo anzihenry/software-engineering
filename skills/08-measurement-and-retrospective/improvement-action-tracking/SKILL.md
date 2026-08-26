@@ -1,5 +1,10 @@
 ---
 name: improvement-action-tracking
+metadata:
+  owner: process-owner
+  scope: "Lifecycle phase 8: measurement and retrospective"
+  status: active
+  review_by: "2027-02-26"
 description: "将复盘和度量发现转化为有所有者、期限和效果判据的改进行动，并跟踪验证闭环。"
 ---
 

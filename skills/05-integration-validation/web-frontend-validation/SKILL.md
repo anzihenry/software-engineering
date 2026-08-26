@@ -1,5 +1,10 @@
 ---
 name: web-frontend-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "规划并汇总 Web 前端功能兼容、视觉可访问性和性能验证；适用于合入前综合评估浏览器用户体验及前端风险。"
 ---
 

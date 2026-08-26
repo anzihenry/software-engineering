@@ -1,5 +1,10 @@
 ---
 name: web-visual-accessibility-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证 Web 界面的视觉一致性、响应式行为和可访问性；适用于合入前视觉回归、键盘、屏幕阅读器、缩放及内容适配检查。"
 ---
 

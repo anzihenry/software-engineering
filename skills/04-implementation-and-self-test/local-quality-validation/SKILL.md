@@ -1,5 +1,10 @@
 ---
 name: local-quality-validation
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "在提交评审前执行与变更风险匹配的本地格式、静态分析、构建和测试检查并记录证据。"
 ---
 

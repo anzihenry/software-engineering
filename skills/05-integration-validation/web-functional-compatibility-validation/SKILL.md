@@ -1,5 +1,10 @@
 ---
 name: web-functional-compatibility-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证 Web 关键用户路径、真实数据交互和浏览器兼容性；适用于合入前端到端功能、导航、认证、存储及失败恢复验证。"
 ---
 

@@ -1,5 +1,10 @@
 ---
 name: delivery-retrospective
+metadata:
+  owner: process-owner
+  scope: "Lifecycle phase 8: measurement and retrospective"
+  status: active
+  review_by: "2027-02-26"
 description: "以无责备方式复盘重要交付的结果、协作和过程，识别系统性改进机会；适用于非事故的项目或发布。"
 ---
 

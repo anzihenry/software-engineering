@@ -1,3 +1,10 @@
+---
+owner: quality-lead
+scope: "Lifecycle phase 5: integration validation"
+status: active
+review_by: "2027-02-26"
+---
+
 # 阶段 5：集成验证
 
 ## 目标

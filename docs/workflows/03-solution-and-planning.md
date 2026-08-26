@@ -1,3 +1,10 @@
+---
+owner: technical-lead
+scope: "Lifecycle phase 3: solution and planning"
+status: active
+review_by: "2027-02-26"
+---
+
 # 阶段 3：方案与计划
 
 ## 目标

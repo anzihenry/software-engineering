@@ -1,5 +1,10 @@
 ---
 name: android-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证 Android 变更在目标 API、设备形态、厂商环境和后台限制下的行为；适用于合入前 Android 兼容、生命周期、可访问性与性能验证。"
 ---
 

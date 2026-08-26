@@ -1,5 +1,10 @@
 ---
 name: release-health-assessment
+metadata:
+  owner: release-manager
+  scope: "Lifecycle phase 6: release and change management"
+  status: active
+  review_by: "2027-02-26"
 description: "依据预设业务与技术健康信号判断发布批次应继续、暂停、回滚或前滚；适用于发布观察窗口。"
 ---
 

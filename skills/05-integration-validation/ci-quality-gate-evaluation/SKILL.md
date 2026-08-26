@@ -1,5 +1,10 @@
 ---
 name: ci-quality-gate-evaluation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "解读受控 CI 中构建、测试、分析与安全门禁的结果并形成可追溯结论；适用于 PR 集成验证。"
 ---
 

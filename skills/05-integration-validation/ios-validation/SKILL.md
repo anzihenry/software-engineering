@@ -1,5 +1,10 @@
 ---
 name: ios-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证 iOS/iPadOS 变更在目标系统、Apple 设备和真实系统集成条件下的行为；适用于合入前 iOS 兼容、生命周期、可访问性与性能验证。"
 ---
 

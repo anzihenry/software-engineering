@@ -1,5 +1,10 @@
 ---
 name: backend-async-integration-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "实现并自测后端消息、任务和外部依赖集成；适用于事件生产消费、队列、定时任务、Webhook、重试或最终一致性变更。"
 ---
 

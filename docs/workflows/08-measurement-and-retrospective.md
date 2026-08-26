@@ -1,3 +1,10 @@
+---
+owner: process-owner
+scope: "Lifecycle phase 8: measurement and retrospective"
+status: active
+review_by: "2027-02-26"
+---
+
 # 阶段 8：度量与复盘
 
 ## 目标

@@ -1,5 +1,10 @@
 ---
 name: verification-strategy
+metadata:
+  owner: technical-lead
+  scope: "Lifecycle phase 3: solution and planning"
+  status: active
+  review_by: "2027-02-26"
 description: "将验收与非功能要求映射为分层、风险匹配的验证方式和证据；适用于开发开始前的测试策略设计。"
 ---
 

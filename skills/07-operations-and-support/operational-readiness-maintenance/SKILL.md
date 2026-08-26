@@ -1,5 +1,10 @@
 ---
 name: operational-readiness-maintenance
+metadata:
+  owner: operations-lead
+  scope: "Lifecycle phase 7: operations and support"
+  status: active
+  review_by: "2027-02-26"
 description: "定期验证并改善告警、恢复、容量、依赖、权限和运行手册等运行能力；适用于主动运维维护。"
 ---
 

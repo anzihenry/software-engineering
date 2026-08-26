@@ -1,5 +1,10 @@
 ---
 name: harmonyos-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证 HarmonyOS 变更在目标 API、设备形态和真实系统能力下的行为；适用于合入前安装升级、Ability 生命周期、分布式能力、辅助功能与性能验证。"
 ---
 

@@ -1,5 +1,10 @@
 ---
 name: backend-data-consistency-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证后端事务、并发写入、数据迁移和一致性收敛；适用于合入前数据库兼容、回滚、回填、重复执行及数据完整性检查。"
 ---
 

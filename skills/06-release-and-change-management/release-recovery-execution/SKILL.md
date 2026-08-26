@@ -1,5 +1,10 @@
 ---
 name: release-recovery-execution
+metadata:
+  owner: release-manager
+  scope: "Lifecycle phase 6: release and change management"
+  status: active
+  review_by: "2027-02-26"
 description: "在发布达到暂停或恢复条件后，按明确授权执行特性关闭、制品回滚、迁移恢复或前滚修复并验证用户影响；适用于发布异常处置。"
 ---
 

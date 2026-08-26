@@ -1,3 +1,10 @@
+---
+owner: product-owner
+scope: "Lifecycle phase 1: demand and opportunity"
+status: active
+review_by: "2027-02-26"
+---
+
 # 阶段 1：需求与机会
 
 ## 目标

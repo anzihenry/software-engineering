@@ -1,5 +1,10 @@
 ---
 name: pull-request-review
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "以独立、风险匹配的视角审查 PR 的正确性、边界、测试和运行影响；适用于变更进入合入前。"
 ---
 

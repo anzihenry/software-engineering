@@ -1,5 +1,10 @@
 ---
 name: language-coding-standards
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "为 TypeScript 7、ArkTS、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20 的实现、重构与代码评审应用编码规范和最佳实践。"
 ---
 

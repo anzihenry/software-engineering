@@ -1,5 +1,10 @@
 ---
 name: mobile-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "实现并自测跨 iOS/Android/HarmonyOS 的移动端共享变更，或协调多平台交付；适用于共享业务逻辑、跨平台框架、平台一致性和整体移动风险。"
 ---
 

@@ -1,5 +1,10 @@
 ---
 name: incident-review
+metadata:
+  owner: process-owner
+  scope: "Lifecycle phase 8: measurement and retrospective"
+  status: active
+  review_by: "2027-02-26"
 description: "在事件恢复后进行无责备、基于事实的复盘，识别促成因素和系统性风险治理行动；适用于重要运行事件。"
 ---
 

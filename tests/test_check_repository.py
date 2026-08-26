@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+from datetime import date
 from pathlib import Path
 
 import yaml
@@ -12,6 +13,7 @@ from scripts.check_repository import (
     PHASES,
     TRACEABILITY_FIELDS,
     WORKFLOW_DELIVERY_TEMPLATES,
+    check_content_governance,
     check_delivery_templates,
     check_end_to_end_exercises,
     check_links,
@@ -97,6 +99,30 @@ def write_valid_end_to_end_exercises(root: Path) -> None:
 
     lifecycle = root / "docs" / "software-development-lifecycle.md"
     lifecycle.write_text("# Lifecycle\n\n[Exercises](exercises/README.md)\n", encoding="utf-8")
+
+
+def write_valid_governed_content(root: Path, review_by: str = "2026-08-26") -> None:
+    governance = (
+        "owner: quality-lead\n"
+        'scope: "Lifecycle phase 5: integration validation"\n'
+        "status: active\n"
+        f'review_by: "{review_by}"\n'
+    )
+    skill_governance = governance.replace("\n", "\n  ").rstrip()
+    skill = root / "skills" / PHASES[5] / "example" / "SKILL.md"
+    skill.parent.mkdir(parents=True)
+    skill.write_text(
+        f"---\nname: example\ndescription: Example\nmetadata:\n"
+        f"  {skill_governance}\n"
+        "---\n# Example\n",
+        encoding="utf-8",
+    )
+    workflow = root / "docs" / "workflows" / f"{PHASES[5]}.md"
+    workflow.parent.mkdir(parents=True)
+    workflow.write_text(
+        f"---\n{governance}---\n# Workflow\n",
+        encoding="utf-8",
+    )
 
 
 class RepositoryCheckTests(unittest.TestCase):
@@ -284,6 +310,59 @@ class RepositoryCheckTests(unittest.TestCase):
             messages = {issue.message for issue in check_end_to_end_exercises(root)}
 
             self.assertIn("risk_level must equal 'high'", messages)
+
+    def test_governed_content_due_today_is_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_governed_content(root)
+
+            issues = check_content_governance(root, as_of=date(2026, 8, 26))
+
+            self.assertEqual(issues, [])
+
+    def test_missing_governance_owner_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_governed_content(root)
+            workflow = root / "docs" / "workflows" / f"{PHASES[5]}.md"
+            content = workflow.read_text(encoding="utf-8")
+            workflow.write_text(content.replace("owner: quality-lead\n", ""), encoding="utf-8")
+
+            messages = {
+                issue.message for issue in check_content_governance(root, as_of=date(2026, 8, 26))
+            }
+
+            self.assertIn("owner must be a non-empty lowercase kebab-case role", messages)
+
+    def test_invalid_governance_status_and_date_are_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_governed_content(root)
+            skill = root / "skills" / PHASES[5] / "example" / "SKILL.md"
+            content = skill.read_text(encoding="utf-8")
+            content = content.replace("status: active\n", "status: retired\n")
+            skill.write_text(
+                content.replace('review_by: "2026-08-26"\n', 'review_by: "2026-02-30"\n'),
+                encoding="utf-8",
+            )
+
+            messages = {
+                issue.message for issue in check_content_governance(root, as_of=date(2026, 8, 26))
+            }
+
+            self.assertIn("status must be one of: active, deprecated, draft", messages)
+            self.assertIn("review_by must be a valid YYYY-MM-DD date", messages)
+
+    def test_overdue_content_review_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_governed_content(root, review_by="2026-08-25")
+
+            messages = {
+                issue.message for issue in check_content_governance(root, as_of=date(2026, 8, 26))
+            }
+
+            self.assertIn("content review is overdue: 2026-08-25 < 2026-08-26", messages)
 
 
 if __name__ == "__main__":

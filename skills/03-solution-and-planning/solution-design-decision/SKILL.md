@@ -1,5 +1,10 @@
 ---
 name: solution-design-decision
+metadata:
+  owner: technical-lead
+  scope: "Lifecycle phase 3: solution and planning"
+  status: active
+  review_by: "2027-02-26"
 description: "比较实现路径并记录满足需求与约束的技术方案和取舍；适用于需求包进入技术设计时。"
 ---
 

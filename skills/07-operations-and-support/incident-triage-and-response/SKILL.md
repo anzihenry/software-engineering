@@ -1,5 +1,10 @@
 ---
 name: incident-triage-and-response
+metadata:
+  owner: operations-lead
+  scope: "Lifecycle phase 7: operations and support"
+  status: active
+  review_by: "2027-02-26"
 description: "对可能造成重大用户或服务影响的异常进行分级、缓解、通报、升级和关闭；适用于运行事件响应。"
 ---
 

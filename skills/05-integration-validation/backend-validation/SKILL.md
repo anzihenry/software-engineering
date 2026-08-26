@@ -1,5 +1,10 @@
 ---
 name: backend-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "规划并汇总后端契约、数据、性能并发、韧性恢复和安全授权验证；适用于合入前综合评估服务风险与证据。"
 ---
 
