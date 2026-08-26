@@ -17,6 +17,8 @@
 
 跨阶段交付物可从[生命周期交付物模板](templates/delivery/README.md)开始，使用统一追溯字段关联机会、需求、方案、验证、变更、发布、事件和复盘行动。
 
+通过[端到端研发演练](docs/exercises/README.md)检验低、中、高风险变更能否实际走通八阶段门禁、证据和回流。
+
 开发与验证阶段在生命周期主轴下进一步按移动端、Web 前端和后端划分领域 SKILL；移动端区分跨平台共享层与 iOS/Android/HarmonyOS 平台层，并通过独立 CLI 执行层调用三端官方工具链、管理测试目标和留存原始证据；Web 前端区分 UI/状态开发和功能/视觉/性能验证，后端区分 API/数据/异步开发和契约/一致性/性能/韧性/安全验证。跨领域工作仍由阶段通用 SKILL 编排，避免领域流程与统一质量门禁脱节。
 
 集成验证与发布阶段默认适配独立开发者或微型团队使用 GitHub 的场景：PR、Actions、Environments、Deployments 和 Releases 分别承载合入门禁、确定性执行、环境控制、部署追踪与对外版本记录；平台套餐不支持的审批能力使用明确的人类决策记录替代，不虚构自动化保证。
@@ -25,7 +27,7 @@ Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md
 
 ## 仓库自检
 
-仓库使用 Python 3.14 执行确定性的结构与格式门禁，覆盖 YAML 解析、SKILL frontmatter、交付物模板及追溯契约、目录与名称一致性、站内相对链接、导航/workflow 覆盖以及 Markdown 基础格式。
+仓库使用 Python 3.14 执行确定性的结构与格式门禁，覆盖 YAML 解析、SKILL frontmatter、交付物模板及追溯契约、端到端演练覆盖、目录与名称一致性、站内相对链接、导航/workflow 覆盖以及 Markdown 基础格式。
 
 ```sh
 python3 -m pip install --requirement requirements-dev.txt
