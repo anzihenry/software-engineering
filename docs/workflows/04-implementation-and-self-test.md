@@ -26,6 +26,7 @@
 
 - 可构建的代码变更、自动化测试、必要的迁移和配置。
 - 完整 PR 及自测证据、已知限制和发布注意事项。
+- 使用[变更交接模板](../../templates/delivery/change-handoff.md)汇总当前提交，持续更新[验证矩阵](../../templates/delivery/verification-matrix.md)。
 
 ## 异常与回流
 

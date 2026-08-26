@@ -41,6 +41,7 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 
 - 已批准并可合入的变更、CI 与测试报告、评审决策和已记录的豁免。
 - 经过更新的发布候选物及其可追溯版本。
+- 在[变更交接模板](../../templates/delivery/change-handoff.md)记录最新 head SHA 的合入结论，并以[验证矩阵](../../templates/delivery/verification-matrix.md)关联门禁和专项证据。
 
 ## 异常与回流
 

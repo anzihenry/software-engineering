@@ -4,14 +4,65 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import yaml
+
 from scripts.check_repository import (
+    DELIVERY_TEMPLATES,
     PHASES,
+    TRACEABILITY_FIELDS,
+    WORKFLOW_DELIVERY_TEMPLATES,
+    check_delivery_templates,
     check_links,
     check_markdown_format,
     check_navigation,
     check_skill_structure,
     check_yaml,
 )
+
+
+def write_valid_delivery_templates(root: Path) -> None:
+    templates_root = root / "templates" / "delivery"
+    templates_root.mkdir(parents=True)
+    navigation_links = "\n".join(f"[{name}]({name})" for name in DELIVERY_TEMPLATES)
+    (templates_root / "README.md").write_text(
+        f"# Templates\n\n{navigation_links}\n", encoding="utf-8"
+    )
+    for name, lifecycle_stages in DELIVERY_TEMPLATES.items():
+        metadata = {
+            "template_name": Path(name).stem,
+            "template_version": 1,
+            "lifecycle_stages": list(lifecycle_stages),
+            "traceability_fields": list(TRACEABILITY_FIELDS),
+        }
+        frontmatter = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False)
+        traceability_lines = "\n".join(
+            (
+                "- 记录 ID：",
+                "- 记录类型：",
+                "- 状态：",
+                "- 所有者：",
+                "- 决策权限：",
+                "- 风险等级：",
+                "- 关联记录：",
+                "- 源码/制品版本：",
+                "- 环境与适用范围：",
+                "- 证据：",
+                "- 创建时间及时区：",
+                "- 更新时间及时区：",
+            )
+        )
+        (templates_root / name).write_text(
+            f"---\n{frontmatter}---\n# Template\n\n## 追溯信息\n\n{traceability_lines}\n",
+            encoding="utf-8",
+        )
+
+    workflows_root = root / "docs" / "workflows"
+    workflows_root.mkdir(parents=True)
+    for phase, template_names in WORKFLOW_DELIVERY_TEMPLATES.items():
+        links = "\n".join(f"[{name}](../../templates/delivery/{name})" for name in template_names)
+        (workflows_root / f"{PHASES[phase]}.md").write_text(
+            f"# Workflow\n\n{links}\n", encoding="utf-8"
+        )
 
 
 class RepositoryCheckTests(unittest.TestCase):
@@ -115,6 +166,54 @@ class RepositoryCheckTests(unittest.TestCase):
 
             self.assertTrue(any("missing from navigation" in message for message in messages))
             self.assertTrue(any("missing from workflow" in message for message in messages))
+
+    def test_valid_delivery_templates_are_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_delivery_templates(root)
+
+            issues = check_delivery_templates(root)
+
+            self.assertEqual(issues, [])
+
+    def test_incomplete_traceability_contract_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_delivery_templates(root)
+            template = root / "templates" / "delivery" / "opportunity-record.md"
+            content = template.read_text(encoding="utf-8")
+            template.write_text(content.replace("- updated_at\n", ""), encoding="utf-8")
+
+            messages = {issue.message for issue in check_delivery_templates(root)}
+
+            self.assertIn(
+                "traceability_fields must equal the shared traceability contract", messages
+            )
+
+    def test_missing_workflow_template_link_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_delivery_templates(root)
+            workflow = root / "docs" / "workflows" / f"{PHASES[1]}.md"
+            workflow.write_text("# Workflow\n", encoding="utf-8")
+
+            messages = {issue.message for issue in check_delivery_templates(root)}
+
+            self.assertTrue(
+                any("workflow is missing delivery template" in item for item in messages)
+            )
+
+    def test_missing_visible_traceability_field_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_delivery_templates(root)
+            template = root / "templates" / "delivery" / "opportunity-record.md"
+            content = template.read_text(encoding="utf-8")
+            template.write_text(content.replace("- 决策权限：\n", ""), encoding="utf-8")
+
+            messages = {issue.message for issue in check_delivery_templates(root)}
+
+            self.assertIn("missing visible traceability field: decision_authority", messages)
 
 
 if __name__ == "__main__":
