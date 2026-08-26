@@ -26,6 +26,7 @@
 
 - 技术设计与决策记录、接口/数据契约、测试策略、发布与恢复计划。
 - 可估算的工作拆分、依赖图、风险及评审结论。
+- 使用[方案决策模板](../../templates/delivery/solution-decision.md)记录取舍，并用[验证矩阵](../../templates/delivery/verification-matrix.md)建立要求/风险到证据的映射。
 
 ## 异常与回流
 

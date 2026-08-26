@@ -62,6 +62,7 @@ GitHub 某些 Environment 审批、等待或密钥能力受仓库可见性和套
 
 - 发布候选清单、已发布版本、GitHub Actions/Deployment/Release 记录、制品摘要、变更记录、观察结果和对外/对内通知。
 - 发布结论：`成功`、`已回滚`、`前滚修复中` 或 `暂停`。
+- 使用[发布记录模板](../../templates/delivery/release-record.md)关联候选身份、Go/No-Go、批次、健康与恢复证据。
 
 ## 异常与回流
 

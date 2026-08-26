@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the playbook's skills, navigation, links, YAML, and Markdown."""
+"""Validate the playbook's skills, delivery templates, links, YAML, and Markdown."""
 
 from __future__ import annotations
 
@@ -22,6 +22,54 @@ PHASES = {
     6: "06-release-and-change-management",
     7: "07-operations-and-support",
     8: "08-measurement-and-retrospective",
+}
+TRACEABILITY_FIELDS = (
+    "record_id",
+    "record_type",
+    "status",
+    "owner",
+    "decision_authority",
+    "risk_level",
+    "related_records",
+    "source_version",
+    "environment_scope",
+    "evidence",
+    "created_at",
+    "updated_at",
+)
+TRACEABILITY_LABELS = {
+    "record_id": "记录 ID",
+    "record_type": "记录类型",
+    "status": "状态",
+    "owner": "所有者",
+    "decision_authority": "决策权限",
+    "risk_level": "风险等级",
+    "related_records": "关联记录",
+    "source_version": "源码/制品版本",
+    "environment_scope": "环境与适用范围",
+    "evidence": "证据",
+    "created_at": "创建时间及时区",
+    "updated_at": "更新时间及时区",
+}
+DELIVERY_TEMPLATES = {
+    "opportunity-record.md": (1,),
+    "requirements-risk-package.md": (2,),
+    "solution-decision.md": (3,),
+    "verification-matrix.md": (3, 4, 5),
+    "change-handoff.md": (4, 5),
+    "release-record.md": (6,),
+    "incident-record.md": (7,),
+    "outcome-retrospective-actions.md": (8,),
+}
+WORKFLOW_DELIVERY_TEMPLATES = {
+    1: ("opportunity-record.md",),
+    2: ("requirements-risk-package.md",),
+    3: ("solution-decision.md", "verification-matrix.md"),
+    4: ("change-handoff.md", "verification-matrix.md"),
+    5: ("change-handoff.md", "verification-matrix.md"),
+    6: ("release-record.md",),
+    7: ("incident-record.md",),
+    8: ("outcome-retrospective-actions.md",),
 }
 FRONTMATTER_PATTERN = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 HEADING_PATTERN = re.compile(r"^(#{1,6})\s+\S")
@@ -191,6 +239,90 @@ def linked_skill_files(path: Path) -> set[Path]:
     return linked
 
 
+def check_delivery_templates(root: Path) -> list[Issue]:
+    issues: list[Issue] = []
+    root = root.resolve()
+    templates_root = root / "templates" / "delivery"
+    if not templates_root.is_dir():
+        return [Issue(templates_root, "missing delivery templates directory")]
+
+    navigation = templates_root / "README.md"
+    if not navigation.is_file():
+        issues.append(Issue(navigation, "missing delivery template navigation"))
+
+    expected_paths = {templates_root / name for name in DELIVERY_TEMPLATES}
+    actual_paths = set(templates_root.glob("*.md")) - {navigation}
+    for path in sorted(expected_paths - actual_paths):
+        issues.append(Issue(path, "missing required delivery template"))
+    for path in sorted(actual_paths - expected_paths):
+        issues.append(Issue(path, "unexpected delivery template"))
+
+    if navigation.is_file():
+        navigation_links = {
+            resolved
+            for _, target in markdown_links(navigation)
+            if (resolved := resolve_local_link(navigation, target)) is not None
+        }
+        for path in sorted(expected_paths - navigation_links):
+            issues.append(
+                Issue(navigation, f"delivery template is missing from navigation: {path.name}")
+            )
+
+    for name, lifecycle_stages in DELIVERY_TEMPLATES.items():
+        path = templates_root / name
+        if not path.is_file():
+            continue
+        content = path.read_text(encoding="utf-8")
+        match = FRONTMATTER_PATTERN.match(content)
+        if match is None:
+            issues.append(Issue(path, "delivery template must start with YAML frontmatter"))
+            continue
+        try:
+            metadata = yaml.safe_load(match.group(1))
+        except yaml.YAMLError as error:
+            issues.append(Issue(path, f"invalid delivery template frontmatter: {error}"))
+            continue
+        if not isinstance(metadata, dict):
+            issues.append(Issue(path, "delivery template frontmatter must be a mapping"))
+            continue
+        if metadata.get("template_name") != path.stem:
+            issues.append(Issue(path, f"template_name must equal {path.stem!r}"))
+        if metadata.get("template_version") != 1:
+            issues.append(Issue(path, "template_version must equal 1"))
+        if metadata.get("lifecycle_stages") != list(lifecycle_stages):
+            issues.append(Issue(path, f"lifecycle_stages must equal {list(lifecycle_stages)!r}"))
+        if metadata.get("traceability_fields") != list(TRACEABILITY_FIELDS):
+            issues.append(
+                Issue(path, "traceability_fields must equal the shared traceability contract")
+            )
+        if "## 追溯信息\n" not in content:
+            issues.append(Issue(path, "delivery template must contain a traceability section"))
+        for field in TRACEABILITY_FIELDS:
+            label = TRACEABILITY_LABELS[field]
+            if f"- {label}：" not in content:
+                issues.append(Issue(path, f"missing visible traceability field: {field}"))
+
+    for phase, template_names in WORKFLOW_DELIVERY_TEMPLATES.items():
+        workflow = root / "docs" / "workflows" / f"{PHASES[phase]}.md"
+        if not workflow.is_file():
+            continue
+        linked_paths = {
+            resolved
+            for _, target in markdown_links(workflow)
+            if (resolved := resolve_local_link(workflow, target)) is not None
+        }
+        for template_name in template_names:
+            template_path = templates_root / template_name
+            if template_path not in linked_paths:
+                issues.append(
+                    Issue(
+                        workflow,
+                        f"workflow is missing delivery template: {template_path.relative_to(root)}",
+                    )
+                )
+    return issues
+
+
 def check_navigation(root: Path) -> list[Issue]:
     issues: list[Issue] = []
     all_skills = set(skill_files(root))
@@ -271,6 +403,7 @@ def run_checks(root: Path) -> list[Issue]:
         check_yaml,
         check_skill_structure,
         check_links,
+        check_delivery_templates,
         check_navigation,
         check_markdown_format,
     )
@@ -288,7 +421,10 @@ def main() -> int:
         for issue in issues:
             print(f"- {issue.render(root)}", file=sys.stderr)
         return 1
-    print("Repository checks passed: YAML, skills, links, navigation, and Markdown.")
+    print(
+        "Repository checks passed: YAML, skills, delivery templates, links, "
+        "navigation, and Markdown."
+    )
     return 0
 
 
