@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "files": [
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/lifecycle-policy.json",
+    ".github/workflows/lifecycle-policy.yml",
+    "automation/github-lifecycle-manifest.json",
+    "docs/github-lifecycle-automation.md",
+    "scripts/__init__.py",
+    "scripts/github_lifecycle/__init__.py",
+    "scripts/github_lifecycle/__main__.py",
+    "scripts/github_lifecycle/common.py",
+    "scripts/github_lifecycle/package.py",
+    "scripts/github_lifecycle/pr.py"
+  ]
+}

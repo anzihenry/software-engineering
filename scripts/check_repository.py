@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from collections.abc import Iterable
@@ -83,6 +84,7 @@ HEADING_PATTERN = re.compile(r"^(#{1,6})\s+\S")
 LINK_PATTERN = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 ISO_DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+PINNED_ACTION_PATTERN = re.compile(r"^[^@\s]+@[0-9a-fA-F]{40}$")
 
 
 @dataclass(frozen=True, order=True)
@@ -116,6 +118,125 @@ def check_yaml(root: Path) -> list[Issue]:
     issues: list[Issue] = []
     for path in repository_files(root, "*.yaml") + repository_files(root, "*.yml"):
         load_yaml(path, issues)
+    return issues
+
+
+def check_github_automation(root: Path) -> list[Issue]:
+    issues: list[Issue] = []
+    root = root.resolve()
+    github_root = root / ".github"
+    workflows_root = github_root / "workflows"
+    for path in sorted(workflows_root.glob("*.yml")) + sorted(workflows_root.glob("*.yaml")):
+        workflow = load_yaml(path, issues)
+        if not isinstance(workflow, dict):
+            continue
+        triggers = workflow.get("on")
+        if triggers is None and True in workflow:
+            issues.append(Issue(path, 'workflow trigger key "on" must be quoted'))
+            triggers = workflow.get(True)
+        if isinstance(triggers, dict) and "pull_request_target" in triggers:
+            issues.append(Issue(path, "pull_request_target is not allowed"))
+        if not isinstance(workflow.get("permissions"), dict):
+            issues.append(Issue(path, "workflow must declare an explicit permissions mapping"))
+
+        jobs = workflow.get("jobs")
+        if not isinstance(jobs, dict):
+            issues.append(Issue(path, "workflow must contain a jobs mapping"))
+            continue
+        for job_name, job in jobs.items():
+            if not isinstance(job, dict):
+                issues.append(Issue(path, f"workflow job {job_name!r} must be a mapping"))
+                continue
+            if not isinstance(job.get("permissions"), dict):
+                issues.append(
+                    Issue(path, f"workflow job {job_name!r} must declare explicit permissions")
+                )
+            action_values: list[object] = []
+            if "uses" in job:
+                action_values.append(job["uses"])
+            steps = job.get("steps", [])
+            if isinstance(steps, list):
+                action_values.extend(
+                    step["uses"] for step in steps if isinstance(step, dict) and "uses" in step
+                )
+            for uses in action_values:
+                if not isinstance(uses, str) or (
+                    not uses.startswith("./") and not PINNED_ACTION_PATTERN.fullmatch(uses)
+                ):
+                    issues.append(
+                        Issue(
+                            path,
+                            f"workflow action must be local or pinned to a full SHA: {uses!r}",
+                        )
+                    )
+
+    policy = github_root / "lifecycle-policy.json"
+    manifest = root / "automation" / "github-lifecycle-manifest.json"
+    pull_request_template = github_root / "PULL_REQUEST_TEMPLATE.md"
+    documentation = root / "docs" / "github-lifecycle-automation.md"
+    for path in (policy, manifest, pull_request_template, documentation):
+        if not path.is_file():
+            issues.append(Issue(path, "missing GitHub lifecycle automation file"))
+
+    manifest_files: list[str] = []
+    if manifest.is_file():
+        try:
+            raw_manifest = json.loads(manifest.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            issues.append(Issue(manifest, f"invalid automation manifest JSON: {error}"))
+        else:
+            if not isinstance(raw_manifest, dict) or raw_manifest.get("schema_version") != 1:
+                issues.append(Issue(manifest, "automation manifest schema_version must equal 1"))
+            raw_files = raw_manifest.get("files") if isinstance(raw_manifest, dict) else None
+            if not isinstance(raw_files, list) or not all(
+                isinstance(item, str) for item in raw_files
+            ):
+                issues.append(Issue(manifest, "automation manifest files must be a string array"))
+            else:
+                manifest_files = raw_files
+                if manifest_files != sorted(manifest_files):
+                    issues.append(Issue(manifest, "automation manifest files must be sorted"))
+                if len(manifest_files) != len(set(manifest_files)):
+                    issues.append(Issue(manifest, "automation manifest files must be unique"))
+                for item in manifest_files:
+                    item_path = Path(item)
+                    if item_path.is_absolute() or ".." in item_path.parts:
+                        issues.append(Issue(manifest, f"unsafe automation manifest path: {item}"))
+                    elif not (root / item_path).is_file():
+                        issues.append(
+                            Issue(manifest, f"automation manifest file does not exist: {item}")
+                        )
+
+    public_files = {
+        policy,
+        manifest,
+        pull_request_template,
+        documentation,
+        root / "scripts" / "__init__.py",
+    }
+    public_files.update((root / "scripts" / "github_lifecycle").glob("*.py"))
+    public_files.update((github_root / "ISSUE_TEMPLATE").glob("*.yml"))
+    public_files.update((github_root / "ISSUE_TEMPLATE").glob("*.yaml"))
+    public_files.update(
+        path for path in workflows_root.glob("*.yml") if path.name != "repository-checks.yml"
+    )
+    public_files.update(
+        path for path in workflows_root.glob("*.yaml") if path.name != "repository-checks.yaml"
+    )
+    expected_manifest_files = {
+        str(path.relative_to(root)) for path in public_files if path.is_file()
+    }
+    if set(manifest_files) != expected_manifest_files:
+        missing = sorted(expected_manifest_files - set(manifest_files))
+        extra = sorted(set(manifest_files) - expected_manifest_files)
+        if missing:
+            issues.append(
+                Issue(manifest, f"automation manifest is missing files: {', '.join(missing)}")
+            )
+        if extra:
+            issues.append(
+                Issue(manifest, f"automation manifest has unexpected files: {', '.join(extra)}")
+            )
     return issues
 
 
@@ -565,6 +686,7 @@ def check_markdown_format(root: Path) -> list[Issue]:
 def run_checks(root: Path, as_of: date | None = None) -> list[Issue]:
     checks = (
         check_yaml,
+        check_github_automation,
         check_skill_structure,
         check_links,
         check_delivery_templates,
@@ -595,8 +717,8 @@ def main() -> int:
             print(f"- {issue.render(root)}", file=sys.stderr)
         return 1
     print(
-        "Repository checks passed: YAML, skills, content governance, delivery templates, "
-        "exercises, links, navigation, and Markdown."
+        "Repository checks passed: YAML, GitHub automation, skills, content governance, "
+        "delivery templates, exercises, links, navigation, and Markdown."
     )
     return 0
 

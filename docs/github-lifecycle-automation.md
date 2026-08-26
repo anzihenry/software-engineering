@@ -1,0 +1,38 @@
+# GitHub 生命周期自动化
+
+本仓库将 PR、发布、普通事故和复盘编排逐步固化为可复制的 GitHub 原生自动化。GitHub 承载普通记录和控制状态；安全、隐私及取证敏感内容只保留受限系统标识，不进入普通 PR、Issue、Actions 日志或 Release。
+
+## 权限模型
+
+- PR 校验和定时审计只读运行。
+- 创建 Draft Release、事故状态流转和创建复盘必须由维护者显式触发 `workflow_dispatch`。
+- 每个 job 只声明完成当前动作所需的权限；PR 代码不使用 `pull_request_target` 或写 token。
+- 自动化只能检查记录结构、GitHub 状态和可追溯标识，不替代独立评审、专家判断或人类生产 Go/No-Go。
+
+## 公共配置与版本
+
+`.github/lifecycle-policy.json` 是版本为 1 的机器契约，定义默认分支、稳定检查名、发布所需检查、风险/严重度、复盘期限和标签。破坏性字段变化必须增加 `schema_version` 并提供迁移说明。
+
+当前 PR 模板要求变更 ID、目的、范围和非目标、风险、验证、发布影响、恢复及关联记录。中高风险增加独立评审和系统证据；高风险增加设计、专项评审、数据恢复及人类 Go/No-Go 责任。
+
+Draft PR 可以保留未完成项，`lifecycle-policy` 会给出警告但不阻塞；PR 进入 Ready 后，相同缺口会使检查失败。通过只表示结构完整，不证明链接内容或测试结论真实。
+
+## 可复制自动化包
+
+`automation/github-lifecycle-manifest.json` 列出公共配置、工作流、表单和脚本。使用固定 tag 或 commit SHA 检出本仓库后运行：
+
+```sh
+python3 -m scripts.github_lifecycle package \
+  --manifest automation/github-lifecycle-manifest.json \
+  --output /tmp/github-lifecycle.zip
+```
+
+命令生成确定性 ZIP 和同名 `.sha256` 文件；拒绝重复路径、目录逃逸、符号链接和覆盖已有输出。目标仓库必须在复制后审查配置、权限、required checks 和安全报告入口，不把本仓库的角色或环境假设直接当作自身事实。
+
+## 仓库启用顺序
+
+1. 在 PR 中加入配置、模板、脚本和 `lifecycle-policy` 工作流，先观察真实 check-run。
+2. check 名稳定且误报已处理后，才把它加入默认分支 ruleset；保留项目原有构建/测试检查。
+3. 若新检查误阻塞，先从 ruleset 移除该检查，不删除既有质量门禁；修复后通过新 PR 再恢复。
+
+GitHub 仓库查询和设置统一优先使用 `gh` 或 `gh api`，并在变更前读取现状、变更后重新核验。

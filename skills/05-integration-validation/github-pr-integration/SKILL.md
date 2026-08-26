@@ -37,6 +37,8 @@ description: "在独立开发者或微型团队的 GitHub 仓库中，编排 PR 
 - 快速层目标是给每次提交及时反馈；专项、系统和真实设备层按风险触发。成本优化不能使高风险证据变成可选。
 - Agent 评审、Actions 结果和人工 Go/No-Go 是不同证据，不相互冒充。
 
+若仓库采用本手册的结构化 PR 门禁，读取[PR 生命周期策略自动化](references/lifecycle-policy-automation.md)，确认 Draft/Ready 行为、权限边界和 ruleset 启用顺序。
+
 ## 输出格式
 
 ```markdown

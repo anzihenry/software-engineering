@@ -16,12 +16,15 @@ from scripts.check_repository import (
     check_content_governance,
     check_delivery_templates,
     check_end_to_end_exercises,
+    check_github_automation,
     check_links,
     check_markdown_format,
     check_navigation,
     check_skill_structure,
     check_yaml,
 )
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 def write_valid_delivery_templates(root: Path) -> None:
@@ -126,6 +129,35 @@ def write_valid_governed_content(root: Path, review_by: str = "2026-08-26") -> N
 
 
 class RepositoryCheckTests(unittest.TestCase):
+    def test_repository_github_automation_is_valid(self) -> None:
+        self.assertEqual(check_github_automation(REPOSITORY_ROOT), [])
+
+    def test_floating_action_and_pull_request_target_are_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workflow = root / ".github" / "workflows" / "unsafe.yml"
+            workflow.parent.mkdir(parents=True)
+            workflow.write_text(
+                '"on":\n'
+                "  pull_request_target:\n"
+                "permissions: {}\n"
+                "jobs:\n"
+                "  unsafe:\n"
+                "    permissions:\n"
+                "      contents: read\n"
+                "    steps:\n"
+                "      - uses: actions/checkout@v7\n",
+                encoding="utf-8",
+            )
+
+            messages = {issue.message for issue in check_github_automation(root)}
+
+            self.assertIn("pull_request_target is not allowed", messages)
+            self.assertIn(
+                "workflow action must be local or pinned to a full SHA: 'actions/checkout@v7'",
+                messages,
+            )
+
     def test_invalid_yaml_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
