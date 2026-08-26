@@ -21,7 +21,7 @@ description: "在独立开发者或微型团队中，用 GitHub Actions、Enviro
 ## 运行模型
 
 1. **选择模式**：普通变更走标准发布；已预先批准、可自动恢复且影响受控的低风险变更可走连续发布；正在缓解生产影响的最小修复转交 `emergency-change-management`。时间压力本身不构成紧急变更。
-2. **准备候选**：使用 `release-candidate-preparation` 固定 source SHA、版本、制品摘要、迁移、发布说明和工作流运行。制品只构建一次，后续环境提升同一份已验证制品，不从不同分支或环境重新构建。
+2. **准备候选**：使用 `release-candidate-preparation` 固定 source SHA、版本、制品摘要、迁移、发布说明和工作流运行。制品只构建一次，后续环境提升同一份已验证制品，不从不同分支或环境重新构建。本仓库采用[Draft Release 自动化契约](references/draft-release-automation.md)：先 dry-run，再由人类以版本精确确认创建 Draft Release。
 3. **设计 GitHub 控制面**：用 Actions 执行确定性步骤，用 `staging`/`production` Environment 隔离目标、变量和密钥，用 `production` concurrency 防止并发部署；云认证优先使用短期 OIDC 身份。套餐不支持 required reviewers 时，以明确的人工 `workflow_dispatch`/Go-No-Go 记录替代，不声称存在平台强制审批。
 4. **形成发布决策**：使用 `release-readiness` 核对候选、环境、观测、恢复、值守和授权。独立开发者必须亲自确认生产 Go/No-Go；Agent 只能准备证据和建议。
 5. **预演并推进**：先在非生产环境验证部署、迁移、健康检查与恢复路径，再由 `progressive-release-execution` 一次推进一个批次。每批次保持制品摘要、配置差异和 GitHub deployment/run 可追溯。

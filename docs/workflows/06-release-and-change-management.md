@@ -20,7 +20,7 @@ review_by: "2027-02-26"
 ## 流程
 
 1. **登记变更并选择模式**：关联 PR、source SHA、风险、交付渠道和目标环境；选择标准发布、已预先批准的低风险连续发布或紧急变更。截止日期压力本身不构成紧急模式。
-2. **准备发布候选**：固定版本和候选 source SHA，在受控 Actions 中只构建一次；记录每个制品/镜像/安装包的不可变标识和摘要，准备迁移、兼容范围、Release notes 与恢复目标。
+2. **准备发布候选**：固定版本和候选 source SHA，在受控 Actions 中只构建一次；记录每个制品/镜像/安装包的不可变标识和摘要，准备迁移、兼容范围、Release notes 与恢复目标。本仓库可先手动运行 `Prepare Draft Release` 的默认 dry-run；版本、main 可达性、required checks 及重复 tag/Release 均通过后，才用版本精确确认创建 Draft Release。
 3. **执行发布就绪检查**：核对候选证据、环境/依赖、GitHub workflow 与凭据边界、观测、告警、特性开关、迁移、恢复、发布批次和值守安排，形成 Go/No-Go 建议。
 4. **预演非生产路径**：将同一候选提升至 staging、内部测试或 prerelease 渠道，验证部署、迁移、配置、关键用户路径、健康检查和恢复操作；不能预演的风险必须显式保留。
 5. **作出生产 Go/No-Go**：由有权限的人类确认发布范围和当前证据。GitHub Environment 支持审批时使用保护规则；独立开发者或套餐不支持时保留明确的 `workflow_dispatch`/决策记录，不让 Agent 代替人类批准生产动作。
@@ -49,6 +49,7 @@ review_by: "2027-02-26"
 | 部署互斥 | `production` concurrency 同时只运行一个部署；不自动取消正在执行的生产任务，以免遗留半完成状态 |
 | 身份与密钥 | Actions 默认最小权限，云平台优先 OIDC 短期凭据；签名和发布密钥仅暴露给对应 environment/job |
 | 发布记录 | GitHub Deployment 记录环境推进，Draft/Prerelease/Release 与标签记录外部分发；公开版本和制品不可原地覆盖 |
+| Draft Release | `workflow_dispatch` 默认只读 dry-run；只有显式关闭 dry-run 且确认字符串精确匹配版本时，写权限 job 才创建候选，不自动公开或部署 |
 | 旁路 | 管理员旁路只用于已授权紧急恢复，必须记录原因、范围、结果和后续补验 |
 
 GitHub 某些 Environment 审批、等待或密钥能力受仓库可见性和套餐影响；流程应根据实际可用能力降级为明确的人工触发和审计记录，而不是删除生产决策门禁。

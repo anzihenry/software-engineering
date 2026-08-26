@@ -1,0 +1,219 @@
+name: Prepare Draft Release
+
+"on":
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version in vMAJOR.MINOR.PATCH form
+        required: true
+        type: string
+      source_sha:
+        description: Full 40-character source SHA reachable from main
+        required: true
+        type: string
+      risk_level:
+        description: Release risk level
+        required: true
+        type: choice
+        options:
+          - low
+          - medium
+          - high
+      change_records:
+        description: PR, change, or design record links
+        required: true
+        type: string
+      summary:
+        description: Candidate summary
+        required: true
+        type: string
+      dry_run:
+        description: Validate and render without creating a Draft Release
+        required: true
+        default: true
+        type: boolean
+      confirmation:
+        description: For a real draft, enter the version exactly
+        required: false
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: prepare-release-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  dry-run:
+    if: ${{ inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      checks: read
+      contents: read
+    env:
+      ACTOR: ${{ github.actor }}
+      CHANGE_RECORDS: ${{ inputs.change_records }}
+      CONFIRMATION: ${{ inputs.confirmation }}
+      DEFAULT_BRANCH: main
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: ${{ github.repository }}
+      RISK_LEVEL: ${{ inputs.risk_level }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      SOURCE_SHA: ${{ inputs.source_sha }}
+      SUMMARY: ${{ inputs.summary }}
+      VERSION: ${{ inputs.version }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - name: Validate request inputs
+        run: |
+          python -m scripts.github_lifecycle prepare-release \
+            --policy .github/lifecycle-policy.json \
+            --version "$VERSION" \
+            --source-sha "$SOURCE_SHA" \
+            --risk-level "$RISK_LEVEL" \
+            --change-records "$CHANGE_RECORDS" \
+            --summary "$SUMMARY" \
+            --repository "$REPOSITORY" \
+            --actor "$ACTOR" \
+            --run-url "$RUN_URL" \
+            --created-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --confirmation "$CONFIRMATION" \
+            --validate-only
+
+      - name: Read GitHub release state
+        run: |
+          gh api "repos/$REPOSITORY/compare/$SOURCE_SHA...$DEFAULT_BRANCH" > "$RUNNER_TEMP/comparison.json"
+          gh api "repos/$REPOSITORY/commits/$SOURCE_SHA/check-runs?per_page=100" > "$RUNNER_TEMP/check-runs.json"
+          gh api "repos/$REPOSITORY/git/matching-refs/tags/$VERSION" \
+            --jq "map(select(.ref == \"refs/tags/$VERSION\"))" > "$RUNNER_TEMP/tag-refs.json"
+          gh release list --repo "$REPOSITORY" --limit 1000 --json tagName > "$RUNNER_TEMP/releases.json"
+
+      - name: Render dry-run candidate
+        run: |
+          created_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          python -m scripts.github_lifecycle prepare-release \
+            --policy .github/lifecycle-policy.json \
+            --version "$VERSION" \
+            --source-sha "$SOURCE_SHA" \
+            --risk-level "$RISK_LEVEL" \
+            --change-records "$CHANGE_RECORDS" \
+            --summary "$SUMMARY" \
+            --repository "$REPOSITORY" \
+            --actor "$ACTOR" \
+            --run-url "$RUN_URL" \
+            --created-at "$created_at" \
+            --comparison "$RUNNER_TEMP/comparison.json" \
+            --check-runs "$RUNNER_TEMP/check-runs.json" \
+            --tag-refs "$RUNNER_TEMP/tag-refs.json" \
+            --releases "$RUNNER_TEMP/releases.json" \
+            --output-dir "$RUNNER_TEMP/release-candidate"
+          python -m scripts.github_lifecycle package \
+            --manifest automation/github-lifecycle-manifest.json \
+            --output "$RUNNER_TEMP/release-candidate/github-lifecycle.zip"
+
+      - name: Upload dry-run candidate
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-candidate-${{ inputs.version }}
+          path: ${{ runner.temp }}/release-candidate
+          if-no-files-found: error
+          retention-days: 30
+
+  create-draft:
+    if: ${{ !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      checks: read
+      contents: write
+    env:
+      ACTOR: ${{ github.actor }}
+      CHANGE_RECORDS: ${{ inputs.change_records }}
+      CONFIRMATION: ${{ inputs.confirmation }}
+      DEFAULT_BRANCH: main
+      GH_TOKEN: ${{ github.token }}
+      REPOSITORY: ${{ github.repository }}
+      RISK_LEVEL: ${{ inputs.risk_level }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      SOURCE_SHA: ${{ inputs.source_sha }}
+      SUMMARY: ${{ inputs.summary }}
+      VERSION: ${{ inputs.version }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - name: Validate request inputs
+        run: |
+          python -m scripts.github_lifecycle prepare-release \
+            --policy .github/lifecycle-policy.json \
+            --version "$VERSION" \
+            --source-sha "$SOURCE_SHA" \
+            --risk-level "$RISK_LEVEL" \
+            --change-records "$CHANGE_RECORDS" \
+            --summary "$SUMMARY" \
+            --repository "$REPOSITORY" \
+            --actor "$ACTOR" \
+            --run-url "$RUN_URL" \
+            --created-at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --no-dry-run \
+            --confirmation "$CONFIRMATION" \
+            --validate-only
+
+      - name: Read GitHub release state
+        run: |
+          gh api "repos/$REPOSITORY/compare/$SOURCE_SHA...$DEFAULT_BRANCH" > "$RUNNER_TEMP/comparison.json"
+          gh api "repos/$REPOSITORY/commits/$SOURCE_SHA/check-runs?per_page=100" > "$RUNNER_TEMP/check-runs.json"
+          gh api "repos/$REPOSITORY/git/matching-refs/tags/$VERSION" \
+            --jq "map(select(.ref == \"refs/tags/$VERSION\"))" > "$RUNNER_TEMP/tag-refs.json"
+          gh release list --repo "$REPOSITORY" --limit 1000 --json tagName > "$RUNNER_TEMP/releases.json"
+
+      - name: Render release candidate
+        run: |
+          created_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          python -m scripts.github_lifecycle prepare-release \
+            --policy .github/lifecycle-policy.json \
+            --version "$VERSION" \
+            --source-sha "$SOURCE_SHA" \
+            --risk-level "$RISK_LEVEL" \
+            --change-records "$CHANGE_RECORDS" \
+            --summary "$SUMMARY" \
+            --repository "$REPOSITORY" \
+            --actor "$ACTOR" \
+            --run-url "$RUN_URL" \
+            --created-at "$created_at" \
+            --no-dry-run \
+            --confirmation "$CONFIRMATION" \
+            --comparison "$RUNNER_TEMP/comparison.json" \
+            --check-runs "$RUNNER_TEMP/check-runs.json" \
+            --tag-refs "$RUNNER_TEMP/tag-refs.json" \
+            --releases "$RUNNER_TEMP/releases.json" \
+            --output-dir "$RUNNER_TEMP/release-candidate"
+          python -m scripts.github_lifecycle package \
+            --manifest automation/github-lifecycle-manifest.json \
+            --output "$RUNNER_TEMP/release-candidate/github-lifecycle.zip"
+
+      - name: Create Draft Release
+        run: |
+          gh release create "$VERSION" \
+            --repo "$REPOSITORY" \
+            --draft \
+            --target "$SOURCE_SHA" \
+            --title "$VERSION" \
+            --notes-file "$RUNNER_TEMP/release-candidate/release-record.md" \
+            "$RUNNER_TEMP/release-candidate/release-candidate-checklist.md" \
+            "$RUNNER_TEMP/release-candidate/release-candidate.json" \
+            "$RUNNER_TEMP/release-candidate/github-lifecycle.zip" \
+            "$RUNNER_TEMP/release-candidate/github-lifecycle.zip.sha256"
