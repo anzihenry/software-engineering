@@ -8,10 +8,12 @@ import yaml
 
 from scripts.check_repository import (
     DELIVERY_TEMPLATES,
+    END_TO_END_EXERCISES,
     PHASES,
     TRACEABILITY_FIELDS,
     WORKFLOW_DELIVERY_TEMPLATES,
     check_delivery_templates,
+    check_end_to_end_exercises,
     check_links,
     check_markdown_format,
     check_navigation,
@@ -63,6 +65,38 @@ def write_valid_delivery_templates(root: Path) -> None:
         (workflows_root / f"{PHASES[phase]}.md").write_text(
             f"# Workflow\n\n{links}\n", encoding="utf-8"
         )
+
+
+def write_valid_end_to_end_exercises(root: Path) -> None:
+    exercises_root = root / "docs" / "exercises"
+    exercises_root.mkdir(parents=True)
+    navigation_links = "\n".join(f"[{name}]({name})" for name in END_TO_END_EXERCISES)
+    (exercises_root / "README.md").write_text(
+        f"# Exercises\n\n{navigation_links}\n", encoding="utf-8"
+    )
+    required_templates = list(DELIVERY_TEMPLATES)
+    template_links = "\n".join(
+        f"[{name}](../../templates/delivery/{name})" for name in required_templates
+    )
+    stage_sections = "\n".join(f"## 阶段 {stage}：Example\n" for stage in PHASES)
+    for name, (risk_level, scenario_type) in END_TO_END_EXERCISES.items():
+        metadata = {
+            "exercise_name": Path(name).stem,
+            "exercise_version": 1,
+            "risk_level": risk_level,
+            "scenario_type": scenario_type,
+            "lifecycle_stages": list(PHASES),
+            "required_templates": required_templates,
+        }
+        frontmatter = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False)
+        (exercises_root / name).write_text(
+            f"---\n{frontmatter}---\n# Exercise\n\n{stage_sections}\n"
+            f"{template_links}\n\n## 演练通过条件\n",
+            encoding="utf-8",
+        )
+
+    lifecycle = root / "docs" / "software-development-lifecycle.md"
+    lifecycle.write_text("# Lifecycle\n\n[Exercises](exercises/README.md)\n", encoding="utf-8")
 
 
 class RepositoryCheckTests(unittest.TestCase):
@@ -214,6 +248,42 @@ class RepositoryCheckTests(unittest.TestCase):
             messages = {issue.message for issue in check_delivery_templates(root)}
 
             self.assertIn("missing visible traceability field: decision_authority", messages)
+
+    def test_valid_end_to_end_exercises_are_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_end_to_end_exercises(root)
+
+            issues = check_end_to_end_exercises(root)
+
+            self.assertEqual(issues, [])
+
+    def test_incomplete_exercise_lifecycle_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_end_to_end_exercises(root)
+            exercise = root / "docs" / "exercises" / "low-risk-copy-change.md"
+            content = exercise.read_text(encoding="utf-8")
+            exercise.write_text(content.replace("## 阶段 8：Example\n", ""), encoding="utf-8")
+
+            messages = {issue.message for issue in check_end_to_end_exercises(root)}
+
+            self.assertIn("missing lifecycle stage section: 8", messages)
+
+    def test_wrong_exercise_risk_level_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_end_to_end_exercises(root)
+            exercise = root / "docs" / "exercises" / "high-risk-data-permission-change.md"
+            content = exercise.read_text(encoding="utf-8")
+            exercise.write_text(
+                content.replace("risk_level: high\n", "risk_level: medium\n"),
+                encoding="utf-8",
+            )
+
+            messages = {issue.message for issue in check_end_to_end_exercises(root)}
+
+            self.assertIn("risk_level must equal 'high'", messages)
 
 
 if __name__ == "__main__":

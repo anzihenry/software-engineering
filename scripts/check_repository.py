@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the playbook's skills, delivery templates, links, YAML, and Markdown."""
+"""Validate the playbook's skills, templates, exercises, links, YAML, and Markdown."""
 
 from __future__ import annotations
 
@@ -70,6 +70,11 @@ WORKFLOW_DELIVERY_TEMPLATES = {
     6: ("release-record.md",),
     7: ("incident-record.md",),
     8: ("outcome-retrospective-actions.md",),
+}
+END_TO_END_EXERCISES = {
+    "low-risk-copy-change.md": ("low", "copy-change"),
+    "medium-risk-feature.md": ("medium", "feature"),
+    "high-risk-data-permission-change.md": ("high", "data-permission-change"),
 }
 FRONTMATTER_PATTERN = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 HEADING_PATTERN = re.compile(r"^(#{1,6})\s+\S")
@@ -323,6 +328,100 @@ def check_delivery_templates(root: Path) -> list[Issue]:
     return issues
 
 
+def check_end_to_end_exercises(root: Path) -> list[Issue]:
+    issues: list[Issue] = []
+    root = root.resolve()
+    exercises_root = root / "docs" / "exercises"
+    if not exercises_root.is_dir():
+        return [Issue(exercises_root, "missing end-to-end exercises directory")]
+
+    navigation = exercises_root / "README.md"
+    if not navigation.is_file():
+        issues.append(Issue(navigation, "missing end-to-end exercise navigation"))
+
+    expected_paths = {exercises_root / name for name in END_TO_END_EXERCISES}
+    actual_paths = set(exercises_root.glob("*.md")) - {navigation}
+    for path in sorted(expected_paths - actual_paths):
+        issues.append(Issue(path, "missing required end-to-end exercise"))
+    for path in sorted(actual_paths - expected_paths):
+        issues.append(Issue(path, "unexpected end-to-end exercise"))
+
+    if navigation.is_file():
+        navigation_links = {
+            resolved
+            for _, target in markdown_links(navigation)
+            if (resolved := resolve_local_link(navigation, target)) is not None
+        }
+        for path in sorted(expected_paths - navigation_links):
+            issues.append(
+                Issue(navigation, f"end-to-end exercise is missing from navigation: {path.name}")
+            )
+
+    lifecycle = root / "docs" / "software-development-lifecycle.md"
+    if lifecycle.is_file() and navigation.is_file():
+        lifecycle_links = {
+            resolved
+            for _, target in markdown_links(lifecycle)
+            if (resolved := resolve_local_link(lifecycle, target)) is not None
+        }
+        if navigation not in lifecycle_links:
+            issues.append(Issue(lifecycle, "lifecycle is missing end-to-end exercise navigation"))
+
+    required_templates = list(DELIVERY_TEMPLATES)
+    required_template_paths = {
+        root / "templates" / "delivery" / name for name in required_templates
+    }
+    required_stages = list(PHASES)
+    for name, (risk_level, scenario_type) in END_TO_END_EXERCISES.items():
+        path = exercises_root / name
+        if not path.is_file():
+            continue
+        content = path.read_text(encoding="utf-8")
+        match = FRONTMATTER_PATTERN.match(content)
+        if match is None:
+            issues.append(Issue(path, "end-to-end exercise must start with YAML frontmatter"))
+            continue
+        try:
+            metadata = yaml.safe_load(match.group(1))
+        except yaml.YAMLError as error:
+            issues.append(Issue(path, f"invalid end-to-end exercise frontmatter: {error}"))
+            continue
+        if not isinstance(metadata, dict):
+            issues.append(Issue(path, "end-to-end exercise frontmatter must be a mapping"))
+            continue
+        if metadata.get("exercise_name") != path.stem:
+            issues.append(Issue(path, f"exercise_name must equal {path.stem!r}"))
+        if metadata.get("exercise_version") != 1:
+            issues.append(Issue(path, "exercise_version must equal 1"))
+        if metadata.get("risk_level") != risk_level:
+            issues.append(Issue(path, f"risk_level must equal {risk_level!r}"))
+        if metadata.get("scenario_type") != scenario_type:
+            issues.append(Issue(path, f"scenario_type must equal {scenario_type!r}"))
+        if metadata.get("lifecycle_stages") != required_stages:
+            issues.append(Issue(path, f"lifecycle_stages must equal {required_stages!r}"))
+        if metadata.get("required_templates") != required_templates:
+            issues.append(
+                Issue(path, "required_templates must equal the delivery template contract")
+            )
+
+        for stage in PHASES:
+            if f"## 阶段 {stage}：" not in content:
+                issues.append(Issue(path, f"missing lifecycle stage section: {stage}"))
+        if "## 演练通过条件\n" not in content:
+            issues.append(Issue(path, "end-to-end exercise must define pass conditions"))
+
+        linked_paths = {
+            resolved
+            for _, target in markdown_links(path)
+            if (resolved := resolve_local_link(path, target)) is not None
+        }
+        for template_path in sorted(required_template_paths - linked_paths):
+            issues.append(
+                Issue(path, f"exercise is missing delivery template: {template_path.name}")
+            )
+    return issues
+
+
 def check_navigation(root: Path) -> list[Issue]:
     issues: list[Issue] = []
     all_skills = set(skill_files(root))
@@ -404,6 +503,7 @@ def run_checks(root: Path) -> list[Issue]:
         check_skill_structure,
         check_links,
         check_delivery_templates,
+        check_end_to_end_exercises,
         check_navigation,
         check_markdown_format,
     )
@@ -422,8 +522,8 @@ def main() -> int:
             print(f"- {issue.render(root)}", file=sys.stderr)
         return 1
     print(
-        "Repository checks passed: YAML, skills, delivery templates, links, "
-        "navigation, and Markdown."
+        "Repository checks passed: YAML, skills, delivery templates, exercises, "
+        "links, navigation, and Markdown."
     )
     return 0
 
