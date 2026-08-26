@@ -1,0 +1,67 @@
+name: Retrospective improvement action
+description: Track one owned, time-bound, and verifiable improvement from a retrospective.
+title: "[Improvement]: "
+labels:
+  - type:improvement-action
+body:
+  - type: input
+    id: retrospective_backlink
+    attributes:
+      label: Retrospective backlink
+      description: Link exactly one source retrospective Issue.
+      placeholder: "https://github.com/owner/repository/issues/123"
+    validations:
+      required: true
+
+  - type: input
+    id: owner
+    attributes:
+      label: Owner
+      description: Name one accountable owner; do not list a committee or multiple handles.
+      placeholder: "@maintainer"
+    validations:
+      required: true
+
+  - type: input
+    id: due_date
+    attributes:
+      label: Due date
+      description: Use YYYY-MM-DD.
+      placeholder: "2026-09-30"
+    validations:
+      required: true
+
+  - type: textarea
+    id: definition_of_done
+    attributes:
+      label: Definition of done
+      description: State the observable implementation and verification evidence required for completion.
+    validations:
+      required: true
+
+  - type: textarea
+    id: effectiveness_criterion
+    attributes:
+      label: Effectiveness criterion
+      description: Define the measurable risk reduction or outcome; task completion alone is insufficient.
+    validations:
+      required: true
+
+  - type: input
+    id: observation_window
+    attributes:
+      label: Observation window
+      description: State when and for how long effectiveness will be observed.
+      placeholder: "30 days after deployment"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety_acknowledgement
+    attributes:
+      label: Public-record safety acknowledgement
+      options:
+        - label: This action contains no credentials, personal information, restricted logs, forensic material, or other sensitive incident details.
+          required: true
+    validations:
+      required: true

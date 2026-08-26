@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+from datetime import date
 from pathlib import Path
 
 from .common import LifecycleError, load_policy
@@ -14,6 +15,13 @@ from .incident import (
 from .package import package_bundle, render_package_result
 from .pr import validate_pr_event
 from .release import build_release_request, prepare_release, validate_release_inputs
+from .retrospective import (
+    audit_records,
+    build_retrospective_request,
+    render_retrospective,
+    write_audit_outputs,
+    write_retrospective_outputs,
+)
 
 
 def write_summary(lines: list[str]) -> None:
@@ -153,6 +161,82 @@ def transition_incident_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def render_retrospective_command(args: argparse.Namespace) -> int:
+    policy = load_policy(args.policy)
+    request = build_retrospective_request(
+        source=args.source,
+        stability_confirmed=args.stability_confirmed == "true",
+        timeline=args.timeline,
+        visible_information=args.visible_information,
+        contributing_factors=args.contributing_factors,
+        guard_effectiveness=args.guard_effectiveness,
+        uncertainties=args.uncertainties,
+        action_links=args.action_links,
+        actor=args.actor,
+        occurred_at=args.occurred_at,
+        apply=args.apply == "true",
+        confirmation=args.confirmation,
+    )
+    if args.validate_only:
+        print("retrospective inputs are valid")
+        return 0
+    if args.source_data is None or args.existing is None or args.output_dir is None:
+        raise LifecycleError(
+            "retrospective rendering requires source-data, existing, and output-dir"
+        )
+    result = render_retrospective(request, args.source_data, args.existing, policy)
+    plan_path, body_path = write_retrospective_outputs(result, args.output_dir, args.github_output)
+    status = "duplicate" if result.duplicate else "ready"
+    lines = [
+        "## Lifecycle retrospective",
+        "",
+        f"Status: **{status}**",
+        f"Source: `{result.source_key}`",
+        f"Due date: `{result.due_date.isoformat() if result.due_date else 'none'}`",
+        f"Plan: `{plan_path}`",
+        f"Body: `{body_path}`",
+    ]
+    if result.duplicate:
+        lines.extend(["", f"Existing retrospective: {result.duplicate_url}"])
+    write_summary(lines)
+    print("\n".join(lines))
+    return 0
+
+
+def audit_records_command(args: argparse.Namespace) -> int:
+    policy = load_policy(args.policy)
+    try:
+        as_of = date.fromisoformat(args.as_of)
+    except ValueError as error:
+        raise LifecycleError("audit as-of must be an ISO date") from error
+    findings = audit_records(args.issues, args.releases, policy, as_of)
+    write_audit_outputs(findings, args.output)
+    lines = [
+        "## Lifecycle record audit",
+        "",
+        f"As of: `{as_of.isoformat()}`",
+        f"Overdue findings: **{len(findings)}**",
+    ]
+    if findings:
+        lines.extend(
+            [
+                "",
+                "| Kind | Record | Due | Detail |",
+                "| --- | --- | --- | --- |",
+                *(
+                    f"| {item.kind} | [{item.record}]({item.url}) | "
+                    f"{item.due_date.isoformat()} | {item.detail} |"
+                    for item in findings
+                ),
+            ]
+        )
+    else:
+        lines.extend(["", "No overdue retrospective or improvement-action records found."])
+    write_summary(lines)
+    print("\n".join(lines))
+    return 1 if findings else 0
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -210,6 +294,41 @@ def parse_args() -> argparse.Namespace:
     incident_parser.add_argument("--output-dir", type=Path)
     incident_parser.add_argument("--github-output", type=Path)
     incident_parser.set_defaults(handler=transition_incident_command)
+
+    retrospective_parser = subparsers.add_parser(
+        "render-retrospective", help="validate and render an incident or release retrospective"
+    )
+    retrospective_parser.add_argument("--policy", type=Path, required=True)
+    retrospective_parser.add_argument("--source", required=True)
+    retrospective_parser.add_argument(
+        "--stability-confirmed", choices=("true", "false"), required=True
+    )
+    retrospective_parser.add_argument("--timeline", required=True)
+    retrospective_parser.add_argument("--visible-information", required=True)
+    retrospective_parser.add_argument("--contributing-factors", required=True)
+    retrospective_parser.add_argument("--guard-effectiveness", required=True)
+    retrospective_parser.add_argument("--uncertainties", required=True)
+    retrospective_parser.add_argument("--action-links", required=True)
+    retrospective_parser.add_argument("--actor", required=True)
+    retrospective_parser.add_argument("--occurred-at", required=True)
+    retrospective_parser.add_argument("--apply", choices=("true", "false"), required=True)
+    retrospective_parser.add_argument("--confirmation", default="")
+    retrospective_parser.add_argument("--validate-only", action="store_true")
+    retrospective_parser.add_argument("--source-data", type=Path)
+    retrospective_parser.add_argument("--existing", type=Path)
+    retrospective_parser.add_argument("--output-dir", type=Path)
+    retrospective_parser.add_argument("--github-output", type=Path)
+    retrospective_parser.set_defaults(handler=render_retrospective_command)
+
+    audit_parser = subparsers.add_parser(
+        "audit-records", help="report overdue retrospective and improvement records"
+    )
+    audit_parser.add_argument("--policy", type=Path, required=True)
+    audit_parser.add_argument("--issues", type=Path, required=True)
+    audit_parser.add_argument("--releases", type=Path, required=True)
+    audit_parser.add_argument("--as-of", required=True)
+    audit_parser.add_argument("--output", type=Path, required=True)
+    audit_parser.set_defaults(handler=audit_records_command)
     return parser.parse_args()
 
 

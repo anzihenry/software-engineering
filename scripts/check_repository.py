@@ -176,6 +176,9 @@ def check_github_automation(root: Path) -> list[Issue]:
     documentation = root / "docs" / "github-lifecycle-automation.md"
     security_policy = root / "SECURITY.md"
     incident_form = github_root / "ISSUE_TEMPLATE" / "incident.yml"
+    improvement_form = github_root / "ISSUE_TEMPLATE" / "improvement-action.yml"
+    retrospective_workflow = workflows_root / "open-retrospective.yml"
+    audit_workflow = workflows_root / "audit-lifecycle-records.yml"
     for path in (
         policy,
         manifest,
@@ -183,6 +186,9 @@ def check_github_automation(root: Path) -> list[Issue]:
         documentation,
         security_policy,
         incident_form,
+        improvement_form,
+        retrospective_workflow,
+        audit_workflow,
     ):
         if not path.is_file():
             issues.append(Issue(path, "missing GitHub lifecycle automation file"))
@@ -227,6 +233,51 @@ def check_github_automation(root: Path) -> list[Issue]:
                             f"incident Issue Form field {field_name!r} must be required",
                         )
                     )
+
+    if improvement_form.is_file():
+        form = load_yaml(improvement_form, issues)
+        body = form.get("body") if isinstance(form, dict) else None
+        fields = (
+            {
+                item.get("id"): item
+                for item in body
+                if isinstance(item, dict) and isinstance(item.get("id"), str)
+            }
+            if isinstance(body, list)
+            else {}
+        )
+        required_fields = {
+            "retrospective_backlink",
+            "owner",
+            "due_date",
+            "definition_of_done",
+            "effectiveness_criterion",
+            "observation_window",
+        }
+        missing_fields = sorted(required_fields - set(fields))
+        if missing_fields:
+            issues.append(
+                Issue(
+                    improvement_form,
+                    f"improvement Issue Form is missing fields: {', '.join(missing_fields)}",
+                )
+            )
+        for field_name in required_fields & set(fields):
+            validations = fields[field_name].get("validations")
+            if not isinstance(validations, dict) or validations.get("required") is not True:
+                issues.append(
+                    Issue(
+                        improvement_form,
+                        f"improvement Issue Form field {field_name!r} must be required",
+                    )
+                )
+
+    if audit_workflow.is_file():
+        workflow = load_yaml(audit_workflow, issues)
+        triggers = workflow.get("on") if isinstance(workflow, dict) else None
+        schedules = triggers.get("schedule") if isinstance(triggers, dict) else None
+        if schedules != [{"cron": "0 2 * * 1"}]:
+            issues.append(Issue(audit_workflow, "lifecycle audit must run Mondays at 02:00 UTC"))
 
     manifest_files: list[str] = []
     if manifest.is_file():
