@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security and Privacy Incident Response"
+  short_description: "Coordinate security incidents and preserve evidence"
+  default_prompt: "Use $security-privacy-incident-response to coordinate containment, evidence preservation, privacy decisions, and recovery for this suspected incident."
