@@ -1,5 +1,10 @@
 ---
 name: service-health-monitoring
+metadata:
+  owner: operations-lead
+  scope: "Lifecycle phase 7: operations and support"
+  status: active
+  review_by: "2027-02-26"
 description: "定义、评估并改进反映用户体验和服务可靠性的健康信号与告警；适用于持续运行监测。"
 ---
 

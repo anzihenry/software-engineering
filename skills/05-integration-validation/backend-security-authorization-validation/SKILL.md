@@ -1,5 +1,10 @@
 ---
 name: backend-security-authorization-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证后端认证授权、租户隔离、输入边界和敏感数据控制；适用于合入前资源级权限、滥用路径和应用安全负向验证。"
 ---
 

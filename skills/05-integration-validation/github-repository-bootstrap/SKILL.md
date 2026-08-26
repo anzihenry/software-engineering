@@ -1,5 +1,10 @@
 ---
 name: github-repository-bootstrap
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "为新建或尚未治理的 GitHub 仓库建立可重复的安全设置：消费首次 Actions PR 的可信 check 交接，收紧 workflow token，配置 environments、strict required-check ruleset 与合并后删分支，并在明确授权后完成唯一的引导 PR；适用于首次仓库治理或后续审计，不用于日常 PR 合并。"
 ---
 

@@ -1,5 +1,10 @@
 ---
 name: release-recovery-planning
+metadata:
+  owner: technical-lead
+  scope: "Lifecycle phase 3: solution and planning"
+  status: active
+  review_by: "2027-02-26"
 description: "设计受控发布、观测、暂停及回滚或前滚恢复路径；适用于任何有生产或环境影响的变更。"
 ---
 

@@ -1,5 +1,10 @@
 ---
 name: opportunity-prioritization
+metadata:
+  owner: product-owner
+  scope: "Lifecycle phase 1: demand and opportunity"
+  status: active
+  review_by: "2027-02-26"
 description: "基于价值、风险、证据、成本和依赖，形成机会的透明排序建议；适用于业务负责人作优先级决定前。"
 ---
 

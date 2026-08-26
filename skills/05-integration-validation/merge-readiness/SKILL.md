@@ -1,5 +1,10 @@
 ---
 name: merge-readiness
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "汇总当前提交的门禁、评审、系统验证和豁免，判断是否满足项目的合入条件；适用于合并前最终确认。"
 ---
 

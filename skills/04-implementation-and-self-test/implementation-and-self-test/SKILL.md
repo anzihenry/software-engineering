@@ -1,5 +1,10 @@
 ---
 name: implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "按已批准设计实现最小可审查变更并完成与风险匹配的自测；适用于开发阶段的功能或缺陷交付。"
 ---
 

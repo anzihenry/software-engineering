@@ -1,5 +1,10 @@
 ---
 name: web-performance-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证 Web 加载与运行时性能是否满足项目预算并定位回归；适用于合入前关键页面、交互、资源、缓存和前端性能专项检查。"
 ---
 

@@ -1,5 +1,10 @@
 ---
 name: release-readiness
+metadata:
+  owner: release-manager
+  scope: "Lifecycle phase 6: release and change management"
+  status: active
+  review_by: "2027-02-26"
 description: "核对发布候选的版本、环境、审批、观测和恢复条件并给出 Go/No-Go 结论；适用于进入目标环境前。"
 ---
 

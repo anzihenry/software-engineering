@@ -1,5 +1,10 @@
 ---
 name: mobile-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "规划并汇总跨 iOS/Android/HarmonyOS 的移动端验证，或验证共享移动行为；适用于多平台一致性、整体设备矩阵和跨平台发布候选评估。"
 ---
 

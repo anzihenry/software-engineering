@@ -1,5 +1,10 @@
 ---
 name: backend-domain-data-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "实现并自测后端领域规则、事务和持久化变更；适用于业务不变量、数据模型、查询、并发写入、一致性或迁移准备。"
 ---
 

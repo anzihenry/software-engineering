@@ -1,5 +1,10 @@
 ---
 name: progressive-release-execution
+metadata:
+  owner: release-manager
+  scope: "Lifecycle phase 6: release and change management"
+  status: active
+  review_by: "2027-02-26"
 description: "在明确授权和预案下按批次推进受控发布并记录每一步；适用于灰度、金丝雀、开关或分批部署。"
 ---
 

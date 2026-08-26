@@ -1,5 +1,10 @@
 ---
 name: github-actions-bootstrap
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "为新建或尚未接入自动化的 GitHub 仓库建立可重复的 Actions CI/CD 基线：发现项目真实门禁，生成固定 `validate` check 的安全 CI，按已有交付能力选择 ci/artifact/deployment 模式，并用首次 PR 自动运行产出仓库治理所需的可信交接证据；适用于初始化 Actions，而非解释单次 CI 失败或执行日常发布。"
 ---
 

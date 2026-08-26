@@ -2,6 +2,8 @@
 
 按你当前所处的研发阶段选择目录；进入阶段后，再根据要完成的行为选择 SKILL。每个阶段的 workflow 也有同样的映射表。
 
+所有 SKILL 必须遵循[内容治理契约](../docs/content-governance.md)，在 frontmatter 的 `metadata` 映射中声明所有者、适用范围、状态和下次复审日期。`active` 内容可以按下表路由；`draft` 不得作为默认能力，`deprecated` 必须指向替代或删除条件。
+
 | 阶段 | 何时进入 | SKILL |
 | --- | --- | --- |
 | [01 需求与机会](01-demand-and-opportunity/) | 收到需求、反馈、缺陷或改进线索 | [登记与分诊](01-demand-and-opportunity/opportunity-intake/SKILL.md)、[问题界定](01-demand-and-opportunity/problem-framing/SKILL.md)、[机会排序](01-demand-and-opportunity/opportunity-prioritization/SKILL.md) |

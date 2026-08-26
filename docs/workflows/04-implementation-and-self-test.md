@@ -1,3 +1,10 @@
+---
+owner: implementation-lead
+scope: "Lifecycle phase 4: implementation and self-test"
+status: active
+review_by: "2027-02-26"
+---
+
 # 阶段 4：开发与自测
 
 ## 目标

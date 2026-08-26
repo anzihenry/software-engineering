@@ -1,5 +1,10 @@
 ---
 name: web-state-data-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "实现并自测 Web 路由、客户端状态和服务端数据交互；适用于涉及数据获取、缓存、认证、表单提交、竞态或恢复状态的前端任务。"
 ---
 

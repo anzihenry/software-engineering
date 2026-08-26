@@ -1,5 +1,10 @@
 ---
 name: github-release-management
+metadata:
+  owner: release-manager
+  scope: "Lifecycle phase 6: release and change management"
+  status: active
+  review_by: "2027-02-26"
 description: "在独立开发者或微型团队中，用 GitHub Actions、Environments、Deployments 和 Releases 编排发布候选、生产推进、健康判定、恢复与收口；适用于已合入版本准备交付目标环境或用户时。"
 ---
 

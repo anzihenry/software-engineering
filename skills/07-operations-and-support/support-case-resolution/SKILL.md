@@ -1,5 +1,10 @@
 ---
 name: support-case-resolution
+metadata:
+  owner: operations-lead
+  scope: "Lifecycle phase 7: operations and support"
+  status: active
+  review_by: "2027-02-26"
 description: "分诊和解决非事件级用户支持请求，沉淀知识并将重复问题回流为改进输入；适用于日常支持。"
 ---
 

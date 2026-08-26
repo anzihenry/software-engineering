@@ -1,5 +1,10 @@
 ---
 name: change-handoff-preparation
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "整理变更文档、测试证据和风险信息为可独立评审的交接材料；适用于发起 PR 或交给集成验证前。"
 ---
 

@@ -1,5 +1,10 @@
 ---
 name: data-and-configuration-change
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "为数据迁移、运行配置、权限或密钥变更制定受控实现和恢复方式；适用于有状态或敏感配置的开发变更。"
 ---
 

@@ -1,5 +1,10 @@
 ---
 name: backend-resilience-recovery-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证后端在依赖故障、超时、重启和部分失败下的降级与恢复；适用于合入前故障注入、重试、隔离、重放和恢复验证。"
 ---
 

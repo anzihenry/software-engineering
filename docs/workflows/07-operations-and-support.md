@@ -1,3 +1,10 @@
+---
+owner: operations-lead
+scope: "Lifecycle phase 7: operations and support"
+status: active
+review_by: "2027-02-26"
+---
+
 # 阶段 7：运行与支持
 
 ## 目标

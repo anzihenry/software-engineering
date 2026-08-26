@@ -1,5 +1,10 @@
 ---
 name: mobile-cli-execution
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "通过 Apple、Android 或 HarmonyOS 官方命令行工具执行移动端环境检查、构建、测试、模拟器/设备操作和证据采集；适用于 Agent 需要实际运行平台工具链时，不替代实现或验证结论。"
 ---
 

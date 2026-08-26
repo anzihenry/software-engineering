@@ -1,5 +1,10 @@
 ---
 name: delivery-scope-alignment
+metadata:
+  owner: delivery-lead
+  scope: "Lifecycle phase 2: refinement and initiation"
+  status: active
+  review_by: "2027-02-26"
 description: "对齐交付范围、跨团队依赖、责任与待决事项，判断需求是否可进入方案阶段；适用于立项前协同。"
 ---
 

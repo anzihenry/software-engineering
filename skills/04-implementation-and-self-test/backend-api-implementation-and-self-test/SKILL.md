@@ -1,5 +1,10 @@
 ---
 name: backend-api-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "实现并自测后端同步入口与 API 契约；适用于 HTTP/RPC 端点、输入校验、认证授权、错误语义、分页或版本兼容变更。"
 ---
 

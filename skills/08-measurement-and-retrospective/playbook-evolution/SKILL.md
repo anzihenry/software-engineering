@@ -1,5 +1,10 @@
 ---
 name: playbook-evolution
+metadata:
+  owner: process-owner
+  scope: "Lifecycle phase 8: measurement and retrospective"
+  status: active
+  review_by: "2027-02-26"
 description: "基于已验证的实践更新研发准则、workflow、SKILL 或自动化，并定义试行、所有者与复审。"
 ---
 

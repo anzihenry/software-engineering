@@ -1,5 +1,10 @@
 ---
 name: implementation-planning
+metadata:
+  owner: technical-lead
+  scope: "Lifecycle phase 3: solution and planning"
+  status: active
+  review_by: "2027-02-26"
 description: "将已选定的方案拆为可审查、可排序、可估算的实现工作并暴露不确定性；适用于开发启动前。"
 ---
 

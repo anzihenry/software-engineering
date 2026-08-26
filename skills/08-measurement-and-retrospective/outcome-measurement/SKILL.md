@@ -1,5 +1,10 @@
 ---
 name: outcome-measurement
+metadata:
+  owner: process-owner
+  scope: "Lifecycle phase 8: measurement and retrospective"
+  status: active
+  review_by: "2027-02-26"
 description: "使用明确口径和可信证据评估交付是否达成产品、可靠性或质量目标；适用于发布后的效果验证。"
 ---
 

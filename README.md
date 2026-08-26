@@ -25,9 +25,11 @@
 
 Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md)，当前覆盖 TypeScript 7、ArkTS、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20。
 
+workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见[内容治理](docs/content-governance.md)；过期内容由仓库自检阻止合入。
+
 ## 仓库自检
 
-仓库使用 Python 3.14 执行确定性的结构与格式门禁，覆盖 YAML 解析、SKILL frontmatter、交付物模板及追溯契约、端到端演练覆盖、目录与名称一致性、站内相对链接、导航/workflow 覆盖以及 Markdown 基础格式。
+仓库使用 Python 3.14 执行确定性的结构与格式门禁，覆盖 YAML 解析、SKILL frontmatter、workflow/SKILL 内容治理和复审期限、交付物模板及追溯契约、端到端演练覆盖、目录与名称一致性、站内相对链接、导航/workflow 覆盖以及 Markdown 基础格式。
 
 ```sh
 python3 -m pip install --requirement requirements-dev.txt

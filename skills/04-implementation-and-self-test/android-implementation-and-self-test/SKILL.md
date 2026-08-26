@@ -1,5 +1,10 @@
 ---
 name: android-implementation-and-self-test
+metadata:
+  owner: implementation-lead
+  scope: "Lifecycle phase 4: implementation and self-test"
+  status: active
+  review_by: "2027-02-26"
 description: "实现并自测 Android 原生或平台专属变更；适用于涉及组件生命周期、协程、权限、后台执行、本地数据或 Gradle 变体的开发任务。"
 ---
 

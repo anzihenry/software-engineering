@@ -1,5 +1,10 @@
 ---
 name: security-privacy-incident-response
+metadata:
+  owner: operations-lead
+  scope: "Lifecycle phase 7: operations and support"
+  status: active
+  review_by: "2027-02-26"
 description: "响应疑似或确认的入侵、凭据泄露、敏感数据暴露及隐私事件，协调遏制、证据保全、调查、通知决策和恢复；不用于普通可用性事故。"
 ---
 

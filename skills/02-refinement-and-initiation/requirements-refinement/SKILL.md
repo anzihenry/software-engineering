@@ -1,5 +1,10 @@
 ---
 name: requirements-refinement
+metadata:
+  owner: delivery-lead
+  scope: "Lifecycle phase 2: refinement and initiation"
+  status: active
+  review_by: "2027-02-26"
 description: "将问题框架收敛为可测试的最小交付项、验收标准和非功能要求；适用于立项前的需求澄清。"
 ---
 

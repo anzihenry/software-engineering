@@ -1,5 +1,10 @@
 ---
 name: problem-framing
+metadata:
+  owner: product-owner
+  scope: "Lifecycle phase 1: demand and opportunity"
+  status: active
+  review_by: "2027-02-26"
 description: "将已登记的机会界定为可验证的问题、目标、范围和成功指标；适用于需求或改进进入立项前的澄清。"
 ---
 

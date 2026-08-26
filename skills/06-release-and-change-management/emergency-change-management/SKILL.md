@@ -1,5 +1,10 @@
 ---
 name: emergency-change-management
+metadata:
+  owner: release-manager
+  scope: "Lifecycle phase 6: release and change management"
+  status: active
+  review_by: "2027-02-26"
 description: "为正在缓解严重生产影响或紧迫安全风险的最小变更保留受控快速通道；适用于标准发布时序无法满足恢复目标的紧急变更。"
 ---
 

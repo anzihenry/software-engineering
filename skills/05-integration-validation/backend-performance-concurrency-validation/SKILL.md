@@ -1,5 +1,10 @@
 ---
 name: backend-performance-concurrency-validation
+metadata:
+  owner: quality-lead
+  scope: "Lifecycle phase 5: integration validation"
+  status: active
+  review_by: "2027-02-26"
 description: "验证后端吞吐、延迟、资源和并发正确性是否满足预算；适用于合入前负载、争用、容量、背压和性能回归检查。"
 ---
 

@@ -1,5 +1,10 @@
 ---
 name: release-candidate-preparation
+metadata:
+  owner: release-manager
+  scope: "Lifecycle phase 6: release and change management"
+  status: active
+  review_by: "2027-02-26"
 description: "把已验证提交固化为可追溯、可重复提升的发布候选及发布清单；适用于创建版本、标签、签名制品、镜像或 GitHub Draft Release 之前。"
 ---
 

@@ -8,6 +8,7 @@ import re
 import sys
 from collections.abc import Iterable
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -76,10 +77,12 @@ END_TO_END_EXERCISES = {
     "medium-risk-feature.md": ("medium", "feature"),
     "high-risk-data-permission-change.md": ("high", "data-permission-change"),
 }
+CONTENT_STATUSES = frozenset({"draft", "active", "deprecated"})
 FRONTMATTER_PATTERN = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 HEADING_PATTERN = re.compile(r"^(#{1,6})\s+\S")
 LINK_PATTERN = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+ISO_DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 @dataclass(frozen=True, order=True)
@@ -118,6 +121,68 @@ def check_yaml(root: Path) -> list[Issue]:
 
 def skill_files(root: Path) -> list[Path]:
     return sorted((root / "skills").glob("[0-9][0-9]-*/*/SKILL.md"))
+
+
+def governed_content_files(root: Path) -> list[Path]:
+    workflows = sorted((root / "docs" / "workflows").glob("*.md"))
+    return skill_files(root) + workflows
+
+
+def check_content_governance(root: Path, as_of: date | None = None) -> list[Issue]:
+    issues: list[Issue] = []
+    check_date = as_of or date.today()
+    for path in governed_content_files(root):
+        match = FRONTMATTER_PATTERN.match(path.read_text(encoding="utf-8"))
+        if match is None:
+            issues.append(Issue(path, "governed content must start with YAML frontmatter"))
+            continue
+        try:
+            metadata = yaml.safe_load(match.group(1))
+        except yaml.YAMLError as error:
+            issues.append(Issue(path, f"invalid governance frontmatter: {error}"))
+            continue
+        if not isinstance(metadata, dict):
+            issues.append(Issue(path, "governance frontmatter must be a mapping"))
+            continue
+
+        governance = metadata.get("metadata") if path.name == "SKILL.md" else metadata
+        if not isinstance(governance, dict):
+            issues.append(Issue(path, "SKILL metadata must contain a governance mapping"))
+            continue
+
+        owner = governance.get("owner")
+        if not isinstance(owner, str) or not SLUG_PATTERN.fullmatch(owner):
+            issues.append(Issue(path, "owner must be a non-empty lowercase kebab-case role"))
+
+        scope = governance.get("scope")
+        if not isinstance(scope, str) or not scope.strip():
+            issues.append(Issue(path, "scope must be a non-empty string"))
+
+        status = governance.get("status")
+        if not isinstance(status, str) or status not in CONTENT_STATUSES:
+            allowed = ", ".join(sorted(CONTENT_STATUSES))
+            issues.append(Issue(path, f"status must be one of: {allowed}"))
+
+        review_by = governance.get("review_by")
+        if not isinstance(review_by, str):
+            issues.append(Issue(path, "review_by must be a quoted YYYY-MM-DD string"))
+            continue
+        if not ISO_DATE_PATTERN.fullmatch(review_by):
+            issues.append(Issue(path, "review_by must use YYYY-MM-DD format"))
+            continue
+        try:
+            review_date = date.fromisoformat(review_by)
+        except ValueError:
+            issues.append(Issue(path, "review_by must be a valid YYYY-MM-DD date"))
+            continue
+        if review_date < check_date:
+            issues.append(
+                Issue(
+                    path,
+                    f"content review is overdue: {review_by} < {check_date.isoformat()}",
+                )
+            )
+    return issues
 
 
 def check_skill_structure(root: Path) -> list[Issue]:
@@ -497,7 +562,7 @@ def check_markdown_format(root: Path) -> list[Issue]:
     return issues
 
 
-def run_checks(root: Path) -> list[Issue]:
+def run_checks(root: Path, as_of: date | None = None) -> list[Issue]:
     checks = (
         check_yaml,
         check_skill_structure,
@@ -507,23 +572,31 @@ def run_checks(root: Path) -> list[Issue]:
         check_navigation,
         check_markdown_format,
     )
-    return sorted(issue for check in checks for issue in check(root))
+    issues = [issue for check in checks for issue in check(root)]
+    issues.extend(check_content_governance(root, as_of=as_of))
+    return sorted(issues)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument(
+        "--as-of",
+        type=date.fromisoformat,
+        default=date.today(),
+        help="check content review dates as of YYYY-MM-DD (default: today)",
+    )
     args = parser.parse_args()
     root = args.root.resolve()
-    issues = run_checks(root)
+    issues = run_checks(root, as_of=args.as_of)
     if issues:
         print(f"Repository checks failed with {len(issues)} issue(s):", file=sys.stderr)
         for issue in issues:
             print(f"- {issue.render(root)}", file=sys.stderr)
         return 1
     print(
-        "Repository checks passed: YAML, skills, delivery templates, exercises, "
-        "links, navigation, and Markdown."
+        "Repository checks passed: YAML, skills, content governance, delivery templates, "
+        "exercises, links, navigation, and Markdown."
     )
     return 0
 
