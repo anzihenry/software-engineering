@@ -13,6 +13,12 @@
 - Keep SKILL descriptions discriminating and instructions focused on decisions that improve execution.
 - Update workflow and `skills/README.md` routing whenever a SKILL is added, removed, or changes responsibility.
 
+## GitHub operations
+
+- Use the GitHub CLI (`gh`) as the preferred interface for pull requests, issues, Actions, releases, repository settings, and other GitHub API operations.
+- Use `git` for local commits, branches, fetches, pulls, and pushes; these Git data operations are not replaced by `gh`.
+- If `gh` is unavailable or unauthenticated, stop the GitHub API operation and request installation or authentication. Do not silently fall back to a connector, browser automation, direct API calls, or the GitHub web UI unless the user explicitly authorizes that fallback.
+
 ## Repository checks
 
 - Install development tools with `python3 -m pip install --requirement requirements-dev.txt`.
