@@ -1,11 +1,18 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 from datetime import date
 from pathlib import Path
 
+from .adoption import (
+    apply_install,
+    inspect_local_install,
+    plan_install,
+    render_install_plan,
+)
 from .common import LifecycleError, load_policy
 from .incident import (
     build_transition_request,
@@ -15,6 +22,15 @@ from .incident import (
 from .package import package_bundle, render_package_result
 from .pr import validate_pr_event
 from .release import build_release_request, prepare_release, validate_release_inputs
+from .repository import (
+    GhClient,
+    apply_bootstrap,
+    build_bootstrap_plan,
+    discover_repository,
+    inspect_remote_repository,
+    render_bootstrap_plan,
+    render_findings,
+)
 from .retrospective import (
     audit_records,
     build_retrospective_request,
@@ -52,6 +68,88 @@ def package(args: argparse.Namespace) -> int:
     digest = package_bundle(args.root, args.manifest, args.output)
     print(render_package_result(args.output, digest))
     return 0
+
+
+def _write_output(path: Path | None, content: str) -> None:
+    if path is not None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content + "\n", encoding="utf-8")
+    print(content)
+
+
+def install_command(args: argparse.Namespace) -> int:
+    plan, files = plan_install(
+        args.root,
+        args.manifest,
+        args.target,
+        repository=args.repository,
+        default_branch=args.default_branch,
+    )
+    if not args.dry_run:
+        apply_install(plan, files, confirmation=args.confirmation)
+    _write_output(args.output, render_install_plan(plan, dry_run=args.dry_run))
+    return 1 if plan.conflicts else 0
+
+
+def doctor_command(args: argparse.Namespace) -> int:
+    client = GhClient()
+    snapshot = discover_repository(client, args.repository, evidence_pr=args.evidence_pr)
+    policy = load_policy(args.root / ".github/lifecycle-policy.json")
+    findings = (
+        *inspect_local_install(
+            args.root,
+            args.manifest,
+            repository=args.repository,
+            expected_default_branch=snapshot.default_branch,
+        ),
+        *inspect_remote_repository(snapshot, policy),
+    )
+    _write_output(args.output, render_findings(findings))
+    return 1 if findings else 0
+
+
+def bootstrap_command(args: argparse.Namespace) -> int:
+    client = GhClient()
+    snapshot = discover_repository(client, args.repository, evidence_pr=args.evidence_pr)
+    policy = load_policy(args.root / ".github/lifecycle-policy.json")
+    local_findings = inspect_local_install(
+        args.root,
+        args.manifest,
+        repository=args.repository,
+        expected_default_branch=snapshot.default_branch,
+    )
+    if local_findings:
+        raise LifecycleError(
+            "bootstrap local installation is invalid: "
+            + "; ".join(finding.detail for finding in local_findings)
+        )
+    plan = build_bootstrap_plan(snapshot, policy)
+    plan_output = render_bootstrap_plan(plan, dry_run=args.dry_run)
+    if args.dry_run or plan.blockers:
+        _write_output(args.output, plan_output)
+        return 1 if plan.blockers else 0
+    apply_bootstrap(client, plan, confirmation=args.confirmation)
+    verified = discover_repository(client, args.repository, evidence_pr=args.evidence_pr)
+    findings = inspect_remote_repository(verified, policy)
+    result = json.dumps(
+        {
+            "schema_version": 1,
+            "mode": "apply",
+            "repository": args.repository,
+            "applied_actions": [
+                {"kind": action.kind, "detail": action.detail} for action in plan.actions
+            ],
+            "verified": not findings,
+            "findings": [
+                {"scope": item.scope, "code": item.code, "detail": item.detail} for item in findings
+            ],
+        },
+        ensure_ascii=False,
+        indent=2,
+        sort_keys=True,
+    )
+    _write_output(args.output, result)
+    return 1 if findings else 0
 
 
 def prepare_release_command(args: argparse.Namespace) -> int:
@@ -252,6 +350,53 @@ def parse_args() -> argparse.Namespace:
     package_parser.add_argument("--manifest", type=Path, required=True)
     package_parser.add_argument("--output", type=Path, required=True)
     package_parser.set_defaults(handler=package)
+
+    install_parser = subparsers.add_parser(
+        "install", help="plan or install the lifecycle automation in another repository"
+    )
+    install_parser.add_argument("--root", type=Path, default=Path.cwd())
+    install_parser.add_argument(
+        "--manifest",
+        type=Path,
+        default=Path("automation/github-lifecycle-manifest.json"),
+    )
+    install_parser.add_argument("--target", type=Path, required=True)
+    install_parser.add_argument("--repository", required=True)
+    install_parser.add_argument("--default-branch", required=True)
+    install_parser.add_argument("--dry-run", action=argparse.BooleanOptionalAction, default=True)
+    install_parser.add_argument("--confirmation", default="")
+    install_parser.add_argument("--output", type=Path)
+    install_parser.set_defaults(handler=install_command)
+
+    doctor_parser = subparsers.add_parser(
+        "doctor", help="inspect a local lifecycle installation and GitHub repository"
+    )
+    doctor_parser.add_argument("--root", type=Path, default=Path.cwd())
+    doctor_parser.add_argument(
+        "--manifest",
+        type=Path,
+        default=Path("automation/github-lifecycle-manifest.json"),
+    )
+    doctor_parser.add_argument("--repository", required=True)
+    doctor_parser.add_argument("--evidence-pr", type=int)
+    doctor_parser.add_argument("--output", type=Path)
+    doctor_parser.set_defaults(handler=doctor_command)
+
+    bootstrap_parser = subparsers.add_parser(
+        "bootstrap", help="plan or apply lifecycle GitHub repository settings"
+    )
+    bootstrap_parser.add_argument("--root", type=Path, default=Path.cwd())
+    bootstrap_parser.add_argument(
+        "--manifest",
+        type=Path,
+        default=Path("automation/github-lifecycle-manifest.json"),
+    )
+    bootstrap_parser.add_argument("--repository", required=True)
+    bootstrap_parser.add_argument("--evidence-pr", type=int, required=True)
+    bootstrap_parser.add_argument("--dry-run", action=argparse.BooleanOptionalAction, default=True)
+    bootstrap_parser.add_argument("--confirmation", default="")
+    bootstrap_parser.add_argument("--output", type=Path)
+    bootstrap_parser.set_defaults(handler=bootstrap_command)
 
     release_parser = subparsers.add_parser(
         "prepare-release", help="validate and render a Draft Release candidate"

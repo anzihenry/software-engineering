@@ -19,7 +19,7 @@
 
 通过[端到端研发演练](docs/exercises/README.md)检验低、中、高风险变更能否实际走通八阶段门禁、证据和回流。
 
-[GitHub 生命周期自动化](docs/github-lifecycle-automation.md)将 PR、发布、普通事故和复盘逐步固化为最小权限、可复制的原生编排。
+[GitHub 生命周期自动化](docs/github-lifecycle-automation.md)将 PR、发布、普通事故和复盘逐步固化为最小权限、可复制的原生编排，并提供跨项目 `install`、只读 `doctor` 和显式 `bootstrap`。
 
 开发与验证阶段在生命周期主轴下进一步按移动端、Web 前端和后端划分领域 SKILL；移动端区分跨平台共享层与 iOS/Android/HarmonyOS 平台层，并通过独立 CLI 执行层调用三端官方工具链、管理测试目标和留存原始证据；Web 前端区分 UI/状态开发和功能/视觉/性能验证，后端区分 API/数据/异步开发和契约/一致性/性能/韧性/安全验证。跨领域工作仍由阶段通用 SKILL 编排，避免领域流程与统一质量门禁脱节。
 

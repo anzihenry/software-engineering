@@ -17,11 +17,13 @@
     "scripts/__init__.py",
     "scripts/github_lifecycle/__init__.py",
     "scripts/github_lifecycle/__main__.py",
+    "scripts/github_lifecycle/adoption.py",
     "scripts/github_lifecycle/common.py",
     "scripts/github_lifecycle/incident.py",
     "scripts/github_lifecycle/package.py",
     "scripts/github_lifecycle/pr.py",
     "scripts/github_lifecycle/release.py",
+    "scripts/github_lifecycle/repository.py",
     "scripts/github_lifecycle/retrospective.py"
   ]
 }
