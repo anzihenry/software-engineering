@@ -5,7 +5,9 @@ import tempfile
 import unittest
 from datetime import UTC, date, datetime
 from pathlib import Path
+from unittest.mock import patch
 
+from scripts.github_lifecycle.__main__ import main
 from scripts.github_lifecycle.common import LifecycleError, load_policy
 from scripts.github_lifecycle.incident import (
     build_transition_request,
@@ -28,6 +30,68 @@ from scripts.github_lifecycle.retrospective import (
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_PATH = ROOT / ".github" / "lifecycle-policy.json"
+
+
+class LifecycleCliTests(unittest.TestCase):
+    def test_release_validate_only_cli(self) -> None:
+        arguments = [
+            "github-lifecycle",
+            "prepare-release",
+            "--policy",
+            str(POLICY_PATH),
+            "--version",
+            "v1.2.3",
+            "--source-sha",
+            "a" * 40,
+            "--risk-level",
+            "low",
+            "--change-records",
+            "PR #1",
+            "--summary",
+            "Candidate",
+            "--repository",
+            "example/repository",
+            "--actor",
+            "maintainer",
+            "--run-url",
+            "https://example.test/runs/1",
+            "--created-at",
+            "2026-08-27T00:00:00Z",
+            "--validate-only",
+        ]
+
+        with patch("sys.argv", arguments):
+            self.assertEqual(main(), 0)
+
+    def test_incident_validate_only_cli_accepts_operation_id(self) -> None:
+        arguments = [
+            "github-lifecycle",
+            "transition-incident",
+            "--policy",
+            str(POLICY_PATH),
+            "--issue-number",
+            "42",
+            "--target-status",
+            "mitigating",
+            "--decision",
+            "Proceed",
+            "--evidence-links",
+            "https://example.test/evidence",
+            "--actor",
+            "maintainer",
+            "--occurred-at",
+            "2026-08-27T00:00:00Z",
+            "--security-risk",
+            "false",
+            "--apply",
+            "false",
+            "--operation-id",
+            "gh-123456",
+            "--validate-only",
+        ]
+
+        with patch("sys.argv", arguments):
+            self.assertEqual(main(), 0)
 
 
 def pr_body(risk: str, omitted_section: str | None = None) -> str:
@@ -279,6 +343,41 @@ class ReleasePreparationTests(unittest.TestCase):
             manifest = json.loads(result.manifest.read_text(encoding="utf-8"))
             self.assertEqual(manifest["required_checks"], {"validate": "success"})
 
+    def test_paginated_check_runs_are_merged(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            comparison, checks, tags, releases = self.github_state(root)
+            checks.write_text(
+                json.dumps(
+                    [
+                        {"total_count": 1, "check_runs": []},
+                        {
+                            "total_count": 1,
+                            "check_runs": [
+                                {
+                                    "name": "validate",
+                                    "status": "completed",
+                                    "conclusion": "success",
+                                }
+                            ],
+                        },
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            result = prepare_release(
+                self.request(),
+                self.policy,
+                comparison,
+                checks,
+                tags,
+                releases,
+                root / "output",
+            )
+
+            self.assertTrue(result.manifest.is_file())
+
     def test_unreachable_sha_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -319,6 +418,7 @@ class ReleasePreparationTests(unittest.TestCase):
         cases = (
             ({"ref": "refs/tags/v1.2.3"}, None, "tag already exists"),
             (None, {"tagName": "v1.2.3"}, "Release already exists"),
+            (None, {"tag_name": "v1.2.3"}, "Release already exists"),
         )
         for tag, release, message in cases:
             with self.subTest(message=message), tempfile.TemporaryDirectory() as directory:
@@ -356,6 +456,7 @@ class IncidentTransitionTests(unittest.TestCase):
             restricted_event_id="SEC-RESTRICTED-42" if security_risk else "",
             apply=apply,
             confirmation="incident-42" if apply else "",
+            operation_id="gh-123456",
             policy=self.policy,
         )
 
@@ -366,6 +467,7 @@ class IncidentTransitionTests(unittest.TestCase):
         *,
         state: str | None = None,
         severity: str = "SEV2",
+        comments: list[dict[str, str]] | None = None,
     ) -> Path:
         path = root / "issue.json"
         path.write_text(
@@ -378,6 +480,7 @@ class IncidentTransitionTests(unittest.TestCase):
                         {"name": "type:incident"},
                         {"name": f"status:{status}"},
                     ],
+                    "comments": comments or [],
                 }
             ),
             encoding="utf-8",
@@ -430,6 +533,7 @@ class IncidentTransitionTests(unittest.TestCase):
             restricted_event_id="PRIV-RESTRICTED-42",
             apply=False,
             confirmation="",
+            operation_id="gh-123456",
             policy=self.policy,
         )
         with tempfile.TemporaryDirectory() as directory:
@@ -454,6 +558,7 @@ class IncidentTransitionTests(unittest.TestCase):
                 restricted_event_id="",
                 apply=False,
                 confirmation="",
+                operation_id="gh-123456",
                 policy=self.policy,
             )
 
@@ -470,6 +575,7 @@ class IncidentTransitionTests(unittest.TestCase):
                 restricted_event_id="",
                 apply=True,
                 confirmation="wrong",
+                operation_id="gh-123456",
                 policy=self.policy,
             )
 
@@ -482,6 +588,60 @@ class IncidentTransitionTests(unittest.TestCase):
 
             self.assertTrue(result.noop)
             self.assertEqual(result.comment, "")
+
+    def test_retry_after_comment_only_skips_duplicate_comment(self) -> None:
+        marker = (
+            "<!-- lifecycle-transition operation-id=gh-123456 "
+            "issue=42 from=investigating to=mitigating -->"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result = transition_incident(
+                self.issue(root, "investigating", comments=[{"body": marker}]),
+                self.request("mitigating"),
+                self.policy,
+            )
+
+            self.assertFalse(result.comment_required)
+            self.assertTrue(result.label_update_required)
+            self.assertEqual(result.issue_action, "none")
+            self.assertFalse(result.noop)
+
+    def test_retry_after_close_label_repairs_open_state(self) -> None:
+        marker = (
+            "<!-- lifecycle-transition operation-id=gh-123456 issue=42 from=recovered to=closed -->"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result = transition_incident(
+                self.issue(
+                    root,
+                    "closed",
+                    state="OPEN",
+                    comments=[{"body": marker}],
+                ),
+                self.request("closed"),
+                self.policy,
+            )
+
+            self.assertFalse(result.comment_required)
+            self.assertFalse(result.label_update_required)
+            self.assertEqual(result.issue_action, "close")
+            self.assertFalse(result.noop)
+
+    def test_inconsistent_target_without_marker_gets_reconciliation_record(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            result = transition_incident(
+                self.issue(root, "closed", state="OPEN"),
+                self.request("closed"),
+                self.policy,
+            )
+
+            self.assertTrue(result.comment_required)
+            self.assertFalse(result.label_update_required)
+            self.assertEqual(result.issue_action, "close")
+            self.assertIn("state reconciliation", result.comment)
 
     def test_transition_outputs_contain_one_current_and_target_label(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -497,6 +657,8 @@ class IncidentTransitionTests(unittest.TestCase):
             plan = json.loads(plan_path.read_text(encoding="utf-8"))
             self.assertEqual(plan["current_label"], "status:investigating")
             self.assertEqual(plan["target_label"], "status:mitigating")
+            self.assertTrue(plan["comment_required"])
+            self.assertTrue(plan["label_update_required"])
             self.assertIn("severity:sev2", plan["severity_label"])
             self.assertIn("Incident state transition", comment_path.read_text(encoding="utf-8"))
 
@@ -600,6 +762,21 @@ class RetrospectiveTests(unittest.TestCase):
             result = render_retrospective(self.request(stable=True), source, existing, self.policy)
             self.assertEqual(result.due_date, date(2026, 9, 2))
 
+    def test_recovered_incident_without_transition_time_requires_confirmation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = self.incident_source(root)
+            raw = json.loads(source.read_text(encoding="utf-8"))
+            raw["comments"] = []
+            source.write_text(json.dumps(raw), encoding="utf-8")
+            existing = self.write_json(root, "existing.json", [])
+
+            with self.assertRaisesRegex(LifecycleError, "no recovery transition timestamp"):
+                render_retrospective(self.request(), source, existing, self.policy)
+
+            result = render_retrospective(self.request(stable=True), source, existing, self.policy)
+            self.assertEqual(result.due_date, date(2026, 9, 2))
+
     def test_duplicate_retrospective_returns_existing_issue(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -683,6 +860,12 @@ class RetrospectiveTests(unittest.TestCase):
                             {"name": "status:recovered"},
                             {"name": "severity:sev1"},
                         ],
+                        "comments": [
+                            {
+                                "body": "- Current status: `recovered`\n"
+                                "- Time: `2026-08-01T00:00:00Z`"
+                            }
+                        ],
                     },
                     {
                         "number": 43,
@@ -703,6 +886,188 @@ class RetrospectiveTests(unittest.TestCase):
                 {"retrospective-missing", "improvement-action-overdue"},
             )
 
+    def test_audit_uses_recovery_transition_instead_of_updated_at(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            issues = self.write_json(
+                root,
+                "issues.json",
+                [
+                    {
+                        "number": 42,
+                        "state": "OPEN",
+                        "html_url": "https://example.test/issues/42",
+                        "updated_at": "2026-08-25T00:00:00Z",
+                        "body": "### Severity\n\nSEV1\n",
+                        "labels": [
+                            {"name": "type:incident"},
+                            {"name": "status:recovered"},
+                            {"name": "severity:sev1"},
+                        ],
+                    }
+                ],
+            )
+            comments = self.write_json(
+                root,
+                "comments.json",
+                [
+                    [
+                        {
+                            "issue_url": "https://api.github.test/repos/example/issues/42",
+                            "body": "- Current status: `recovered`\n- Time: `2026-08-01T00:00:00Z`",
+                        }
+                    ]
+                ],
+            )
+            releases = self.write_json(root, "releases.json", [])
+
+            findings = audit_records(
+                issues,
+                releases,
+                self.policy,
+                date(2026, 8, 26),
+                comments,
+            )
+
+            self.assertEqual(len(findings), 1)
+            self.assertEqual(findings[0].kind, "retrospective-missing")
+            self.assertEqual(findings[0].due_date, date(2026, 8, 8))
+
+    def test_audit_reports_invalid_record_and_continues(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            issues = self.write_json(
+                root,
+                "issues.json",
+                [
+                    {
+                        "number": 43,
+                        "state": "OPEN",
+                        "html_url": "https://example.test/issues/43",
+                        "body": "### Due date\n\nnot-a-date\n",
+                        "labels": [{"name": "type:improvement-action"}],
+                    },
+                    {
+                        "number": 44,
+                        "state": "OPEN",
+                        "html_url": "https://example.test/issues/44",
+                        "body": "### Due date\n\n2026-08-01\n",
+                        "labels": [{"name": "type:improvement-action"}],
+                    },
+                ],
+            )
+            releases = self.write_json(root, "releases.json", [])
+
+            findings = audit_records(issues, releases, self.policy, date(2026, 8, 26))
+
+            self.assertEqual(
+                {finding.kind for finding in findings},
+                {"record-invalid", "improvement-action-overdue"},
+            )
+            invalid = next(finding for finding in findings if finding.kind == "record-invalid")
+            self.assertIsNone(invalid.due_date)
+
+    def test_audit_reports_missing_recovery_timestamp_as_invalid(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            issues = self.write_json(
+                root,
+                "issues.json",
+                [
+                    {
+                        "number": 42,
+                        "state": "open",
+                        "html_url": "https://example.test/issues/42",
+                        "updated_at": "2026-08-01T00:00:00Z",
+                        "body": "### Severity\n\nSEV1\n",
+                        "labels": [
+                            {"name": "type:incident"},
+                            {"name": "status:recovered"},
+                            {"name": "severity:sev1"},
+                        ],
+                    }
+                ],
+            )
+            releases = self.write_json(root, "releases.json", [])
+
+            findings = audit_records(issues, releases, self.policy, date(2026, 8, 26))
+
+            self.assertEqual(len(findings), 1)
+            self.assertEqual(findings[0].kind, "record-invalid")
+            self.assertIn("no recovery transition timestamp", findings[0].detail)
+
+    def test_audit_reports_duplicate_retrospective_sources(self) -> None:
+        body = (
+            "<!-- lifecycle-retrospective\n"
+            "schema-version: 1\nsource: incident:42\ndue-date: 2026-08-08\n-->"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            issues = self.write_json(
+                root,
+                "issues.json",
+                [
+                    {
+                        "number": number,
+                        "state": "CLOSED",
+                        "html_url": f"https://example.test/issues/{number}",
+                        "body": body,
+                        "labels": [{"name": "type:retrospective"}],
+                    }
+                    for number in (99, 100)
+                ],
+            )
+            releases = self.write_json(root, "releases.json", [])
+
+            findings = audit_records(issues, releases, self.policy, date(2026, 8, 26))
+
+            self.assertEqual(len(findings), 1)
+            self.assertEqual(findings[0].kind, "retrospective-duplicate")
+
+    def test_invalid_retrospective_does_not_satisfy_incident_requirement(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            issues = self.write_json(
+                root,
+                "issues.json",
+                [
+                    {
+                        "number": 42,
+                        "state": "closed",
+                        "html_url": "https://example.test/issues/42",
+                        "body": "### Severity\n\nSEV1\n",
+                        "labels": [
+                            {"name": "type:incident"},
+                            {"name": "status:closed"},
+                            {"name": "severity:sev1"},
+                        ],
+                        "comments": [
+                            {
+                                "body": "- Current status: `recovered`\n"
+                                "- Time: `2026-08-01T00:00:00Z`"
+                            }
+                        ],
+                    },
+                    {
+                        "number": 99,
+                        "state": "closed",
+                        "html_url": "https://example.test/issues/99",
+                        "body": "<!-- lifecycle-retrospective\n"
+                        "schema-version: 1\nsource: incident:42\n"
+                        "due-date: invalid\n-->",
+                        "labels": [{"name": "type:retrospective"}],
+                    },
+                ],
+            )
+            releases = self.write_json(root, "releases.json", [])
+
+            findings = audit_records(issues, releases, self.policy, date(2026, 8, 26))
+
+            self.assertEqual(
+                {finding.kind for finding in findings},
+                {"record-invalid", "retrospective-missing"},
+            )
+
     def test_audit_does_not_duplicate_linked_source(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -720,6 +1085,12 @@ class RetrospectiveTests(unittest.TestCase):
                             {"name": "type:incident"},
                             {"name": "status:closed"},
                             {"name": "severity:sev1"},
+                        ],
+                        "comments": [
+                            {
+                                "body": "- Current status: `recovered`\n"
+                                "- Time: `2026-08-01T00:00:00Z`"
+                            }
                         ],
                     },
                     {

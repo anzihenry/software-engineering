@@ -91,10 +91,13 @@ jobs:
       - name: Read GitHub release state
         run: |
           gh api "repos/$REPOSITORY/compare/$SOURCE_SHA...$DEFAULT_BRANCH" > "$RUNNER_TEMP/comparison.json"
-          gh api "repos/$REPOSITORY/commits/$SOURCE_SHA/check-runs?per_page=100" > "$RUNNER_TEMP/check-runs.json"
+          gh api --paginate --slurp \
+            "repos/$REPOSITORY/commits/$SOURCE_SHA/check-runs?per_page=100" \
+            > "$RUNNER_TEMP/check-runs.json"
           gh api "repos/$REPOSITORY/git/matching-refs/tags/$VERSION" \
             --jq "map(select(.ref == \"refs/tags/$VERSION\"))" > "$RUNNER_TEMP/tag-refs.json"
-          gh release list --repo "$REPOSITORY" --limit 1000 --json tagName > "$RUNNER_TEMP/releases.json"
+          gh api --paginate --slurp "repos/$REPOSITORY/releases?per_page=100" \
+            > "$RUNNER_TEMP/releases.json"
 
       - name: Render dry-run candidate
         run: |
@@ -175,10 +178,13 @@ jobs:
       - name: Read GitHub release state
         run: |
           gh api "repos/$REPOSITORY/compare/$SOURCE_SHA...$DEFAULT_BRANCH" > "$RUNNER_TEMP/comparison.json"
-          gh api "repos/$REPOSITORY/commits/$SOURCE_SHA/check-runs?per_page=100" > "$RUNNER_TEMP/check-runs.json"
+          gh api --paginate --slurp \
+            "repos/$REPOSITORY/commits/$SOURCE_SHA/check-runs?per_page=100" \
+            > "$RUNNER_TEMP/check-runs.json"
           gh api "repos/$REPOSITORY/git/matching-refs/tags/$VERSION" \
             --jq "map(select(.ref == \"refs/tags/$VERSION\"))" > "$RUNNER_TEMP/tag-refs.json"
-          gh release list --repo "$REPOSITORY" --limit 1000 --json tagName > "$RUNNER_TEMP/releases.json"
+          gh api --paginate --slurp "repos/$REPOSITORY/releases?per_page=100" \
+            > "$RUNNER_TEMP/releases.json"
 
       - name: Render release candidate
         run: |

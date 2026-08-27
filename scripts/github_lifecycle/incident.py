@@ -13,7 +13,12 @@ from .common import LifecycleError, LifecyclePolicy, load_json_mapping, require_
 
 ISSUE_NUMBER_PATTERN = re.compile(r"^[1-9]\d*$")
 RESTRICTED_EVENT_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$")
+OPERATION_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$")
 SECTION_PATTERN = re.compile(r"^###\s+(?P<name>[^\n]+?)\s*$", re.MULTILINE)
+TRANSITION_MARKER_PATTERN = re.compile(
+    r"<!-- lifecycle-transition operation-id=(?P<operation_id>[A-Za-z0-9._-]+) "
+    r"issue=(?P<issue_number>[1-9]\d*) from=(?P<source>[a-z]+) to=(?P<target>[a-z]+) -->"
+)
 ALLOWED_TRANSITIONS = {
     "investigating": {"mitigating", "recovered", "escalated"},
     "mitigating": {"recovered", "escalated"},
@@ -34,6 +39,7 @@ class IncidentTransitionRequest:
     restricted_event_id: str
     apply: bool
     confirmation: str
+    operation_id: str
 
 
 @dataclass(frozen=True)
@@ -46,6 +52,8 @@ class IncidentTransition:
     severity_label: str
     issue_action: str
     comment: str
+    comment_required: bool
+    label_update_required: bool
     noop: bool
     security_escalation: bool
 
@@ -93,6 +101,7 @@ def build_transition_request(
     restricted_event_id: object,
     apply: bool,
     confirmation: object,
+    operation_id: object,
     policy: LifecyclePolicy,
 ) -> IncidentTransitionRequest:
     number = _parse_issue_number(issue_number)
@@ -124,6 +133,11 @@ def build_transition_request(
         raise LifecycleError(
             f"incident confirmation must exactly match incident-{number} for an applied transition"
         )
+    operation_id_text = require_string(operation_id, "operation_id")
+    if not OPERATION_ID_PATTERN.fullmatch(operation_id_text):
+        raise LifecycleError(
+            "operation_id must contain 3-128 letters, digits, dots, underscores, or hyphens"
+        )
     return IncidentTransitionRequest(
         issue_number=number,
         target_status=target,
@@ -135,6 +149,7 @@ def build_transition_request(
         restricted_event_id=restricted_id,
         apply=apply,
         confirmation=confirmation_text,
+        operation_id=operation_id_text,
     )
 
 
@@ -182,6 +197,39 @@ def _escape_markdown(value: str) -> str:
     return html.escape(" ".join(value.split()), quote=False)
 
 
+def _transition_markers(issue: Mapping[str, object]) -> dict[str, tuple[int, str, str]]:
+    raw_comments = issue.get("comments", [])
+    if not isinstance(raw_comments, list):
+        raise LifecycleError("incident Issue comments must be an array")
+    markers: dict[str, tuple[int, str, str]] = {}
+    for raw_comment in raw_comments:
+        body = raw_comment.get("body") if isinstance(raw_comment, Mapping) else None
+        if not isinstance(body, str):
+            continue
+        for match in TRANSITION_MARKER_PATTERN.finditer(body):
+            operation_id = match.group("operation_id")
+            marker = (
+                int(match.group("issue_number")),
+                match.group("source"),
+                match.group("target"),
+            )
+            existing = markers.get(operation_id)
+            if existing is not None and existing != marker:
+                raise LifecycleError(
+                    f"operation_id is reused by conflicting transitions: {operation_id}"
+                )
+            markers[operation_id] = marker
+    return markers
+
+
+def _issue_action(target: str, state: str) -> str:
+    if target == "closed" and state == "OPEN":
+        return "close"
+    if target != "closed" and state == "CLOSED":
+        return "reopen"
+    return "none"
+
+
 def transition_incident(
     issue_path: Path,
     request: IncidentTransitionRequest,
@@ -203,11 +251,46 @@ def transition_incident(
     state = issue.get("state")
     if state not in {"OPEN", "CLOSED"}:
         raise LifecycleError("incident Issue state must be OPEN or CLOSED")
-    if (current == "closed") != (state == "CLOSED"):
-        raise LifecycleError("incident Issue state conflicts with its current status label")
     severity_label = _severity_from_issue(issue, policy)
+    markers = _transition_markers(issue)
+    operation_marker = markers.get(request.operation_id)
+    if operation_marker is not None:
+        marker_issue, marker_source, marker_target = operation_marker
+        if (
+            marker_issue != request.issue_number
+            or marker_target != target
+            or current not in {marker_source, marker_target}
+        ):
+            raise LifecycleError(
+                f"operation_id conflicts with the requested incident transition: "
+                f"{request.operation_id}"
+            )
 
     if current == target:
+        action = _issue_action(target, state)
+        needs_reconciliation_comment = action != "none" and operation_marker is None
+        if needs_reconciliation_comment:
+            marker_source = target
+            marker = (
+                f"<!-- lifecycle-transition operation-id={request.operation_id} "
+                f"issue={request.issue_number} from={marker_source} to={target} -->"
+            )
+            comment = "\n".join(
+                (
+                    "### Incident state reconciliation",
+                    "",
+                    f"- Current status: `{target}`",
+                    f"- Operator: `{_escape_markdown(request.actor)}`",
+                    f"- Time: `{request.occurred_at}`",
+                    "- Decision: Reconcile the Issue open/closed state with its "
+                    "current status label.",
+                    "",
+                    marker,
+                    "",
+                )
+            )
+        else:
+            comment = ""
         return IncidentTransition(
             issue_number=request.issue_number,
             current_status=current,
@@ -215,15 +298,19 @@ def transition_incident(
             current_label=current_label,
             target_label=current_label,
             severity_label=severity_label,
-            issue_action="none",
-            comment="",
-            noop=True,
+            issue_action=action,
+            comment=comment,
+            comment_required=needs_reconciliation_comment,
+            label_update_required=False,
+            noop=action == "none",
             security_escalation=request.security_or_privacy_risk,
         )
     if target not in ALLOWED_TRANSITIONS.get(current, set()):
         raise LifecycleError(f"illegal incident transition: {current} -> {target}")
     if request.security_or_privacy_risk and current not in {"investigating", "mitigating"}:
         raise LifecycleError("security/privacy escalation is not valid from the current state")
+    if (current == "closed") != (state == "CLOSED") and operation_marker is None:
+        raise LifecycleError("incident Issue state conflicts with its current status label")
 
     if request.security_or_privacy_risk:
         decision = "Transferred to the restricted security/privacy response process."
@@ -234,7 +321,10 @@ def transition_incident(
     else:
         decision = _escape_markdown(request.decision)
         evidence = "\n".join(f"- {link}" for link in request.evidence_links)
-    marker = f"<!-- lifecycle-transition:{request.issue_number}:{current}:{target} -->"
+    marker = (
+        f"<!-- lifecycle-transition operation-id={request.operation_id} "
+        f"issue={request.issue_number} from={current} to={target} -->"
+    )
     comment = "\n".join(
         (
             "### Incident state transition",
@@ -251,7 +341,7 @@ def transition_incident(
             "",
         )
     )
-    action = "close" if target == "closed" else "reopen" if current == "closed" else "none"
+    action = _issue_action(target, state)
     return IncidentTransition(
         issue_number=request.issue_number,
         current_status=current,
@@ -261,6 +351,8 @@ def transition_incident(
         severity_label=severity_label,
         issue_action=action,
         comment=comment,
+        comment_required=operation_marker is None,
+        label_update_required=True,
         noop=False,
         security_escalation=request.security_or_privacy_risk,
     )
@@ -286,6 +378,8 @@ def write_transition_outputs(
                 "target_label": result.target_label,
                 "severity_label": result.severity_label,
                 "issue_action": result.issue_action,
+                "comment_required": result.comment_required,
+                "label_update_required": result.label_update_required,
                 "noop": result.noop,
                 "security_escalation": result.security_escalation,
             },
@@ -301,6 +395,10 @@ def write_transition_outputs(
             output.write(f"target_label={result.target_label}\n")
             output.write(f"severity_label={result.severity_label}\n")
             output.write(f"issue_action={result.issue_action}\n")
+            output.write(f"comment_required={'true' if result.comment_required else 'false'}\n")
+            output.write(
+                f"label_update_required={'true' if result.label_update_required else 'false'}\n"
+            )
             output.write(f"noop={'true' if result.noop else 'false'}\n")
             output.write(f"comment_path={comment_path}\n")
     return plan_path, comment_path

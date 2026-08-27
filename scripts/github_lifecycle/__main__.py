@@ -128,6 +128,7 @@ def transition_incident_command(args: argparse.Namespace) -> int:
         restricted_event_id=args.restricted_event_id,
         apply=args.apply == "true",
         confirmation=args.confirmation,
+        operation_id=args.operation_id,
         policy=policy,
     )
     if args.validate_only:
@@ -209,7 +210,7 @@ def audit_records_command(args: argparse.Namespace) -> int:
         as_of = date.fromisoformat(args.as_of)
     except ValueError as error:
         raise LifecycleError("audit as-of must be an ISO date") from error
-    findings = audit_records(args.issues, args.releases, policy, as_of)
+    findings = audit_records(args.issues, args.releases, policy, as_of, args.comments)
     write_audit_outputs(findings, args.output)
     lines = [
         "## Lifecycle record audit",
@@ -225,7 +226,7 @@ def audit_records_command(args: argparse.Namespace) -> int:
                 "| --- | --- | --- | --- |",
                 *(
                     f"| {item.kind} | [{item.record}]({item.url}) | "
-                    f"{item.due_date.isoformat()} | {item.detail} |"
+                    f"{item.due_date.isoformat() if item.due_date else 'n/a'} | {item.detail} |"
                     for item in findings
                 ),
             ]
@@ -289,6 +290,7 @@ def parse_args() -> argparse.Namespace:
     incident_parser.add_argument("--restricted-event-id", default="")
     incident_parser.add_argument("--apply", choices=("true", "false"), required=True)
     incident_parser.add_argument("--confirmation", default="")
+    incident_parser.add_argument("--operation-id", required=True)
     incident_parser.add_argument("--validate-only", action="store_true")
     incident_parser.add_argument("--issue", type=Path)
     incident_parser.add_argument("--output-dir", type=Path)
@@ -326,6 +328,7 @@ def parse_args() -> argparse.Namespace:
     audit_parser.add_argument("--policy", type=Path, required=True)
     audit_parser.add_argument("--issues", type=Path, required=True)
     audit_parser.add_argument("--releases", type=Path, required=True)
+    audit_parser.add_argument("--comments", type=Path)
     audit_parser.add_argument("--as-of", required=True)
     audit_parser.add_argument("--output", type=Path, required=True)
     audit_parser.set_defaults(handler=audit_records_command)

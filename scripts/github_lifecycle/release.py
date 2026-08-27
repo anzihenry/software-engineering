@@ -65,7 +65,27 @@ def _load_json_array(path: Path, label: str) -> Sequence[object]:
         raise LifecycleError(f"cannot read {label}: {error}") from error
     if not isinstance(value, list):
         raise LifecycleError(f"{label} must be a JSON array")
+    if value and all(isinstance(page, list) for page in value):
+        return tuple(item for page in value for item in page)
     return value
+
+
+def _load_check_runs(path: Path) -> Mapping[str, object]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise LifecycleError(f"cannot read check-runs response: {error}") from error
+    if isinstance(value, Mapping):
+        return value
+    if isinstance(value, list) and all(isinstance(page, Mapping) for page in value):
+        runs: list[object] = []
+        for page in value:
+            page_runs = page.get("check_runs")
+            if not isinstance(page_runs, list):
+                raise LifecycleError("check-runs page must contain a check_runs array")
+            runs.extend(page_runs)
+        return {"check_runs": runs}
+    raise LifecycleError("check-runs response must be an object or an array of page objects")
 
 
 def _validate_comparison(
@@ -111,7 +131,10 @@ def _validate_no_existing_version(
     if tag_refs:
         raise LifecycleError(f"release tag already exists: {version}")
     for raw_release in releases:
-        if isinstance(raw_release, Mapping) and raw_release.get("tagName") == version:
+        if (
+            isinstance(raw_release, Mapping)
+            and raw_release.get("tagName", raw_release.get("tag_name")) == version
+        ):
             raise LifecycleError(f"GitHub Release already exists: {version}")
 
 
@@ -124,7 +147,7 @@ def validate_release_github_state(
     releases_path: Path,
 ) -> dict[str, str]:
     comparison = load_json_mapping(comparison_path, "commit comparison")
-    check_runs = load_json_mapping(check_runs_path, "check-runs response")
+    check_runs = _load_check_runs(check_runs_path)
     tag_refs = _load_json_array(tag_refs_path, "matching tag refs")
     releases = _load_json_array(releases_path, "release list")
     _validate_comparison(comparison, request.source_sha, policy.default_branch)

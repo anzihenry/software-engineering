@@ -29,7 +29,7 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 
 普通事故使用 Issue Form 登记 SEV1—SEV4、开始时间及时区、环境/范围、用户影响、已知事实、未知项、单一所有者、版本/发布关联和非敏感证据链接。提交者必须确认未包含凭据、个人信息、受限日志、取证内容或恶意载荷；已知安全/隐私风险应直接进入 [`SECURITY.md`](../SECURITY.md) 的受限入口。
 
-`Transition Ordinary Incident` 只允许 `investigating → mitigating/recovered/escalated`、`mitigating → recovered/escalated`、`recovered → closed` 和关闭后的 `closed → investigating`。工作流默认 dry-run；实际变更要求确认 `incident-N`，每次追加操作者、时间、决定和 HTTPS 证据，并保持一个当前状态标签。重复请求已处于目标状态时不重复写入。
+`Transition Ordinary Incident` 只允许 `investigating → mitigating/recovered/escalated`、`mitigating → recovered/escalated`、`recovered → closed` 和关闭后的 `closed → investigating`。工作流默认 dry-run；实际变更要求确认 `incident-N`，每次追加操作者、时间、决定和 HTTPS 证据，并保持一个当前状态标签。每个 workflow run 使用稳定的 operation ID，按“转换记录、状态标签、Issue 开关状态”的顺序写入；失败后重跑同一 run 会读取转换标识并只补齐缺失步骤。三项均已一致时才视为 no-op；标签与 Issue 开关状态不一致时会生成公开的非敏感协调记录并修复状态。
 
 若处理中发现安全或隐私风险，目标必须是 `escalated`。Python 会忽略普通决定和证据文本，只在公开记录保留安全字符组成的受限事件 ID，并引导到 `SECURITY.md`；后续安全、隐私、法律和取证内容不得回写普通 Issue。安全漏洞通过 GitHub Private Vulnerability Reporting 接收，隐私事件使用团队受限系统。
 
@@ -39,7 +39,7 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 
 复盘使用 `<!-- lifecycle-source:... -->` 隐藏标识去重，发现已有记录时返回原 Issue 而不重复创建。正文固定包含事实时间线、当时可见信息、促成因素、防护有效性、不确定性和行动链接。独立改进行动 Issue Form 强制复盘反链、单一所有者、期限、完成定义、效果判据和观察窗口。
 
-`Audit Lifecycle Records` 每周一 02:00 UTC 以及手动触发时只读运行，报告缺失/未完成且逾期的复盘以及逾期改进行动。它只写 Actions summary 和 job 结论，不评论、不改标签、不关闭 Issue。
+`Audit Lifecycle Records` 每周一 02:00 UTC 以及手动触发时只读运行。它通过分页 API 读取全部 Issue、全仓库 Issue 评论和 Release，以首次 `recovered`/`closed` 转换记录的时间计算事故复盘期限，不使用可能被后续编辑推迟的 Issue `updatedAt`。除缺失/未完成且逾期的复盘和行动外，审计还报告无效记录与重复来源；单条记录损坏不会中断其余扫描。审计只写 Actions summary 和 job 结论，不评论、不改标签、不关闭 Issue。
 
 ## 可复制自动化包
 

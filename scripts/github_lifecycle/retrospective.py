@@ -54,11 +54,11 @@ class RenderedRetrospective:
         return self.duplicate_number is not None
 
 
-@dataclass(frozen=True, order=True)
+@dataclass(frozen=True)
 class AuditFinding:
     kind: str
     record: str
-    due_date: date
+    due_date: date | None
     url: str
     detail: str
 
@@ -161,6 +161,23 @@ def _label_names(issue: Mapping[str, object]) -> set[str]:
     return names
 
 
+def _mapping_value(record: Mapping[str, object], *names: str) -> object:
+    for name in names:
+        if name in record:
+            return record[name]
+    return None
+
+
+def _issue_state(issue: Mapping[str, object]) -> str:
+    state = _mapping_value(issue, "state")
+    return state.upper() if isinstance(state, str) else ""
+
+
+def _issue_url(issue: Mapping[str, object]) -> str:
+    value = _mapping_value(issue, "html_url", "url")
+    return value if isinstance(value, str) else ""
+
+
 def _parse_sections(body: str) -> dict[str, str]:
     matches = list(SECTION_PATTERN.finditer(body))
     sections: dict[str, str] = {}
@@ -204,7 +221,10 @@ def _incident_anchor(issue: Mapping[str, object], request: RetrospectiveRequest)
                 times.append(_parse_datetime(match.group("time"), "incident transition time"))
     if times:
         return min(times)
-    return _parse_datetime(issue.get("updatedAt"), "incident updatedAt")
+    raise LifecycleError(
+        "incident has no recovery transition timestamp; explicitly confirm stability "
+        "to set an anchor"
+    )
 
 
 def _find_duplicate(existing: Sequence[object], source_key: str) -> tuple[int | None, str | None]:
@@ -215,7 +235,7 @@ def _find_duplicate(existing: Sequence[object], source_key: str) -> tuple[int | 
         body = raw_issue.get("body")
         if isinstance(body, str) and marker in body:
             number = raw_issue.get("number")
-            url = raw_issue.get("url")
+            url = _mapping_value(raw_issue, "html_url", "url")
             if isinstance(number, int) and isinstance(url, str):
                 return number, url
     return None, None
@@ -380,117 +400,225 @@ def _parse_date(value: str, field: str) -> date:
         raise LifecycleError(f"{field} must be an ISO date") from error
 
 
+def _comment_issue_number(comment: Mapping[str, object]) -> int | None:
+    issue_url = _mapping_value(comment, "issue_url", "issueUrl")
+    if not isinstance(issue_url, str):
+        return None
+    _, separator, suffix = issue_url.rstrip("/").rpartition("/")
+    return int(suffix) if separator and ISSUE_NUMBER_PATTERN.fullmatch(suffix) else None
+
+
+def _comments_by_issue(comments_path: Path | None) -> dict[int, list[Mapping[str, object]]]:
+    if comments_path is None:
+        return {}
+    comments = _load_json_array(comments_path, "lifecycle Issue comments")
+    by_issue: dict[int, list[Mapping[str, object]]] = {}
+    for raw_comment in comments:
+        if not isinstance(raw_comment, Mapping):
+            continue
+        issue_number = _comment_issue_number(raw_comment)
+        if issue_number is not None:
+            by_issue.setdefault(issue_number, []).append(raw_comment)
+    return by_issue
+
+
+def _incident_recovery_anchor(
+    issue: Mapping[str, object], external_comments: Sequence[Mapping[str, object]]
+) -> datetime:
+    raw_comments = issue.get("comments")
+    comments: list[object] = list(external_comments)
+    if isinstance(raw_comments, list):
+        comments.extend(raw_comments)
+    times: list[datetime] = []
+    for comment in comments:
+        body = comment.get("body") if isinstance(comment, Mapping) else None
+        if not isinstance(body, str):
+            continue
+        for match in TRANSITION_TIME_PATTERN.finditer(body):
+            times.append(_parse_datetime(match.group("time"), "incident recovery time"))
+    if not times:
+        raise LifecycleError("recovered/closed incident has no recovery transition timestamp")
+    return min(times)
+
+
+def _invalid_finding(record: str, url: str, detail: str) -> AuditFinding:
+    return AuditFinding("record-invalid", record, None, url, detail)
+
+
+def _validate_source_key(source_key: str) -> None:
+    match = SOURCE_PATTERN.fullmatch(source_key)
+    if match is None:
+        raise LifecycleError("retrospective metadata source is missing or invalid")
+    identifier = match.group("identifier")
+    if match.group("kind") == "incident" and ISSUE_NUMBER_PATTERN.fullmatch(identifier) is None:
+        raise LifecycleError("retrospective incident source must use a positive Issue number")
+    if match.group("kind") == "release" and VERSION_PATTERN.fullmatch(identifier) is None:
+        raise LifecycleError("retrospective release source must use vMAJOR.MINOR.PATCH")
+
+
 def audit_records(
     issues_path: Path,
     releases_path: Path,
     policy: LifecyclePolicy,
     as_of: date,
+    comments_path: Path | None = None,
 ) -> tuple[AuditFinding, ...]:
     issues = _load_json_array(issues_path, "lifecycle Issues")
     releases = _load_json_array(releases_path, "release list")
-    retrospective_sources: set[str] = set()
+    comments_by_issue = _comments_by_issue(comments_path)
+    retrospective_records: dict[str, list[tuple[str, str]]] = {}
     findings: list[AuditFinding] = []
 
     for raw_issue in issues:
-        if not isinstance(raw_issue, Mapping):
+        if not isinstance(raw_issue, Mapping) or "pull_request" in raw_issue:
             continue
-        labels = _label_names(raw_issue)
-        body = raw_issue.get("body")
-        body_text = body if isinstance(body, str) else ""
-        state = raw_issue.get("state")
-        url = raw_issue.get("url") if isinstance(raw_issue.get("url"), str) else ""
         number = raw_issue.get("number")
-        if "type:retrospective" in labels:
-            metadata = _metadata(body_text)
-            source_key = metadata.get("source")
-            if source_key:
-                retrospective_sources.add(source_key)
-            due_value = metadata.get("due-date")
-            if state == "OPEN" and due_value and due_value != "none":
-                due = _parse_date(due_value, f"retrospective #{number} due-date")
-                if due < as_of:
+        record = f"Issue #{number}"
+        url = _issue_url(raw_issue)
+        try:
+            labels = _label_names(raw_issue)
+            body = raw_issue.get("body")
+            body_text = body if isinstance(body, str) else ""
+            state = _issue_state(raw_issue)
+            if "type:retrospective" in labels:
+                metadata = _metadata(body_text)
+                if metadata.get("schema-version") != "1":
+                    raise LifecycleError("retrospective metadata schema-version must be 1")
+                source_key = metadata.get("source", "")
+                _validate_source_key(source_key)
+                due_value = metadata.get("due-date")
+                if not due_value:
+                    raise LifecycleError("retrospective metadata due-date is missing")
+                due = (
+                    None
+                    if due_value == "none"
+                    else _parse_date(due_value, f"retrospective #{number} due-date")
+                )
+                retrospective_records.setdefault(source_key, []).append((record, url))
+                if state == "OPEN" and due is not None and due < as_of:
                     findings.append(
                         AuditFinding(
                             "retrospective-overdue",
-                            f"Issue #{number}",
+                            record,
                             due,
                             url,
                             "retrospective remains open after its deadline",
                         )
                     )
-        if "type:improvement-action" in labels and state == "OPEN":
-            due_value = _parse_sections(body_text).get("Due date", "")
-            due = _parse_date(due_value, f"improvement action #{number} Due date")
+            if "type:improvement-action" in labels:
+                due_value = _parse_sections(body_text).get("Due date", "")
+                due = _parse_date(due_value, f"improvement action #{number} Due date")
+                if state == "OPEN" and due < as_of:
+                    findings.append(
+                        AuditFinding(
+                            "improvement-action-overdue",
+                            record,
+                            due,
+                            url,
+                            "improvement action remains open after its deadline",
+                        )
+                    )
+        except LifecycleError as error:
+            findings.append(_invalid_finding(record, url, str(error)))
+
+    for source_key, records in retrospective_records.items():
+        if len(records) > 1:
+            record_names = ", ".join(record for record, _ in records)
+            findings.append(
+                AuditFinding(
+                    "retrospective-duplicate",
+                    record_names,
+                    None,
+                    records[0][1],
+                    f"multiple retrospectives reference {source_key}",
+                )
+            )
+
+    retrospective_sources = set(retrospective_records)
+
+    for raw_issue in issues:
+        if not isinstance(raw_issue, Mapping) or "pull_request" in raw_issue:
+            continue
+        number = raw_issue.get("number")
+        record = f"Incident #{number}"
+        url = _issue_url(raw_issue)
+        try:
+            labels = _label_names(raw_issue)
+            statuses = {
+                label.removeprefix("status:") for label in labels if label.startswith("status:")
+            }
+            if "type:incident" not in labels:
+                continue
+            if len(statuses) != 1:
+                raise LifecycleError("incident must contain exactly one current status label")
+            if not statuses.intersection({"recovered", "closed"}):
+                continue
+            if not isinstance(number, int):
+                raise LifecycleError("incident number must be an integer")
+            source_key = f"incident:{number}"
+            severity = _incident_severity(raw_issue, policy)
+            anchor = _incident_recovery_anchor(raw_issue, comments_by_issue.get(number, ()))
+            if source_key in retrospective_sources:
+                continue
+            days = policy.retrospective_deadlines_days[severity]
+            if days is None:
+                continue
+            due = (anchor + timedelta(days=days)).date()
             if due < as_of:
                 findings.append(
                     AuditFinding(
-                        "improvement-action-overdue",
-                        f"Issue #{number}",
+                        "retrospective-missing",
+                        record,
                         due,
                         url,
-                        "improvement action remains open after its deadline",
+                        "eligible incident has no linked retrospective",
                     )
                 )
-
-    for raw_issue in issues:
-        if not isinstance(raw_issue, Mapping):
-            continue
-        labels = _label_names(raw_issue)
-        statuses = {
-            label.removeprefix("status:") for label in labels if label.startswith("status:")
-        }
-        if "type:incident" not in labels or not statuses.intersection({"recovered", "closed"}):
-            continue
-        number = raw_issue.get("number")
-        if not isinstance(number, int):
-            continue
-        source_key = f"incident:{number}"
-        if source_key in retrospective_sources:
-            continue
-        severity = _incident_severity(raw_issue, policy)
-        days = policy.retrospective_deadlines_days[severity]
-        if days is None:
-            continue
-        anchor = _parse_datetime(raw_issue.get("updatedAt"), f"incident #{number} updatedAt")
-        due = (anchor + timedelta(days=days)).date()
-        if due < as_of:
-            findings.append(
-                AuditFinding(
-                    "retrospective-missing",
-                    f"Incident #{number}",
-                    due,
-                    str(raw_issue.get("url") or ""),
-                    "eligible incident has no linked retrospective",
-                )
-            )
+        except LifecycleError as error:
+            findings.append(_invalid_finding(record, url, str(error)))
 
     for raw_release in releases:
         if not isinstance(raw_release, Mapping):
             continue
-        is_draft = raw_release.get("isDraft", raw_release.get("draft"))
-        is_prerelease = raw_release.get("isPrerelease", raw_release.get("prerelease"))
-        if is_draft is not False or is_prerelease is not False:
-            continue
         tag = raw_release.get("tagName", raw_release.get("tag_name"))
-        if not isinstance(tag, str):
-            continue
-        source_key = f"release:{tag}"
-        if source_key in retrospective_sources:
-            continue
-        published_at = raw_release.get("publishedAt", raw_release.get("published_at"))
-        anchor = _parse_datetime(published_at, f"release {tag} publishedAt")
-        due = calculate_due_date(anchor, "release", policy)
-        if due is not None and due < as_of:
-            findings.append(
-                AuditFinding(
-                    "retrospective-missing",
-                    f"Release {tag}",
-                    due,
-                    str(raw_release.get("url") or raw_release.get("html_url") or ""),
-                    "published Release has no linked retrospective",
+        record = f"Release {tag}"
+        url_value = raw_release.get("html_url", raw_release.get("url"))
+        url = url_value if isinstance(url_value, str) else ""
+        try:
+            is_draft = raw_release.get("isDraft", raw_release.get("draft"))
+            is_prerelease = raw_release.get("isPrerelease", raw_release.get("prerelease"))
+            if is_draft is not False or is_prerelease is not False:
+                continue
+            if not isinstance(tag, str) or VERSION_PATTERN.fullmatch(tag) is None:
+                raise LifecycleError("published Release tag must match vMAJOR.MINOR.PATCH")
+            source_key = f"release:{tag}"
+            if source_key in retrospective_sources:
+                continue
+            published_at = raw_release.get("publishedAt", raw_release.get("published_at"))
+            anchor = _parse_datetime(published_at, f"release {tag} publishedAt")
+            due = calculate_due_date(anchor, "release", policy)
+            if due is not None and due < as_of:
+                findings.append(
+                    AuditFinding(
+                        "retrospective-missing",
+                        record,
+                        due,
+                        url,
+                        "published Release has no linked retrospective",
+                    )
                 )
-            )
-    return tuple(sorted(findings))
+        except LifecycleError as error:
+            findings.append(_invalid_finding(record, url, str(error)))
+    return tuple(
+        sorted(
+            findings,
+            key=lambda finding: (
+                finding.due_date or date.max,
+                finding.kind,
+                finding.record,
+            ),
+        )
+    )
 
 
 def write_audit_outputs(findings: tuple[AuditFinding, ...], output: Path) -> None:
@@ -501,7 +629,7 @@ def write_audit_outputs(findings: tuple[AuditFinding, ...], output: Path) -> Non
                 {
                     "kind": finding.kind,
                     "record": finding.record,
-                    "due_date": finding.due_date.isoformat(),
+                    "due_date": finding.due_date.isoformat() if finding.due_date else None,
                     "url": finding.url,
                     "detail": finding.detail,
                 }
