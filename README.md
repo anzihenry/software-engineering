@@ -33,6 +33,15 @@ workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见[
 
 仓库使用 Python 3.14 执行确定性的结构与格式门禁，覆盖 YAML 解析、GitHub 自动化权限与固定 Action、SKILL frontmatter、workflow/SKILL 内容治理和复审期限、交付物模板及追溯契约、端到端演练覆盖、目录与名称一致性、站内相对链接、导航/workflow 覆盖以及 Markdown 基础格式。
 
+日常开发优先使用[统一的本地开发入口](docs/local-development.md)：
+
+```sh
+./bin/playbook setup
+./bin/playbook check
+```
+
+Dependabot 每周为 Python 开发依赖和固定 SHA 的 GitHub Actions 创建更新 PR；更新仍须通过相同门禁并由人类审查后合入。
+
 ```sh
 python3 -m pip install --requirement requirements-dev.txt
 ruff check scripts tests skills/05-integration-validation/github-actions-bootstrap/scripts

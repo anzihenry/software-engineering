@@ -158,6 +158,54 @@ class RepositoryCheckTests(unittest.TestCase):
                 messages,
             )
 
+    def test_pinned_action_requires_an_exact_version_comment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workflow = root / ".github" / "workflows" / "missing-version.yml"
+            workflow.parent.mkdir(parents=True)
+            workflow.write_text(
+                '"on":\n'
+                "  pull_request:\n"
+                "permissions: {}\n"
+                "jobs:\n"
+                "  validate:\n"
+                "    permissions:\n"
+                "      contents: read\n"
+                "    steps:\n"
+                "      - uses: actions/checkout@" + "a" * 40 + " # v7\n",
+                encoding="utf-8",
+            )
+
+            messages = {issue.message for issue in check_github_automation(root)}
+
+            self.assertIn(
+                "pinned workflow action must include an exact vMAJOR.MINOR.PATCH comment",
+                messages,
+            )
+
+    def test_dependabot_requires_both_supported_ecosystems(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            dependabot = root / ".github" / "dependabot.yml"
+            dependabot.parent.mkdir(parents=True)
+            dependabot.write_text(
+                "version: 2\n"
+                "updates:\n"
+                "  - package-ecosystem: pip\n"
+                '    directory: "/"\n'
+                "    schedule:\n"
+                "      interval: weekly\n"
+                "    rebase-strategy: auto\n",
+                encoding="utf-8",
+            )
+
+            messages = {issue.message for issue in check_github_automation(root)}
+
+            self.assertIn(
+                "Dependabot must configure pip and github-actions exactly once",
+                messages,
+            )
+
     def test_invalid_yaml_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
