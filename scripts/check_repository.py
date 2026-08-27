@@ -85,6 +85,10 @@ LINK_PATTERN = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 SLUG_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 ISO_DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 PINNED_ACTION_PATTERN = re.compile(r"^[^@\s]+@[0-9a-fA-F]{40}$")
+PINNED_ACTION_LINE_PATTERN = re.compile(
+    r"^\s*(?:-\s+)?uses:\s+[^@\s]+@[0-9a-fA-F]{40}\s+#\s+"
+    r"v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\s*$"
+)
 
 
 @dataclass(frozen=True, order=True)
@@ -169,6 +173,97 @@ def check_github_automation(root: Path) -> list[Issue]:
                             f"workflow action must be local or pinned to a full SHA: {uses!r}",
                         )
                     )
+        for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            if (
+                "uses:" in line
+                and "@" in line
+                and not line.split("uses:", maxsplit=1)[1].lstrip().startswith("./")
+                and PINNED_ACTION_LINE_PATTERN.fullmatch(line) is None
+            ):
+                issues.append(
+                    Issue(
+                        path,
+                        "pinned workflow action must include an exact vMAJOR.MINOR.PATCH comment",
+                        line_number,
+                    )
+                )
+
+    dependabot_path = github_root / "dependabot.yml"
+    if not dependabot_path.is_file():
+        issues.append(Issue(dependabot_path, "missing Dependabot configuration"))
+    else:
+        dependabot = load_yaml(dependabot_path, issues)
+        if not isinstance(dependabot, dict) or dependabot.get("version") != 2:
+            issues.append(Issue(dependabot_path, "Dependabot version must equal 2"))
+        updates = dependabot.get("updates") if isinstance(dependabot, dict) else None
+        if not isinstance(updates, list):
+            issues.append(Issue(dependabot_path, "Dependabot updates must be an array"))
+        else:
+            ecosystems = {
+                update.get("package-ecosystem"): update
+                for update in updates
+                if isinstance(update, dict) and isinstance(update.get("package-ecosystem"), str)
+            }
+            expected_ecosystems = {"pip", "github-actions"}
+            if len(updates) != 2 or set(ecosystems) != expected_ecosystems:
+                issues.append(
+                    Issue(
+                        dependabot_path,
+                        "Dependabot must configure pip and github-actions exactly once",
+                    )
+                )
+            for ecosystem in expected_ecosystems & set(ecosystems):
+                update = ecosystems[ecosystem]
+                schedule = update.get("schedule")
+                if update.get("directory") != "/":
+                    issues.append(
+                        Issue(
+                            dependabot_path,
+                            f"Dependabot {ecosystem} directory must equal '/'",
+                        )
+                    )
+                if not isinstance(schedule, dict) or schedule.get("interval") != "weekly":
+                    issues.append(
+                        Issue(
+                            dependabot_path,
+                            f"Dependabot {ecosystem} schedule must be weekly",
+                        )
+                    )
+                if update.get("rebase-strategy") != "auto":
+                    issues.append(
+                        Issue(
+                            dependabot_path,
+                            f"Dependabot {ecosystem} rebase strategy must be auto",
+                        )
+                    )
+
+    repository_workflow = workflows_root / "repository-checks.yml"
+    if repository_workflow.is_file():
+        workflow = load_yaml(repository_workflow, issues)
+        jobs = workflow.get("jobs") if isinstance(workflow, dict) else None
+        validate = jobs.get("validate") if isinstance(jobs, dict) else None
+        steps = validate.get("steps") if isinstance(validate, dict) else None
+        run_commands = (
+            {step.get("run") for step in steps if isinstance(step, dict)}
+            if isinstance(steps, list)
+            else set()
+        )
+        if "python -m scripts.development check" not in run_commands:
+            issues.append(
+                Issue(
+                    repository_workflow,
+                    "validate job must use the canonical development check command",
+                )
+            )
+
+    development_entry = root / "bin" / "playbook"
+    development_module = root / "scripts" / "development.py"
+    if not development_entry.is_file():
+        issues.append(Issue(development_entry, "missing local development entry"))
+    elif development_entry.stat().st_mode & 0o111 == 0:
+        issues.append(Issue(development_entry, "local development entry must be executable"))
+    if not development_module.is_file():
+        issues.append(Issue(development_module, "missing development command module"))
 
     policy = github_root / "lifecycle-policy.json"
     manifest = root / "automation" / "github-lifecycle-manifest.json"

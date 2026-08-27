@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+emulate -L zsh
+setopt ERR_EXIT NO_UNSET PIPE_FAIL
+
+typeset -r repository_root=${0:A:h:h}
+typeset -r playbook_python=${PLAYBOOK_PYTHON:-python3}
+
+cd -- "$repository_root"
+exec "$playbook_python" -m scripts.development "$@"
