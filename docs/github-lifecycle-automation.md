@@ -41,9 +41,61 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 
 `Audit Lifecycle Records` 每周一 02:00 UTC 以及手动触发时只读运行。它通过分页 API 读取全部 Issue、全仓库 Issue 评论和 Release，以首次 `recovered`/`closed` 转换记录的时间计算事故复盘期限，不使用可能被后续编辑推迟的 Issue `updatedAt`。除缺失/未完成且逾期的复盘和行动外，审计还报告无效记录与重复来源；单条记录损坏不会中断其余扫描。审计只写 Actions summary 和 job 结论，不评论、不改标签、不关闭 Issue。
 
-## 可复制自动化包
+## 跨项目安装、诊断与引导
 
-`automation/github-lifecycle-manifest.json` 列出公共配置、工作流、表单和脚本。使用固定 tag 或 commit SHA 检出本仓库后运行：
+`automation/github-lifecycle-manifest.json` 列出公共配置、工作流、表单、文档和脚本。应先用固定 tag 或完整 commit SHA 检出本仓库，避免在未复核的浮动分支上安装。三个命令的责任边界如下：
+
+- `install` 只操作目标仓库的本地文件。默认 dry-run；只创建缺失文件，相同文件跳过，任何内容不同、目录占位或符号链接均记为冲突且不覆盖。
+- `doctor` 只读检查本地安装及 GitHub 设置，包括目标仓库链接、默认分支、Action 固定 SHA、危险触发器、Actions 默认权限、标签、Private Vulnerability Reporting、默认分支有效规则和可选证据 PR。
+- `bootstrap` 只配置 GitHub 仓库设置。它要求一个仍处于 Open 状态、目标为默认分支且已成功产生稳定检查的证据 PR；默认仅输出计划，真实写入还要求 `--no-dry-run` 和精确确认字符串。
+
+在自动化源码检出目录先预览并安装本地文件：
+
+```sh
+python3 -m scripts.github_lifecycle install \
+  --target /path/to/target-repository \
+  --repository OWNER/REPOSITORY \
+  --default-branch main
+
+python3 -m scripts.github_lifecycle install \
+  --target /path/to/target-repository \
+  --repository OWNER/REPOSITORY \
+  --default-branch main \
+  --no-dry-run \
+  --confirmation install:OWNER/REPOSITORY
+```
+
+安装完成后，在目标仓库中审查并提交这些文件，推送功能分支并创建 PR。等 `validate` 和 `lifecycle-policy` 真实 check-run 成功后，使用该 Open PR 的编号诊断和预览远端设置：
+
+```sh
+python3 -m scripts.github_lifecycle doctor \
+  --repository OWNER/REPOSITORY \
+  --evidence-pr PR_NUMBER
+
+python3 -m scripts.github_lifecycle bootstrap \
+  --repository OWNER/REPOSITORY \
+  --evidence-pr PR_NUMBER
+```
+
+确认计划没有 blocker 后再显式应用，并立即重新执行只读诊断：
+
+```sh
+python3 -m scripts.github_lifecycle bootstrap \
+  --repository OWNER/REPOSITORY \
+  --evidence-pr PR_NUMBER \
+  --no-dry-run \
+  --confirmation bootstrap:OWNER/REPOSITORY
+
+python3 -m scripts.github_lifecycle doctor \
+  --repository OWNER/REPOSITORY \
+  --evidence-pr PR_NUMBER
+```
+
+所有 GitHub 读取和写入都通过参数化的 `gh`/`gh api` 执行。`doctor` 发现漂移时返回非零；`bootstrap` 遇到权限不足、检查 App 身份不唯一、bypass、目标条件不明、重复管理规则或其他 ruleset 重叠时拒绝写入。它只补缺失标签，不覆盖同名标签；更新托管 ruleset 时保留额外检查、未知规则和更严格的评审条件。
+
+## 确定性自动化包
+
+如需归档、离线审查或自行复制，可在同一个固定版本检出中运行：
 
 ```sh
 python3 -m scripts.github_lifecycle package \
