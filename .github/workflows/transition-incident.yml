@@ -66,6 +66,7 @@ jobs:
       EVIDENCE_LINKS: ${{ inputs.evidence_links }}
       GH_TOKEN: ${{ github.token }}
       ISSUE_NUMBER: ${{ inputs.issue_number }}
+      OPERATION_ID: gh-${{ github.run_id }}
       REPOSITORY: ${{ github.repository }}
       RESTRICTED_EVENT_ID: ${{ inputs.restricted_event_id }}
       SECURITY_RISK: ${{ inputs.security_or_privacy_risk }}
@@ -93,13 +94,14 @@ jobs:
             --restricted-event-id "$RESTRICTED_EVENT_ID" \
             --apply "$APPLY" \
             --confirmation "$CONFIRMATION" \
+            --operation-id "$OPERATION_ID" \
             --validate-only
 
       - name: Read ordinary incident
         run: |
           gh issue view "$ISSUE_NUMBER" \
             --repo "$REPOSITORY" \
-            --json number,state,title,body,labels,url > "$RUNNER_TEMP/incident.json"
+            --json number,state,title,body,labels,url,comments > "$RUNNER_TEMP/incident.json"
 
       - name: Render dry-run transition
         run: |
@@ -115,6 +117,7 @@ jobs:
             --restricted-event-id "$RESTRICTED_EVENT_ID" \
             --apply "$APPLY" \
             --confirmation "$CONFIRMATION" \
+            --operation-id "$OPERATION_ID" \
             --issue "$RUNNER_TEMP/incident.json" \
             --output-dir "$RUNNER_TEMP/incident-transition"
 
@@ -141,6 +144,7 @@ jobs:
       EVIDENCE_LINKS: ${{ inputs.evidence_links }}
       GH_TOKEN: ${{ github.token }}
       ISSUE_NUMBER: ${{ inputs.issue_number }}
+      OPERATION_ID: gh-${{ github.run_id }}
       REPOSITORY: ${{ github.repository }}
       RESTRICTED_EVENT_ID: ${{ inputs.restricted_event_id }}
       SECURITY_RISK: ${{ inputs.security_or_privacy_risk }}
@@ -168,13 +172,14 @@ jobs:
             --restricted-event-id "$RESTRICTED_EVENT_ID" \
             --apply "$APPLY" \
             --confirmation "$CONFIRMATION" \
+            --operation-id "$OPERATION_ID" \
             --validate-only
 
       - name: Read ordinary incident
         run: |
           gh issue view "$ISSUE_NUMBER" \
             --repo "$REPOSITORY" \
-            --json number,state,title,body,labels,url > "$RUNNER_TEMP/incident.json"
+            --json number,state,title,body,labels,url,comments > "$RUNNER_TEMP/incident.json"
 
       - name: Render transition plan
         id: plan
@@ -191,16 +196,21 @@ jobs:
             --restricted-event-id "$RESTRICTED_EVENT_ID" \
             --apply "$APPLY" \
             --confirmation "$CONFIRMATION" \
+            --operation-id "$OPERATION_ID" \
             --issue "$RUNNER_TEMP/incident.json" \
             --output-dir "$RUNNER_TEMP/incident-transition" \
             --github-output "$GITHUB_OUTPUT"
 
-      - name: Apply labels and append transition record
-        if: ${{ steps.plan.outputs.noop != 'true' }}
+      - name: Append transition record
+        if: ${{ steps.plan.outputs.comment_required == 'true' }}
         env:
           COMMENT_PATH: ${{ steps.plan.outputs.comment_path }}
+        run: gh issue comment "$ISSUE_NUMBER" --repo "$REPOSITORY" --body-file "$COMMENT_PATH"
+
+      - name: Apply transition labels
+        if: ${{ steps.plan.outputs.label_update_required == 'true' }}
+        env:
           CURRENT_LABEL: ${{ steps.plan.outputs.current_label }}
-          ISSUE_ACTION: ${{ steps.plan.outputs.issue_action }}
           SEVERITY_LABEL: ${{ steps.plan.outputs.severity_label }}
           TARGET_LABEL: ${{ steps.plan.outputs.target_label }}
         run: |
@@ -209,7 +219,12 @@ jobs:
             --remove-label "$CURRENT_LABEL" \
             --add-label "$TARGET_LABEL" \
             --add-label "$SEVERITY_LABEL"
-          gh issue comment "$ISSUE_NUMBER" --repo "$REPOSITORY" --body-file "$COMMENT_PATH"
+
+      - name: Reconcile Issue open or closed state
+        if: ${{ steps.plan.outputs.issue_action != 'none' }}
+        env:
+          ISSUE_ACTION: ${{ steps.plan.outputs.issue_action }}
+        run: |
           if [ "$ISSUE_ACTION" = "close" ]; then
             gh issue close "$ISSUE_NUMBER" --repo "$REPOSITORY"
           elif [ "$ISSUE_ACTION" = "reopen" ]; then

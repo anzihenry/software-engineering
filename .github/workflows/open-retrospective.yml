@@ -112,8 +112,9 @@ jobs:
             gh release view "$source_id" --repo "$REPOSITORY" \
               --json tagName,name,url,isDraft,isPrerelease,publishedAt > "$RUNNER_TEMP/source.json"
           fi
-          gh issue list --repo "$REPOSITORY" --state all --label type:retrospective \
-            --limit 1000 --json number,title,url,state,body,labels > "$RUNNER_TEMP/retrospectives.json"
+          gh api --paginate --slurp \
+            "repos/$REPOSITORY/issues?state=all&labels=type%3Aretrospective&per_page=100" \
+            > "$RUNNER_TEMP/retrospectives.json"
 
       - name: Render dry-run retrospective
         run: |
@@ -202,8 +203,9 @@ jobs:
             gh release view "$source_id" --repo "$REPOSITORY" \
               --json tagName,name,url,isDraft,isPrerelease,publishedAt > "$RUNNER_TEMP/source.json"
           fi
-          gh issue list --repo "$REPOSITORY" --state all --label type:retrospective \
-            --limit 1000 --json number,title,url,state,body,labels > "$RUNNER_TEMP/retrospectives.json"
+          gh api --paginate --slurp \
+            "repos/$REPOSITORY/issues?state=all&labels=type%3Aretrospective&per_page=100" \
+            > "$RUNNER_TEMP/retrospectives.json"
 
       - name: Render retrospective
         id: render

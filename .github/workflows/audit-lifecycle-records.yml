@@ -32,8 +32,10 @@ jobs:
 
       - name: Read lifecycle records
         run: |
-          gh issue list --repo "$REPOSITORY" --state all --limit 1000 \
-            --json number,title,url,state,body,labels,createdAt,updatedAt > "$RUNNER_TEMP/issues.json"
+          gh api --paginate --slurp "repos/$REPOSITORY/issues?state=all&per_page=100" \
+            > "$RUNNER_TEMP/issues.json"
+          gh api --paginate --slurp "repos/$REPOSITORY/issues/comments?per_page=100" \
+            > "$RUNNER_TEMP/issue-comments.json"
           gh api --paginate --slurp "repos/$REPOSITORY/releases?per_page=100" \
             > "$RUNNER_TEMP/releases.json"
 
@@ -42,6 +44,7 @@ jobs:
           python -m scripts.github_lifecycle audit-records \
             --policy .github/lifecycle-policy.json \
             --issues "$RUNNER_TEMP/issues.json" \
+            --comments "$RUNNER_TEMP/issue-comments.json" \
             --releases "$RUNNER_TEMP/releases.json" \
             --as-of "$(date -u +%Y-%m-%d)" \
             --output "$RUNNER_TEMP/lifecycle-audit.json"
