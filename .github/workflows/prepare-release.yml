@@ -120,6 +120,7 @@ jobs:
             --output-dir "$RUNNER_TEMP/release-candidate"
           python -m scripts.github_lifecycle package \
             --manifest automation/github-lifecycle-manifest.json \
+            --profile auto \
             --output "$RUNNER_TEMP/release-candidate/github-lifecycle.zip"
 
       - name: Upload dry-run candidate
@@ -209,6 +210,7 @@ jobs:
             --output-dir "$RUNNER_TEMP/release-candidate"
           python -m scripts.github_lifecycle package \
             --manifest automation/github-lifecycle-manifest.json \
+            --profile auto \
             --output "$RUNNER_TEMP/release-candidate/github-lifecycle.zip"
 
       - name: Create Draft Release

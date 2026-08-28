@@ -11,6 +11,7 @@ from scripts.github_lifecycle.adoption import (
     plan_install,
 )
 from scripts.github_lifecycle.common import LifecycleError, load_policy
+from scripts.github_lifecycle.package import detect_installed_profile
 from scripts.github_lifecycle.repository import (
     CheckEvidence,
     RepositorySnapshot,
@@ -112,6 +113,97 @@ class RecordingGh:
 
 
 class InstallTests(unittest.TestCase):
+    def test_release_profile_can_upgrade_to_full_without_conflict(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            release_plan, release_files = plan_install(
+                ROOT,
+                MANIFEST,
+                target,
+                repository=REPOSITORY,
+                default_branch="main",
+                profile="release",
+            )
+            apply_install(
+                release_plan,
+                release_files,
+                confirmation=f"install:{REPOSITORY}",
+            )
+            self.assertEqual(detect_installed_profile(target, target / MANIFEST), "release")
+
+            full_plan, full_files = plan_install(
+                ROOT,
+                MANIFEST,
+                target,
+                repository=REPOSITORY,
+                default_branch="main",
+                profile="full",
+            )
+            self.assertEqual(full_plan.conflicts, ())
+            self.assertTrue(any(entry.action == "create" for entry in full_plan.entries))
+            apply_install(full_plan, full_files, confirmation=f"install:{REPOSITORY}")
+            self.assertEqual(detect_installed_profile(target, target / MANIFEST), "full")
+
+            release_again, _ = plan_install(
+                ROOT,
+                MANIFEST,
+                target,
+                repository=REPOSITORY,
+                default_branch="main",
+                profile="release",
+            )
+            self.assertEqual(release_again.conflicts, ())
+            self.assertTrue(all(entry.action == "unchanged" for entry in release_again.entries))
+
+            (target / ".github/PULL_REQUEST_TEMPLATE.md").unlink()
+            with self.assertRaisesRegex(LifecycleError, "partial or mixed installation"):
+                detect_installed_profile(target, target / MANIFEST)
+
+    def test_profiles_install_only_their_declared_assets(self) -> None:
+        expected_workflows = {
+            "governance": {"lifecycle-policy.yml"},
+            "incident": {
+                "audit-lifecycle-records.yml",
+                "open-retrospective.yml",
+                "transition-incident.yml",
+            },
+            "release": {"prepare-release.yml"},
+            "full": {
+                "audit-lifecycle-records.yml",
+                "lifecycle-policy.yml",
+                "open-retrospective.yml",
+                "prepare-release.yml",
+                "transition-incident.yml",
+            },
+        }
+        for profile, workflows in expected_workflows.items():
+            with self.subTest(profile=profile), tempfile.TemporaryDirectory() as directory:
+                plan, files = plan_install(
+                    ROOT,
+                    MANIFEST,
+                    Path(directory),
+                    repository=REPOSITORY,
+                    default_branch="main",
+                    profile=profile,
+                )
+                paths = {entry.path for entry in plan.entries}
+                actual_workflows = {
+                    Path(path).name for path in paths if path.startswith(".github/workflows/")
+                }
+                self.assertEqual(plan.profile, profile)
+                self.assertEqual(actual_workflows, workflows)
+                apply_install(plan, files, confirmation=f"install:{REPOSITORY}")
+                self.assertEqual(
+                    inspect_local_install(
+                        Path(directory),
+                        MANIFEST,
+                        repository=REPOSITORY,
+                        expected_default_branch="main",
+                        profile=profile,
+                    ),
+                    (),
+                )
+
     def test_install_renders_target_values_and_is_idempotent(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)
@@ -234,6 +326,44 @@ class InstallTests(unittest.TestCase):
 
 
 class DoctorAndBootstrapTests(unittest.TestCase):
+    def test_doctor_scopes_remote_findings_to_profile(self) -> None:
+        unconfigured = snapshot(configured=False, evidence=None)
+
+        release_codes = {
+            finding.code
+            for finding in inspect_remote_repository(unconfigured, POLICY, profile="release")
+        }
+        incident_codes = {
+            finding.code
+            for finding in inspect_remote_repository(unconfigured, POLICY, profile="incident")
+        }
+        governance_codes = {
+            finding.code
+            for finding in inspect_remote_repository(unconfigured, POLICY, profile="governance")
+        }
+
+        self.assertEqual(release_codes, {"actions-permissions"})
+        self.assertEqual(incident_codes, {"actions-permissions", "labels-missing", "pvr-disabled"})
+        self.assertNotIn("labels-missing", governance_codes)
+        self.assertNotIn("pvr-disabled", governance_codes)
+        self.assertIn("managed-ruleset-missing", governance_codes)
+
+    def test_bootstrap_scopes_actions_and_evidence_to_profile(self) -> None:
+        unconfigured = snapshot(configured=False, evidence=None)
+
+        release_plan = build_bootstrap_plan(unconfigured, POLICY, profile="release")
+        incident_plan = build_bootstrap_plan(unconfigured, POLICY, profile="incident")
+        governance_plan = build_bootstrap_plan(unconfigured, POLICY, profile="governance")
+
+        self.assertEqual(release_plan.blockers, ())
+        self.assertEqual({action.kind for action in release_plan.actions}, {"actions-permissions"})
+        self.assertEqual(incident_plan.blockers, ())
+        self.assertEqual(
+            {action.kind for action in incident_plan.actions},
+            {"actions-permissions", "label", "private-vulnerability-reporting"},
+        )
+        self.assertIn("bootstrap requires an evidence PR", governance_plan.blockers)
+
     def test_doctor_accepts_healthy_repository(self) -> None:
         self.assertEqual(inspect_remote_repository(snapshot(), POLICY), ())
 

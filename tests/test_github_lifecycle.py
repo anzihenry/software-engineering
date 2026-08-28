@@ -33,6 +33,32 @@ POLICY_PATH = ROOT / ".github" / "lifecycle-policy.json"
 
 
 class LifecycleCliTests(unittest.TestCase):
+    def test_install_profile_cli_defaults_to_dry_run(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "plan.json"
+            arguments = [
+                "github-lifecycle",
+                "install",
+                "--target",
+                directory,
+                "--repository",
+                "example/repository",
+                "--default-branch",
+                "main",
+                "--profile",
+                "release",
+                "--output",
+                str(output),
+            ]
+
+            with patch("sys.argv", arguments):
+                self.assertEqual(main(), 0)
+
+            plan = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual(plan["schema_version"], 2)
+            self.assertEqual(plan["profile"], "release")
+            self.assertEqual(plan["mode"], "dry-run")
+
     def test_release_validate_only_cli(self) -> None:
         arguments = [
             "github-lifecycle",
@@ -233,6 +259,25 @@ class AutomationPackageTests(unittest.TestCase):
 
             self.assertEqual(load_manifest(manifest), ("install.py", "runtime.py"))
 
+            with self.assertRaisesRegex(LifecycleError, "only supports the full profile"):
+                load_manifest(manifest, profile="governance")
+
+    def test_repository_manifest_exposes_four_profiles(self) -> None:
+        manifest = ROOT / "automation/github-lifecycle-manifest.json"
+
+        governance = set(load_manifest(manifest, profile="governance"))
+        incident = set(load_manifest(manifest, profile="incident"))
+        release = set(load_manifest(manifest, profile="release"))
+        full = set(load_manifest(manifest, profile="full"))
+
+        self.assertIn(".github/workflows/lifecycle-policy.yml", governance)
+        self.assertNotIn("SECURITY.md", governance)
+        self.assertIn("SECURITY.md", incident)
+        self.assertNotIn(".github/workflows/prepare-release.yml", incident)
+        self.assertIn(".github/workflows/prepare-release.yml", release)
+        self.assertNotIn(".github/PULL_REQUEST_TEMPLATE.md", release)
+        self.assertEqual(full, governance | incident | release)
+
     def test_bundle_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -298,10 +343,31 @@ class AutomationPackageTests(unittest.TestCase):
     def test_manifest_rejects_unknown_schema(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             manifest = Path(directory) / "manifest.json"
-            manifest.write_text(json.dumps({"schema_version": 3}), encoding="utf-8")
+            manifest.write_text(json.dumps({"schema_version": 4}), encoding="utf-8")
 
-            with self.assertRaisesRegex(LifecycleError, "must be 1 or 2"):
+            with self.assertRaisesRegex(LifecycleError, "must be 1, 2, or 3"):
                 load_manifest(manifest)
+
+    def test_manifest_rejects_profile_file_outside_components(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            manifest = Path(directory) / "manifest.json"
+            profiles = {
+                name: ["runtime.py"] for name in ("governance", "incident", "release", "full")
+            }
+            profiles["incident"] = ["outside.py"]
+            manifest.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 3,
+                        "components": {"github-lifecycle": ["runtime.py"]},
+                        "profiles": profiles,
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(LifecycleError, "outside components"):
+                load_manifest(manifest, profile="incident")
 
 
 class ReleasePreparationTests(unittest.TestCase):

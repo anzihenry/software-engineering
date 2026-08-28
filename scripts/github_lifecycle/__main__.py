@@ -19,7 +19,13 @@ from .incident import (
     transition_incident,
     write_transition_outputs,
 )
-from .package import package_bundle, render_package_result
+from .package import (
+    PACKAGE_PROFILES,
+    SUPPORTED_PROFILES,
+    detect_installed_profile,
+    package_bundle,
+    render_package_result,
+)
 from .pr import validate_pr_event
 from .release import build_release_request, prepare_release, validate_release_inputs
 from .repository import (
@@ -65,8 +71,13 @@ def validate_pr(args: argparse.Namespace) -> int:
 
 
 def package(args: argparse.Namespace) -> int:
-    digest = package_bundle(args.root, args.manifest, args.output)
-    print(render_package_result(args.output, digest))
+    profile = (
+        detect_installed_profile(args.root, args.manifest)
+        if args.profile == "auto"
+        else args.profile
+    )
+    digest = package_bundle(args.root, args.manifest, args.output, profile=profile)
+    print(render_package_result(args.output, digest, profile=profile))
     return 0
 
 
@@ -84,6 +95,7 @@ def install_command(args: argparse.Namespace) -> int:
         args.target,
         repository=args.repository,
         default_branch=args.default_branch,
+        profile=args.profile,
     )
     if not args.dry_run:
         apply_install(plan, files, confirmation=args.confirmation)
@@ -101,10 +113,11 @@ def doctor_command(args: argparse.Namespace) -> int:
             args.manifest,
             repository=args.repository,
             expected_default_branch=snapshot.default_branch,
+            profile=args.profile,
         ),
-        *inspect_remote_repository(snapshot, policy),
+        *inspect_remote_repository(snapshot, policy, profile=args.profile),
     )
-    _write_output(args.output, render_findings(findings))
+    _write_output(args.output, render_findings(findings, profile=args.profile))
     return 1 if findings else 0
 
 
@@ -117,25 +130,27 @@ def bootstrap_command(args: argparse.Namespace) -> int:
         args.manifest,
         repository=args.repository,
         expected_default_branch=snapshot.default_branch,
+        profile=args.profile,
     )
     if local_findings:
         raise LifecycleError(
             "bootstrap local installation is invalid: "
             + "; ".join(finding.detail for finding in local_findings)
         )
-    plan = build_bootstrap_plan(snapshot, policy)
-    plan_output = render_bootstrap_plan(plan, dry_run=args.dry_run)
+    plan = build_bootstrap_plan(snapshot, policy, profile=args.profile)
+    plan_output = render_bootstrap_plan(plan, dry_run=args.dry_run, profile=args.profile)
     if args.dry_run or plan.blockers:
         _write_output(args.output, plan_output)
         return 1 if plan.blockers else 0
     apply_bootstrap(client, plan, confirmation=args.confirmation)
     verified = discover_repository(client, args.repository, evidence_pr=args.evidence_pr)
-    findings = inspect_remote_repository(verified, policy)
+    findings = inspect_remote_repository(verified, policy, profile=args.profile)
     result = json.dumps(
         {
-            "schema_version": 1,
+            "schema_version": 2,
             "mode": "apply",
             "repository": args.repository,
+            "profile": args.profile,
             "applied_actions": [
                 {"kind": action.kind, "detail": action.detail} for action in plan.actions
             ],
@@ -348,6 +363,7 @@ def parse_args() -> argparse.Namespace:
     package_parser = subparsers.add_parser("package", help="build a deterministic copy bundle")
     package_parser.add_argument("--root", type=Path, default=Path.cwd())
     package_parser.add_argument("--manifest", type=Path, required=True)
+    package_parser.add_argument("--profile", choices=PACKAGE_PROFILES, default="full")
     package_parser.add_argument("--output", type=Path, required=True)
     package_parser.set_defaults(handler=package)
 
@@ -363,6 +379,7 @@ def parse_args() -> argparse.Namespace:
     install_parser.add_argument("--target", type=Path, required=True)
     install_parser.add_argument("--repository", required=True)
     install_parser.add_argument("--default-branch", required=True)
+    install_parser.add_argument("--profile", choices=SUPPORTED_PROFILES, default="full")
     install_parser.add_argument("--dry-run", action=argparse.BooleanOptionalAction, default=True)
     install_parser.add_argument("--confirmation", default="")
     install_parser.add_argument("--output", type=Path)
@@ -378,6 +395,7 @@ def parse_args() -> argparse.Namespace:
         default=Path("automation/github-lifecycle-manifest.json"),
     )
     doctor_parser.add_argument("--repository", required=True)
+    doctor_parser.add_argument("--profile", choices=SUPPORTED_PROFILES, default="full")
     doctor_parser.add_argument("--evidence-pr", type=int)
     doctor_parser.add_argument("--output", type=Path)
     doctor_parser.set_defaults(handler=doctor_command)
@@ -392,7 +410,8 @@ def parse_args() -> argparse.Namespace:
         default=Path("automation/github-lifecycle-manifest.json"),
     )
     bootstrap_parser.add_argument("--repository", required=True)
-    bootstrap_parser.add_argument("--evidence-pr", type=int, required=True)
+    bootstrap_parser.add_argument("--profile", choices=SUPPORTED_PROFILES, default="full")
+    bootstrap_parser.add_argument("--evidence-pr", type=int)
     bootstrap_parser.add_argument("--dry-run", action=argparse.BooleanOptionalAction, default=True)
     bootstrap_parser.add_argument("--confirmation", default="")
     bootstrap_parser.add_argument("--output", type=Path)
