@@ -5,6 +5,7 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from .adapters import render_managed_files, select_adapter
 from .common import LifecycleError, load_policy
 from .package import load_manifest, validate_profile
 
@@ -14,8 +15,13 @@ SECURITY_REPOSITORY_URL_PATTERN = re.compile(
     r"https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?=/security(?:/|$))"
 )
 DEFAULT_BRANCH_ENV_PATTERN = re.compile(r"(?m)^(\s*DEFAULT_BRANCH:\s*)[^\s#]+(\s*)$")
+RETENTION_DAYS_PATTERN = re.compile(r"(?m)^([ \t]*retention-days:[ \t]*)\d+([ \t]*)$")
 ACTION_USE_PATTERN = re.compile(r"(?m)^\s*uses:\s*(?P<value>\S+)\s*(?:#.*)?$")
 PINNED_ACTION_PATTERN = re.compile(r"^[^\s@]+@[0-9a-f]{40}$")
+VERSIONED_ACTION_LINE_PATTERN = re.compile(
+    r"(?m)^(?P<prefix>\s*uses:\s*[^\s@]+@)[0-9a-f]{40}"
+    r"\s+#\s+v\d+\.\d+\.\d+\s*$"
+)
 
 
 @dataclass(frozen=True)
@@ -29,6 +35,7 @@ class InstallPlan:
     repository: str
     default_branch: str
     profile: str
+    adapter: str
     target: Path
     entries: tuple[InstallEntry, ...]
 
@@ -95,12 +102,21 @@ def _safe_destination(root: Path, relative: str) -> Path:
     return destination
 
 
+def _normalize_action_versions(content: bytes) -> bytes:
+    try:
+        text = content.decode("utf-8")
+    except UnicodeError:
+        return content
+    return VERSIONED_ACTION_LINE_PATTERN.sub(r"\g<prefix><sha> # v<version>", text).encode()
+
+
 def _render_file(
     relative: str,
     content: bytes,
     *,
     repository: str,
     default_branch: str,
+    release_artifact_retention_days: int | None = None,
 ) -> bytes:
     if relative == ".github/lifecycle-policy.json":
         try:
@@ -130,6 +146,14 @@ def _render_file(
             raise LifecycleError(
                 "prepare-release workflow must contain two DEFAULT_BRANCH declarations"
             )
+        if release_artifact_retention_days is not None:
+            rendered, retention_count = RETENTION_DAYS_PATTERN.subn(
+                rf"\g<1>{release_artifact_retention_days}\g<2>", rendered
+            )
+            if retention_count != 1:
+                raise LifecycleError(
+                    "prepare-release workflow must contain one retention-days declaration"
+                )
         return rendered.encode()
 
     return content
@@ -142,6 +166,9 @@ def rendered_files(
     repository: str,
     default_branch: str,
     profile: str = "full",
+    adapter: str = "external",
+    adapter_config: Path | None = None,
+    target: Path | None = None,
 ) -> tuple[tuple[str, bytes], ...]:
     repository = validate_repository_name(repository)
     default_branch = validate_default_branch(default_branch)
@@ -149,6 +176,8 @@ def rendered_files(
     source_root = source_root.resolve(strict=True)
     manifest = manifest_path if manifest_path.is_absolute() else source_root / manifest_path
     files = load_manifest(manifest, profile=profile)
+    adapter_target = target.resolve(strict=True) if target is not None else source_root
+    selected_adapter = select_adapter(source_root, adapter_target, adapter, adapter_config)
     rendered: list[tuple[str, bytes]] = []
     for relative in files:
         source = _resolve_file(source_root, relative, "automation source file")
@@ -160,9 +189,16 @@ def rendered_files(
                     source.read_bytes(),
                     repository=repository,
                     default_branch=default_branch,
+                    release_artifact_retention_days=(
+                        selected_adapter.release_artifact_retention_days
+                        if selected_adapter is not None
+                        else None
+                    ),
                 ),
             )
         )
+    if selected_adapter is not None:
+        rendered.extend(render_managed_files(selected_adapter, default_branch))
     return tuple(rendered)
 
 
@@ -174,6 +210,8 @@ def plan_install(
     repository: str,
     default_branch: str,
     profile: str = "full",
+    adapter: str = "auto",
+    adapter_config: Path | None = None,
 ) -> tuple[InstallPlan, tuple[tuple[str, bytes], ...]]:
     source_root = source_root.resolve(strict=True)
     target = target.resolve(strict=True)
@@ -187,6 +225,17 @@ def plan_install(
         repository=repository,
         default_branch=default_branch,
         profile=profile,
+        adapter=adapter,
+        adapter_config=adapter_config,
+        target=target,
+    )
+    selected_adapter = next(
+        (
+            json.loads(content.decode("utf-8"))["name"]
+            for relative, content in files
+            if relative == ".github/lifecycle-adapter.json"
+        ),
+        "external",
     )
     entries: list[InstallEntry] = []
     for relative, content in files:
@@ -211,6 +260,7 @@ def plan_install(
             repository=repository,
             default_branch=default_branch,
             profile=profile,
+            adapter=selected_adapter,
             target=target,
             entries=tuple(entries),
         ),
@@ -249,11 +299,12 @@ def render_install_plan(plan: InstallPlan, *, dry_run: bool) -> str:
     }
     return json.dumps(
         {
-            "schema_version": 2,
+            "schema_version": 3,
             "mode": "dry-run" if dry_run else "apply",
             "repository": plan.repository,
             "default_branch": plan.default_branch,
             "profile": plan.profile,
+            "adapter": plan.adapter,
             "target": str(plan.target),
             "counts": counts,
             "entries": [{"path": entry.path, "action": entry.action} for entry in plan.entries],
@@ -361,4 +412,48 @@ def inspect_local_install(
                     "prepare-release workflow default branch does not match GitHub",
                 )
             )
+
+    adapter_config = root / ".github/lifecycle-adapter.json"
+    if adapter_config.is_file():
+        try:
+            adapter = select_adapter(root, root, "auto")
+            if adapter is None:
+                raise LifecycleError("installed adapter configuration was not selected")
+            expected_adapter_files = render_managed_files(adapter, expected_default_branch)
+        except LifecycleError as error:
+            findings.append(DoctorFinding("local", "adapter-invalid", str(error)))
+        else:
+            for required in adapter.required_files:
+                if not (root / required).exists():
+                    findings.append(
+                        DoctorFinding(
+                            "local",
+                            "adapter-required-path-missing",
+                            f"adapter required path missing: {required}",
+                        )
+                    )
+            for relative, expected in expected_adapter_files:
+                path = root / relative
+                if not path.is_file() or path.is_symlink():
+                    findings.append(
+                        DoctorFinding(
+                            "local",
+                            "adapter-file-missing",
+                            f"managed adapter file missing: {relative}",
+                        )
+                    )
+                elif (
+                    relative == ".github/workflows/validate.yml"
+                    and _normalize_action_versions(path.read_bytes())
+                    != _normalize_action_versions(expected)
+                ) or (
+                    relative != ".github/workflows/validate.yml" and path.read_bytes() != expected
+                ):
+                    findings.append(
+                        DoctorFinding(
+                            "local",
+                            "adapter-file-drift",
+                            f"managed adapter file drifted: {relative}",
+                        )
+                    )
     return tuple(findings)

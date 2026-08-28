@@ -7,6 +7,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
+from .adapters import SUPPORTED_ADAPTERS, run_adapter
 from .adoption import (
     apply_install,
     inspect_local_install,
@@ -96,11 +97,18 @@ def install_command(args: argparse.Namespace) -> int:
         repository=args.repository,
         default_branch=args.default_branch,
         profile=args.profile,
+        adapter=args.adapter,
+        adapter_config=args.adapter_config,
     )
     if not args.dry_run:
         apply_install(plan, files, confirmation=args.confirmation)
     _write_output(args.output, render_install_plan(plan, dry_run=args.dry_run))
     return 1 if plan.conflicts else 0
+
+
+def run_adapter_command(args: argparse.Namespace) -> int:
+    run_adapter(args.config, args.root)
+    return 0
 
 
 def doctor_command(args: argparse.Namespace) -> int:
@@ -380,10 +388,21 @@ def parse_args() -> argparse.Namespace:
     install_parser.add_argument("--repository", required=True)
     install_parser.add_argument("--default-branch", required=True)
     install_parser.add_argument("--profile", choices=SUPPORTED_PROFILES, default="full")
+    install_parser.add_argument("--adapter", choices=SUPPORTED_ADAPTERS, default="auto")
+    install_parser.add_argument("--adapter-config", type=Path)
     install_parser.add_argument("--dry-run", action=argparse.BooleanOptionalAction, default=True)
     install_parser.add_argument("--confirmation", default="")
     install_parser.add_argument("--output", type=Path)
     install_parser.set_defaults(handler=install_command)
+
+    adapter_parser = subparsers.add_parser(
+        "run-adapter", help="run the configured repository-local validation commands"
+    )
+    adapter_parser.add_argument("--root", type=Path, default=Path.cwd())
+    adapter_parser.add_argument(
+        "--config", type=Path, default=Path(".github/lifecycle-adapter.json")
+    )
+    adapter_parser.set_defaults(handler=run_adapter_command)
 
     doctor_parser = subparsers.add_parser(
         "doctor", help="inspect a local lifecycle installation and GitHub repository"

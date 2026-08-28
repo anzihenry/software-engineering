@@ -36,13 +36,13 @@
 | --- | --- |
 | 目标 | 将第二层安全复制到其他仓库，诊断本地与远端漂移，并显式配置 GitHub 仓库 |
 | 受众 | 自动化维护者和目标仓库管理员 |
-| 输入 | 固定 tag 或完整 commit SHA、版本化 manifest、安装 profile、目标仓库路径与 GitHub 状态 |
-| 输出 | 确定性自动化包、安装计划、诊断报告和仓库引导计划 |
+| 输入 | 固定 tag 或完整 commit SHA、版本化 manifest、安装 profile、语言 adapter、目标仓库路径与 GitHub 状态 |
+| 输出 | 确定性自动化包、适配后的安装计划、诊断报告和仓库引导计划 |
 | 写权限 | `package` 只创建本地归档；`install` 只写目标仓库本地文件；`doctor` 只读；`bootstrap` 仅在 dry-run 关闭且确认字符串精确匹配时写 GitHub 设置 |
 | 分发范围 | 作为 manifest 的 `cross-project-governance` 组件随自动化包发布 |
 | 非目标 | 不制定生命周期规则，不安装第一层知识资产，不覆盖冲突文件，不绕过权限、ruleset 或真实 check 证据 |
 
-第三层回答“如何把第二层带到其他项目并持续确认其状态”。当前通过 `governance`、`incident`、`release` 和 `full` profile 治理 `github-lifecycle`；未来新增资产类型必须升级 manifest 或工具契约，并单独定义安装、冲突和诊断语义。
+第三层回答“如何把第二层带到其他项目并持续确认其状态”。当前通过 `governance`、`incident`、`release` 和 `full` profile 选择能力范围，再通过 Python、Node、Swift、Go 或自定义 adapter 映射目标项目的本地检查、Dependabot、稳定 `validate` check 和发布候选制品保留期。adapter 只翻译实现差异，不制定新的风险、事故或复盘规则。未来新增资产类型必须升级 manifest 或工具契约，并单独定义安装、冲突和诊断语义。
 
 ## 依赖方向与内部支持面
 
@@ -59,7 +59,7 @@ GitHub 生命周期自动化
 - 第三层读取第二层的 policy、manifest 和 GitHub 状态，不复制一套独立的风险、事故或复盘规则。
 - 跨层文档或公共 CLI 可以作为组合入口，但不能改变各层的授权和失败语义。
 
-`.github/workflows/repository-checks.yml`、`.github/dependabot.yml`、`bin/playbook`、`scripts/development.py`、开发依赖和测试属于内部支持面。它们维护并验证三层资产，但不是第四个对外产品层，也不得进入自动化 manifest。
+本仓库自身的 `.github/workflows/repository-checks.yml`、`.github/dependabot.yml`、`bin/playbook`、`scripts/development.py`、开发依赖和测试属于内部支持面。它们维护并验证三层资产，但不是第四个对外产品层，也不得进入自动化 manifest。adapter 在目标仓库生成的同名 Dependabot 文件属于第三层安装输出，不会把本仓库内部文件打入 manifest。
 
 ## 版本与变更规则
 
