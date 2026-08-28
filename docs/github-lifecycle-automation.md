@@ -45,7 +45,18 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 
 ## 跨项目安装、诊断与引导
 
-`automation/github-lifecycle-manifest.json` 使用 schema 2，将文件分为 `github-lifecycle` 和 `cross-project-governance` 两个互斥组件。打包和安装默认处理两个组件的并集；schema 1 的 legacy bundle 仍可读取。第一层研发知识和本仓库内部支持面不进入 manifest。应先用固定 tag 或完整 commit SHA 检出本仓库，避免在未复核的浮动分支上安装。三个命令的责任边界如下：
+`automation/github-lifecycle-manifest.json` 使用 schema 3，将文件分为 `github-lifecycle` 和 `cross-project-governance` 两个互斥组件，并定义四个安装 profile。schema 1 和 2 的 legacy bundle 仍可读取，但只支持 `full`。第一层研发知识和本仓库内部支持面不进入 manifest。应先用固定 tag 或完整 commit SHA 检出本仓库，避免在未复核的浮动分支上安装。
+
+| Profile | 本地能力 | `bootstrap` 远端治理 |
+| --- | --- | --- |
+| `governance` | PR 模板、policy、`lifecycle-policy` 门禁及共享工具 | Actions 默认只读、main ruleset、合并后删除分支；要求真实证据 PR |
+| `incident` | SECURITY、事故表单、状态流转、复盘、行动和审计及共享工具 | Actions 默认只读、生命周期标签、Private Vulnerability Reporting；不要求证据 PR |
+| `release` | policy、通用 Draft Release 及共享工具 | Actions 默认只读；不创建 ruleset、标签或 PVR，不要求证据 PR |
+| `full` | 三个 profile 的并集；默认值，保持旧版安装行为 | 完整治理；ruleset 部分要求真实证据 PR |
+
+profile 是可叠加采用的声明，不执行删除。由较小 profile 切换到 `full` 会补齐缺失文件；由 `full` 改用较小 profile 时，既有额外文件和 GitHub 设置会被保留，不再作为该 profile 的必需项或远端治理目标。`doctor` 仍会对仓库中实际存在的所有 workflow 执行危险触发器和 Action 固定 SHA 安全检查。`install`、`doctor` 和 `bootstrap` 必须使用同一个 profile。
+
+三个命令的责任边界如下：
 
 - `install` 只操作目标仓库的本地文件。默认 dry-run；只创建缺失文件，相同文件跳过，任何内容不同、目录占位或符号链接均记为冲突且不覆盖。
 - `doctor` 只读检查本地安装及 GitHub 设置，包括目标仓库链接、默认分支、Action 固定 SHA、危险触发器、Actions 默认权限、标签、Private Vulnerability Reporting、默认分支有效规则和可选证据 PR。
@@ -57,12 +68,14 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 python3 -m scripts.github_lifecycle install \
   --target /path/to/target-repository \
   --repository OWNER/REPOSITORY \
-  --default-branch main
+  --default-branch main \
+  --profile governance
 
 python3 -m scripts.github_lifecycle install \
   --target /path/to/target-repository \
   --repository OWNER/REPOSITORY \
   --default-branch main \
+  --profile governance \
   --no-dry-run \
   --confirmation install:OWNER/REPOSITORY
 ```
@@ -72,10 +85,12 @@ python3 -m scripts.github_lifecycle install \
 ```sh
 python3 -m scripts.github_lifecycle doctor \
   --repository OWNER/REPOSITORY \
+  --profile governance \
   --evidence-pr PR_NUMBER
 
 python3 -m scripts.github_lifecycle bootstrap \
   --repository OWNER/REPOSITORY \
+  --profile governance \
   --evidence-pr PR_NUMBER
 ```
 
@@ -84,12 +99,14 @@ python3 -m scripts.github_lifecycle bootstrap \
 ```sh
 python3 -m scripts.github_lifecycle bootstrap \
   --repository OWNER/REPOSITORY \
+  --profile governance \
   --evidence-pr PR_NUMBER \
   --no-dry-run \
   --confirmation bootstrap:OWNER/REPOSITORY
 
 python3 -m scripts.github_lifecycle doctor \
   --repository OWNER/REPOSITORY \
+  --profile governance \
   --evidence-pr PR_NUMBER
 ```
 
@@ -102,10 +119,11 @@ python3 -m scripts.github_lifecycle doctor \
 ```sh
 python3 -m scripts.github_lifecycle package \
   --manifest automation/github-lifecycle-manifest.json \
+  --profile full \
   --output /tmp/github-lifecycle.zip
 ```
 
-命令生成确定性 ZIP 和同名 `.sha256` 文件；拒绝重复路径、目录逃逸、符号链接和覆盖已有输出。目标仓库必须在复制后审查配置、权限、required checks 和安全报告入口，不把本仓库的角色或环境假设直接当作自身事实。
+命令生成所选 profile 的确定性 ZIP 和同名 `.sha256` 文件；拒绝未知 profile、重复路径、目录逃逸、符号链接和覆盖已有输出。`prepare-release` 使用 `--profile auto`，按 `full`、`release`、`incident`、`governance` 的顺序选择当前仓库中最大的完整安装，因此不会为切换 profile 改写工作流。若现有文件构成不完整或混合 profile，自动检测会失败而不会静默降级；应先用明确 profile 运行 `doctor`。目标仓库必须在复制后审查配置、权限、required checks 和安全报告入口，不把本仓库的角色或环境假设直接当作自身事实。
 
 ## 仓库启用顺序
 

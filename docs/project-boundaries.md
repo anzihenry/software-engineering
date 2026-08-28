@@ -36,13 +36,13 @@
 | --- | --- |
 | 目标 | 将第二层安全复制到其他仓库，诊断本地与远端漂移，并显式配置 GitHub 仓库 |
 | 受众 | 自动化维护者和目标仓库管理员 |
-| 输入 | 固定 tag 或完整 commit SHA、版本化 manifest、目标仓库路径与 GitHub 状态 |
+| 输入 | 固定 tag 或完整 commit SHA、版本化 manifest、安装 profile、目标仓库路径与 GitHub 状态 |
 | 输出 | 确定性自动化包、安装计划、诊断报告和仓库引导计划 |
 | 写权限 | `package` 只创建本地归档；`install` 只写目标仓库本地文件；`doctor` 只读；`bootstrap` 仅在 dry-run 关闭且确认字符串精确匹配时写 GitHub 设置 |
 | 分发范围 | 作为 manifest 的 `cross-project-governance` 组件随自动化包发布 |
 | 非目标 | 不制定生命周期规则，不安装第一层知识资产，不覆盖冲突文件，不绕过权限、ruleset 或真实 check 证据 |
 
-第三层回答“如何把第二层带到其他项目并持续确认其状态”。当前只治理 `github-lifecycle`；未来新增资产类型必须升级 manifest 或工具契约，并单独定义安装、冲突和诊断语义。
+第三层回答“如何把第二层带到其他项目并持续确认其状态”。当前通过 `governance`、`incident`、`release` 和 `full` profile 治理 `github-lifecycle`；未来新增资产类型必须升级 manifest 或工具契约，并单独定义安装、冲突和诊断语义。
 
 ## 依赖方向与内部支持面
 
@@ -64,6 +64,6 @@ GitHub 生命周期自动化
 ## 版本与变更规则
 
 - 三层随同一个仓库 tag 发布；知识、自动化和治理工具不建立独立 release train。
-- manifest schema 是跨项目包的机器兼容契约。schema 1 作为 legacy bundle 继续可读；本仓库从 schema 2 开始用 `github-lifecycle` 和 `cross-project-governance` 两个互斥组件生成包。
+- manifest schema 是跨项目包的机器兼容契约。schema 1 和 2 作为只支持 `full` 的 legacy bundle 继续可读；schema 3 在 `github-lifecycle` 和 `cross-project-governance` 两个互斥组件之上定义安装 profile。
 - 改变责任、写权限、分发集合或允许依赖时，必须同时更新本文、相关导航、manifest、仓库自检和测试。
 - 自动化包不得包含第一层目录或内部支持面；组件文件必须存在、路径安全、排序稳定且不能跨组件重复。

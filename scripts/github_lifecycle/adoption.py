@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .common import LifecycleError, load_policy
-from .package import load_manifest
+from .package import load_manifest, validate_profile
 
 REPOSITORY_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 BRANCH_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{0,254}$")
@@ -28,6 +28,7 @@ class InstallEntry:
 class InstallPlan:
     repository: str
     default_branch: str
+    profile: str
     target: Path
     entries: tuple[InstallEntry, ...]
 
@@ -140,12 +141,14 @@ def rendered_files(
     *,
     repository: str,
     default_branch: str,
+    profile: str = "full",
 ) -> tuple[tuple[str, bytes], ...]:
     repository = validate_repository_name(repository)
     default_branch = validate_default_branch(default_branch)
+    profile = validate_profile(profile)
     source_root = source_root.resolve(strict=True)
     manifest = manifest_path if manifest_path.is_absolute() else source_root / manifest_path
-    files = load_manifest(manifest)
+    files = load_manifest(manifest, profile=profile)
     rendered: list[tuple[str, bytes]] = []
     for relative in files:
         source = _resolve_file(source_root, relative, "automation source file")
@@ -170,6 +173,7 @@ def plan_install(
     *,
     repository: str,
     default_branch: str,
+    profile: str = "full",
 ) -> tuple[InstallPlan, tuple[tuple[str, bytes], ...]]:
     source_root = source_root.resolve(strict=True)
     target = target.resolve(strict=True)
@@ -182,6 +186,7 @@ def plan_install(
         manifest_path,
         repository=repository,
         default_branch=default_branch,
+        profile=profile,
     )
     entries: list[InstallEntry] = []
     for relative, content in files:
@@ -205,6 +210,7 @@ def plan_install(
         InstallPlan(
             repository=repository,
             default_branch=default_branch,
+            profile=profile,
             target=target,
             entries=tuple(entries),
         ),
@@ -243,10 +249,11 @@ def render_install_plan(plan: InstallPlan, *, dry_run: bool) -> str:
     }
     return json.dumps(
         {
-            "schema_version": 1,
+            "schema_version": 2,
             "mode": "dry-run" if dry_run else "apply",
             "repository": plan.repository,
             "default_branch": plan.default_branch,
+            "profile": plan.profile,
             "target": str(plan.target),
             "counts": counts,
             "entries": [{"path": entry.path, "action": entry.action} for entry in plan.entries],
@@ -263,13 +270,14 @@ def inspect_local_install(
     *,
     repository: str,
     expected_default_branch: str,
+    profile: str = "full",
 ) -> tuple[DoctorFinding, ...]:
     findings: list[DoctorFinding] = []
     root = root.resolve(strict=True)
     repository = validate_repository_name(repository)
     manifest = manifest_path if manifest_path.is_absolute() else root / manifest_path
     try:
-        files = load_manifest(manifest)
+        files = load_manifest(manifest, profile=profile)
     except LifecycleError as error:
         return (DoctorFinding("local", "manifest-invalid", str(error)),)
 

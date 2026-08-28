@@ -9,6 +9,7 @@ from typing import Protocol
 
 from .adoption import DoctorFinding, validate_repository_name
 from .common import LifecycleError, LifecyclePolicy
+from .package import validate_profile
 
 RULESET_NAME = "main required checks"
 MANAGED_RULE_TYPES = {
@@ -308,7 +309,12 @@ def _effective_rule(snapshot: RepositorySnapshot, rule_type: str) -> Mapping[str
 def inspect_remote_repository(
     snapshot: RepositorySnapshot,
     policy: LifecyclePolicy,
+    *,
+    profile: str = "full",
 ) -> tuple[DoctorFinding, ...]:
+    profile = validate_profile(profile)
+    manages_governance = profile in {"governance", "full"}
+    manages_incident = profile in {"incident", "full"}
     findings: list[DoctorFinding] = []
     if snapshot.viewer_permission not in {"ADMIN", "MAINTAIN"}:
         findings.append(
@@ -332,19 +338,19 @@ def inspect_remote_repository(
                 "Actions defaults must be read-only and unable to approve pull requests",
             )
         )
-    if not snapshot.delete_branch_on_merge:
+    if manages_governance and not snapshot.delete_branch_on_merge:
         findings.append(
             DoctorFinding(
                 "remote", "delete-branch-disabled", "delete_branch_on_merge must be enabled"
             )
         )
-    if not snapshot.private_vulnerability_reporting:
+    if manages_incident and not snapshot.private_vulnerability_reporting:
         findings.append(
             DoctorFinding(
                 "remote", "pvr-disabled", "Private Vulnerability Reporting must be enabled"
             )
         )
-    missing_labels = sorted(set(policy.labels) - snapshot.labels)
+    missing_labels = sorted(set(policy.labels) - snapshot.labels) if manages_incident else []
     if missing_labels:
         findings.append(
             DoctorFinding(
@@ -353,6 +359,9 @@ def inspect_remote_repository(
                 "missing lifecycle labels: " + ", ".join(missing_labels),
             )
         )
+
+    if not manages_governance:
+        return tuple(findings)
 
     status_rule = _effective_rule(snapshot, "required_status_checks")
     if status_rule is None:
@@ -629,47 +638,57 @@ def _build_ruleset_payload(
 def build_bootstrap_plan(
     snapshot: RepositorySnapshot,
     policy: LifecyclePolicy,
+    *,
+    profile: str = "full",
 ) -> BootstrapPlan:
+    profile = validate_profile(profile)
+    manages_governance = profile in {"governance", "full"}
+    manages_incident = profile in {"incident", "full"}
     blockers: list[str] = []
     evidence = snapshot.evidence
     if snapshot.viewer_permission != "ADMIN":
         blockers.append("bootstrap apply requires ADMIN repository permission")
     if policy.default_branch != snapshot.default_branch:
         blockers.append("policy default branch does not match GitHub")
-    if evidence is None:
+    if manages_governance and evidence is None:
         blockers.append("bootstrap requires an evidence PR")
         evidence_pr = 0
-    else:
+    elif evidence is not None:
         evidence_pr = evidence.pull_request_number
-        if evidence.state != "OPEN":
+        if manages_governance and evidence.state != "OPEN":
             blockers.append("bootstrap evidence PR must still be open")
-        if evidence.base_branch != snapshot.default_branch:
+        if manages_governance and evidence.base_branch != snapshot.default_branch:
             blockers.append("bootstrap evidence PR targets another branch")
+    else:
+        evidence_pr = 0
 
-    matching = [ruleset for ruleset in snapshot.rulesets if ruleset.get("name") == RULESET_NAME]
-    if len(matching) > 1:
-        blockers.append(f"multiple rulesets are named {RULESET_NAME!r}")
-    existing = matching[0] if len(matching) == 1 else None
-    for ruleset in snapshot.rulesets:
-        if ruleset is existing or ruleset.get("enforcement") != "active":
-            continue
-        if not _ruleset_applies_to_default(ruleset):
-            continue
-        raw_rules = ruleset.get("rules")
-        if isinstance(raw_rules, list) and any(
-            isinstance(rule, Mapping) and rule.get("type") in MANAGED_RULE_TYPES
-            for rule in raw_rules
-        ):
-            blockers.append(
-                f"another active ruleset manages the default branch: {ruleset.get('name')}"
-            )
+    existing: Mapping[str, object] | None = None
+    payload: Mapping[str, object] | None = None
+    if manages_governance:
+        matching = [ruleset for ruleset in snapshot.rulesets if ruleset.get("name") == RULESET_NAME]
+        if len(matching) > 1:
+            blockers.append(f"multiple rulesets are named {RULESET_NAME!r}")
+        existing = matching[0] if len(matching) == 1 else None
+        for ruleset in snapshot.rulesets:
+            if ruleset is existing or ruleset.get("enforcement") != "active":
+                continue
+            if not _ruleset_applies_to_default(ruleset):
+                continue
+            raw_rules = ruleset.get("rules")
+            if isinstance(raw_rules, list) and any(
+                isinstance(rule, Mapping) and rule.get("type") in MANAGED_RULE_TYPES
+                for rule in raw_rules
+            ):
+                blockers.append(
+                    f"another active ruleset manages the default branch: {ruleset.get('name')}"
+                )
 
-    payload, payload_blockers = _build_ruleset_payload(snapshot, policy, existing)
-    blockers.extend(payload_blockers)
-    missing_labels = tuple(sorted(set(policy.labels) - snapshot.labels))
+        payload, payload_blockers = _build_ruleset_payload(snapshot, policy, existing)
+        blockers.extend(payload_blockers)
+    missing_labels = tuple(sorted(set(policy.labels) - snapshot.labels)) if manages_incident else ()
     update_actions = snapshot.actions_default_permission != "read" or snapshot.actions_can_approve
-    enable_pvr = not snapshot.private_vulnerability_reporting
-    update_delete_branch = not snapshot.delete_branch_on_merge
+    enable_pvr = manages_incident and not snapshot.private_vulnerability_reporting
+    update_delete_branch = manages_governance and not snapshot.delete_branch_on_merge
 
     ruleset_method: str | None = None
     ruleset_id: int | None = None
@@ -781,10 +800,11 @@ def apply_bootstrap(client: Gh, plan: BootstrapPlan, *, confirmation: str) -> No
         )
 
 
-def render_findings(findings: Sequence[DoctorFinding]) -> str:
+def render_findings(findings: Sequence[DoctorFinding], *, profile: str = "full") -> str:
     return json.dumps(
         {
-            "schema_version": 1,
+            "schema_version": 2,
+            "profile": validate_profile(profile),
             "healthy": not findings,
             "findings": [
                 {"scope": item.scope, "code": item.code, "detail": item.detail} for item in findings
@@ -796,12 +816,13 @@ def render_findings(findings: Sequence[DoctorFinding]) -> str:
     )
 
 
-def render_bootstrap_plan(plan: BootstrapPlan, *, dry_run: bool) -> str:
+def render_bootstrap_plan(plan: BootstrapPlan, *, dry_run: bool, profile: str = "full") -> str:
     return json.dumps(
         {
-            "schema_version": 1,
+            "schema_version": 2,
             "mode": "dry-run" if dry_run else "apply",
             "repository": plan.repository,
+            "profile": validate_profile(profile),
             "evidence_pr": plan.evidence_pr,
             "healthy": not plan.blockers,
             "blockers": list(plan.blockers),

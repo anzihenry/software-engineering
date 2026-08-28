@@ -90,6 +90,7 @@ PINNED_ACTION_LINE_PATTERN = re.compile(
     r"v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\s*$"
 )
 AUTOMATION_COMPONENTS = frozenset({"github-lifecycle", "cross-project-governance"})
+AUTOMATION_PROFILES = frozenset({"governance", "incident", "release", "full"})
 KNOWLEDGE_ASSET_PREFIXES = (
     "skills/",
     "templates/delivery/",
@@ -417,7 +418,19 @@ def check_github_automation(root: Path) -> list[Issue]:
         if schedules != [{"cron": "0 2 * * 1"}]:
             issues.append(Issue(audit_workflow, "lifecycle audit must run Mondays at 02:00 UTC"))
 
+    prepare_release_workflow = workflows_root / "prepare-release.yml"
+    if prepare_release_workflow.is_file():
+        content = prepare_release_workflow.read_text(encoding="utf-8")
+        if content.count("--profile auto") != 2:
+            issues.append(
+                Issue(
+                    prepare_release_workflow,
+                    "prepare-release must auto-detect the installed automation profile",
+                )
+            )
+
     manifest_components: dict[str, list[str]] = {}
+    manifest_profiles: dict[str, list[str]] = {}
     manifest_files: list[str] = []
     if manifest.is_file():
         try:
@@ -425,8 +438,8 @@ def check_github_automation(root: Path) -> list[Issue]:
         except (OSError, UnicodeError, json.JSONDecodeError) as error:
             issues.append(Issue(manifest, f"invalid automation manifest JSON: {error}"))
         else:
-            if not isinstance(raw_manifest, dict) or raw_manifest.get("schema_version") != 2:
-                issues.append(Issue(manifest, "repository automation manifest must use schema 2"))
+            if not isinstance(raw_manifest, dict) or raw_manifest.get("schema_version") != 3:
+                issues.append(Issue(manifest, "repository automation manifest must use schema 3"))
             raw_components = (
                 raw_manifest.get("components") if isinstance(raw_manifest, dict) else None
             )
@@ -493,6 +506,54 @@ def check_github_automation(root: Path) -> list[Issue]:
                         issues.append(
                             Issue(manifest, f"knowledge asset must not be packaged: {item}")
                         )
+            raw_profiles = raw_manifest.get("profiles") if isinstance(raw_manifest, dict) else None
+            if not isinstance(raw_profiles, dict):
+                issues.append(Issue(manifest, "automation manifest profiles must be an object"))
+            else:
+                if set(raw_profiles) != AUTOMATION_PROFILES:
+                    issues.append(
+                        Issue(
+                            manifest,
+                            "automation manifest profiles must equal: "
+                            + ", ".join(sorted(AUTOMATION_PROFILES)),
+                        )
+                    )
+                for name, raw_files in raw_profiles.items():
+                    if not isinstance(raw_files, list) or not all(
+                        isinstance(item, str) for item in raw_files
+                    ):
+                        issues.append(
+                            Issue(manifest, f"automation manifest profile {name!r} is invalid")
+                        )
+                        continue
+                    manifest_profiles[name] = raw_files
+                    if not raw_files:
+                        issues.append(
+                            Issue(manifest, f"automation manifest profile {name!r} is empty")
+                        )
+                    if raw_files != sorted(raw_files):
+                        issues.append(
+                            Issue(
+                                manifest,
+                                f"automation manifest profile {name!r} files must be sorted",
+                            )
+                        )
+                    if len(raw_files) != len(set(raw_files)):
+                        issues.append(
+                            Issue(
+                                manifest,
+                                f"automation manifest profile {name!r} files must be unique",
+                            )
+                        )
+                    outside_components = sorted(set(raw_files) - set(manifest_files))
+                    if outside_components:
+                        issues.append(
+                            Issue(
+                                manifest,
+                                f"automation manifest profile {name!r} has files outside "
+                                "components: " + ", ".join(outside_components),
+                            )
+                        )
 
     lifecycle_files = {
         policy,
@@ -555,6 +616,56 @@ def check_github_automation(root: Path) -> list[Issue]:
                     manifest,
                     f"automation manifest component {name!r} has unexpected files: "
                     + ", ".join(extra),
+                )
+            )
+    shared_profile_files = {
+        item
+        for files in expected_components.values()
+        for item in files
+        if item == "automation/github-lifecycle-manifest.json"
+        or item == "docs/github-lifecycle-automation.md"
+        or item.startswith("scripts/")
+    }
+    expected_profiles = {
+        "governance": shared_profile_files
+        | {
+            ".github/PULL_REQUEST_TEMPLATE.md",
+            ".github/lifecycle-policy.json",
+            ".github/workflows/lifecycle-policy.yml",
+        },
+        "incident": shared_profile_files
+        | {
+            ".github/ISSUE_TEMPLATE/config.yml",
+            ".github/ISSUE_TEMPLATE/improvement-action.yml",
+            ".github/ISSUE_TEMPLATE/incident.yml",
+            ".github/lifecycle-policy.json",
+            ".github/workflows/audit-lifecycle-records.yml",
+            ".github/workflows/open-retrospective.yml",
+            ".github/workflows/transition-incident.yml",
+            "SECURITY.md",
+        },
+        "release": shared_profile_files
+        | {
+            ".github/lifecycle-policy.json",
+            ".github/workflows/prepare-release.yml",
+        },
+        "full": set().union(*expected_components.values()),
+    }
+    for name, expected_files in expected_profiles.items():
+        actual_files = set(manifest_profiles.get(name, []))
+        if actual_files != expected_files:
+            missing = sorted(expected_files - actual_files)
+            extra = sorted(actual_files - expected_files)
+            details = []
+            if missing:
+                details.append("missing " + ", ".join(missing))
+            if extra:
+                details.append("unexpected " + ", ".join(extra))
+            issues.append(
+                Issue(
+                    manifest,
+                    f"automation manifest profile {name!r} does not match its boundary: "
+                    + "; ".join(details),
                 )
             )
     return issues
