@@ -311,6 +311,7 @@ def check_github_automation(root: Path) -> list[Issue]:
 
     policy = github_root / "lifecycle-policy.json"
     manifest = root / "automation" / "github-lifecycle-manifest.json"
+    adapter_catalog = root / "automation" / "github-lifecycle-adapters.json"
     pull_request_template = github_root / "PULL_REQUEST_TEMPLATE.md"
     documentation = automation_documentation
     security_policy = root / "SECURITY.md"
@@ -321,6 +322,7 @@ def check_github_automation(root: Path) -> list[Issue]:
     for path in (
         policy,
         manifest,
+        adapter_catalog,
         pull_request_template,
         documentation,
         security_policy,
@@ -331,6 +333,27 @@ def check_github_automation(root: Path) -> list[Issue]:
     ):
         if not path.is_file():
             issues.append(Issue(path, "missing GitHub lifecycle automation file"))
+
+    if adapter_catalog.is_file():
+        try:
+            raw_catalog = json.loads(adapter_catalog.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            issues.append(Issue(adapter_catalog, f"invalid language adapter catalog JSON: {error}"))
+        else:
+            adapters = raw_catalog.get("adapters") if isinstance(raw_catalog, dict) else None
+            if (
+                not isinstance(raw_catalog, dict)
+                or raw_catalog.get("schema_version") != 1
+                or not isinstance(adapters, dict)
+                or set(adapters) != {"python", "node", "swift", "go"}
+            ):
+                issues.append(
+                    Issue(
+                        adapter_catalog,
+                        "language adapter catalog must use schema 1 and define "
+                        "python, node, swift, and go",
+                    )
+                )
 
     if incident_form.is_file():
         form = load_yaml(incident_form, issues)
@@ -577,8 +600,10 @@ def check_github_automation(root: Path) -> list[Issue]:
         path for path in workflows_root.glob("*.yaml") if path.name != "repository-checks.yaml"
     )
     governance_files = {
+        adapter_catalog,
         manifest,
         root / "scripts" / "github_lifecycle" / "__main__.py",
+        root / "scripts" / "github_lifecycle" / "adapters.py",
         root / "scripts" / "github_lifecycle" / "adoption.py",
         root / "scripts" / "github_lifecycle" / "package.py",
         root / "scripts" / "github_lifecycle" / "repository.py",
@@ -622,7 +647,7 @@ def check_github_automation(root: Path) -> list[Issue]:
         item
         for files in expected_components.values()
         for item in files
-        if item == "automation/github-lifecycle-manifest.json"
+        if item.startswith("automation/")
         or item == "docs/github-lifecycle-automation.md"
         or item.startswith("scripts/")
     }

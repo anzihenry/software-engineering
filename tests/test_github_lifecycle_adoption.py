@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
+from scripts.github_lifecycle.adapters import load_adapter, run_adapter
 from scripts.github_lifecycle.adoption import (
     apply_install,
     inspect_local_install,
@@ -113,6 +116,176 @@ class RecordingGh:
 
 
 class InstallTests(unittest.TestCase):
+    def test_builtin_language_adapters_generate_stable_validation_and_dependabot(self) -> None:
+        expectations = {
+            "python": ("ubuntu-latest", 'package-ecosystem: "pip"'),
+            "node": ("ubuntu-latest", 'package-ecosystem: "npm"'),
+            "swift": ("macos-15", 'package-ecosystem: "swift"'),
+            "go": ("ubuntu-latest", 'package-ecosystem: "gomod"'),
+        }
+        for adapter_name, (runner, ecosystem) in expectations.items():
+            with self.subTest(adapter=adapter_name), tempfile.TemporaryDirectory() as directory:
+                plan, files = plan_install(
+                    ROOT,
+                    MANIFEST,
+                    Path(directory),
+                    repository=REPOSITORY,
+                    default_branch="trunk",
+                    profile="full",
+                    adapter=adapter_name,
+                )
+                contents = dict(files)
+                self.assertEqual(plan.adapter, adapter_name)
+                self.assertIn(".github/lifecycle-adapter.json", contents)
+                workflow = contents[".github/workflows/validate.yml"].decode()
+                self.assertIn("  validate:\n", workflow)
+                self.assertIn(f"runs-on: {runner}", workflow)
+                self.assertIn("      - trunk", workflow)
+                self.assertIn("permissions: {}", workflow)
+                self.assertNotIn("pull_request_target", workflow)
+                action_lines = [line.strip() for line in workflow.splitlines() if "uses:" in line]
+                self.assertTrue(action_lines)
+                self.assertTrue(
+                    all(
+                        re.fullmatch(r"uses: [^@\s]+@[0-9a-f]{40} # v\d+\.\d+\.\d+", line)
+                        for line in action_lines
+                    )
+                )
+                self.assertIn(ecosystem, contents[".github/dependabot.yml"].decode())
+                self.assertIn(
+                    'package-ecosystem: "github-actions"',
+                    contents[".github/dependabot.yml"].decode(),
+                )
+
+    def test_custom_adapter_controls_commands_and_release_retention(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "target"
+            target.mkdir()
+            config = Path(directory) / "adapter.json"
+            config.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "name": "node-monorepo",
+                        "runner": "ubuntu-24.04",
+                        "toolchain": {"kind": "node", "version_file": ".nvmrc"},
+                        "required_files": ["package.json", ".nvmrc"],
+                        "check_commands": [["npm", "ci"], ["npm", "run", "ci"]],
+                        "dependabot_ecosystems": ["npm", "github-actions"],
+                        "release_artifact_retention_days": 7,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            plan, files = plan_install(
+                ROOT,
+                MANIFEST,
+                target,
+                repository=REPOSITORY,
+                default_branch="main",
+                adapter="custom",
+                adapter_config=config,
+            )
+            self.assertEqual(plan.adapter, "node-monorepo")
+            release = dict(files)[".github/workflows/prepare-release.yml"].decode()
+            self.assertEqual(release.count("retention-days: 7"), 1)
+            workflow = dict(files)[".github/workflows/validate.yml"].decode()
+            self.assertIn('node-version-file: ".nvmrc"', workflow)
+
+    def test_adapter_install_is_idempotent_and_doctor_detects_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            (target / "go.mod").write_text("module example.test/service\n", encoding="utf-8")
+            plan, files = plan_install(
+                ROOT,
+                MANIFEST,
+                target,
+                repository=REPOSITORY,
+                default_branch="main",
+                profile="governance",
+                adapter="go",
+            )
+            apply_install(plan, files, confirmation=f"install:{REPOSITORY}")
+            second, _ = plan_install(
+                ROOT,
+                MANIFEST,
+                target,
+                repository=REPOSITORY,
+                default_branch="main",
+                profile="governance",
+            )
+            self.assertEqual(second.adapter, "go")
+            self.assertTrue(all(entry.action == "unchanged" for entry in second.entries))
+            self.assertEqual(
+                inspect_local_install(
+                    target,
+                    MANIFEST,
+                    repository=REPOSITORY,
+                    expected_default_branch="main",
+                    profile="governance",
+                ),
+                (),
+            )
+            validate = target / ".github/workflows/validate.yml"
+            validate.write_text(
+                validate.read_text(encoding="utf-8").replace(
+                    "actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0",
+                    "actions/setup-go@" + "f" * 40 + " # v7.1.0",
+                ),
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                inspect_local_install(
+                    target,
+                    MANIFEST,
+                    repository=REPOSITORY,
+                    expected_default_branch="main",
+                    profile="governance",
+                ),
+                (),
+            )
+            (target / ".github/workflows/validate.yml").write_text("changed\n", encoding="utf-8")
+            codes = {
+                finding.code
+                for finding in inspect_local_install(
+                    target,
+                    MANIFEST,
+                    repository=REPOSITORY,
+                    expected_default_branch="main",
+                    profile="governance",
+                )
+            }
+            self.assertIn("adapter-file-drift", codes)
+
+    def test_adapter_rejects_unsafe_runner_and_executes_argument_arrays(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            marker = root / "go.mod"
+            marker.write_text("module example.test/service\n", encoding="utf-8")
+            config = root / "adapter.json"
+            raw = {
+                "schema_version": 1,
+                "name": "custom-go",
+                "runner": "ubuntu-latest",
+                "toolchain": {"kind": "go", "version_file": "go.mod"},
+                "required_files": ["go.mod"],
+                "check_commands": [["go", "test", "./..."]],
+                "dependabot_ecosystems": ["gomod", "github-actions"],
+                "release_artifact_retention_days": 30,
+            }
+            config.write_text(json.dumps(raw), encoding="utf-8")
+            with patch("scripts.github_lifecycle.adapters.subprocess.run") as execute:
+                execute.return_value.returncode = 0
+                run_adapter(config, root)
+            execute.assert_called_once_with(
+                ("go", "test", "./..."), cwd=root.resolve(), check=False
+            )
+
+            raw["runner"] = "ubuntu-latest\npermissions: write-all"
+            config.write_text(json.dumps(raw), encoding="utf-8")
+            with self.assertRaisesRegex(LifecycleError, "runner contains unsafe"):
+                load_adapter(config)
+
     def test_release_profile_can_upgrade_to_full_without_conflict(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)

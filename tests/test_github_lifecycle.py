@@ -55,7 +55,8 @@ class LifecycleCliTests(unittest.TestCase):
                 self.assertEqual(main(), 0)
 
             plan = json.loads(output.read_text(encoding="utf-8"))
-            self.assertEqual(plan["schema_version"], 2)
+            self.assertEqual(plan["schema_version"], 3)
+            self.assertEqual(plan["adapter"], "external")
             self.assertEqual(plan["profile"], "release")
             self.assertEqual(plan["mode"], "dry-run")
 

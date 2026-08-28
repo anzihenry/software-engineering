@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "adapters": {
+    "go": {
+      "runner": "ubuntu-latest",
+      "toolchain": {
+        "kind": "go",
+        "version_file": "go.mod"
+      },
+      "required_files": [
+        "go.mod"
+      ],
+      "check_commands": [
+        [
+          "go",
+          "test",
+          "./..."
+        ]
+      ],
+      "dependabot_ecosystems": [
+        "gomod",
+        "github-actions"
+      ],
+      "release_artifact_retention_days": 30
+    },
+    "node": {
+      "runner": "ubuntu-latest",
+      "toolchain": {
+        "kind": "node",
+        "version": "24"
+      },
+      "required_files": [
+        "package.json",
+        "package-lock.json"
+      ],
+      "check_commands": [
+        [
+          "npm",
+          "ci"
+        ],
+        [
+          "npm",
+          "run",
+          "validate"
+        ]
+      ],
+      "dependabot_ecosystems": [
+        "npm",
+        "github-actions"
+      ],
+      "release_artifact_retention_days": 30
+    },
+    "python": {
+      "runner": "ubuntu-latest",
+      "toolchain": {
+        "kind": "python",
+        "version": "3.14"
+      },
+      "required_files": [
+        "requirements-dev.txt",
+        "tests"
+      ],
+      "check_commands": [
+        [
+          "python",
+          "-m",
+          "pip",
+          "install",
+          "--requirement",
+          "requirements-dev.txt"
+        ],
+        [
+          "python",
+          "-m",
+          "unittest",
+          "discover",
+          "--start-directory",
+          "tests"
+        ]
+      ],
+      "dependabot_ecosystems": [
+        "pip",
+        "github-actions"
+      ],
+      "release_artifact_retention_days": 30
+    },
+    "swift": {
+      "runner": "macos-15",
+      "toolchain": {
+        "kind": "swift"
+      },
+      "required_files": [
+        "Package.swift"
+      ],
+      "check_commands": [
+        [
+          "swift",
+          "test"
+        ]
+      ],
+      "dependabot_ecosystems": [
+        "swift",
+        "github-actions"
+      ],
+      "release_artifact_retention_days": 30
+    }
+  }
+}

@@ -56,6 +56,27 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 
 profile 是可叠加采用的声明，不执行删除。由较小 profile 切换到 `full` 会补齐缺失文件；由 `full` 改用较小 profile 时，既有额外文件和 GitHub 设置会被保留，不再作为该 profile 的必需项或远端治理目标。`doctor` 仍会对仓库中实际存在的所有 workflow 执行危险触发器和 Action 固定 SHA 安全检查。`install`、`doctor` 和 `bootstrap` 必须使用同一个 profile。
 
+### 跨语言适配层
+
+安装 profile 决定“采用哪些生命周期能力”，语言 adapter 决定“目标项目怎样实现这些能力”。`python`、`node`、`swift`、`go` 四个内置 adapter 统一生成以下托管资产，但不要求四类项目复制同一种构建实现：
+
+- `.github/lifecycle-adapter.json`：版本化声明 runner、工具链来源、必需路径、参数数组形式的本地检查命令、Dependabot 生态和发布候选制品保留期。
+- `.github/workflows/validate.yml`：对外始终产生稳定的 `validate` job/check；Python 和 Node/Go 使用各自的 setup Action，Swift 使用 macOS runner。所有 Action 固定到完整提交 SHA，job 只授予 `contents: read`。
+- `.github/dependabot.yml`：按语言使用 `pip`、`npm`、`swift` 或 `gomod`，并始终覆盖 `github-actions`。
+
+适配器明确选择，不自动猜测语言。首次安装默认 `--adapter auto`：目标已有 `.github/lifecycle-adapter.json` 时继续使用该配置，否则等同 `external`，保留项目自己的检查与 Dependabot。选择内置 adapter 会把这些文件纳入安装冲突保护；已有同名但内容不同的文件不会被覆盖。成熟项目可继续使用 `external`，只需确保自己的 CI 产生稳定的 `validate` check。
+
+内置约定分别是 Python 的 `requirements-dev.txt` + unittest、Node 的 `npm ci` + `npm run validate`、Swift Package Manager 的 `swift test`、Go module 的 `go test ./...`。这些是显式基线而非语言真理；命令、runner、必需路径或工具链版本不匹配时，应复制同一 schema 编写自定义配置，并通过 `--adapter custom --adapter-config /path/to/adapter.json` 安装。Dependabot 不是根目录单包结构时使用 `external` 保留项目现有配置。配置命令以参数数组执行，不经过 shell 拼接。
+
+本地和 CI 使用同一个入口：
+
+```sh
+python3 -m scripts.github_lifecycle run-adapter \
+  --config .github/lifecycle-adapter.json
+```
+
+`doctor` 会检查 adapter schema、必需路径以及三个托管文件是否缺失或漂移。由 Dependabot 提交的完整 Action SHA 与精确版本注释更新不会被视为结构漂移，触发器、runner、权限、步骤和命令的其他变化仍会报告。`release_artifact_retention_days` 只控制 Draft Release 候选上传制品的保留期，范围为 1—90 天，并受仓库、组织或企业的上限约束；它不改变正式 Release、tag、部署或回滚策略。
+
 三个命令的责任边界如下：
 
 - `install` 只操作目标仓库的本地文件。默认 dry-run；只创建缺失文件，相同文件跳过，任何内容不同、目录占位或符号链接均记为冲突且不覆盖。
@@ -69,18 +90,20 @@ python3 -m scripts.github_lifecycle install \
   --target /path/to/target-repository \
   --repository OWNER/REPOSITORY \
   --default-branch main \
-  --profile governance
+  --profile governance \
+  --adapter node
 
 python3 -m scripts.github_lifecycle install \
   --target /path/to/target-repository \
   --repository OWNER/REPOSITORY \
   --default-branch main \
   --profile governance \
+  --adapter node \
   --no-dry-run \
   --confirmation install:OWNER/REPOSITORY
 ```
 
-安装完成后，在目标仓库中审查并提交这些文件，推送功能分支并创建 PR。等 `validate` 和 `lifecycle-policy` 真实 check-run 成功后，使用该 Open PR 的编号诊断和预览远端设置：
+安装完成后，在目标仓库中审查 adapter 命令、工具链、Dependabot 和发布保留期，再提交这些文件，推送功能分支并创建 PR。等 `validate` 和 `lifecycle-policy` 真实 check-run 成功后，使用该 Open PR 的编号诊断和预览远端设置：
 
 ```sh
 python3 -m scripts.github_lifecycle doctor \
