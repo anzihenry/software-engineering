@@ -8,15 +8,9 @@ from pathlib import Path, PurePosixPath
 from .common import LifecycleError, load_json_mapping
 
 
-def load_manifest(path: Path) -> tuple[str, ...]:
-    raw = load_json_mapping(path, "automation manifest")
-    if set(raw) != {"schema_version", "files"}:
-        raise LifecycleError("automation manifest must contain only schema_version and files")
-    if raw["schema_version"] != 1:
-        raise LifecycleError("automation manifest schema_version must be 1")
-    files = raw["files"]
+def _normalize_files(files: object, *, context: str) -> tuple[str, ...]:
     if not isinstance(files, list) or not files:
-        raise LifecycleError("automation manifest files must be a non-empty array")
+        raise LifecycleError(f"automation manifest {context} must be a non-empty array")
     normalized: list[str] = []
     for item in files:
         if not isinstance(item, str) or not item:
@@ -26,8 +20,36 @@ def load_manifest(path: Path) -> tuple[str, ...]:
             raise LifecycleError(f"automation manifest contains unsafe path: {item}")
         normalized.append(item)
     if len(normalized) != len(set(normalized)):
-        raise LifecycleError("automation manifest must not contain duplicate files")
+        raise LifecycleError(f"automation manifest {context} must not contain duplicate files")
     return tuple(sorted(normalized))
+
+
+def load_manifest(path: Path) -> tuple[str, ...]:
+    raw = load_json_mapping(path, "automation manifest")
+    schema_version = raw.get("schema_version")
+    if schema_version == 1:
+        if set(raw) != {"schema_version", "files"}:
+            raise LifecycleError(
+                "automation manifest schema 1 must contain only schema_version and files"
+            )
+        return _normalize_files(raw["files"], context="files")
+    if schema_version != 2:
+        raise LifecycleError("automation manifest schema_version must be 1 or 2")
+    if set(raw) != {"schema_version", "components"}:
+        raise LifecycleError(
+            "automation manifest schema 2 must contain only schema_version and components"
+        )
+    components = raw["components"]
+    if not isinstance(components, dict) or not components:
+        raise LifecycleError("automation manifest components must be a non-empty object")
+    combined: list[str] = []
+    for name, files in components.items():
+        if not isinstance(name, str) or not name:
+            raise LifecycleError("automation manifest component names must be non-empty strings")
+        combined.extend(_normalize_files(files, context=f"component {name!r}"))
+    if len(combined) != len(set(combined)):
+        raise LifecycleError("automation manifest files must not appear in multiple components")
+    return tuple(sorted(combined))
 
 
 def package_bundle(root: Path, manifest: Path, output: Path) -> str:

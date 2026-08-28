@@ -206,6 +206,83 @@ class RepositoryCheckTests(unittest.TestCase):
                 messages,
             )
 
+    def test_manifest_rejects_knowledge_and_internal_support_assets(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = root / "automation" / "github-lifecycle-manifest.json"
+            knowledge = root / "skills" / "example.md"
+            support = root / "bin" / "playbook"
+            manifest.parent.mkdir(parents=True)
+            knowledge.parent.mkdir(parents=True)
+            support.parent.mkdir(parents=True)
+            knowledge.write_text("# Knowledge\n", encoding="utf-8")
+            support.write_text("#!/usr/bin/env zsh\n", encoding="utf-8")
+            manifest.write_text(
+                '{"schema_version": 2, "components": {'
+                '"github-lifecycle": ["skills/example.md"], '
+                '"cross-project-governance": ["bin/playbook"]}}',
+                encoding="utf-8",
+            )
+
+            messages = {issue.message for issue in check_github_automation(root)}
+
+            self.assertIn("knowledge asset must not be packaged: skills/example.md", messages)
+            self.assertIn("internal support asset must not be packaged: bin/playbook", messages)
+
+    def test_manifest_requires_both_boundary_components(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = root / "automation" / "github-lifecycle-manifest.json"
+            runtime = root / "runtime.py"
+            manifest.parent.mkdir(parents=True)
+            runtime.write_text("", encoding="utf-8")
+            manifest.write_text(
+                '{"schema_version": 2, "components": {"github-lifecycle": ["runtime.py"]}}',
+                encoding="utf-8",
+            )
+
+            messages = {issue.message for issue in check_github_automation(root)}
+
+            self.assertIn(
+                "automation manifest components must equal: "
+                "cross-project-governance, github-lifecycle",
+                messages,
+            )
+
+    def test_readme_must_link_project_boundaries(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            readme = root / "README.md"
+            boundaries = root / "docs" / "project-boundaries.md"
+            boundaries.parent.mkdir(parents=True)
+            boundaries.write_text("# Boundaries\n", encoding="utf-8")
+            readme.write_text("# Repository\n", encoding="utf-8")
+
+            messages = {issue.message for issue in check_github_automation(root)}
+
+            self.assertIn("missing project boundary documentation link", messages)
+
+    def test_lifecycle_workflow_must_not_invoke_governance(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workflow = root / ".github" / "workflows" / "lifecycle-policy.yml"
+            workflow.parent.mkdir(parents=True)
+            workflow.write_text(
+                '"on": workflow_dispatch\n'
+                "permissions: {}\n"
+                "jobs:\n"
+                "  validate:\n"
+                "    permissions:\n"
+                "      contents: read\n"
+                "    steps:\n"
+                "      - run: python -m scripts.github_lifecycle bootstrap --repository a/b\n",
+                encoding="utf-8",
+            )
+
+            messages = {issue.message for issue in check_github_automation(root)}
+
+            self.assertIn("lifecycle workflow must not invoke cross-project governance", messages)
+
     def test_invalid_yaml_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

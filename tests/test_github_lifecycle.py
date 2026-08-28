@@ -205,13 +205,50 @@ class PullRequestPolicyTests(unittest.TestCase):
 
 
 class AutomationPackageTests(unittest.TestCase):
+    def test_schema_one_manifest_remains_compatible(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            manifest = Path(directory) / "manifest.json"
+            manifest.write_text(
+                json.dumps({"schema_version": 1, "files": ["two", "one"]}),
+                encoding="utf-8",
+            )
+
+            self.assertEqual(load_manifest(manifest), ("one", "two"))
+
+    def test_schema_two_components_are_merged(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            manifest = Path(directory) / "manifest.json"
+            manifest.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 2,
+                        "components": {
+                            "github-lifecycle": ["runtime.py"],
+                            "cross-project-governance": ["install.py"],
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            self.assertEqual(load_manifest(manifest), ("install.py", "runtime.py"))
+
     def test_bundle_is_deterministic(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "one.txt").write_text("one\n", encoding="utf-8")
             manifest = root / "manifest.json"
             manifest.write_text(
-                json.dumps({"schema_version": 1, "files": ["one.txt"]}), encoding="utf-8"
+                json.dumps(
+                    {
+                        "schema_version": 2,
+                        "components": {
+                            "github-lifecycle": ["one.txt"],
+                            "cross-project-governance": ["manifest.json"],
+                        },
+                    }
+                ),
+                encoding="utf-8",
             )
 
             first = package_bundle(root, manifest, root / "first.zip")
@@ -237,6 +274,33 @@ class AutomationPackageTests(unittest.TestCase):
             )
 
             with self.assertRaisesRegex(LifecycleError, "duplicate"):
+                load_manifest(manifest)
+
+    def test_manifest_rejects_files_repeated_across_components(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            manifest = Path(directory) / "manifest.json"
+            manifest.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 2,
+                        "components": {
+                            "github-lifecycle": ["shared.py"],
+                            "cross-project-governance": ["shared.py"],
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(LifecycleError, "multiple components"):
+                load_manifest(manifest)
+
+    def test_manifest_rejects_unknown_schema(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            manifest = Path(directory) / "manifest.json"
+            manifest.write_text(json.dumps({"schema_version": 3}), encoding="utf-8")
+
+            with self.assertRaisesRegex(LifecycleError, "must be 1 or 2"):
                 load_manifest(manifest)
 
 
