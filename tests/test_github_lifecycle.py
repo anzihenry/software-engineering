@@ -15,7 +15,11 @@ from scripts.github_lifecycle.incident import (
     write_transition_outputs,
 )
 from scripts.github_lifecycle.package import load_manifest, package_bundle
-from scripts.github_lifecycle.pr import validate_pr_body
+from scripts.github_lifecycle.pr import (
+    PullRequestValidation,
+    validate_pr_body,
+    validate_pr_event,
+)
 from scripts.github_lifecycle.release import (
     ReleaseRequest,
     prepare_release,
@@ -229,6 +233,183 @@ class PullRequestPolicyTests(unittest.TestCase):
         result = validate_pr_body(injected, draft=False, policy=self.policy)
 
         self.assertIn("PR body must contain exactly one lifecycle-metadata block", result.issues)
+
+    def validate_dependabot(
+        self,
+        files: list[dict[str, object]],
+        **pull_request_changes: object,
+    ) -> PullRequestValidation:
+        pull_request: dict[str, object] = {
+            "body": "Dependabot generated body without the lifecycle template.",
+            "draft": False,
+            "changed_files": len(files),
+            "user": {"login": "dependabot[bot]", "type": "Bot"},
+            "head": {
+                "ref": "dependabot/pip/development-tools",
+                "repo": {"full_name": "example/service"},
+            },
+            "base": {"ref": "main", "repo": {"full_name": "example/service"}},
+        }
+        pull_request.update(pull_request_changes)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            event_path = root / "event.json"
+            files_path = root / "files.json"
+            event_path.write_text(json.dumps({"pull_request": pull_request}), encoding="utf-8")
+            files_path.write_text(json.dumps([files]), encoding="utf-8")
+            return validate_pr_event(event_path, self.policy, files_path)
+
+    def test_restricted_dependabot_dependency_update_is_accepted_as_low_risk(self) -> None:
+        for filename in (
+            "requirements-dev.txt",
+            "package-lock.json",
+            "Package.resolved",
+            "go.sum",
+        ):
+            with self.subTest(filename=filename):
+                result = self.validate_dependabot(
+                    [
+                        {
+                            "filename": filename,
+                            "status": "modified",
+                            "additions": 1,
+                            "deletions": 1,
+                        }
+                    ]
+                )
+
+                self.assertEqual(result.issues, ())
+                self.assertEqual(result.risk_level, "low")
+                self.assertEqual(result.record_source, "dependabot-restricted")
+
+    def test_dependabot_route_rejects_spoofed_identity_and_cross_repository_head(self) -> None:
+        result = self.validate_dependabot(
+            [{"filename": "go.sum", "status": "modified"}],
+            user={"login": "dependabot[bot]", "type": "User"},
+            head={
+                "ref": "feature/not-dependabot",
+                "repo": {"full_name": "attacker/service"},
+            },
+        )
+
+        self.assertTrue(result.blocks)
+        self.assertIn("Dependabot PR author must have GitHub user type Bot", result.issues)
+        self.assertIn("Dependabot PR head branch must use the dependabot/ prefix", result.issues)
+        self.assertIn("Dependabot PR must originate from the base repository", result.issues)
+
+    def test_dependabot_route_rejects_files_outside_dependency_allowlist(self) -> None:
+        result = self.validate_dependabot(
+            [{"filename": "scripts/release.py", "status": "modified"}]
+        )
+
+        self.assertTrue(result.blocks)
+        self.assertIn(
+            "Dependabot changed a file outside the dependency allowlist: scripts/release.py",
+            result.issues,
+        )
+
+    def test_dependabot_route_accepts_only_pinned_action_replacements(self) -> None:
+        result = self.validate_dependabot(
+            [
+                {
+                    "filename": ".github/workflows/check.yml",
+                    "status": "modified",
+                    "additions": 1,
+                    "deletions": 1,
+                    "patch": (
+                        "@@ -1,2 +1,2 @@\n"
+                        "-      uses: actions/checkout@" + "a" * 40 + " # v7.0.0\n"
+                        "+      uses: actions/checkout@" + "b" * 40 + " # v7.0.1"
+                    ),
+                }
+            ]
+        )
+
+        self.assertEqual(result.issues, ())
+
+    def test_dependabot_route_rejects_workflow_logic_or_floating_action_changes(self) -> None:
+        for added_line in (
+            "+permissions: write-all",
+            "+      uses: actions/checkout@v7",
+        ):
+            with self.subTest(added_line=added_line):
+                result = self.validate_dependabot(
+                    [
+                        {
+                            "filename": ".github/workflows/check.yml",
+                            "status": "modified",
+                            "additions": 1,
+                            "deletions": 1,
+                            "patch": (
+                                "@@ -1,2 +1,2 @@\n"
+                                "-      uses: actions/checkout@"
+                                + "a" * 40
+                                + " # v7.0.0\n"
+                                + added_line
+                            ),
+                        }
+                    ]
+                )
+
+                self.assertTrue(result.blocks)
+                self.assertIn(
+                    "Dependabot workflow update changes more than a pinned Action: "
+                    ".github/workflows/check.yml",
+                    result.issues,
+                )
+
+    def test_dependabot_route_requires_complete_paginated_file_data(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            event_path = Path(directory) / "event.json"
+            event_path.write_text(
+                json.dumps(
+                    {
+                        "pull_request": {
+                            "draft": False,
+                            "changed_files": 1,
+                            "user": {"login": "dependabot[bot]", "type": "Bot"},
+                            "head": {
+                                "ref": "dependabot/pip/tools",
+                                "repo": {"full_name": "example/service"},
+                            },
+                            "base": {
+                                "ref": "main",
+                                "repo": {"full_name": "example/service"},
+                            },
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = validate_pr_event(event_path, self.policy)
+
+        self.assertTrue(result.blocks)
+        self.assertIn(
+            "Dependabot PR validation requires the complete changed-file list", result.issues
+        )
+
+    def test_dependabot_route_rejects_missing_patch_and_incomplete_file_list(self) -> None:
+        result = self.validate_dependabot(
+            [
+                {
+                    "filename": ".github/workflows/check.yml",
+                    "status": "modified",
+                    "additions": 1,
+                    "deletions": 1,
+                }
+            ],
+            changed_files=2,
+        )
+
+        self.assertTrue(result.blocks)
+        self.assertIn(
+            "Dependabot changed_files does not match the fetched file list", result.issues
+        )
+        self.assertIn(
+            "Dependabot workflow update requires a complete patch: .github/workflows/check.yml",
+            result.issues,
+        )
 
 
 class AutomationPackageTests(unittest.TestCase):
