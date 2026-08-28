@@ -4,14 +4,15 @@
 
 当前基线：[研发全流程](docs/software-development-lifecycle.md)。
 
-## 分层结构
+## 三层能力边界
 
-- **准则（Principles）**：长期稳定的决策约束与质量底线。
-- **流程（Workflows）**：从需求到运营的阶段、交付物和质量门禁。
-- **技能（Skills）**：在特定工作场景下为人或 Codex 提供的可执行指南。
-- **自动化（Automation）**：将重复、可验证的流程步骤固化为 CI/CD 或脚本。
+- **研发知识与 SKILL**：定义如何完成研发工作，包括准则、阶段 workflow、SKILL、交付模板和演练。
+- **GitHub 生命周期自动化**：把适合机械验证的规则落实为 PR、Release、Issue 和 Actions 编排。
+- **跨项目安装与治理工具**：通过确定性打包及 `install`、`doctor`、`bootstrap` 分发和治理 GitHub 自动化。
 
-该仓库首先维护流程基线，再依操作频率和风险优先级沉淀专题 workflow 与 SKILL。
+完整的责任、权限、分发和依赖约束见[项目三层边界](docs/project-boundaries.md)。三层使用同一仓库版本；CI、Dependabot、本地开发入口和综合自检是横切的内部支持面，不作为第四个产品层，也不进入跨项目自动化包。
+
+“准则、流程、技能、自动化”用于描述资产形态，不再作为与上述三层并列的项目分类。仓库首先维护流程基线，再依操作频率和风险优先级沉淀专题 workflow、SKILL 与自动化。
 
 项目内 SKILL 按研发阶段组织，使用入口见 [SKILL 导航](skills/README.md)。
 

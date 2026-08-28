@@ -1,29 +1,33 @@
 {
-  "schema_version": 1,
-  "files": [
-    ".github/ISSUE_TEMPLATE/config.yml",
-    ".github/ISSUE_TEMPLATE/improvement-action.yml",
-    ".github/ISSUE_TEMPLATE/incident.yml",
-    ".github/PULL_REQUEST_TEMPLATE.md",
-    ".github/lifecycle-policy.json",
-    ".github/workflows/audit-lifecycle-records.yml",
-    ".github/workflows/lifecycle-policy.yml",
-    ".github/workflows/open-retrospective.yml",
-    ".github/workflows/prepare-release.yml",
-    ".github/workflows/transition-incident.yml",
-    "SECURITY.md",
-    "automation/github-lifecycle-manifest.json",
-    "docs/github-lifecycle-automation.md",
-    "scripts/__init__.py",
-    "scripts/github_lifecycle/__init__.py",
-    "scripts/github_lifecycle/__main__.py",
-    "scripts/github_lifecycle/adoption.py",
-    "scripts/github_lifecycle/common.py",
-    "scripts/github_lifecycle/incident.py",
-    "scripts/github_lifecycle/package.py",
-    "scripts/github_lifecycle/pr.py",
-    "scripts/github_lifecycle/release.py",
-    "scripts/github_lifecycle/repository.py",
-    "scripts/github_lifecycle/retrospective.py"
-  ]
+  "schema_version": 2,
+  "components": {
+    "github-lifecycle": [
+      ".github/ISSUE_TEMPLATE/config.yml",
+      ".github/ISSUE_TEMPLATE/improvement-action.yml",
+      ".github/ISSUE_TEMPLATE/incident.yml",
+      ".github/PULL_REQUEST_TEMPLATE.md",
+      ".github/lifecycle-policy.json",
+      ".github/workflows/audit-lifecycle-records.yml",
+      ".github/workflows/lifecycle-policy.yml",
+      ".github/workflows/open-retrospective.yml",
+      ".github/workflows/prepare-release.yml",
+      ".github/workflows/transition-incident.yml",
+      "SECURITY.md",
+      "docs/github-lifecycle-automation.md",
+      "scripts/__init__.py",
+      "scripts/github_lifecycle/__init__.py",
+      "scripts/github_lifecycle/common.py",
+      "scripts/github_lifecycle/incident.py",
+      "scripts/github_lifecycle/pr.py",
+      "scripts/github_lifecycle/release.py",
+      "scripts/github_lifecycle/retrospective.py"
+    ],
+    "cross-project-governance": [
+      "automation/github-lifecycle-manifest.json",
+      "scripts/github_lifecycle/__main__.py",
+      "scripts/github_lifecycle/adoption.py",
+      "scripts/github_lifecycle/package.py",
+      "scripts/github_lifecycle/repository.py"
+    ]
+  }
 }

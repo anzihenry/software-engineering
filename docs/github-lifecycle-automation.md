@@ -2,6 +2,8 @@
 
 本仓库将 PR、发布、普通事故和复盘编排逐步固化为可复制的 GitHub 原生自动化。GitHub 承载普通记录和控制状态；安全、隐私及取证敏感内容只保留受限系统标识，不进入普通 PR、Issue、Actions 日志或 Release。
 
+按[项目三层边界](project-boundaries.md)，本页同时描述第二层“GitHub 生命周期自动化”及第三层“跨项目安装与治理工具”。前者执行仓库内生命周期规则，后者只负责打包、安装、诊断和仓库设置；两层不能替代第一层的研发知识与人工责任。
+
 ## 权限模型
 
 - PR 校验和定时审计只读运行。
@@ -43,7 +45,7 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 
 ## 跨项目安装、诊断与引导
 
-`automation/github-lifecycle-manifest.json` 列出公共配置、工作流、表单、文档和脚本。应先用固定 tag 或完整 commit SHA 检出本仓库，避免在未复核的浮动分支上安装。三个命令的责任边界如下：
+`automation/github-lifecycle-manifest.json` 使用 schema 2，将文件分为 `github-lifecycle` 和 `cross-project-governance` 两个互斥组件。打包和安装默认处理两个组件的并集；schema 1 的 legacy bundle 仍可读取。第一层研发知识和本仓库内部支持面不进入 manifest。应先用固定 tag 或完整 commit SHA 检出本仓库，避免在未复核的浮动分支上安装。三个命令的责任边界如下：
 
 - `install` 只操作目标仓库的本地文件。默认 dry-run；只创建缺失文件，相同文件跳过，任何内容不同、目录占位或符号链接均记为冲突且不覆盖。
 - `doctor` 只读检查本地安装及 GitHub 设置，包括目标仓库链接、默认分支、Action 固定 SHA、危险触发器、Actions 默认权限、标签、Private Vulnerability Reporting、默认分支有效规则和可选证据 PR。

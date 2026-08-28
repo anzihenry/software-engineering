@@ -1,5 +1,7 @@
 # SKILL 导航
 
+SKILL 属于[项目三层边界](../docs/project-boundaries.md)的第一层“研发知识与 SKILL”。它描述如何判断和执行工作，不直接获得 GitHub 或其他外部系统写权限；涉及 GitHub 生命周期时，可以指导使用第二、三层能力，但不复制其机器契约。
+
 按你当前所处的研发阶段选择目录；进入阶段后，再根据要完成的行为选择 SKILL。每个阶段的 workflow 也有同样的映射表。
 
 所有 SKILL 必须遵循[内容治理契约](../docs/content-governance.md)，在 frontmatter 的 `metadata` 映射中声明所有者、适用范围、状态和下次复审日期。`active` 内容可以按下表路由；`draft` 不得作为默认能力，`deprecated` 必须指向替代或删除条件。

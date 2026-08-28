@@ -89,6 +89,26 @@ PINNED_ACTION_LINE_PATTERN = re.compile(
     r"^\s*(?:-\s+)?uses:\s+[^@\s]+@[0-9a-fA-F]{40}\s+#\s+"
     r"v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\s*$"
 )
+AUTOMATION_COMPONENTS = frozenset({"github-lifecycle", "cross-project-governance"})
+KNOWLEDGE_ASSET_PREFIXES = (
+    "skills/",
+    "templates/delivery/",
+    "docs/workflows/",
+    "docs/exercises/",
+)
+INTERNAL_SUPPORT_ASSETS = frozenset(
+    {
+        ".github/dependabot.yml",
+        ".github/workflows/repository-checks.yml",
+        "bin/playbook",
+        "requirements-dev.txt",
+        "scripts/check_repository.py",
+        "scripts/development.py",
+    }
+)
+GOVERNANCE_COMMAND_PATTERN = re.compile(
+    r"python(?:3)?\s+-m\s+scripts\.github_lifecycle\s+(?:install|doctor|bootstrap)(?:\s|\\|$)"
+)
 
 
 @dataclass(frozen=True, order=True)
@@ -265,10 +285,33 @@ def check_github_automation(root: Path) -> list[Issue]:
     if not development_module.is_file():
         issues.append(Issue(development_module, "missing development command module"))
 
+    boundaries = root / "docs" / "project-boundaries.md"
+    readme = root / "README.md"
+    skill_navigation = root / "skills" / "README.md"
+    lifecycle_documentation = root / "docs" / "software-development-lifecycle.md"
+    automation_documentation = root / "docs" / "github-lifecycle-automation.md"
+    for navigation in (
+        readme,
+        skill_navigation,
+        lifecycle_documentation,
+        automation_documentation,
+    ):
+        if not boundaries.is_file():
+            issues.append(Issue(boundaries, "missing project boundary documentation"))
+            break
+        if navigation.is_file():
+            links = {
+                resolved
+                for _, target in markdown_links(navigation)
+                if (resolved := resolve_local_link(navigation, target)) is not None
+            }
+            if boundaries not in links:
+                issues.append(Issue(navigation, "missing project boundary documentation link"))
+
     policy = github_root / "lifecycle-policy.json"
     manifest = root / "automation" / "github-lifecycle-manifest.json"
     pull_request_template = github_root / "PULL_REQUEST_TEMPLATE.md"
-    documentation = root / "docs" / "github-lifecycle-automation.md"
+    documentation = automation_documentation
     security_policy = root / "SECURITY.md"
     incident_form = github_root / "ISSUE_TEMPLATE" / "incident.yml"
     improvement_form = github_root / "ISSUE_TEMPLATE" / "improvement-action.yml"
@@ -374,6 +417,7 @@ def check_github_automation(root: Path) -> list[Issue]:
         if schedules != [{"cron": "0 2 * * 1"}]:
             issues.append(Issue(audit_workflow, "lifecycle audit must run Mondays at 02:00 UTC"))
 
+    manifest_components: dict[str, list[str]] = {}
     manifest_files: list[str] = []
     if manifest.is_file():
         try:
@@ -381,19 +425,58 @@ def check_github_automation(root: Path) -> list[Issue]:
         except (OSError, UnicodeError, json.JSONDecodeError) as error:
             issues.append(Issue(manifest, f"invalid automation manifest JSON: {error}"))
         else:
-            if not isinstance(raw_manifest, dict) or raw_manifest.get("schema_version") != 1:
-                issues.append(Issue(manifest, "automation manifest schema_version must equal 1"))
-            raw_files = raw_manifest.get("files") if isinstance(raw_manifest, dict) else None
-            if not isinstance(raw_files, list) or not all(
-                isinstance(item, str) for item in raw_files
-            ):
-                issues.append(Issue(manifest, "automation manifest files must be a string array"))
+            if not isinstance(raw_manifest, dict) or raw_manifest.get("schema_version") != 2:
+                issues.append(Issue(manifest, "repository automation manifest must use schema 2"))
+            raw_components = (
+                raw_manifest.get("components") if isinstance(raw_manifest, dict) else None
+            )
+            if not isinstance(raw_components, dict):
+                issues.append(Issue(manifest, "automation manifest components must be an object"))
             else:
-                manifest_files = raw_files
-                if manifest_files != sorted(manifest_files):
-                    issues.append(Issue(manifest, "automation manifest files must be sorted"))
+                component_names = set(raw_components)
+                if component_names != AUTOMATION_COMPONENTS:
+                    issues.append(
+                        Issue(
+                            manifest,
+                            "automation manifest components must equal: "
+                            + ", ".join(sorted(AUTOMATION_COMPONENTS)),
+                        )
+                    )
+                for name, raw_files in raw_components.items():
+                    if (
+                        not isinstance(name, str)
+                        or not isinstance(raw_files, list)
+                        or not all(isinstance(item, str) for item in raw_files)
+                    ):
+                        issues.append(
+                            Issue(manifest, f"automation manifest component {name!r} is invalid")
+                        )
+                        continue
+                    manifest_components[name] = raw_files
+                    if not raw_files:
+                        issues.append(
+                            Issue(manifest, f"automation manifest component {name!r} is empty")
+                        )
+                    if raw_files != sorted(raw_files):
+                        issues.append(
+                            Issue(
+                                manifest,
+                                f"automation manifest component {name!r} files must be sorted",
+                            )
+                        )
+                    if len(raw_files) != len(set(raw_files)):
+                        issues.append(
+                            Issue(
+                                manifest,
+                                f"automation manifest component {name!r} files must be unique",
+                            )
+                        )
+                    manifest_files.extend(raw_files)
+
                 if len(manifest_files) != len(set(manifest_files)):
-                    issues.append(Issue(manifest, "automation manifest files must be unique"))
+                    issues.append(
+                        Issue(manifest, "automation manifest files must not cross components")
+                    )
                 for item in manifest_files:
                     item_path = Path(item)
                     if item_path.is_absolute() or ".." in item_path.parts:
@@ -402,37 +485,77 @@ def check_github_automation(root: Path) -> list[Issue]:
                         issues.append(
                             Issue(manifest, f"automation manifest file does not exist: {item}")
                         )
+                    if item in INTERNAL_SUPPORT_ASSETS or item.startswith("tests/"):
+                        issues.append(
+                            Issue(manifest, f"internal support asset must not be packaged: {item}")
+                        )
+                    if any(item.startswith(prefix) for prefix in KNOWLEDGE_ASSET_PREFIXES):
+                        issues.append(
+                            Issue(manifest, f"knowledge asset must not be packaged: {item}")
+                        )
 
-    public_files = {
+    lifecycle_files = {
         policy,
-        manifest,
         pull_request_template,
         documentation,
         security_policy,
         root / "scripts" / "__init__.py",
+        root / "scripts" / "github_lifecycle" / "__init__.py",
+        root / "scripts" / "github_lifecycle" / "common.py",
+        root / "scripts" / "github_lifecycle" / "incident.py",
+        root / "scripts" / "github_lifecycle" / "pr.py",
+        root / "scripts" / "github_lifecycle" / "release.py",
+        root / "scripts" / "github_lifecycle" / "retrospective.py",
     }
-    public_files.update((root / "scripts" / "github_lifecycle").glob("*.py"))
-    public_files.update((github_root / "ISSUE_TEMPLATE").glob("*.yml"))
-    public_files.update((github_root / "ISSUE_TEMPLATE").glob("*.yaml"))
-    public_files.update(
+    lifecycle_files.update((github_root / "ISSUE_TEMPLATE").glob("*.yml"))
+    lifecycle_files.update((github_root / "ISSUE_TEMPLATE").glob("*.yaml"))
+    lifecycle_files.update(
         path for path in workflows_root.glob("*.yml") if path.name != "repository-checks.yml"
     )
-    public_files.update(
+    lifecycle_files.update(
         path for path in workflows_root.glob("*.yaml") if path.name != "repository-checks.yaml"
     )
-    expected_manifest_files = {
-        str(path.relative_to(root)) for path in public_files if path.is_file()
+    governance_files = {
+        manifest,
+        root / "scripts" / "github_lifecycle" / "__main__.py",
+        root / "scripts" / "github_lifecycle" / "adoption.py",
+        root / "scripts" / "github_lifecycle" / "package.py",
+        root / "scripts" / "github_lifecycle" / "repository.py",
     }
-    if set(manifest_files) != expected_manifest_files:
-        missing = sorted(expected_manifest_files - set(manifest_files))
-        extra = sorted(set(manifest_files) - expected_manifest_files)
+    for workflow in lifecycle_files:
+        if workflow.suffix not in {".yml", ".yaml"} or not workflow.is_file():
+            continue
+        if GOVERNANCE_COMMAND_PATTERN.search(workflow.read_text(encoding="utf-8")):
+            issues.append(
+                Issue(workflow, "lifecycle workflow must not invoke cross-project governance")
+            )
+    expected_components = {
+        "github-lifecycle": {
+            str(path.relative_to(root)) for path in lifecycle_files if path.is_file()
+        },
+        "cross-project-governance": {
+            str(path.relative_to(root)) for path in governance_files if path.is_file()
+        },
+    }
+    for name, expected_files in expected_components.items():
+        actual_files = set(manifest_components.get(name, []))
+        missing = sorted(expected_files - actual_files)
+        extra = sorted(actual_files - expected_files)
         if missing:
             issues.append(
-                Issue(manifest, f"automation manifest is missing files: {', '.join(missing)}")
+                Issue(
+                    manifest,
+                    f"automation manifest component {name!r} is missing files: "
+                    + ", ".join(missing),
+                )
             )
         if extra:
             issues.append(
-                Issue(manifest, f"automation manifest has unexpected files: {', '.join(extra)}")
+                Issue(
+                    manifest,
+                    f"automation manifest component {name!r} has unexpected files: "
+                    + ", ".join(extra),
+                )
             )
     return issues
 
