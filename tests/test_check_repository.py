@@ -283,6 +283,34 @@ class RepositoryCheckTests(unittest.TestCase):
 
             self.assertIn("lifecycle workflow must not invoke cross-project governance", messages)
 
+    def test_lifecycle_policy_must_supply_complete_pull_request_files(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workflow = root / ".github" / "workflows" / "lifecycle-policy.yml"
+            workflow.parent.mkdir(parents=True)
+            workflow.write_text(
+                '"on":\n'
+                "  pull_request:\n"
+                "permissions: {}\n"
+                "jobs:\n"
+                "  lifecycle-policy:\n"
+                "    permissions:\n"
+                "      contents: read\n"
+                "      pull-requests: read\n"
+                "    steps:\n"
+                "      - run: python -m scripts.github_lifecycle validate-pr\n",
+                encoding="utf-8",
+            )
+
+            messages = {issue.message for issue in check_github_automation(root)}
+
+            self.assertIn(
+                "lifecycle-policy must fetch the complete pull request file list", messages
+            )
+            self.assertIn(
+                "lifecycle-policy must pass pull request files to the validator", messages
+            )
+
     def test_invalid_yaml_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

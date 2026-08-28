@@ -19,6 +19,10 @@
 
 Draft PR 可以保留未完成项，`lifecycle-policy` 会给出警告但不阻塞；PR 进入 Ready 后，相同缺口会使检查失败。通过只表示结构完整，不证明链接内容或测试结论真实。
 
+Dependabot PR 使用受限的自动低风险记录，不要求机器人生成面向人工变更的完整 PR 模板，也不获得无条件豁免。校验器要求作者同时满足固定登录名 `dependabot[bot]` 和 GitHub `Bot` 类型，分支以 `dependabot/` 开头、来自同一仓库并指向 policy 默认分支；工作流通过只读 `gh api --paginate --slurp` 提供完整文件清单，并与事件中的 `changed_files` 数量核对。
+
+自动通道只允许 Python、Node、Swift 和 Go 的依赖 manifest/lock 文件。对 `.github/workflows/*.{yml,yaml}`，每个增删行必须是同一 Action 的完整 40 位 SHA 与精确 `vMAJOR.MINOR.PATCH` 注释替换，缺失或截断 patch、浮动 tag、文件重命名、trigger、权限、脚本及其他工作流逻辑变化全部失败。普通 `validate` 仍独立执行仓库测试、全量工作流危险触发器和 Action 固定检查；两项 required checks 必须同时成功。
+
 ## 发布候选与 Draft Release
 
 `Prepare Draft Release` 只能通过 `workflow_dispatch` 运行，输入语义版本、完整 source SHA、风险等级、变更记录和摘要。Python 校验器要求版本符合 `vMAJOR.MINOR.PATCH`、SHA 可从 `main` 到达、配置中的 required checks 已成功，且同版本 tag 和 Release 尚不存在。

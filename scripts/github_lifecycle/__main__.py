@@ -55,13 +55,14 @@ def write_summary(lines: list[str]) -> None:
 
 
 def validate_pr(args: argparse.Namespace) -> int:
-    result = validate_pr_event(args.event, load_policy(args.policy))
+    result = validate_pr_event(args.event, load_policy(args.policy), args.files)
     status = (
         "warning" if result.draft and result.issues else "failed" if result.issues else "passed"
     )
     lines = ["## Lifecycle PR policy", "", f"Status: **{status}**"]
     if result.risk_level:
         lines.append(f"Risk level: `{result.risk_level}`")
+    lines.append(f"Record source: `{result.record_source}`")
     if result.issues:
         lines.extend(["", "Issues:", *(f"- {issue}" for issue in result.issues)])
     else:
@@ -366,6 +367,7 @@ def parse_args() -> argparse.Namespace:
     pr_parser = subparsers.add_parser("validate-pr", help="validate a pull request event")
     pr_parser.add_argument("--event", type=Path, required=True)
     pr_parser.add_argument("--policy", type=Path, required=True)
+    pr_parser.add_argument("--files", type=Path)
     pr_parser.set_defaults(handler=validate_pr)
 
     package_parser = subparsers.add_parser("package", help="build a deterministic copy bundle")

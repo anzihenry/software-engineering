@@ -452,6 +452,27 @@ def check_github_automation(root: Path) -> list[Issue]:
                 )
             )
 
+    lifecycle_policy_workflow = workflows_root / "lifecycle-policy.yml"
+    if lifecycle_policy_workflow.is_file():
+        content = lifecycle_policy_workflow.read_text(encoding="utf-8")
+        if (
+            "pulls/$PR_NUMBER/files?per_page=100" not in content
+            or "--paginate --slurp" not in content
+        ):
+            issues.append(
+                Issue(
+                    lifecycle_policy_workflow,
+                    "lifecycle-policy must fetch the complete pull request file list",
+                )
+            )
+        if '--files "$RUNNER_TEMP/pull-request-files.json"' not in content:
+            issues.append(
+                Issue(
+                    lifecycle_policy_workflow,
+                    "lifecycle-policy must pass pull request files to the validator",
+                )
+            )
+
     manifest_components: dict[str, list[str]] = {}
     manifest_profiles: dict[str, list[str]] = {}
     manifest_files: list[str] = []
