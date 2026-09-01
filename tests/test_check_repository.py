@@ -14,6 +14,7 @@ from scripts.check_repository import (
     TRACEABILITY_FIELDS,
     WORKFLOW_DELIVERY_TEMPLATES,
     check_content_governance,
+    check_cross_project_acceptance,
     check_delivery_templates,
     check_end_to_end_exercises,
     check_github_automation,
@@ -129,6 +130,38 @@ def write_valid_governed_content(root: Path, review_by: str = "2026-08-26") -> N
 
 
 class RepositoryCheckTests(unittest.TestCase):
+    def test_repository_checks_ignore_local_virtual_environment(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            license_file = root / ".venv/lib/example/LICENSE.md"
+            license_file.parent.mkdir(parents=True)
+            license_file.write_text("not repository Markdown\n", encoding="utf-8")
+
+            self.assertEqual(check_markdown_format(root), [])
+
+    def test_repository_cross_project_acceptance_is_valid(self) -> None:
+        self.assertEqual(check_cross_project_acceptance(REPOSITORY_ROOT), [])
+
+    def test_incomplete_cross_project_acceptance_matrix_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            matrix = root / "tests/fixtures/github-lifecycle-acceptance-matrix.json"
+            matrix.parent.mkdir(parents=True)
+            matrix.write_text(
+                '{"schema_version":1,"adapters":{},"profiles":{},"cases":[]}',
+                encoding="utf-8",
+            )
+
+            messages = {issue.message for issue in check_cross_project_acceptance(root)}
+
+            self.assertIn("missing cross-project acceptance documentation", messages)
+            self.assertTrue(any("adapters must equal" in message for message in messages))
+            self.assertTrue(any("profiles must equal" in message for message in messages))
+            self.assertIn(
+                "cross-project acceptance cases must be the sorted 4 x 4 adapter/profile product",
+                messages,
+            )
+
     def test_repository_github_automation_is_valid(self) -> None:
         self.assertEqual(check_github_automation(REPOSITORY_ROOT), [])
 

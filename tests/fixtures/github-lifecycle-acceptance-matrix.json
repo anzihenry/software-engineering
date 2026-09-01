@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "adapters": {
+    "go": {
+      "required_paths": [
+        {
+          "path": "go.mod",
+          "kind": "file",
+          "content": "module example.test/service\n\ngo 1.27\n"
+        }
+      ],
+      "runner": "ubuntu-latest",
+      "dependabot_ecosystem": "gomod"
+    },
+    "node": {
+      "required_paths": [
+        {
+          "path": "package.json",
+          "kind": "file",
+          "content": "{\"name\":\"acceptance-service\",\"private\":true}\n"
+        },
+        {
+          "path": "package-lock.json",
+          "kind": "file",
+          "content": "{\"name\":\"acceptance-service\",\"lockfileVersion\":3}\n"
+        }
+      ],
+      "runner": "ubuntu-latest",
+      "dependabot_ecosystem": "npm"
+    },
+    "python": {
+      "required_paths": [
+        {
+          "path": "requirements-dev.txt",
+          "kind": "file",
+          "content": "# acceptance fixture\n"
+        },
+        {
+          "path": "tests",
+          "kind": "directory"
+        }
+      ],
+      "runner": "ubuntu-latest",
+      "dependabot_ecosystem": "pip"
+    },
+    "swift": {
+      "required_paths": [
+        {
+          "path": "Package.swift",
+          "kind": "file",
+          "content": "// swift-tools-version: 6.2\n"
+        }
+      ],
+      "runner": "macos-15",
+      "dependabot_ecosystem": "swift"
+    }
+  },
+  "profiles": {
+    "full": {
+      "workflow_names": [
+        "audit-lifecycle-records.yml",
+        "lifecycle-policy.yml",
+        "open-retrospective.yml",
+        "prepare-release.yml",
+        "transition-incident.yml",
+        "validate.yml"
+      ],
+      "bootstrap_action_kinds": [
+        "actions-permissions",
+        "label",
+        "private-vulnerability-reporting",
+        "repository",
+        "ruleset"
+      ]
+    },
+    "governance": {
+      "workflow_names": [
+        "lifecycle-policy.yml",
+        "validate.yml"
+      ],
+      "bootstrap_action_kinds": [
+        "actions-permissions",
+        "repository",
+        "ruleset"
+      ]
+    },
+    "incident": {
+      "workflow_names": [
+        "audit-lifecycle-records.yml",
+        "open-retrospective.yml",
+        "transition-incident.yml",
+        "validate.yml"
+      ],
+      "bootstrap_action_kinds": [
+        "actions-permissions",
+        "label",
+        "private-vulnerability-reporting"
+      ]
+    },
+    "release": {
+      "workflow_names": [
+        "prepare-release.yml",
+        "validate.yml"
+      ],
+      "bootstrap_action_kinds": [
+        "actions-permissions"
+      ]
+    }
+  },
+  "cases": [
+    {
+      "adapter": "go",
+      "profile": "full"
+    },
+    {
+      "adapter": "go",
+      "profile": "governance"
+    },
+    {
+      "adapter": "go",
+      "profile": "incident"
+    },
+    {
+      "adapter": "go",
+      "profile": "release"
+    },
+    {
+      "adapter": "node",
+      "profile": "full"
+    },
+    {
+      "adapter": "node",
+      "profile": "governance"
+    },
+    {
+      "adapter": "node",
+      "profile": "incident"
+    },
+    {
+      "adapter": "node",
+      "profile": "release"
+    },
+    {
+      "adapter": "python",
+      "profile": "full"
+    },
+    {
+      "adapter": "python",
+      "profile": "governance"
+    },
+    {
+      "adapter": "python",
+      "profile": "incident"
+    },
+    {
+      "adapter": "python",
+      "profile": "release"
+    },
+    {
+      "adapter": "swift",
+      "profile": "full"
+    },
+    {
+      "adapter": "swift",
+      "profile": "governance"
+    },
+    {
+      "adapter": "swift",
+      "profile": "incident"
+    },
+    {
+      "adapter": "swift",
+      "profile": "release"
+    }
+  ]
+}
