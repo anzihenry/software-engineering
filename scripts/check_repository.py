@@ -91,6 +91,7 @@ PINNED_ACTION_LINE_PATTERN = re.compile(
 )
 AUTOMATION_COMPONENTS = frozenset({"github-lifecycle", "cross-project-governance"})
 AUTOMATION_PROFILES = frozenset({"governance", "incident", "release", "full"})
+AUTOMATION_ADAPTERS = frozenset({"python", "node", "swift", "go"})
 KNOWLEDGE_ASSET_PREFIXES = (
     "skills/",
     "templates/delivery/",
@@ -110,6 +111,7 @@ INTERNAL_SUPPORT_ASSETS = frozenset(
 GOVERNANCE_COMMAND_PATTERN = re.compile(
     r"python(?:3)?\s+-m\s+scripts\.github_lifecycle\s+(?:install|doctor|bootstrap)(?:\s|\\|$)"
 )
+REPOSITORY_SCAN_EXCLUDED_DIRECTORIES = frozenset({".git", ".venv"})
 
 
 @dataclass(frozen=True, order=True)
@@ -128,7 +130,11 @@ class Issue:
 
 
 def repository_files(root: Path, pattern: str) -> list[Path]:
-    return sorted(path for path in root.rglob(pattern) if ".git" not in path.parts)
+    return sorted(
+        path
+        for path in root.rglob(pattern)
+        if not REPOSITORY_SCAN_EXCLUDED_DIRECTORIES.intersection(path.parts)
+    )
 
 
 def load_yaml(path: Path, issues: list[Issue]) -> object | None:
@@ -143,6 +149,101 @@ def check_yaml(root: Path) -> list[Issue]:
     issues: list[Issue] = []
     for path in repository_files(root, "*.yaml") + repository_files(root, "*.yml"):
         load_yaml(path, issues)
+    return issues
+
+
+def check_cross_project_acceptance(root: Path) -> list[Issue]:
+    issues: list[Issue] = []
+    matrix = root / "tests" / "fixtures" / "github-lifecycle-acceptance-matrix.json"
+    documentation = root / "docs" / "cross-project-acceptance.md"
+    if not matrix.is_file():
+        issues.append(Issue(matrix, "missing cross-project acceptance matrix"))
+        return issues
+    if not documentation.is_file():
+        issues.append(Issue(documentation, "missing cross-project acceptance documentation"))
+
+    try:
+        raw = json.loads(matrix.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        issues.append(Issue(matrix, f"invalid cross-project acceptance matrix JSON: {error}"))
+        return issues
+    if not isinstance(raw, dict) or set(raw) != {
+        "schema_version",
+        "adapters",
+        "profiles",
+        "cases",
+    }:
+        issues.append(
+            Issue(
+                matrix,
+                "cross-project acceptance matrix must contain only schema_version, "
+                "adapters, profiles, and cases",
+            )
+        )
+        return issues
+    if raw["schema_version"] != 1:
+        issues.append(Issue(matrix, "cross-project acceptance matrix must use schema 1"))
+
+    adapters = raw["adapters"]
+    profiles = raw["profiles"]
+    cases = raw["cases"]
+    if not isinstance(adapters, dict) or set(adapters) != AUTOMATION_ADAPTERS:
+        issues.append(
+            Issue(
+                matrix,
+                "cross-project acceptance adapters must equal: "
+                + ", ".join(sorted(AUTOMATION_ADAPTERS)),
+            )
+        )
+    if not isinstance(profiles, dict) or set(profiles) != AUTOMATION_PROFILES:
+        issues.append(
+            Issue(
+                matrix,
+                "cross-project acceptance profiles must equal: "
+                + ", ".join(sorted(AUTOMATION_PROFILES)),
+            )
+        )
+
+    actual_cases: list[tuple[str, str]] = []
+    if not isinstance(cases, list):
+        issues.append(Issue(matrix, "cross-project acceptance cases must be an array"))
+    else:
+        for case in cases:
+            if (
+                not isinstance(case, dict)
+                or set(case) != {"adapter", "profile"}
+                or not isinstance(case.get("adapter"), str)
+                or not isinstance(case.get("profile"), str)
+            ):
+                issues.append(
+                    Issue(
+                        matrix,
+                        "each cross-project acceptance case must name one adapter and profile",
+                    )
+                )
+                continue
+            actual_cases.append((case["adapter"], case["profile"]))
+    expected_cases = [
+        (adapter, profile)
+        for adapter in sorted(AUTOMATION_ADAPTERS)
+        for profile in sorted(AUTOMATION_PROFILES)
+    ]
+    if actual_cases != expected_cases:
+        issues.append(
+            Issue(
+                matrix,
+                "cross-project acceptance cases must be the sorted 4 x 4 adapter/profile product",
+            )
+        )
+
+    if documentation.is_file():
+        links = {
+            resolved
+            for _, target in markdown_links(documentation)
+            if (resolved := resolve_local_link(documentation, target)) is not None
+        }
+        if matrix not in links:
+            issues.append(Issue(documentation, "acceptance documentation must link to its matrix"))
     return issues
 
 
@@ -1164,6 +1265,7 @@ def run_checks(root: Path, as_of: date | None = None) -> list[Issue]:
     checks = (
         check_yaml,
         check_github_automation,
+        check_cross_project_acceptance,
         check_skill_structure,
         check_links,
         check_delivery_templates,
@@ -1195,7 +1297,8 @@ def main() -> int:
         return 1
     print(
         "Repository checks passed: YAML, GitHub automation, skills, content governance, "
-        "delivery templates, exercises, links, navigation, and Markdown."
+        "cross-project acceptance, delivery templates, exercises, links, navigation, "
+        "and Markdown."
     )
     return 0
 

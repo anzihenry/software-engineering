@@ -24,6 +24,8 @@
 
 跨项目采用可选择 `governance`、`incident`、`release` 或默认的 `full` 安装 profile，让已有成熟流程的仓库只引入需要的 GitHub 能力；Python、Node、Swift、Go 和自定义 adapter 再把本地检查、Dependabot、稳定 `validate` check 与发布候选保留策略映射到项目自身实现。
 
+内置 adapter 与 profile 的 16 个组合由[跨项目验收矩阵](docs/cross-project-acceptance.md)持续验证，覆盖安装、幂等、YAML、adapter 执行入口、诊断、确定性打包和 `bootstrap` 计划边界。
+
 开发与验证阶段在生命周期主轴下进一步按移动端、Web 前端和后端划分领域 SKILL；移动端区分跨平台共享层与 iOS/Android/HarmonyOS 平台层，并通过独立 CLI 执行层调用三端官方工具链、管理测试目标和留存原始证据；Web 前端区分 UI/状态开发和功能/视觉/性能验证，后端区分 API/数据/异步开发和契约/一致性/性能/韧性/安全验证。跨领域工作仍由阶段通用 SKILL 编排，避免领域流程与统一质量门禁脱节。
 
 集成验证与发布阶段默认适配独立开发者或微型团队使用 GitHub 的场景：PR、Actions、Environments、Deployments 和 Releases 分别承载合入门禁、确定性执行、环境控制、部署追踪与对外版本记录；平台套餐不支持的审批能力使用明确的人类决策记录替代，不虚构自动化保证。
