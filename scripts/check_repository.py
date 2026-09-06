@@ -120,6 +120,17 @@ INTERNAL_SUPPORT_ASSETS = frozenset(
         "scripts/development.py",
     }
 )
+REPOSITORY_ADOPTION_ASSETS = frozenset(
+    {
+        "CHANGELOG.md",
+        "UPGRADING.md",
+        "docs/getting-started.md",
+        "docs/github-canary-validation.md",
+        "docs/releases/v1.0.0.md",
+        "docs/releases/v1.1.0.md",
+        "docs/version-compatibility.md",
+    }
+)
 GOVERNANCE_COMMAND_PATTERN = re.compile(
     r"python(?:3)?\s+-m\s+scripts\.github_lifecycle\s+"
     r"(?:install|upgrade|doctor|bootstrap)(?:\s|\\|$)"
@@ -443,6 +454,82 @@ def check_github_canary_evidence(root: Path) -> list[Issue]:
         }
         if evidence not in links:
             issues.append(Issue(documentation, "GitHub canary documentation must link to evidence"))
+    return issues
+
+
+def check_adoption_documentation(root: Path) -> list[Issue]:
+    issues: list[Issue] = []
+    readme = root / "README.md"
+    required_markers = {
+        "CHANGELOG.md": ("## [Unreleased]", "## [v1.1.0]", "## [v1.0.0]"),
+        "UPGRADING.md": (
+            "## 从 v1.1.0 升级",
+            "## 从 v1.0.0 升级",
+            "local-modification",
+            "removed-upstream",
+            "doctor",
+        ),
+        "docs/getting-started.md": (
+            "## 2. 选择 profile",
+            "## 3. 选择 adapter",
+            "## 4. 预览并安装",
+            "lifecycle-policy",
+            "bootstrap",
+        ),
+        "docs/version-compatibility.md": (
+            "v1.0.0",
+            "v1.1.0",
+            "schema 1",
+            "schema 3",
+            "Installation record",
+        ),
+        "docs/releases/v1.0.0.md": (
+            "Source SHA",
+            "Package SHA-256",
+            "github-lifecycle.zip",
+        ),
+        "docs/releases/v1.1.0.md": (
+            "Source SHA",
+            "Package SHA-256",
+            "github-lifecycle.zip",
+        ),
+    }
+    for relative, markers in required_markers.items():
+        path = root / relative
+        if not path.is_file():
+            issues.append(Issue(path, "missing adopter-facing documentation"))
+            continue
+        try:
+            content = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeError) as error:
+            issues.append(Issue(path, f"cannot read adopter-facing documentation: {error}"))
+            continue
+        for marker in markers:
+            if marker not in content:
+                issues.append(
+                    Issue(path, f"adopter-facing documentation is missing marker: {marker}")
+                )
+        if relative.startswith("docs/releases/") and "prepares a Draft Release only" in content:
+            issues.append(
+                Issue(path, "published Release notes must not describe themselves as Draft only")
+            )
+
+    if not readme.is_file():
+        issues.append(Issue(readme, "missing adopter-facing README"))
+        return issues
+    links = {
+        resolved
+        for _, target in markdown_links(readme)
+        if (resolved := resolve_local_link(readme, target)) is not None
+    }
+    required_readme_links = {
+        root / "CHANGELOG.md",
+        root / "UPGRADING.md",
+        root / "docs" / "getting-started.md",
+        root / "docs" / "version-compatibility.md",
+    }
+    for path in sorted(required_readme_links - links):
+        issues.append(Issue(readme, f"README must link to adopter entry point: {path.name}"))
     return issues
 
 
@@ -845,6 +932,13 @@ def check_github_automation(root: Path) -> list[Issue]:
                     if item in INTERNAL_SUPPORT_ASSETS or item.startswith("tests/"):
                         issues.append(
                             Issue(manifest, f"internal support asset must not be packaged: {item}")
+                        )
+                    if item in REPOSITORY_ADOPTION_ASSETS:
+                        issues.append(
+                            Issue(
+                                manifest,
+                                f"repository-only adoption asset must not be packaged: {item}",
+                            )
                         )
                     if any(item.startswith(prefix) for prefix in KNOWLEDGE_ASSET_PREFIXES):
                         issues.append(
@@ -1468,6 +1562,7 @@ def run_checks(root: Path, as_of: date | None = None) -> list[Issue]:
         check_github_automation,
         check_cross_project_acceptance,
         check_github_canary_evidence,
+        check_adoption_documentation,
         check_skill_structure,
         check_links,
         check_delivery_templates,
@@ -1499,8 +1594,8 @@ def main() -> int:
         return 1
     print(
         "Repository checks passed: YAML, GitHub automation, skills, content governance, "
-        "cross-project acceptance, GitHub canary evidence, delivery templates, exercises, "
-        "links, navigation, and Markdown."
+        "cross-project acceptance, GitHub canary evidence, adopter documentation, delivery "
+        "templates, exercises, links, navigation, and Markdown."
     )
     return 0
 

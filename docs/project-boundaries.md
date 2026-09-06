@@ -61,6 +61,8 @@ GitHub 生命周期自动化
 
 本仓库自身的 `.github/workflows/repository-checks.yml`、`.github/dependabot.yml`、`bin/playbook`、`scripts/development.py`、开发依赖、测试和真实 GitHub canary 属于内部支持面。它们维护并验证三层资产，但不是第四个对外产品层，也不得进入自动化 manifest。adapter 在目标仓库生成的同名 Dependabot 文件属于第三层安装输出，不会把本仓库内部文件打入 manifest。
 
+`CHANGELOG.md`、`UPGRADING.md`、快速开始、版本兼容矩阵和正式 Release notes 是仓库级采用入口：它们解释三层产品和发布版本，但不复制到目标项目，避免覆盖目标仓库自己的变更日志、升级策略或发布记录。自动化包继续包含 `docs/github-lifecycle-automation.md`，为实际安装的第二、三层文件提供离线操作说明。
+
 ## 版本与变更规则
 
 - 三层随同一个仓库 tag 发布；知识、自动化和治理工具不建立独立 release train。
