@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+当前没有面向采用者的未发布变化。
+
+## [v1.2.0] - 2026-09-06
+
+仓库发布说明：[GitHub Lifecycle Automation v1.2.0](docs/releases/v1.2.0.md)。
+
 ### Added
 
 - 安装时写入版本化 installation record，并提供基于固定新旧包的三方 `upgrade` 计划与安全应用。
@@ -42,6 +48,7 @@
 - Draft Release 候选准备、普通事故状态流转、安全/隐私受限入口、复盘、改进行动和只读审计。
 - 确定性 `package`、默认 dry-run 的 `install`、只读 `doctor` 和证据 PR 约束的 `bootstrap`。
 
-[Unreleased]: https://github.com/anzihenry/software-engineering/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/anzihenry/software-engineering/compare/v1.2.0...HEAD
+[v1.2.0]: https://github.com/anzihenry/software-engineering/compare/v1.1.0...v1.2.0
 [v1.1.0]: https://github.com/anzihenry/software-engineering/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/anzihenry/software-engineering/releases/tag/v1.0.0
