@@ -17,6 +17,10 @@ from scripts.github_lifecycle.adoption import (
     plan_install,
 )
 from scripts.github_lifecycle.common import load_policy
+from scripts.github_lifecycle.installation import (
+    INSTALLATION_RECORD_PATH,
+    load_installation_record,
+)
 from scripts.github_lifecycle.package import (
     SUPPORTED_PROFILES,
     detect_installed_profile,
@@ -27,6 +31,7 @@ from scripts.github_lifecycle.repository import (
     RepositorySnapshot,
     build_bootstrap_plan,
 )
+from scripts.github_lifecycle.upgrade import apply_upgrade, plan_upgrade
 
 ROOT = Path(__file__).resolve().parents[1]
 MATRIX_PATH = ROOT / "tests/fixtures/github-lifecycle-acceptance-matrix.json"
@@ -148,6 +153,7 @@ class CrossProjectAcceptanceTests(unittest.TestCase):
                     default_branch="main",
                     profile=profile_name,
                     adapter=adapter_name,
+                    source_ref="v1.1.0",
                 )
                 self.assertEqual(plan.adapter, adapter_name)
                 self.assertEqual(plan.profile, profile_name)
@@ -190,6 +196,10 @@ class CrossProjectAcceptanceTests(unittest.TestCase):
                     ),
                     (),
                 )
+                record = load_installation_record(target / INSTALLATION_RECORD_PATH)
+                self.assertEqual(record.source_ref, "v1.1.0")
+                self.assertEqual(record.adapter, adapter_name)
+                self.assertEqual(record.profile, profile_name)
 
                 second_plan, _ = plan_install(
                     ROOT,
@@ -202,6 +212,22 @@ class CrossProjectAcceptanceTests(unittest.TestCase):
                 )
                 self.assertEqual(second_plan.adapter, adapter_name)
                 self.assertTrue(all(entry.action == "unchanged" for entry in second_plan.entries))
+
+                upgrade, upgrade_files = plan_upgrade(
+                    ROOT,
+                    ROOT,
+                    target,
+                    repository=REPOSITORY,
+                    default_branch="main",
+                    from_ref="v1.1.0",
+                    to_ref="v1.2.0",
+                    profile=profile_name,
+                    manifest=MANIFEST,
+                )
+                self.assertEqual(upgrade.blockers, ())
+                apply_upgrade(upgrade, upgrade_files, confirmation=upgrade.confirmation)
+                upgraded_record = load_installation_record(target / INSTALLATION_RECORD_PATH)
+                self.assertEqual(upgraded_record.source_ref, "v1.2.0")
 
                 adapter_config = target / ".github/lifecycle-adapter.json"
                 adapter = load_adapter(adapter_config)

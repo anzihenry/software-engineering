@@ -2,7 +2,7 @@
 
 本仓库将 PR、发布、普通事故和复盘编排逐步固化为可复制的 GitHub 原生自动化。GitHub 承载普通记录和控制状态；安全、隐私及取证敏感内容只保留受限系统标识，不进入普通 PR、Issue、Actions 日志或 Release。
 
-按[项目三层边界](project-boundaries.md)，本页同时描述第二层“GitHub 生命周期自动化”及第三层“跨项目安装与治理工具”。前者执行仓库内生命周期规则，后者只负责打包、安装、诊断和仓库设置；两层不能替代第一层的研发知识与人工责任。
+按[项目三层边界](project-boundaries.md)，本页同时描述第二层“GitHub 生命周期自动化”及第三层“跨项目安装与治理工具”。前者执行仓库内生命周期规则，后者只负责打包、安装、升级、诊断和仓库设置；两层不能替代第一层的研发知识与人工责任。
 
 ## 权限模型
 
@@ -58,7 +58,7 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 | `release` | policy、通用 Draft Release 及共享工具 | Actions 默认只读；不创建 ruleset、标签或 PVR，不要求证据 PR |
 | `full` | 三个 profile 的并集；默认值，保持旧版安装行为 | 完整治理；ruleset 部分要求真实证据 PR |
 
-profile 是可叠加采用的声明，不执行删除。由较小 profile 切换到 `full` 会补齐缺失文件；由 `full` 改用较小 profile 时，既有额外文件和 GitHub 设置会被保留，不再作为该 profile 的必需项或远端治理目标。`doctor` 仍会对仓库中实际存在的所有 workflow 执行危险触发器和 Action 固定 SHA 安全检查。`install`、`doctor` 和 `bootstrap` 必须使用同一个 profile。
+profile 是可叠加采用的声明，不执行删除。由较小 profile 切换到 `full` 会补齐缺失文件；由 `full` 改用较小 profile 时，既有额外文件和 GitHub 设置会被保留，不再作为该 profile 的必需项或远端治理目标。`doctor` 仍会对仓库中实际存在的所有 workflow 执行危险触发器和 Action 固定 SHA 安全检查。`install`、`upgrade`、`doctor` 和 `bootstrap` 应使用与实际安装状态一致的 profile。
 
 ### 跨语言适配层
 
@@ -81,11 +81,12 @@ python3 -m scripts.github_lifecycle run-adapter \
 
 `doctor` 会检查 adapter schema、必需路径以及三个托管文件是否缺失或漂移。由 Dependabot 提交的完整 Action SHA 与精确版本注释更新不会被视为结构漂移，触发器、runner、权限、步骤和命令的其他变化仍会报告。`release_artifact_retention_days` 只控制 Draft Release 候选上传制品的保留期，范围为 1—90 天，并受仓库、组织或企业的上限约束；它不改变正式 Release、tag、部署或回滚策略。
 
-四种内置 adapter 与四种 profile 的 16 个组合由[跨项目验收矩阵](cross-project-acceptance.md)执行离线验收。矩阵覆盖安装、幂等、生成 YAML、adapter 命令入口、本地诊断、确定性打包和远端治理计划；目标仓库的真实工具链与 GitHub check 仍须在安装 PR 中验证。
+四种内置 adapter 与四种 profile 的 16 个组合由[跨项目验收矩阵](cross-project-acceptance.md)执行离线验收。矩阵覆盖安装、版本升级、幂等、生成 YAML、adapter 命令入口、本地诊断、确定性打包和远端治理计划；目标仓库的真实工具链与 GitHub check 仍须在采用 PR 中验证。
 
-三个命令的责任边界如下：
+四个采用命令的责任边界如下：
 
-- `install` 只操作目标仓库的本地文件。默认 dry-run；只创建缺失文件，相同文件跳过，任何内容不同、目录占位或符号链接均记为冲突且不覆盖。
+- `install` 只操作目标仓库的本地文件。默认 dry-run；只创建缺失文件，相同文件跳过，任何未知内容、目录占位或符号链接均记为冲突且不覆盖。安装成功后写入 `.github/lifecycle-installation.json`，记录 profile、adapter、manifest schema、不可变来源及每个托管文件的 SHA-256；未提供 `--source-ref` 时使用确定性的内容摘要。
+- `upgrade` 同时读取旧版和新版确定性包，按安装记录执行三方比较。它只自动创建新文件或替换仍与旧摘要精确一致的文件；本地修改、未跟踪同名文件、符号链接和计划后变化都会阻塞。上游已删除文件保留在目标仓库中但退出新记录，不执行隐式删除。
 - `doctor` 只读检查本地安装及 GitHub 设置，包括目标仓库链接、默认分支、Action 固定 SHA、危险触发器、Actions 默认权限、标签、Private Vulnerability Reporting、默认分支有效规则和可选证据 PR。
 - `bootstrap` 只配置 GitHub 仓库设置。它要求一个仍处于 Open 状态、目标为默认分支且已成功产生稳定检查的证据 PR；默认仅输出计划，真实写入还要求 `--no-dry-run` 和精确确认字符串。
 
@@ -97,7 +98,8 @@ python3 -m scripts.github_lifecycle install \
   --repository OWNER/REPOSITORY \
   --default-branch main \
   --profile governance \
-  --adapter node
+  --adapter node \
+  --source-ref v1.2.0
 
 python3 -m scripts.github_lifecycle install \
   --target /path/to/target-repository \
@@ -105,9 +107,43 @@ python3 -m scripts.github_lifecycle install \
   --default-branch main \
   --profile governance \
   --adapter node \
+  --source-ref v1.2.0 \
   --no-dry-run \
   --confirmation install:OWNER/REPOSITORY
 ```
+
+### 版本感知升级
+
+升级时保留新旧两个发布包并先预览。`--from-ref` 与 `--to-ref` 必须分别是语义版本 tag、完整小写 commit SHA 或 `sha256:` 内容摘要；确认字符串会绑定仓库和两个版本，防止把旧计划用于另一条升级路径：
+
+```sh
+python3 -m scripts.github_lifecycle upgrade \
+  --from-package /path/to/github-lifecycle-v1.1.0.zip \
+  --to-package /path/to/github-lifecycle-v1.2.0.zip \
+  --target /path/to/target-repository \
+  --repository OWNER/REPOSITORY \
+  --default-branch main \
+  --from-ref v1.1.0 \
+  --to-ref v1.2.0 \
+  --profile governance \
+  --output /tmp/lifecycle-upgrade-plan.json
+
+python3 -m scripts.github_lifecycle upgrade \
+  --from-package /path/to/github-lifecycle-v1.1.0.zip \
+  --to-package /path/to/github-lifecycle-v1.2.0.zip \
+  --target /path/to/target-repository \
+  --repository OWNER/REPOSITORY \
+  --default-branch main \
+  --from-ref v1.1.0 \
+  --to-ref v1.2.0 \
+  --profile governance \
+  --no-dry-run \
+  --confirmation upgrade:OWNER/REPOSITORY:v1.1.0:v1.2.0
+```
+
+计划中的 `create`、`safe-update` 和 `unchanged` 可自动处理；`local-modification` 与 `conflict` 是 blocker，必须由维护者在目标仓库中审查并解决后重新生成计划。`removed-upstream` 只是提示保留项，不阻塞也不删除。应用前会再次校验所有目标摘要，写入失败时回滚本次已经替换或创建的文件。
+
+`v1.2.0` 以前的安装没有安装记录。首次升级时必须提供精确的旧包；只有目标中的托管文件仍与该旧包逐项一致，工具才会把它作为可信基线并生成新记录，任何差异都会按本地修改或冲突停止。升级不会切换语言 adapter；如需改变 adapter，应作为独立迁移审查。
 
 安装完成后，在目标仓库中审查 adapter 命令、工具链、Dependabot 和发布保留期，再提交这些文件，推送功能分支并创建 PR。等 `validate` 和 `lifecycle-policy` 真实 check-run 成功后，使用该 Open PR 的编号诊断和预览远端设置：
 

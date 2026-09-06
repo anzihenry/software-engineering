@@ -2,12 +2,21 @@ from __future__ import annotations
 
 import json
 import re
+from contextlib import suppress
 from dataclasses import dataclass
 from pathlib import Path
 
 from .adapters import render_managed_files, select_adapter
 from .common import LifecycleError, load_policy
-from .package import load_manifest, validate_profile
+from .installation import (
+    INSTALLATION_RECORD_PATH,
+    InstallationRecord,
+    build_installation_record,
+    load_installation_record,
+    render_installation_record,
+    sha256_bytes,
+)
+from .package import load_manifest, load_manifest_schema, validate_profile
 
 REPOSITORY_PATTERN = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 BRANCH_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{0,254}$")
@@ -28,6 +37,7 @@ VERSIONED_ACTION_LINE_PATTERN = re.compile(
 class InstallEntry:
     path: str
     action: str
+    expected_sha256: str | None = None
 
 
 @dataclass(frozen=True)
@@ -36,6 +46,7 @@ class InstallPlan:
     default_branch: str
     profile: str
     adapter: str
+    source_ref: str
     target: Path
     entries: tuple[InstallEntry, ...]
 
@@ -202,6 +213,36 @@ def rendered_files(
     return tuple(rendered)
 
 
+def _can_update_installation_record(
+    target: Path,
+    existing: InstallationRecord,
+    desired: InstallationRecord,
+) -> bool:
+    if (
+        existing.repository != desired.repository
+        or existing.default_branch != desired.default_branch
+        or existing.adapter != desired.adapter
+        or not set(existing.files).issubset(desired.files)
+    ):
+        return False
+    return _installation_record_matches_target(target, existing)
+
+
+def _installation_record_matches_target(target: Path, record: InstallationRecord) -> bool:
+    for relative, expected_sha256 in record.files.items():
+        try:
+            destination = _safe_destination(target, relative)
+        except LifecycleError:
+            return False
+        if (
+            destination.is_symlink()
+            or not destination.is_file()
+            or sha256_bytes(destination.read_bytes()) != expected_sha256
+        ):
+            return False
+    return True
+
+
 def plan_install(
     source_root: Path,
     manifest_path: Path,
@@ -212,6 +253,7 @@ def plan_install(
     profile: str = "full",
     adapter: str = "auto",
     adapter_config: Path | None = None,
+    source_ref: str | None = None,
 ) -> tuple[InstallPlan, tuple[tuple[str, bytes], ...]]:
     source_root = source_root.resolve(strict=True)
     target = target.resolve(strict=True)
@@ -219,7 +261,8 @@ def plan_install(
         raise LifecycleError("install target must be an existing directory")
     if target == source_root:
         raise LifecycleError("install target must differ from the automation source root")
-    files = rendered_files(
+    manifest = manifest_path if manifest_path.is_absolute() else source_root / manifest_path
+    rendered = rendered_files(
         source_root,
         manifest_path,
         repository=repository,
@@ -232,10 +275,42 @@ def plan_install(
     selected_adapter = next(
         (
             json.loads(content.decode("utf-8"))["name"]
-            for relative, content in files
+            for relative, content in rendered
             if relative == ".github/lifecycle-adapter.json"
         ),
         "external",
+    )
+    installation = build_installation_record(
+        repository=repository,
+        default_branch=default_branch,
+        profile=profile,
+        adapter=selected_adapter,
+        source_ref=source_ref,
+        manifest_schema_version=load_manifest_schema(manifest),
+        files=rendered,
+    )
+    existing_installation: InstallationRecord | None = None
+    record_path = target / INSTALLATION_RECORD_PATH
+    if record_path.is_file() and not record_path.is_symlink():
+        with suppress(LifecycleError):
+            existing_installation = load_installation_record(record_path)
+    if (
+        source_ref is None
+        and existing_installation is not None
+        and existing_installation.repository == installation.repository
+        and existing_installation.default_branch == installation.default_branch
+        and existing_installation.adapter == installation.adapter
+        and set(installation.files).issubset(existing_installation.files)
+        and all(
+            existing_installation.files[path] == digest
+            for path, digest in installation.files.items()
+        )
+        and _installation_record_matches_target(target, existing_installation)
+    ):
+        installation = existing_installation
+    files = (
+        *rendered,
+        (INSTALLATION_RECORD_PATH, render_installation_record(installation)),
     )
     entries: list[InstallEntry] = []
     for relative, content in files:
@@ -251,16 +326,31 @@ def plan_install(
             if not destination.is_file():
                 entries.append(InstallEntry(relative, "conflict"))
                 continue
-            action = "unchanged" if destination.read_bytes() == content else "conflict"
+            current = destination.read_bytes()
+            if current == content:
+                action = "unchanged"
+                expected_sha256 = None
+            elif (
+                relative == INSTALLATION_RECORD_PATH
+                and existing_installation is not None
+                and _can_update_installation_record(target, existing_installation, installation)
+            ):
+                action = "safe-update"
+                expected_sha256 = sha256_bytes(current)
+            else:
+                action = "conflict"
+                expected_sha256 = None
         else:
             action = "create"
-        entries.append(InstallEntry(relative, action))
+            expected_sha256 = None
+        entries.append(InstallEntry(relative, action, expected_sha256))
     return (
         InstallPlan(
             repository=repository,
             default_branch=default_branch,
-            profile=profile,
+            profile=installation.profile,
             adapter=selected_adapter,
+            source_ref=installation.source_ref,
             target=target,
             entries=tuple(entries),
         ),
@@ -281,13 +371,22 @@ def apply_install(
         raise LifecycleError(
             "install refuses to overwrite conflicting files: " + ", ".join(plan.conflicts)
         )
-    actions = {entry.path: entry.action for entry in plan.entries}
+    actions = {entry.path: entry for entry in plan.entries}
     for relative, content in files:
-        if actions[relative] != "create":
+        entry = actions[relative]
+        if entry.action not in {"create", "safe-update"}:
             continue
         destination = _safe_destination(plan.target, relative)
         destination.parent.mkdir(parents=True, exist_ok=True)
-        if destination.exists() or destination.is_symlink():
+        if entry.action == "create":
+            if destination.exists() or destination.is_symlink():
+                raise LifecycleError(f"install destination changed after planning: {relative}")
+        elif (
+            destination.is_symlink()
+            or not destination.is_file()
+            or entry.expected_sha256 is None
+            or sha256_bytes(destination.read_bytes()) != entry.expected_sha256
+        ):
             raise LifecycleError(f"install destination changed after planning: {relative}")
         destination.write_bytes(content)
 
@@ -295,7 +394,7 @@ def apply_install(
 def render_install_plan(plan: InstallPlan, *, dry_run: bool) -> str:
     counts = {
         action: sum(entry.action == action for entry in plan.entries)
-        for action in ("create", "unchanged", "conflict")
+        for action in ("create", "safe-update", "unchanged", "conflict")
     }
     return json.dumps(
         {
@@ -305,6 +404,7 @@ def render_install_plan(plan: InstallPlan, *, dry_run: bool) -> str:
             "default_branch": plan.default_branch,
             "profile": plan.profile,
             "adapter": plan.adapter,
+            "source_ref": plan.source_ref,
             "target": str(plan.target),
             "counts": counts,
             "entries": [{"path": entry.path, "action": entry.action} for entry in plan.entries],
@@ -413,6 +513,8 @@ def inspect_local_install(
                 )
             )
 
+    adapter_name = "external"
+    expected_record_paths = set(files)
     adapter_config = root / ".github/lifecycle-adapter.json"
     if adapter_config.is_file():
         try:
@@ -423,6 +525,8 @@ def inspect_local_install(
         except LifecycleError as error:
             findings.append(DoctorFinding("local", "adapter-invalid", str(error)))
         else:
+            adapter_name = adapter.name
+            expected_record_paths.update(path for path, _ in expected_adapter_files)
             for required in adapter.required_files:
                 if not (root / required).exists():
                     findings.append(
@@ -454,6 +558,49 @@ def inspect_local_install(
                             "local",
                             "adapter-file-drift",
                             f"managed adapter file drifted: {relative}",
+                        )
+                    )
+    record_path = root / INSTALLATION_RECORD_PATH
+    if record_path.exists() or record_path.is_symlink():
+        if record_path.is_symlink() or not record_path.is_file():
+            findings.append(
+                DoctorFinding(
+                    "local",
+                    "installation-record-invalid",
+                    "installation record must be a regular file",
+                )
+            )
+        else:
+            try:
+                record = load_installation_record(record_path)
+            except LifecycleError as error:
+                findings.append(DoctorFinding("local", "installation-record-invalid", str(error)))
+            else:
+                metadata_mismatches = []
+                if record.repository != repository:
+                    metadata_mismatches.append("repository")
+                if record.default_branch != expected_default_branch:
+                    metadata_mismatches.append("default_branch")
+                if record.profile != profile:
+                    metadata_mismatches.append("profile")
+                if record.adapter != adapter_name:
+                    metadata_mismatches.append("adapter")
+                if metadata_mismatches:
+                    findings.append(
+                        DoctorFinding(
+                            "local",
+                            "installation-record-mismatch",
+                            "installation record does not match expected "
+                            + ", ".join(metadata_mismatches),
+                        )
+                    )
+                if set(record.files) != expected_record_paths:
+                    findings.append(
+                        DoctorFinding(
+                            "local",
+                            "installation-record-files-mismatch",
+                            "installation record file inventory does not match "
+                            "the selected profile",
                         )
                     )
     return tuple(findings)
