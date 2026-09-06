@@ -29,4 +29,4 @@
 
 矩阵不会调用真实语言工具链、访问网络或修改 GitHub。目标项目仍须在安装 PR 上运行自己的真实 `validate`，并在该 Open PR 同时产生成功的 `lifecycle-policy` 后，才能对需要 ruleset 的 profile 执行真实 `bootstrap`。
 
-正式版本发布前，应至少选择一个受控测试仓库完成 GitHub smoke：安装所选组合、执行一次真实的新旧包升级、推送 PR、核验两项稳定 check、dry-run `doctor/bootstrap`、显式应用并再次运行只读 `doctor`。该 smoke 是外部状态验证，不由普通仓库 CI 自动创建或清理测试仓库。
+正式版本发布前，由[真实 GitHub canary](github-canary-validation.md)在受控合成仓库中完成四个代表组合、一次真实的新旧包升级、PR 两项稳定 check、dry-run `doctor/bootstrap`、显式应用和写后诊断。该 smoke 是外部状态验证，不由普通仓库 CI 自动创建、重置或清理测试仓库。

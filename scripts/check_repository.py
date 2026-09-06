@@ -92,6 +92,16 @@ PINNED_ACTION_LINE_PATTERN = re.compile(
 AUTOMATION_COMPONENTS = frozenset({"github-lifecycle", "cross-project-governance"})
 AUTOMATION_PROFILES = frozenset({"governance", "incident", "release", "full"})
 AUTOMATION_ADAPTERS = frozenset({"python", "node", "swift", "go"})
+GITHUB_CANARY_CASES = (
+    ("python", "full"),
+    ("node", "governance"),
+    ("swift", "release"),
+    ("go", "incident"),
+)
+GITHUB_CANARY_REPOSITORY = "anzihenry/software-engineering-canary"
+FULL_SHA_PATTERN = re.compile(r"^[0-9a-f]{40}$")
+SEMANTIC_VERSION_PATTERN = re.compile(r"^v(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$")
+UTC_TIMESTAMP_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 KNOWLEDGE_ASSET_PREFIXES = (
     "skills/",
     "templates/delivery/",
@@ -102,7 +112,9 @@ INTERNAL_SUPPORT_ASSETS = frozenset(
     {
         ".github/dependabot.yml",
         ".github/workflows/repository-checks.yml",
+        "automation/github-canary-evidence.json",
         "bin/playbook",
+        "docs/github-canary-validation.md",
         "requirements-dev.txt",
         "scripts/check_repository.py",
         "scripts/development.py",
@@ -245,6 +257,192 @@ def check_cross_project_acceptance(root: Path) -> list[Issue]:
         }
         if matrix not in links:
             issues.append(Issue(documentation, "acceptance documentation must link to its matrix"))
+    return issues
+
+
+def check_github_canary_evidence(root: Path) -> list[Issue]:
+    issues: list[Issue] = []
+    evidence = root / "automation" / "github-canary-evidence.json"
+    documentation = root / "docs" / "github-canary-validation.md"
+    if not evidence.is_file():
+        issues.append(Issue(evidence, "missing GitHub canary evidence"))
+        return issues
+    if not documentation.is_file():
+        issues.append(Issue(documentation, "missing GitHub canary documentation"))
+
+    try:
+        raw = json.loads(evidence.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        issues.append(Issue(evidence, f"invalid GitHub canary evidence JSON: {error}"))
+        return issues
+
+    expected_keys = {
+        "schema_version",
+        "repository",
+        "source_ref",
+        "upgrade_from_ref",
+        "synthetic_only",
+        "automatic_repository_lifecycle",
+        "checked_at",
+        "cases",
+        "governance",
+    }
+    if not isinstance(raw, dict) or set(raw) != expected_keys:
+        issues.append(
+            Issue(evidence, "GitHub canary evidence must contain only the documented fields")
+        )
+        return issues
+
+    if raw["schema_version"] != 1:
+        issues.append(Issue(evidence, "GitHub canary evidence must use schema 1"))
+    if raw["repository"] != GITHUB_CANARY_REPOSITORY:
+        issues.append(Issue(evidence, "GitHub canary evidence must use the controlled repository"))
+    if not isinstance(raw["source_ref"], str) or not FULL_SHA_PATTERN.fullmatch(raw["source_ref"]):
+        issues.append(Issue(evidence, "GitHub canary source_ref must be a full commit SHA"))
+    if not isinstance(raw["upgrade_from_ref"], str) or not SEMANTIC_VERSION_PATTERN.fullmatch(
+        raw["upgrade_from_ref"]
+    ):
+        issues.append(Issue(evidence, "GitHub canary upgrade_from_ref must be a version tag"))
+    if raw["synthetic_only"] is not True:
+        issues.append(Issue(evidence, "GitHub canary must be limited to synthetic data"))
+    if raw["automatic_repository_lifecycle"] is not False:
+        issues.append(
+            Issue(evidence, "GitHub canary repository lifecycle must remain manually controlled")
+        )
+    if not isinstance(raw["checked_at"], str) or not UTC_TIMESTAMP_PATTERN.fullmatch(
+        raw["checked_at"]
+    ):
+        issues.append(Issue(evidence, "GitHub canary checked_at must be a UTC timestamp"))
+
+    cases = raw["cases"]
+    actual_cases: list[tuple[str, str]] = []
+    pull_requests: list[str] = []
+    expected_case_keys = {
+        "adapter",
+        "profile",
+        "pull_request",
+        "pull_request_state",
+        "head_sha",
+        "upgrade",
+        "result",
+        "checks",
+    }
+    if not isinstance(cases, list):
+        issues.append(Issue(evidence, "GitHub canary cases must be an array"))
+    else:
+        for case in cases:
+            if not isinstance(case, dict) or set(case) != expected_case_keys:
+                issues.append(
+                    Issue(evidence, "each GitHub canary case must contain the documented fields")
+                )
+                continue
+            adapter = case["adapter"]
+            profile = case["profile"]
+            if not isinstance(adapter, str) or not isinstance(profile, str):
+                issues.append(
+                    Issue(evidence, "each GitHub canary case must name an adapter/profile")
+                )
+                continue
+            actual_cases.append((adapter, profile))
+
+            pull_request = case["pull_request"]
+            expected_pr_prefix = f"https://github.com/{GITHUB_CANARY_REPOSITORY}/pull/"
+            if (
+                not isinstance(pull_request, str)
+                or not pull_request.startswith(expected_pr_prefix)
+                or not pull_request.removeprefix(expected_pr_prefix).isdigit()
+            ):
+                issues.append(
+                    Issue(evidence, "GitHub canary PR must belong to the controlled repository")
+                )
+            else:
+                pull_requests.append(pull_request)
+            if case["pull_request_state"] != "closed":
+                issues.append(Issue(evidence, "GitHub canary evidence PRs must be closed"))
+            if not isinstance(case["head_sha"], str) or not FULL_SHA_PATTERN.fullmatch(
+                case["head_sha"]
+            ):
+                issues.append(Issue(evidence, "GitHub canary head_sha must be a full commit SHA"))
+            if case["result"] != "passed":
+                issues.append(Issue(evidence, "every GitHub canary case must have passed"))
+
+            checks = case["checks"]
+            if not isinstance(checks, dict) or set(checks) != {"lifecycle-policy", "validate"}:
+                issues.append(
+                    Issue(evidence, "each GitHub canary case must record both stable checks")
+                )
+            else:
+                job_prefix = f"https://github.com/{GITHUB_CANARY_REPOSITORY}/actions/runs/"
+                if any(
+                    not isinstance(url, str)
+                    or not url.startswith(job_prefix)
+                    or "/job/" not in url.removeprefix(job_prefix)
+                    for url in checks.values()
+                ):
+                    issues.append(
+                        Issue(evidence, "GitHub canary checks must link to controlled Actions jobs")
+                    )
+
+            expected_upgrade = (adapter, profile) == ("python", "full")
+            if case["upgrade"] is not expected_upgrade:
+                issues.append(
+                    Issue(
+                        evidence,
+                        "only the Python/full GitHub canary case may be the upgrade sample",
+                    )
+                )
+
+    if actual_cases != list(GITHUB_CANARY_CASES):
+        issues.append(
+            Issue(evidence, "GitHub canary cases must equal the fixed representative matrix")
+        )
+    if len(pull_requests) != len(set(pull_requests)):
+        issues.append(Issue(evidence, "GitHub canary PR evidence must be unique"))
+
+    governance = raw["governance"]
+    expected_governance = {
+        "ruleset_id",
+        "ruleset_enforcement",
+        "required_checks",
+        "ruleset_has_bypass",
+        "delete_branch_on_merge",
+        "actions_default_permission",
+        "actions_can_approve_pull_requests",
+        "private_vulnerability_reporting",
+        "lifecycle_label_count",
+        "full_doctor_healthy",
+    }
+    if not isinstance(governance, dict) or set(governance) != expected_governance:
+        issues.append(
+            Issue(evidence, "GitHub canary governance must contain the documented fields")
+        )
+    else:
+        if not isinstance(governance["ruleset_id"], int) or governance["ruleset_id"] <= 0:
+            issues.append(Issue(evidence, "GitHub canary ruleset_id must be positive"))
+        if governance["required_checks"] != ["lifecycle-policy", "validate"]:
+            issues.append(Issue(evidence, "GitHub canary must require both stable checks"))
+        expected_governance_values = {
+            "ruleset_enforcement": "active",
+            "ruleset_has_bypass": False,
+            "delete_branch_on_merge": True,
+            "actions_default_permission": "read",
+            "actions_can_approve_pull_requests": False,
+            "private_vulnerability_reporting": True,
+            "lifecycle_label_count": 13,
+            "full_doctor_healthy": True,
+        }
+        for field, expected in expected_governance_values.items():
+            if governance[field] != expected:
+                issues.append(Issue(evidence, f"GitHub canary governance field {field} is invalid"))
+
+    if documentation.is_file():
+        links = {
+            resolved
+            for _, target in markdown_links(documentation)
+            if (resolved := resolve_local_link(documentation, target)) is not None
+        }
+        if evidence not in links:
+            issues.append(Issue(documentation, "GitHub canary documentation must link to evidence"))
     return issues
 
 
@@ -1269,6 +1467,7 @@ def run_checks(root: Path, as_of: date | None = None) -> list[Issue]:
         check_yaml,
         check_github_automation,
         check_cross_project_acceptance,
+        check_github_canary_evidence,
         check_skill_structure,
         check_links,
         check_delivery_templates,
@@ -1300,8 +1499,8 @@ def main() -> int:
         return 1
     print(
         "Repository checks passed: YAML, GitHub automation, skills, content governance, "
-        "cross-project acceptance, delivery templates, exercises, links, navigation, "
-        "and Markdown."
+        "cross-project acceptance, GitHub canary evidence, delivery templates, exercises, "
+        "links, navigation, and Markdown."
     )
     return 0
 

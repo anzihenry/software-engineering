@@ -18,6 +18,7 @@ from scripts.check_repository import (
     check_delivery_templates,
     check_end_to_end_exercises,
     check_github_automation,
+    check_github_canary_evidence,
     check_links,
     check_markdown_format,
     check_navigation,
@@ -164,6 +165,23 @@ class RepositoryCheckTests(unittest.TestCase):
 
     def test_repository_github_automation_is_valid(self) -> None:
         self.assertEqual(check_github_automation(REPOSITORY_ROOT), [])
+
+    def test_repository_github_canary_evidence_is_valid(self) -> None:
+        self.assertEqual(check_github_canary_evidence(REPOSITORY_ROOT), [])
+
+    def test_incomplete_github_canary_evidence_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            evidence = root / "automation/github-canary-evidence.json"
+            evidence.parent.mkdir(parents=True)
+            evidence.write_text('{"schema_version": 1}', encoding="utf-8")
+
+            messages = {issue.message for issue in check_github_canary_evidence(root)}
+
+            self.assertIn("missing GitHub canary documentation", messages)
+            self.assertIn(
+                "GitHub canary evidence must contain only the documented fields", messages
+            )
 
     def test_floating_action_and_pull_request_target_are_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
