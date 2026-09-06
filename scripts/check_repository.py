@@ -128,6 +128,7 @@ REPOSITORY_ADOPTION_ASSETS = frozenset(
         "docs/github-canary-validation.md",
         "docs/releases/v1.0.0.md",
         "docs/releases/v1.1.0.md",
+        "docs/releases/v1.2.0.md",
         "docs/version-compatibility.md",
     }
 )
@@ -461,7 +462,12 @@ def check_adoption_documentation(root: Path) -> list[Issue]:
     issues: list[Issue] = []
     readme = root / "README.md"
     required_markers = {
-        "CHANGELOG.md": ("## [Unreleased]", "## [v1.1.0]", "## [v1.0.0]"),
+        "CHANGELOG.md": (
+            "## [Unreleased]",
+            "## [v1.2.0]",
+            "## [v1.1.0]",
+            "## [v1.0.0]",
+        ),
         "UPGRADING.md": (
             "## 从 v1.1.0 升级",
             "## 从 v1.0.0 升级",
@@ -490,6 +496,11 @@ def check_adoption_documentation(root: Path) -> list[Issue]:
         ),
         "docs/releases/v1.1.0.md": (
             "Source SHA",
+            "Package SHA-256",
+            "github-lifecycle.zip",
+        ),
+        "docs/releases/v1.2.0.md": (
+            "Source",
             "Package SHA-256",
             "github-lifecycle.zip",
         ),

@@ -7,8 +7,9 @@
 | 版本 | 状态 | Manifest | Profile | Adapter | Installation record | `upgrade` |
 | --- | --- | --- | --- | --- | --- | --- |
 | `v1.0.0` | 可复现旧基线 | schema 1 | 仅 `full` | 仅保留项目现有实现 | 无 | 无 |
-| `v1.1.0` | 当前稳定版 | schema 3 | `governance`、`incident`、`release`、`full` | Python、Node、Swift、Go、external/custom | 无 | 无 |
-| `main` | 下一版本开发线，不视为稳定发布 | schema 3 | 同 `v1.1.0` | 同 `v1.1.0` | 有 | 有；已验证从 `v1.0.0`、`v1.1.0` 升级 |
+| `v1.1.0` | 可复现旧基线 | schema 3 | `governance`、`incident`、`release`、`full` | Python、Node、Swift、Go、external/custom | 无 | 无 |
+| `v1.2.0` | 当前稳定版 | schema 3 | 同 `v1.1.0` | 同 `v1.1.0` | 有 | 有；已验证从 `v1.0.0`、`v1.1.0` 升级 |
+| `main` | 下一版本开发线，不视为稳定发布 | 以仓库内容为准 | 以仓库内容为准 | 以仓库内容为准 | 以仓库内容为准 | 以仓库内容为准 |
 
 schema 1 和 2 可以被当前读取器作为 legacy bundle 读取，但只支持 `full`。schema 3 定义两个互斥组件和四种安装 profile。manifest schema 描述包结构，不等同于 Git tag 或 lifecycle policy schema。
 
@@ -16,8 +17,8 @@ schema 1 和 2 可以被当前读取器作为 legacy bundle 读取，但只支�
 
 | 来源 | 目标 | 支持方式 |
 | --- | --- | --- |
-| `v1.0.0` | 含 `upgrade` 的下一稳定版 | 显式提供官方旧包和新包；无安装记录时要求所有旧托管文件与旧包逐项一致 |
-| `v1.1.0` | 含 `upgrade` 的下一稳定版 | 同上；保留原 profile 和 adapter，生成新 installation record |
+| `v1.0.0` | `v1.2.0` | 显式提供官方旧包和新包；无安装记录时要求所有旧托管文件与旧包逐项一致 |
+| `v1.1.0` | `v1.2.0` | 同上；保留原 profile 和 adapter，生成新 installation record |
 | 含 installation record 的版本 | 更新版本 | 根据安装时摘要三方比较，只自动执行 `create`、`safe-update`、`unchanged` |
 | 任意版本 | 更旧版本 | 不支持自动降级；使用独立恢复方案或经审查的反向迁移 |
 

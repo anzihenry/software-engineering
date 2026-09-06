@@ -20,7 +20,7 @@
 - Adapter：Python、Node、Swift、Go 使用内置本地检查与 Dependabot 生态；成熟项目使用 `external` 保留现有实现，或使用 `custom` 显式提供配置。
 - 验证：所有写入默认 dry-run；安装 PR 必须真实产生 `validate` 与 `lifecycle-policy`，再运行只读 `doctor`，最后才按需显式执行 `bootstrap`。
 
-当前稳定版本为 [`v1.1.0`](https://github.com/anzihenry/software-engineering/releases/tag/v1.1.0)。版本升级和真实 canary 已进入下一版本的未发布范围；采用前应先查看[兼容矩阵](docs/version-compatibility.md)，只使用固定 tag、完整 commit SHA 或已核验的发布包。
+当前稳定版本为 [`v1.2.0`](https://github.com/anzihenry/software-engineering/releases/tag/v1.2.0)，包含版本感知升级、真实 GitHub canary 和完整采用文档。采用前应先查看[兼容矩阵](docs/version-compatibility.md)，只使用固定 tag、完整 commit SHA 或已核验的发布包。
 
 ## 三层能力边界
 
