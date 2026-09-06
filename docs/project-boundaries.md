@@ -59,7 +59,7 @@ GitHub 生命周期自动化
 - 第三层读取第二层的 policy、manifest 和 GitHub 状态，不复制一套独立的风险、事故或复盘规则。
 - 跨层文档或公共 CLI 可以作为组合入口，但不能改变各层的授权和失败语义。
 
-本仓库自身的 `.github/workflows/repository-checks.yml`、`.github/dependabot.yml`、`bin/playbook`、`scripts/development.py`、开发依赖和测试属于内部支持面。它们维护并验证三层资产，但不是第四个对外产品层，也不得进入自动化 manifest。adapter 在目标仓库生成的同名 Dependabot 文件属于第三层安装输出，不会把本仓库内部文件打入 manifest。
+本仓库自身的 `.github/workflows/repository-checks.yml`、`.github/dependabot.yml`、`bin/playbook`、`scripts/development.py`、开发依赖、测试和真实 GitHub canary 属于内部支持面。它们维护并验证三层资产，但不是第四个对外产品层，也不得进入自动化 manifest。adapter 在目标仓库生成的同名 Dependabot 文件属于第三层安装输出，不会把本仓库内部文件打入 manifest。
 
 ## 版本与变更规则
 

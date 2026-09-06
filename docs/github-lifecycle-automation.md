@@ -81,7 +81,7 @@ python3 -m scripts.github_lifecycle run-adapter \
 
 `doctor` 会检查 adapter schema、必需路径以及三个托管文件是否缺失或漂移。由 Dependabot 提交的完整 Action SHA 与精确版本注释更新不会被视为结构漂移，触发器、runner、权限、步骤和命令的其他变化仍会报告。`release_artifact_retention_days` 只控制 Draft Release 候选上传制品的保留期，范围为 1—90 天，并受仓库、组织或企业的上限约束；它不改变正式 Release、tag、部署或回滚策略。
 
-四种内置 adapter 与四种 profile 的 16 个组合由[跨项目验收矩阵](cross-project-acceptance.md)执行离线验收。矩阵覆盖安装、版本升级、幂等、生成 YAML、adapter 命令入口、本地诊断、确定性打包和远端治理计划；目标仓库的真实工具链与 GitHub check 仍须在采用 PR 中验证。
+四种内置 adapter 与四种 profile 的 16 个组合由[跨项目验收矩阵](cross-project-acceptance.md)执行离线验收。矩阵覆盖安装、版本升级、幂等、生成 YAML、adapter 命令入口、本地诊断、确定性打包和远端治理计划；发布前再由[真实 GitHub canary](github-canary-validation.md)验证代表组合的工具链、PR checks、升级路径和仓库治理写入。
 
 四个采用命令的责任边界如下：
 
