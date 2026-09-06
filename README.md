@@ -1,16 +1,34 @@
 # Software Engineering Playbook
 
-用于沉淀团队的软件研发准则、可复用 SKILL 与自动化 workflow。
+一套面向独立开发者和微型团队的软件研发资产：既提供可供人和 Agent 使用的研发方法，也把适合机械验证的部分落实为可版本化安装的 GitHub 生命周期自动化。
 
-当前基线：[研发全流程](docs/software-development-lifecycle.md)。
+它解决三个相邻但不同的问题：怎样完成研发工作、怎样在 GitHub 上守住生命周期门禁，以及怎样把这些自动化安全地安装到其他仓库。它不会自动发布正式 Release、部署或回滚，不会批准高风险变更，也不会把安全、隐私或取证敏感内容写入普通 GitHub 记录。
+
+## 从这里开始
+
+| 你的目标 | 入口 | 会发生什么 |
+| --- | --- | --- |
+| 使用研发方法、SKILL、模板或演练 | [研发全流程](docs/software-development-lifecycle.md) | 读取并应用第一层知识资产；不会执行 GitHub 写操作 |
+| 在其他仓库采用 GitHub 生命周期能力 | [10 分钟快速开始](docs/getting-started.md) | 按 profile 安装第二层，并用第三层 dry-run、诊断和显式引导 |
+| 从旧自动化版本安全升级 | [升级指南](UPGRADING.md) | 比较固定的新旧包，只自动更新未经本地修改的托管文件 |
+| 判断版本、profile 或 adapter 是否适用 | [版本兼容矩阵](docs/version-compatibility.md) | 查看已发布版本的 manifest、安装和升级能力 |
+| 了解各版本变化 | [变更日志](CHANGELOG.md) | 查看已发布版本与当前未发布变化 |
+
+跨项目采用先选择安装范围，再选择语言适配方式：
+
+- Profile：`governance` 只安装 PR/policy/ruleset，`incident` 安装安全入口与事故/复盘，`release` 安装通用 Draft Release，`full` 安装完整并集。
+- Adapter：Python、Node、Swift、Go 使用内置本地检查与 Dependabot 生态；成熟项目使用 `external` 保留现有实现，或使用 `custom` 显式提供配置。
+- 验证：所有写入默认 dry-run；安装 PR 必须真实产生 `validate` 与 `lifecycle-policy`，再运行只读 `doctor`，最后才按需显式执行 `bootstrap`。
+
+当前稳定版本为 [`v1.1.0`](https://github.com/anzihenry/software-engineering/releases/tag/v1.1.0)。版本升级和真实 canary 已进入下一版本的未发布范围；采用前应先查看[兼容矩阵](docs/version-compatibility.md)，只使用固定 tag、完整 commit SHA 或已核验的发布包。
 
 ## 三层能力边界
 
-- **研发知识与 SKILL**：定义如何完成研发工作，包括准则、阶段 workflow、SKILL、交付模板和演练。
-- **GitHub 生命周期自动化**：把适合机械验证的规则落实为 PR、Release、Issue 和 Actions 编排。
-- **跨项目安装与治理工具**：通过确定性打包及 `install`、`upgrade`、`doctor`、`bootstrap` 分发和治理 GitHub 自动化。
+1. **研发知识与 SKILL**：定义如何完成研发工作，包括准则、阶段 workflow、SKILL、交付模板和演练；当前不会被跨项目安装器复制。
+2. **GitHub 生命周期自动化**：把适合机械验证的规则落实为 PR、Release、Issue 和 Actions 编排；按 profile 安装，但不替代人工评审和生产 Go/No-Go。
+3. **跨项目安装与治理工具**：通过确定性打包及 `install`、`upgrade`、`doctor`、`bootstrap` 分发、诊断和治理第二层，不重新制定风险或事故规则。
 
-完整的责任、权限、分发和依赖约束见[项目三层边界](docs/project-boundaries.md)。三层使用同一仓库版本；CI、Dependabot、本地开发入口和综合自检是横切的内部支持面，不作为第四个产品层，也不进入跨项目自动化包。
+完整的责任、权限、分发和依赖约束见[项目三层边界](docs/project-boundaries.md)。三层使用同一仓库版本；CI、Dependabot、本地开发入口、综合自检和真实 canary 是横切的内部支持面，不作为第四个产品层，也不进入跨项目自动化包。
 
 “准则、流程、技能、自动化”用于描述资产形态，不再作为与上述三层并列的项目分类。仓库首先维护流程基线，再依操作频率和风险优先级沉淀专题 workflow、SKILL 与自动化。
 

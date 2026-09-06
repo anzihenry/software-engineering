@@ -49,6 +49,8 @@ Draft Release 不是生产 Go/No-Go。授权人核对 source SHA、附件、变�
 
 ## 跨项目安装、诊断与引导
 
+第一次采用先阅读[10 分钟快速开始](getting-started.md)，按[版本兼容矩阵](version-compatibility.md)选择固定发布版本；已有安装的迁移和冲突恢复见 [`UPGRADING.md`](../UPGRADING.md)。这些仓库级采用入口不会被复制到目标项目，包内本文仍提供所安装自动化的完整命令和权限边界。
+
 `automation/github-lifecycle-manifest.json` 使用 schema 3，将文件分为 `github-lifecycle` 和 `cross-project-governance` 两个互斥组件，并定义四个安装 profile。schema 1 和 2 的 legacy bundle 仍可读取，但只支持 `full`。第一层研发知识和本仓库内部支持面不进入 manifest。应先用固定 tag 或完整 commit SHA 检出本仓库，避免在未复核的浮动分支上安装。
 
 | Profile | 本地能力 | `bootstrap` 远端治理 |

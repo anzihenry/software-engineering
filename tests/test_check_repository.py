@@ -13,6 +13,7 @@ from scripts.check_repository import (
     PHASES,
     TRACEABILITY_FIELDS,
     WORKFLOW_DELIVERY_TEMPLATES,
+    check_adoption_documentation,
     check_content_governance,
     check_cross_project_acceptance,
     check_delivery_templates,
@@ -169,6 +170,18 @@ class RepositoryCheckTests(unittest.TestCase):
     def test_repository_github_canary_evidence_is_valid(self) -> None:
         self.assertEqual(check_github_canary_evidence(REPOSITORY_ROOT), [])
 
+    def test_repository_adoption_documentation_is_valid(self) -> None:
+        self.assertEqual(check_adoption_documentation(REPOSITORY_ROOT), [])
+
+    def test_missing_adoption_documentation_is_reported(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            messages = {issue.message for issue in check_adoption_documentation(root)}
+
+            self.assertIn("missing adopter-facing documentation", messages)
+            self.assertIn("missing adopter-facing README", messages)
+
     def test_incomplete_github_canary_evidence_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -257,20 +270,22 @@ class RepositoryCheckTests(unittest.TestCase):
                 messages,
             )
 
-    def test_manifest_rejects_knowledge_and_internal_support_assets(self) -> None:
+    def test_manifest_rejects_non_distributable_assets(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             manifest = root / "automation" / "github-lifecycle-manifest.json"
             knowledge = root / "skills" / "example.md"
             support = root / "bin" / "playbook"
+            adoption = root / "UPGRADING.md"
             manifest.parent.mkdir(parents=True)
             knowledge.parent.mkdir(parents=True)
             support.parent.mkdir(parents=True)
             knowledge.write_text("# Knowledge\n", encoding="utf-8")
             support.write_text("#!/usr/bin/env zsh\n", encoding="utf-8")
+            adoption.write_text("# Upgrading\n", encoding="utf-8")
             manifest.write_text(
                 '{"schema_version": 2, "components": {'
-                '"github-lifecycle": ["skills/example.md"], '
+                '"github-lifecycle": ["UPGRADING.md", "skills/example.md"], '
                 '"cross-project-governance": ["bin/playbook"]}}',
                 encoding="utf-8",
             )
@@ -279,6 +294,9 @@ class RepositoryCheckTests(unittest.TestCase):
 
             self.assertIn("knowledge asset must not be packaged: skills/example.md", messages)
             self.assertIn("internal support asset must not be packaged: bin/playbook", messages)
+            self.assertIn(
+                "repository-only adoption asset must not be packaged: UPGRADING.md", messages
+            )
 
     def test_manifest_requires_both_boundary_components(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
