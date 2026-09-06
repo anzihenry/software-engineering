@@ -45,6 +45,12 @@ from .retrospective import (
     write_audit_outputs,
     write_retrospective_outputs,
 )
+from .upgrade import (
+    apply_upgrade,
+    materialize_package,
+    plan_upgrade,
+    render_upgrade_plan,
+)
 
 
 def write_summary(lines: list[str]) -> None:
@@ -100,11 +106,35 @@ def install_command(args: argparse.Namespace) -> int:
         profile=args.profile,
         adapter=args.adapter,
         adapter_config=args.adapter_config,
+        source_ref=args.source_ref,
     )
     if not args.dry_run:
         apply_install(plan, files, confirmation=args.confirmation)
     _write_output(args.output, render_install_plan(plan, dry_run=args.dry_run))
     return 1 if plan.conflicts else 0
+
+
+def upgrade_command(args: argparse.Namespace) -> int:
+    with (
+        materialize_package(args.from_package) as from_root,
+        materialize_package(args.to_package) as to_root,
+    ):
+        plan, files = plan_upgrade(
+            from_root,
+            to_root,
+            args.target,
+            repository=args.repository,
+            default_branch=args.default_branch,
+            from_ref=args.from_ref,
+            to_ref=args.to_ref,
+            from_profile=args.from_profile,
+            profile=args.profile,
+            manifest=args.manifest,
+        )
+        if not args.dry_run:
+            apply_upgrade(plan, files, confirmation=args.confirmation)
+        _write_output(args.output, render_upgrade_plan(plan, dry_run=args.dry_run))
+        return 1 if plan.blockers else 0
 
 
 def run_adapter_command(args: argparse.Namespace) -> int:
@@ -392,10 +422,33 @@ def parse_args() -> argparse.Namespace:
     install_parser.add_argument("--profile", choices=SUPPORTED_PROFILES, default="full")
     install_parser.add_argument("--adapter", choices=SUPPORTED_ADAPTERS, default="auto")
     install_parser.add_argument("--adapter-config", type=Path)
+    install_parser.add_argument("--source-ref")
     install_parser.add_argument("--dry-run", action=argparse.BooleanOptionalAction, default=True)
     install_parser.add_argument("--confirmation", default="")
     install_parser.add_argument("--output", type=Path)
     install_parser.set_defaults(handler=install_command)
+
+    upgrade_parser = subparsers.add_parser(
+        "upgrade", help="plan or safely apply a version-aware lifecycle upgrade"
+    )
+    upgrade_parser.add_argument("--from-package", type=Path, required=True)
+    upgrade_parser.add_argument("--to-package", type=Path, required=True)
+    upgrade_parser.add_argument(
+        "--manifest",
+        type=Path,
+        default=Path("automation/github-lifecycle-manifest.json"),
+    )
+    upgrade_parser.add_argument("--target", type=Path, required=True)
+    upgrade_parser.add_argument("--repository", required=True)
+    upgrade_parser.add_argument("--default-branch", required=True)
+    upgrade_parser.add_argument("--from-ref", required=True)
+    upgrade_parser.add_argument("--to-ref", required=True)
+    upgrade_parser.add_argument("--from-profile", choices=SUPPORTED_PROFILES)
+    upgrade_parser.add_argument("--profile", choices=SUPPORTED_PROFILES, default="full")
+    upgrade_parser.add_argument("--dry-run", action=argparse.BooleanOptionalAction, default=True)
+    upgrade_parser.add_argument("--confirmation", default="")
+    upgrade_parser.add_argument("--output", type=Path)
+    upgrade_parser.set_defaults(handler=upgrade_command)
 
     adapter_parser = subparsers.add_parser(
         "run-adapter", help="run the configured repository-local validation commands"

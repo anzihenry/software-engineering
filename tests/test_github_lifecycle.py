@@ -63,6 +63,7 @@ class LifecycleCliTests(unittest.TestCase):
             self.assertEqual(plan["adapter"], "external")
             self.assertEqual(plan["profile"], "release")
             self.assertEqual(plan["mode"], "dry-run")
+            self.assertRegex(plan["source_ref"], r"^sha256:[0-9a-f]{64}$")
 
     def test_release_validate_only_cli(self) -> None:
         arguments = [

@@ -17,10 +17,11 @@
 
 1. 建立该语言最小必需路径，运行 `install` 计划并确认所有目标文件都是新增项。
 2. 解析全部生成的 YAML，检查 profile 工作流边界、稳定 `validate` job、runner、Dependabot 生态和完整 SHA Action。
-3. 显式确认并应用安装，再以 `auto` adapter 重跑，确认结果幂等且没有覆盖或冲突。
-4. 通过参数数组模拟 `run-adapter`，确认采用 adapter 声明的命令且不经过 shell 拼接。
-5. 运行本地 `doctor`，确认安装健康；随后分别制造必需路径缺失和托管 workflow 漂移，确认诊断能够发现。
-6. 对未配置的 GitHub 仓库快照生成 `bootstrap` 计划，确认写操作严格受 profile 边界约束。
+3. 显式确认并应用安装，检查安装记录中的 profile、adapter 和不可变来源；再以 `auto` adapter 重跑，确认结果幂等且没有覆盖或冲突。
+4. 使用同一资产内容模拟 `v1.1.0 → v1.2.0`，确认 `upgrade` 只更新安装记录、保持文件内容幂等，并在 16 个组合中延续原 adapter/profile。
+5. 通过参数数组模拟 `run-adapter`，确认采用 adapter 声明的命令且不经过 shell 拼接。
+6. 运行本地 `doctor`，确认安装健康；随后分别制造必需路径缺失和托管 workflow 漂移，确认诊断能够发现。
+7. 对未配置的 GitHub 仓库快照生成 `bootstrap` 计划，确认写操作严格受 profile 边界约束。
 
 此外，每个 profile 单独生成两次确定性 ZIP，要求内容摘要与 SHA-256 完全一致。全部验收由 `python3 -m unittest discover --start-directory tests` 和 `./bin/playbook check` 自动执行。
 
@@ -28,4 +29,4 @@
 
 矩阵不会调用真实语言工具链、访问网络或修改 GitHub。目标项目仍须在安装 PR 上运行自己的真实 `validate`，并在该 Open PR 同时产生成功的 `lifecycle-policy` 后，才能对需要 ruleset 的 profile 执行真实 `bootstrap`。
 
-正式版本发布前，应至少选择一个受控测试仓库完成 GitHub smoke：安装所选组合、推送 PR、核验两项稳定 check、dry-run `doctor/bootstrap`、显式应用并再次运行只读 `doctor`。该 smoke 是外部状态验证，不由普通仓库 CI 自动创建或清理测试仓库。
+正式版本发布前，应至少选择一个受控测试仓库完成 GitHub smoke：安装所选组合、执行一次真实的新旧包升级、推送 PR、核验两项稳定 check、dry-run `doctor/bootstrap`、显式应用并再次运行只读 `doctor`。该 smoke 是外部状态验证，不由普通仓库 CI 自动创建或清理测试仓库。

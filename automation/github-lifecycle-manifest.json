@@ -28,8 +28,10 @@
       "scripts/github_lifecycle/__main__.py",
       "scripts/github_lifecycle/adapters.py",
       "scripts/github_lifecycle/adoption.py",
+      "scripts/github_lifecycle/installation.py",
       "scripts/github_lifecycle/package.py",
-      "scripts/github_lifecycle/repository.py"
+      "scripts/github_lifecycle/repository.py",
+      "scripts/github_lifecycle/upgrade.py"
     ]
   },
   "profiles": {
@@ -55,11 +57,13 @@
       "scripts/github_lifecycle/adoption.py",
       "scripts/github_lifecycle/common.py",
       "scripts/github_lifecycle/incident.py",
+      "scripts/github_lifecycle/installation.py",
       "scripts/github_lifecycle/package.py",
       "scripts/github_lifecycle/pr.py",
       "scripts/github_lifecycle/release.py",
       "scripts/github_lifecycle/repository.py",
-      "scripts/github_lifecycle/retrospective.py"
+      "scripts/github_lifecycle/retrospective.py",
+      "scripts/github_lifecycle/upgrade.py"
     ],
     "governance": [
       ".github/PULL_REQUEST_TEMPLATE.md",
@@ -75,11 +79,13 @@
       "scripts/github_lifecycle/adoption.py",
       "scripts/github_lifecycle/common.py",
       "scripts/github_lifecycle/incident.py",
+      "scripts/github_lifecycle/installation.py",
       "scripts/github_lifecycle/package.py",
       "scripts/github_lifecycle/pr.py",
       "scripts/github_lifecycle/release.py",
       "scripts/github_lifecycle/repository.py",
-      "scripts/github_lifecycle/retrospective.py"
+      "scripts/github_lifecycle/retrospective.py",
+      "scripts/github_lifecycle/upgrade.py"
     ],
     "incident": [
       ".github/ISSUE_TEMPLATE/config.yml",
@@ -100,11 +106,13 @@
       "scripts/github_lifecycle/adoption.py",
       "scripts/github_lifecycle/common.py",
       "scripts/github_lifecycle/incident.py",
+      "scripts/github_lifecycle/installation.py",
       "scripts/github_lifecycle/package.py",
       "scripts/github_lifecycle/pr.py",
       "scripts/github_lifecycle/release.py",
       "scripts/github_lifecycle/repository.py",
-      "scripts/github_lifecycle/retrospective.py"
+      "scripts/github_lifecycle/retrospective.py",
+      "scripts/github_lifecycle/upgrade.py"
     ],
     "release": [
       ".github/lifecycle-policy.json",
@@ -119,11 +127,13 @@
       "scripts/github_lifecycle/adoption.py",
       "scripts/github_lifecycle/common.py",
       "scripts/github_lifecycle/incident.py",
+      "scripts/github_lifecycle/installation.py",
       "scripts/github_lifecycle/package.py",
       "scripts/github_lifecycle/pr.py",
       "scripts/github_lifecycle/release.py",
       "scripts/github_lifecycle/repository.py",
-      "scripts/github_lifecycle/retrospective.py"
+      "scripts/github_lifecycle/retrospective.py",
+      "scripts/github_lifecycle/upgrade.py"
     ]
   }
 }

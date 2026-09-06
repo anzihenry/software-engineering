@@ -11,6 +11,14 @@ SUPPORTED_PROFILES = ("governance", "incident", "release", "full")
 PACKAGE_PROFILES = ("auto", *SUPPORTED_PROFILES)
 
 
+def load_manifest_schema(path: Path) -> int:
+    raw = load_json_mapping(path, "automation manifest")
+    schema_version = raw.get("schema_version")
+    if not isinstance(schema_version, int) or schema_version not in {1, 2, 3}:
+        raise LifecycleError("automation manifest schema_version must be 1, 2, or 3")
+    return schema_version
+
+
 def _normalize_files(files: object, *, context: str) -> tuple[str, ...]:
     if not isinstance(files, list) or not files:
         raise LifecycleError(f"automation manifest {context} must be a non-empty array")

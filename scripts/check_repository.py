@@ -109,7 +109,8 @@ INTERNAL_SUPPORT_ASSETS = frozenset(
     }
 )
 GOVERNANCE_COMMAND_PATTERN = re.compile(
-    r"python(?:3)?\s+-m\s+scripts\.github_lifecycle\s+(?:install|doctor|bootstrap)(?:\s|\\|$)"
+    r"python(?:3)?\s+-m\s+scripts\.github_lifecycle\s+"
+    r"(?:install|upgrade|doctor|bootstrap)(?:\s|\\|$)"
 )
 REPOSITORY_SCAN_EXCLUDED_DIRECTORIES = frozenset({".git", ".venv"})
 
@@ -727,8 +728,10 @@ def check_github_automation(root: Path) -> list[Issue]:
         root / "scripts" / "github_lifecycle" / "__main__.py",
         root / "scripts" / "github_lifecycle" / "adapters.py",
         root / "scripts" / "github_lifecycle" / "adoption.py",
+        root / "scripts" / "github_lifecycle" / "installation.py",
         root / "scripts" / "github_lifecycle" / "package.py",
         root / "scripts" / "github_lifecycle" / "repository.py",
+        root / "scripts" / "github_lifecycle" / "upgrade.py",
     }
     for workflow in lifecycle_files:
         if workflow.suffix not in {".yml", ".yaml"} or not workflow.is_file():

@@ -36,13 +36,13 @@
 | --- | --- |
 | 目标 | 将第二层安全复制到其他仓库，诊断本地与远端漂移，并显式配置 GitHub 仓库 |
 | 受众 | 自动化维护者和目标仓库管理员 |
-| 输入 | 固定 tag 或完整 commit SHA、版本化 manifest、安装 profile、语言 adapter、目标仓库路径与 GitHub 状态 |
-| 输出 | 确定性自动化包、适配后的安装计划、诊断报告和仓库引导计划 |
-| 写权限 | `package` 只创建本地归档；`install` 只写目标仓库本地文件；`doctor` 只读；`bootstrap` 仅在 dry-run 关闭且确认字符串精确匹配时写 GitHub 设置 |
+| 输入 | 固定 tag、完整 commit SHA 或内容摘要、版本化 manifest、新旧自动化包、安装 profile、语言 adapter、目标仓库路径与 GitHub 状态 |
+| 输出 | 确定性自动化包、适配后的安装/升级计划、安装来源记录、诊断报告和仓库引导计划 |
+| 写权限 | `package` 只创建本地归档；`install` 只新增目标仓库本地文件；`upgrade` 只替换与旧版本记录精确一致的托管文件；`doctor` 只读；`bootstrap` 仅在 dry-run 关闭且确认字符串精确匹配时写 GitHub 设置 |
 | 分发范围 | 作为 manifest 的 `cross-project-governance` 组件随自动化包发布 |
 | 非目标 | 不制定生命周期规则，不安装第一层知识资产，不覆盖冲突文件，不绕过权限、ruleset 或真实 check 证据 |
 
-第三层回答“如何把第二层带到其他项目并持续确认其状态”。当前通过 `governance`、`incident`、`release` 和 `full` profile 选择能力范围，再通过 Python、Node、Swift、Go 或自定义 adapter 映射目标项目的本地检查、Dependabot、稳定 `validate` check 和发布候选制品保留期。adapter 只翻译实现差异，不制定新的风险、事故或复盘规则。未来新增资产类型必须升级 manifest 或工具契约，并单独定义安装、冲突和诊断语义。
+第三层回答“如何把第二层带到其他项目并持续确认其状态”。当前通过 `governance`、`incident`、`release` 和 `full` profile 选择能力范围，再通过 Python、Node、Swift、Go 或自定义 adapter 映射目标项目的本地检查、Dependabot、稳定 `validate` check 和发布候选制品保留期。安装记录把 profile、adapter、不可变来源和文件摘要固定为升级基线；版本升级保留本地修改及上游删除项，并拒绝不明确的覆盖。adapter 只翻译实现差异，不制定新的风险、事故或复盘规则。未来新增资产类型必须升级 manifest 或工具契约，并单独定义安装、升级、冲突和诊断语义。
 
 ## 依赖方向与内部支持面
 
@@ -55,7 +55,7 @@ GitHub 生命周期自动化
 ```
 
 - 第一层不依赖运行时代码或 GitHub 仓库状态。
-- 第二层遵循第一层的概念与安全边界，不调用 `install`、`doctor` 或 `bootstrap`。
+- 第二层遵循第一层的概念与安全边界，不调用 `install`、`upgrade`、`doctor` 或 `bootstrap`。
 - 第三层读取第二层的 policy、manifest 和 GitHub 状态，不复制一套独立的风险、事故或复盘规则。
 - 跨层文档或公共 CLI 可以作为组合入口，但不能改变各层的授权和失败语义。
 
