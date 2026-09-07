@@ -44,6 +44,8 @@
 
 第三层回答“如何把第二层带到其他项目并持续确认其状态”。当前通过 `governance`、`incident`、`release` 和 `full` profile 选择能力范围，再通过 Python、Node、Swift、Go 或自定义 adapter 映射目标项目的本地检查、Dependabot、稳定 `validate` check 和发布候选制品保留期。安装记录把 profile、adapter、不可变来源和文件摘要固定为升级基线；版本升级保留本地修改及上游删除项，并拒绝不明确的覆盖。adapter 只翻译实现差异，不制定新的风险、事故或复盘规则。未来新增资产类型必须升级 manifest 或工具契约，并单独定义安装、升级、冲突和诊断语义。
 
+第三层的 GitHub 仓库治理实现按单向责任链组织：`github.py` 只封装参数化 `gh` 进程调用和 JSON 边界；`repository_state.py` 只读取并验证远端状态；`repository_ruleset.py` 只合并 ruleset 目标；`repository_inspection.py` 只生成诊断；`repository_bootstrap.py` 只生成计划并在显式确认后执行写入。`repository.py` 保留为兼容导入门面，不承载领域实现。读取、规划和写入不得形成反向依赖，也不得在状态发现或诊断阶段隐式修改 GitHub。
+
 ## 依赖方向与内部支持面
 
 ```text
