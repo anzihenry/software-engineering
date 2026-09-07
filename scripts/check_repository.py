@@ -1031,9 +1031,14 @@ def check_github_automation(root: Path) -> list[Issue]:
         root / "scripts" / "github_lifecycle" / "__main__.py",
         root / "scripts" / "github_lifecycle" / "adapters.py",
         root / "scripts" / "github_lifecycle" / "adoption.py",
+        root / "scripts" / "github_lifecycle" / "github.py",
         root / "scripts" / "github_lifecycle" / "installation.py",
         root / "scripts" / "github_lifecycle" / "package.py",
         root / "scripts" / "github_lifecycle" / "repository.py",
+        root / "scripts" / "github_lifecycle" / "repository_bootstrap.py",
+        root / "scripts" / "github_lifecycle" / "repository_inspection.py",
+        root / "scripts" / "github_lifecycle" / "repository_ruleset.py",
+        root / "scripts" / "github_lifecycle" / "repository_state.py",
         root / "scripts" / "github_lifecycle" / "upgrade.py",
     }
     for workflow in lifecycle_files:
