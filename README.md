@@ -48,6 +48,8 @@
 
 集成验证与发布阶段默认适配独立开发者或微型团队使用 GitHub 的场景：PR、Actions、Environments、Deployments 和 Releases 分别承载合入门禁、确定性执行、环境控制、部署追踪与对外版本记录；平台套餐不支持的审批能力使用明确的人类决策记录替代，不虚构自动化保证。
 
+项目文档治理见[项目文档规范](docs/documentation-standard.md)、[双语模板](templates/documentation/README.md)与[接入说明](docs/documentation-integration.md)。它们是面向目标项目的第一层 harness 资产，已接入入口、八阶段 workflow 与文档维护/独立验证 SKILL；目标项目检查器与 CI 模板已提供，实际平台门禁须由项目接入并验证。
+
 Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md)，当前覆盖 TypeScript 7、ArkTS、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20。
 
 workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见[内容治理](docs/content-governance.md)；过期内容由仓库自检阻止合入。
@@ -74,3 +76,5 @@ python3 scripts/check_repository.py
 ```
 
 Pull Request 和推送到 `main` 时，[Repository checks](.github/workflows/repository-checks.yml) workflow 会执行同一组检查。
+
+文档规范第三阶段提供[目标项目机械门禁与 CI 接入](docs/documentation-tooling.md)，保留 harness 资产布局；使用项目仍须验证自己的可信评审来源与实际门禁。

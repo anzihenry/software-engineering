@@ -66,6 +66,12 @@ GitHub 某些 Environment 审批、等待或密钥能力受仓库可见性和套
 
 发布包含四个门禁：候选门禁确保 source SHA、制品和证据一致；生产门禁确保环境、授权、观测和恢复就绪；批次门禁确保健康数据支持继续；收口门禁确保目标范围、实际版本、运行交接和对外状态一致。任何继续推进都必须基于观测结果，而非仅基于部署命令成功。
 
+## 文档治理
+
+正式发布前独立验证版本级发布说明、兼容/升级指南、当前候选与文档检查证据。planned、verified、released 等状态必须符合实际，不以候选验收代替发布。收口时更新双语长期文档；专题 completed 还需文档同步、验收与遗留转交，不能仅凭发布成功关闭。
+
+遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
+
 ## 输出
 
 - 发布候选清单、已发布版本、GitHub Actions/Deployment/Release 记录、制品摘要、变更记录、观察结果和对外/对内通知。

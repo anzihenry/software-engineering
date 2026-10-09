@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "snapshot_digest": "<snapshot digest>",
+  "reviewer": "<nonauthor identity>",
+  "independent": true,
+  "context": "<separate review context id>",
+  "verdict": "blocked",
+  "inspected_files": [],
+  "checks": {
+    "impact": {
+      "result": "not-run",
+      "evidence": "<snapshot evidence path>"
+    },
+    "implementation": {
+      "result": "not-run",
+      "evidence": "<snapshot evidence path>"
+    },
+    "bilingual": {
+      "result": "not-run",
+      "evidence": "<snapshot evidence path>"
+    },
+    "evidence": {
+      "result": "not-run",
+      "evidence": "<snapshot evidence path>"
+    },
+    "examples": {
+      "result": "not-run",
+      "evidence": "<snapshot evidence path>"
+    }
+  },
+  "impacts": {
+    "research": {
+      "result": "not-applicable",
+      "reason": "<actual scope rationale>",
+      "files": []
+    },
+    "product": {
+      "result": "not-applicable",
+      "reason": "<actual scope rationale>",
+      "files": []
+    },
+    "design": {
+      "result": "not-applicable",
+      "reason": "<actual scope rationale>",
+      "files": []
+    },
+    "engineering": {
+      "result": "not-applicable",
+      "reason": "<actual scope rationale>",
+      "files": []
+    },
+    "guides": {
+      "result": "not-applicable",
+      "reason": "<actual scope rationale>",
+      "files": []
+    },
+    "planning": {
+      "result": "not-applicable",
+      "reason": "<actual scope rationale>",
+      "files": []
+    },
+    "initiatives": {
+      "result": "not-applicable",
+      "reason": "<actual scope rationale>",
+      "files": []
+    },
+    "releases": {
+      "result": "not-applicable",
+      "reason": "<actual scope rationale>",
+      "files": []
+    },
+    "navigation": {
+      "result": "not-applicable",
+      "reason": "<actual scope rationale>",
+      "files": []
+    }
+  },
+  "evidence_files": [],
+  "required_checks": {
+    "project-tests": {
+      "result": "not-run",
+      "evidence": "<snapshot evidence path>"
+    }
+  },
+  "findings": [],
+  "reviewer_role": "<actual independent reviewer role>",
+  "reviewed_at": "<actual ISO timestamp with timezone>"
+}

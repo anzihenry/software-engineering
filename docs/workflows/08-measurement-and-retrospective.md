@@ -29,6 +29,12 @@ review_by: "2027-02-26"
 
 复盘关闭前，结论必须由可追溯证据支撑，行动项必须有所有者和期限，重大风险必须有明确处置路径。没有数据时应记录不确定性，而非把推测写成事实。
 
+## 文档治理
+
+把复盘和研究的可复用发现回写长期知识，专题保留历史范围与原始证据。关闭专题或文档改进前独立核对更新与英文同步；定期复核仅补充交付检查，不能用批量更新日期代替实际复核。
+
+遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
+
 ## 输出
 
 - 效果评估、复盘记录、关键指标趋势与可追溯数据来源。

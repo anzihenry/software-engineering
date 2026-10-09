@@ -29,6 +29,12 @@ review_by: "2027-02-26"
 
 进入“集成验证”前，本地必需检查通过，变更可追溯至验收标准，测试与风险匹配，文档/迁移/配置已准备。无法通过的检查不得通过删测、跳过或降低门禁来掩盖。
 
+## 文档治理
+
+每次变更使用文档维护技能展开文件级影响清单，同步中文与英文、当前知识、导航和引用。按统一交付检查模板记录实际检查和当前版本，交给非作者独立验证，不能用自测或填写模板代替独立评审。
+
+遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
+
 ## 输出
 
 - 可构建的代码变更、自动化测试、必要的迁移和配置。
@@ -49,6 +55,7 @@ review_by: "2027-02-26"
 
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
+| 采用文档规范、分析影响并同步双语内容 | [`documentation-maintenance`](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md) | 文档采用、迁移或变更交付准备 | 双语更新、影响清单、当前快照和待独立验证记录 |
 | 编排领域不明确或跨领域的实现切片与整体自测 | [`implementation-and-self-test`](../../skills/04-implementation-and-self-test/implementation-and-self-test/SKILL.md) | 已有评审通过的设计与任务，需维持整体范围和证据关联时 | 可构建变更、对应测试和整体自测结论 |
 | 应用语言编码规范和最佳实践 | [`language-coding-standards`](../../skills/04-implementation-and-self-test/language-coding-standards/SKILL.md) | 编写、修改或评审 TypeScript、ArkTS、Python、Swift、Kotlin、Go、SQL、zsh 或 C++ 代码时 | 与项目配置一致的实现、检查证据和已知偏差 |
 | 实现共享移动逻辑或协调多平台交付 | [`mobile-implementation-and-self-test`](../../skills/04-implementation-and-self-test/mobile-implementation-and-self-test/SKILL.md) | 涉及跨平台框架、共享业务逻辑或 iOS/Android/HarmonyOS 一致性时 | 跨平台移动变更、平台影响和整体自测证据 |

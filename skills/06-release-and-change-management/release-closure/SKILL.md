@@ -25,6 +25,10 @@ description: "在稳定观察后收口发布、更新变更与运行信息并完
 4. 将已知问题、剩余风险、观察期限、支持指引和需跟踪的行动项交接给运行与支持团队。
 5. 对未达预期、回滚或重大异常，创建事故/复盘或改进输入，避免以发布关闭取代问题治理。
 
+## 文档交付要求
+
+用 `documentation-maintenance` 更新受影响的双语长期文档与实际发布记录；通过 `documentation-delivery-validation` 核对当前版本证据。按[文档规范](../../../docs/documentation-standard.md)区分候选与 released；专题 completed 需完成验收、双语回写及遗留转交，不以生产部署成功代替。文档检查缺失时记录待收口，不虚构发布状态或抹除实际上线事实。
+
 ## 输出格式
 
 ```markdown
