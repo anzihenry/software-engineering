@@ -1,0 +1,4 @@
+interface:
+  display_name: "Documentation Delivery Validation"
+  short_description: "Independently validate documentation delivery evidence"
+  default_prompt: "Use $documentation-delivery-validation to independently review this delivery against its current files and evidence."

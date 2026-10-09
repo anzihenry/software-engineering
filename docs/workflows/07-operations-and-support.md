@@ -29,6 +29,12 @@ review_by: "2027-02-26"
 
 关闭普通事件前，必须确认缓解/修复已生效、影响范围与时间线已记录、用户沟通完成、需要的后续行动已创建并有负责人。安全/隐私事件还必须确认威胁受控、证据受保护、恢复已验证，且法律保全和通知决定有明确负责人及状态。不能仅因告警消失而关闭高严重度事件。
 
+## 文档治理
+
+将新运行事实、支持结论和手册变化回写 guides 或长期知识，双语同步并保留受限证据位置；原始材料不重复公开。文档修正也按交付检查处理；紧急服务恢复沿既有授权流程执行，不把未完成的文档检查记成通过。
+
+遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
+
 ## 输出
 
 - 服务健康记录、支持工单结论、事故记录、安全/隐私事件证据与通知决策、状态通告和新增改进行动。

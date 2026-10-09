@@ -28,6 +28,12 @@ review_by: "2027-02-26"
 
 进入“方案与计划”前，验收标准必须可测试，范围和非目标明确，依赖有所有者，高风险项已进入设计/安全评审队列。存在关键未决问题时，不承诺交付日期。
 
+## 文档治理
+
+把本次需求、范围与验收标准放在专题或已有 Issue/PR 记录，生效的产品规则由 product 维护。列出初步文档影响、负责人和双语要求；小工作不强制建专题，新项目或迁移项目由文档维护技能补采用配置。
+
+遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
+
 ## 输出
 
 - 可实施的需求包：背景、范围、用户故事或问题描述、验收标准、非功能要求、依赖和风险等级。

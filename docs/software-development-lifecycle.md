@@ -40,6 +40,14 @@
 | 7. 运行与支持 | 维持服务质量与用户信任 | SLO/SLI、告警、事故响应、证据记录、用户反馈 | 持续观察指标；异常按运行或安全/隐私专项事件流程处理 |
 | 8. 度量与复盘 | 从交付中学习并改进 | 效果评估、事故复盘、改进任务 | 结论有数据支撑；行动项有责任人和截止日期 |
 
+## 跨阶段文档交付要求
+
+使用 harness 研发的目标项目默认遵循[项目文档规范](documentation-standard.md)，通过[接入说明](documentation-integration.md)和[双语模板](../templates/documentation/README.md)配置执行方式。
+
+[文档维护](../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)贯穿需求、研究、设计、实施、运行和复盘；[独立文档验证](../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)是合入、专题完成和正式发布的必经检查。低风险可以减少文件和检查规模，但不能省略文件级影响说明、受影响英文同步、实际证据或独立性。缺少本次必需文档不得通过一般豁免放行。
+
+本阶段实现指令和流程要求；目标项目机械门禁与 CI 模板见[工具接入](documentation-tooling.md)，实际强制需项目接入验证。没有专用工具时必须逐项记录实际方法与证据，既有项目必过检查仍必须通过。资产库保持原结构和治理契约，不自动按目标目录重排。
+
 ## 阶段操作手册
 
 每份手册均定义了可串联的输入、操作、门禁、输出和异常路径：

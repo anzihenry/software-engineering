@@ -26,6 +26,10 @@ description: "核对发布候选的版本、环境、审批、观测和恢复条
 5. 确认生产 Go/No-Go 由有权限的人类作出。独立开发者使用 GitHub 套餐不支持的审批能力时，应保留明确的手动触发/决策记录，而非声称平台已强制复核。
 6. 给出 Go、条件 Go 或 No-Go 结论；条件 Go 必须列出在开始前可验证完成的具体条件与责任人。
 
+## 文档交付要求
+
+正式发布前必须有 `documentation-delivery-validation` 对当前候选的通过结论，核对[文档检查](../../../templates/documentation/delivery-check.md)、版本级说明、兼容/升级指南和同一产物证据。本次必需文档、翻译、证据未齐只能 No-Go，不能用条件 Go 或一般豁免放行。
+
 ## 输出格式
 
 ```markdown

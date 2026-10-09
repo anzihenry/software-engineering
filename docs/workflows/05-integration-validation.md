@@ -46,6 +46,12 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 
 进入“发布与变更管理”前，必需 CI 全绿，阻塞性评审意见已解决，高风险验收与非功能要求均有验证证据。豁免必须由有权限的负责人记录原因、范围、到期时间和补救计划。
 
+## 文档治理
+
+合入前必须由非作者人类或独立 Agent 使用文档交付验证技能，独立读取实现、双语文档和证据。全部本次必需检查与评审通过、快照有效才可合入；必需文档、英文或证据缺失不得豁免，实质变更后重验受影响范围。
+
+遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
+
 ## 输出
 
 - 已批准并可合入的变更、CI 与测试报告、评审决策和已记录的豁免。
@@ -66,6 +72,7 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
+| 独立核对本次文档影响、双语内容与证据 | [`documentation-delivery-validation`](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md) | 合入、专题完成或正式发布前 | 对应当前版本的通过/阻塞结论及修正复核 |
 | 为新 GitHub 仓库建立稳定 CI 与适配真实能力的 CD 基线 | [`github-actions-bootstrap`](../../skills/05-integration-validation/github-actions-bootstrap/SKILL.md) | 项目已有可本地执行的质量命令，需要生成安全 Actions workflow 并通过首次 PR 自动取得真实 check-run 时 | CI/CD workflow、首次 PR 运行证据及仓库设置交接 |
 | 为新 GitHub 仓库建立安全仓库设置并收口首次 CI PR | [`github-repository-bootstrap`](../../skills/05-integration-validation/github-repository-bootstrap/SKILL.md) | Actions 引导 PR 已自动产生成功稳定 check，或需要审计 Actions 权限、environments、ruleset 和删分支设置时 | 可验证的仓库治理设置、首次 PR 收口与分支清理证据 |
 | 编排 GitHub PR 从 Draft 到受保护合入 | [`github-pr-integration`](../../skills/05-integration-validation/github-pr-integration/SKILL.md) | 独立开发者或微型团队需要在 GitHub 上串联 CI、评审、专项/系统验证和合入判断时 | 对应最新提交的 PR 集成状态与下一动作 |

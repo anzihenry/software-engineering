@@ -26,6 +26,10 @@ description: "将问题框架收敛为可测试的最小交付项、验收标准
 5. 建立追溯：每个交付项关联原问题、成功指标和已知约束；识别仍会阻塞开发、验收或发布的未知项。
 6. 检查需求包是否引入了新目标或实现假设。若有，回写问题框架或列为待决决策，不静默扩展范围。
 
+## 文档交付要求
+
+需求准备时调用 `documentation-maintenance` 明确目标项目采用配置、专题/Issue 归属及初步文件级影响。需求变化需同步中英文，生效规则回写 product；按[规范](../../../docs/documentation-standard.md)与[接入说明](../../../docs/documentation-integration.md)执行。
+
 ## 输出格式
 
 ```markdown
