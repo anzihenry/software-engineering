@@ -28,6 +28,12 @@ review_by: "2027-02-26"
 
 进入“澄清与立项”前，记录必须有问题陈述、目标/成功指标、负责人、优先级和明确范围。若无法说明价值或验证方式，应先补充调研或关闭。
 
+## 文档治理
+
+登记机会与研究时保留唯一来源、研究时间、范围与局限。跨专题可复用结论放 research，专题资料跟随专题；不要重复存原始材料。进入需求准备时调用文档维护技能确定归属与双语交付范围。
+
+遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
+
 ## 输出
 
 - 已排序的机会记录，包含问题、受影响对象、成功指标、范围、约束和初步风险。

@@ -13,6 +13,13 @@
 - Keep SKILL descriptions discriminating and instructions focused on decisions that improve execution.
 - Update workflow and `skills/README.md` routing whenever a SKILL is added, removed, or changes responsibility.
 
+## Documentation governance
+
+- For harness asset changes, use `skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md` and obtain independent validation with `skills/05-integration-validation/documentation-delivery-validation/SKILL.md` before delivery.
+- Read `docs/documentation-standard.md`; preserve this repository's skills/workflows/templates organization and existing content-governance/traceability contracts. The target-project directory layout does not reorganize this asset repository.
+- Update affected bilingual standards/templates and routing; assess changes to existing assets explicitly without treating target-project adoption as a wholesale asset migration.
+- Bind checks and independent review to the current commit or file-digest snapshot. Required documentation, translations, or evidence cannot be waived. Do not claim target CI enforcement before it is implemented.
+
 ## GitHub operations
 
 - Use the GitHub CLI (`gh`) as the preferred interface for pull requests, issues, Actions, releases, repository settings, and other GitHub API operations.

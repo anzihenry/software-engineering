@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "standard_version": "<fixed full harness commit>",
+  "owners": {
+    "project-owner": "<actual team or person>"
+  },
+  "required_checks": [
+    "project-tests"
+  ],
+  "documents": {
+    "README.md": "knowledge",
+    "CHANGELOG.md": "knowledge",
+    "docs/README.md": "knowledge",
+    "docs/documentation.md": "knowledge"
+  },
+  "legacy": {},
+  "raw": {},
+  "translations": {}
+}

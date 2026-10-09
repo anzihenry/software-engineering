@@ -25,6 +25,10 @@ description: "整理变更文档、测试证据和风险信息为可独立评审
 4. 写明发布影响：特性开关、部署/迁移顺序、观测、回滚/前滚注意事项、审批或专项评审状态。
 5. 形成可供独立评审的 PR 描述，保证变更粒度和提交内容与描述一致；过大的混合变更应先拆分。
 
+## 文档交付要求
+
+使用 `documentation-maintenance` 和[统一检查模板](../../../templates/documentation/delivery-check.md)记录实际文件影响、双语更新、机械检查与当前快照，交给非作者 `documentation-delivery-validation`。尚未独立通过时明确待验证；不能把模板填写等同验收。
+
 ## 输出格式
 
 ```markdown

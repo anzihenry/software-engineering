@@ -29,6 +29,12 @@ review_by: "2027-02-26"
 
 进入“开发与自测”前，选定方案必须覆盖验收标准、数据和接口契约、测试策略以及发布/回滚路径；关键风险均有处置人。未验证的高影响假设应先做 Spike 或原型。
 
+## 文档治理
+
+专题保存方案过程，长期体验规则和技术契约分别归入 design 与 engineering。长期技术决策使用编号记录并保留替代关系；计划明确文档更新、双语同步、实际检查和独立评审任务，任务状态只维护一次。
+
+遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
+
 ## 输出
 
 - 技术设计与决策记录、接口/数据契约、测试策略、发布与恢复计划。

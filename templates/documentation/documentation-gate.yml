@@ -1,0 +1,71 @@
+# Copy as a reusable workflow, fill the fixed harness repository/revision in its caller.
+# Caller must obtain review records from a trusted independent reviewer; never from PR files.
+name: Documentation delivery gate
+"on":
+  workflow_call:
+    inputs:
+      harness_repository:
+        required: true
+        type: string
+      harness_revision:
+        required: true
+        type: string
+      snapshot_json:
+        required: true
+        type: string
+      review_json:
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  documentation-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: target
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ inputs.harness_repository }}
+          ref: ${{ inputs.harness_revision }}
+          path: harness
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14"
+      - name: Verify fixed harness revision
+        env:
+          HARNESS_REVISION: ${{ inputs.harness_revision }}
+        run: |
+          python - <<'PYTHON'
+          import os, re, subprocess
+          revision = os.environ["HARNESS_REVISION"]
+          if re.fullmatch(r"[0-9a-f]{40}", revision) is None:
+              raise SystemExit("Harness revision must be a full commit SHA")
+          actual = subprocess.check_output(["git", "-C", "harness", "rev-parse", "HEAD"], text=True).strip()
+          if actual != revision:
+              raise SystemExit("Harness checkout revision mismatch")
+          PYTHON
+      - name: Install existing checker dependency
+        run: python -m pip install PyYAML==6.0.3
+      - name: Load trusted review records outside target
+        env:
+          SNAPSHOT_JSON: ${{ inputs.snapshot_json }}
+          REVIEW_JSON: ${{ inputs.review_json }}
+        run: |
+          python - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          for name, variable in (("snapshot.json", "SNAPSHOT_JSON"), ("review.json", "REVIEW_JSON")):
+              value = json.loads(os.environ[variable])
+              Path(os.environ["RUNNER_TEMP"], name).write_text(json.dumps(value), encoding="utf-8")
+          PYTHON
+      - name: Validate current checkout and independent review
+        run: |
+          python harness/scripts/documentation_check.py gate --root "$GITHUB_WORKSPACE/target" \
+            --snapshot "$RUNNER_TEMP/snapshot.json" --review "$RUNNER_TEMP/review.json" \
+            --output "$RUNNER_TEMP/documentation-gate.json"
