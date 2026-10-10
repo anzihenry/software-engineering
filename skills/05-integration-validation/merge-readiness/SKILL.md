@@ -25,6 +25,10 @@ description: "汇总当前提交的门禁、评审、系统验证和豁免，判
 4. 核对豁免的授权、范围、到期和补救计划，确保豁免没有覆盖未被授权的风险。
 5. 记录可合入、条件不满足或需重验的结论；在阻塞时指出最小的解阻动作和责任人。
 
+## GitHub 仓库治理要求
+
+GitHub 项目必须核对[默认治理基线](../../../docs/github-repository-defaults.md)的当前有效默认分支保护及 `delete_branch_on_merge=true`。缺失或无法验证时结论为阻塞，交给 `github-repository-bootstrap` 补齐；非 GitHub 项目记录不适用原因。本技能不隐式写入设置。
+
 ## 文档交付要求
 
 必须消费 `documentation-delivery-validation` 对当前提交/快照的通过结论，核对[交付检查](../../../templates/documentation/delivery-check.md)中影响完整性、英文同步和修正复核。缺失、过期或阻塞时不得可合入；本次必需文档、翻译、证据不可豁免。

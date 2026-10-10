@@ -18,6 +18,15 @@
 - Required documentation checks cannot be waived or conditionally passed. Use actual manual/temporary checks until dedicated tooling exists; existing required CI still must pass. Relevant changes require revalidation.
 - Apply target-project directory conventions only to product/project documentation; preserve the structure and governance contracts of a harness asset repository.
 
+## Default GitHub governance / GitHub 默认治理
+
+- On first harness adoption or governance drift, use `$github-repository-bootstrap` to enable and verify default-branch protection and `delete_branch_on_merge=true`. New projects default to `main`; protect the actual default branch in existing projects. Use `$github-actions-bootstrap` first when trustworthy stable CI checks are missing.
+- GitHub 项目首次采用或治理漂移时，默认使用 `$github-repository-bootstrap` 启用并验证默认分支保护和合并后自动删分支；新项目默认 `main`，已有项目保护实际默认分支。缺少可信稳定 CI 时先使用 `$github-actions-bootstrap`。
+- Reuse explicit authorization already provided; prepare reviewable differences before obtaining missing remote-write authorization. Keep governance incomplete when permission, platform capability, evidence, or compatible rules are missing. Loading instructions or installing files is not proof of enforcement; daily PRs must verify this baseline before declaring merge readiness. Non-GitHub projects record this as inapplicable.
+- 复用已有明确授权；缺少远端写入授权时先准备可审查差异。权限、平台能力、证据或规则兼容性不足时记录治理未完成；加载入口或安装文件不证明远端已生效，日常 PR 合入就绪前须验证基线。非 GitHub 项目标记不适用。
+- Make the pinned harness `docs/github-repository-defaults.md` / `.en.md` and both bootstrap skills accessible, or provide checked-in equivalents; report missing prerequisites instead of claiming completion.
+- 确保固定版本的 harness 默认治理双语规范和两个初始化技能可访问，或提供项目提交的等价副本；依据缺失时报告缺口，不声称完成。
+
 ## Project-specific commands
 
 - Format: `<project command>`

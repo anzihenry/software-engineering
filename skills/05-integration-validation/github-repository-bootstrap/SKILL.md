@@ -5,12 +5,16 @@ metadata:
   scope: "Lifecycle phase 5: integration validation"
   status: active
   review_by: "2027-02-26"
-description: "为新建或尚未治理的 GitHub 仓库建立可重复的安全设置：消费首次 Actions PR 的可信 check 交接，收紧 workflow token，配置 environments、strict required-check ruleset 与合并后删分支，并在明确授权后完成唯一的引导 PR；适用于首次仓库治理或后续审计，不用于日常 PR 合并。"
+description: "为新建或尚未治理的 GitHub 仓库建立可重复的安全设置：消费首次 Actions PR 的可信 check 交接，收紧 workflow token，配置 environments、strict required-check ruleset 与合并后删分支，并在明确授权后完成唯一的引导 PR；适用于 GitHub 项目首次采用 harness 时的默认治理或漂移审计，不用于日常 PR 合并。"
 ---
 
 # GitHub 仓库初始化
 
 把 `$github-actions-bootstrap` 在首次 PR 上产生的可信门禁固化为仓库级治理设置，使独立开发者或微型团队后续通过 PR 和稳定 required check 合入。此 SKILL 负责仓库设置的发现、差异规划、授权写入、首次引导收口和验证；不替代项目 CI/CD 设计，不把 workflow 名误当作 check 名，也不把引导期的受限合并权扩大到日常 PR。
+
+## 默认触发
+
+GitHub 项目首次采用 harness 或发现治理漂移时，默认执行本技能，无须用户另行提出这两项设置；遵循[双语默认治理基线](../../../docs/github-repository-defaults.md)。新项目默认 `main`，已有项目保护实际默认分支。缺少可信 CI 证据时先路由到 `github-actions-bootstrap`；保留本技能的远端授权和首次 PR 合并边界，未实际验证不得报告完成。
 
 ## 输入
 

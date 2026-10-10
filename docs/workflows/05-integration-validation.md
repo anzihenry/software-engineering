@@ -28,6 +28,10 @@ review_by: "2027-02-26"
 7. **判断合入就绪**：确认 PR 已退出 Draft、最新提交的必需检查全绿、阻塞意见解决、专项/系统证据齐全、无冲突且目标分支仍适用。
 8. **通过项目机制合并**：由受保护分支规则执行合入，默认使用 squash merge 并删除主题分支；仅在并发合入频繁且 GitHub 套餐支持时使用 merge queue。合并不等于批准发布。
 
+## 首次采用与仓库治理检查
+
+进入 GitHub 集成验证时，先核对[默认仓库治理](../github-repository-defaults.md)：保护默认分支（新项目为 `main`）并启用合并后自动删分支。首次采用或漂移必须路由到 `github-repository-bootstrap`；没有真实稳定 check 时先执行 `github-actions-bootstrap`。配置并重新读取验证前，不报告治理完成或受保护合入就绪。
+
 ## 独立开发者与微型团队的 GitHub 基线
 
 | 方面 | 独立开发者 | 微型团队 |

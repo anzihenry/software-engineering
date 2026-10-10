@@ -18,6 +18,10 @@ description: "在独立开发者或微型团队的 GitHub 仓库中，编排 PR 
 - 本地自测证据、项目必需检查、GitHub 仓库可用功能及执行成本约束。
 - 验收标准、契约/迁移说明和发布恢复预案。
 
+## 默认治理检查
+
+按[默认仓库治理](../../../docs/github-repository-defaults.md)核对默认分支保护和 `delete_branch_on_merge=true`。首次采用或漂移交给 `github-repository-bootstrap`，缺少可信检查先交给 `github-actions-bootstrap`；基线未验证时不报告受保护合入就绪，本技能仍不修改仓库设置。
+
 ## 运行模型
 
 1. **确定团队模式**：独立开发者仓库不要求无法满足的自我批准；以全新上下文的 Agent 评审作为独立审查证据，但不冒充 GitHub 人工批准。存在另一位维护者时，中高风险变更优先要求其批准。高风险变更始终保留明确的人类 Go/No-Go。

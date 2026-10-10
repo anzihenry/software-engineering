@@ -12,6 +12,8 @@
 
 ### Changed
 
+- 将 GitHub 默认分支保护和 PR 合并后自动删分支明确接入 harness 默认采用、入口模板与合入检查；复用现有 bootstrap，保持单项 profile、dry-run 和远端授权边界。详见[双语基线](docs/github-repository-defaults.md)。
+
 - 将第三层 GitHub 仓库治理实现拆分为调用、状态读取、ruleset 规划、诊断和显式写入模块；保留原导入门面、CLI、确认字符串、dry-run 默认值和权限边界。
 
 ## [v1.2.0] - 2026-09-06

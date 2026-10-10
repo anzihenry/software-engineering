@@ -2,6 +2,8 @@
 
 本页帮助一个已有 GitHub 仓库采用生命周期自动化。它不会安装第一层研发知识，也不会自动发布、部署、回滚、批准变更或写入敏感事故内容。第一次采用使用当前稳定版本 `v1.2.0`；更早版本的现有安装按 [`UPGRADING.md`](../UPGRADING.md) 迁移。
 
+完整 harness 采用默认要求[分支保护与合并后自动删分支](github-repository-defaults.md)。`full`/`governance` 已实现这两项，但必须执行第 6 步并重新验证；仅安装文件不会生效。显式单项 profile 保持原范围，完整治理另走仓库初始化技能。
+
 ## 1. 准备
 
 需要 Python 3.14、Git、一个干净的目标仓库，以及已认证的 `gh`。`install` 只修改本地目标目录，不需要 GitHub token；`doctor` 读取 GitHub 状态，`bootstrap` 在显式确认后写入仓库设置。

@@ -8,6 +8,8 @@ SKILL 属于[项目三层边界](../docs/project-boundaries.md)的第一层“�
 
 文档治理是跨阶段要求：[文档维护](04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责采用与双语更新，[独立文档验证](05-integration-validation/documentation-delivery-validation/SKILL.md)必须由非作者执行。具体路由见[接入说明](../docs/documentation-integration.md)，不要求用户在每次研发中额外提出文档整理请求。
 
+GitHub 项目首次采用默认进入 [仓库初始化](05-integration-validation/github-repository-bootstrap/SKILL.md)，按[默认治理](../docs/github-repository-defaults.md)落实默认分支保护与合并后自动删分支；缺少真实 CI 时先进入 [Actions 初始化](05-integration-validation/github-actions-bootstrap/SKILL.md)，日常 PR 发现漂移时回流初始化。
+
 | 阶段 | 何时进入 | SKILL |
 | --- | --- | --- |
 | [01 需求与机会](01-demand-and-opportunity/) | 收到需求、反馈、缺陷或改进线索 | [登记与分诊](01-demand-and-opportunity/opportunity-intake/SKILL.md)、[问题界定](01-demand-and-opportunity/problem-framing/SKILL.md)、[机会排序](01-demand-and-opportunity/opportunity-prioritization/SKILL.md) |
