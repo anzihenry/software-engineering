@@ -25,6 +25,10 @@ description: "整理变更文档、测试证据和风险信息为可独立评审
 4. 写明发布影响：特性开关、部署/迁移顺序、观测、回滚/前滚注意事项、审批或专项评审状态。
 5. 形成可供独立评审的 PR 描述，保证变更粒度和提交内容与描述一致；过大的混合变更应先拆分。
 
+## 分支交接要求
+
+执行分支操作时调用 `git-branch-management`；按[分支规范](../../../docs/git-branch-workflow.md)记录任务分支、remote/upstream、base/head、同步与冲突处理，以及最新检查。提交/推送请求默认针对任务分支，核对暂存范围并保留无关工作；默认/受保护分支不创建任务提交。误在基线分支修改/提交时先安全恢复，不直接推送基线。此技能只记录交接，不因准备材料获得推送或合并权限。
+
 ## 文档交付要求
 
 使用 `documentation-maintenance` 和[统一检查模板](../../../templates/documentation/delivery-check.md)记录实际文件影响、双语更新、机械检查与当前快照，交给非作者 `documentation-delivery-validation`。尚未独立通过时明确待验证；不能把模板填写等同验收。
@@ -33,6 +37,7 @@ description: "整理变更文档、测试证据和风险信息为可独立评审
 
 ```markdown
 ## PR / 交接说明
+- 任务分支、remote/upstream、base/head 与同步状态：
 - 目的、关联需求与设计：
 - 变更范围与非目标：
 - 关键实现选择：

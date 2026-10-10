@@ -2,7 +2,7 @@
 title: "Documentation delivery check template"
 status: current
 owner: process-owner
-updated: "2026-10-09"
+updated: "2026-10-10"
 ---
 
 # Documentation delivery check template
@@ -21,6 +21,8 @@ updated: "2026-10-09"
 - environment_scope: `<platform, environment, users>`.
 - evidence: `<single locations for reports and review>`.
 - created_at / updated_at: `<actual timezone-bearing timestamps>`.
+
+For target-project documents, apply bilingual checks. Harness standards, workflows, SKILLs and operational references need only Chinese; mark language-pair/translation checks inapplicable with reasons. Independent content review, mechanical checks and current-version evidence remain mandatory.
 
 ## Documentation impact
 

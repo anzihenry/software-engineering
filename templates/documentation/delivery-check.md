@@ -2,7 +2,7 @@
 title: "交付文档检查模板"
 status: current
 owner: process-owner
-updated: "2026-10-09"
+updated: "2026-10-10"
 ---
 
 # 交付文档检查模板
@@ -21,6 +21,8 @@ updated: "2026-10-09"
 - environment_scope：`<平台、环境、用户范围>`。
 - evidence：`<检查报告和评审记录的唯一位置>`。
 - created_at / updated_at：`<带时区的实际时间>`。
+
+本模板用于目标项目文档时执行双语检查；用于 harness 规范、workflow、SKILL 或操作参考时，中文即可，语言配对/翻译检查记为不适用并说明理由。独立内容评审、机械检查和当前版本证据仍必需。
 
 ## 文档影响清单
 

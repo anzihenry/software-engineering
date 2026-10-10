@@ -54,7 +54,7 @@ PATCH /repos/{owner}/{repo}
 
 创建仓库级 ruleset 使用 `POST /repos/{owner}/{repo}/rulesets`；更新本 SKILL 已管理的 ruleset 使用其 ID 调用 `PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}`。不要用创建新规则代替对同一职责规则的幂等更新。
 
-默认分支保护 payload 结构（完整采用要求见[双语默认治理](../../../../docs/github-repository-defaults.md)）：
+默认分支保护 payload 结构（完整采用要求见[默认治理](../../../../docs/github-repository-defaults.md)）：
 
 ```json
 {

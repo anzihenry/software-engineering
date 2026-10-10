@@ -2,7 +2,7 @@
 title: "Documentation governance integration"
 status: current
 owner: process-owner
-updated: "2026-10-09"
+updated: "2026-10-10"
 ---
 
 # Documentation governance integration
@@ -47,6 +47,6 @@ Reviewers report findings, authors fix, reviewers recheck. Uncommitted work can 
 
 ## Asset maintenance and next validation
 
-This repository's entry requires impact checks, affected bilingual standards/templates, routing, and independent review for harness assets while retaining existing governance states, review_by, and traceability. Target-project conventions do not wholesale rename or translate existing Chinese workflows/SKILLs. New maintenance/validation skills have English references; standards/templates stay bilingual.
+Harness standards, workflows, SKILLs and operational references need only Chinese, without required English copies or translation review. Entry instructions still require impact checks, routing, independent content review and current-version evidence, retaining governance states, review_by and traceability. Formal target-project documents and their output templates remain bilingual. Do not migrate historical English assets wholesale; check references before deletion.
 
 Stage 3 now provides mechanical checks, review-record consistency gates, configuration and CI templates; adoption validation uses actual CLI execution and independent review in an isolated Git project. Routing alone does not prove successful Agent loading, platform enforcement, or universal adoption. Actual uses must retain loading and delivery evidence.

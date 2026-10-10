@@ -48,6 +48,8 @@ unzip github-lifecycle.zip -d package
 
 ## 4. 预览并安装
 
+应用安装前，在目标仓库按[分支规范](git-branch-workflow.md)检查工作区与远端基线，创建/复用任务功能分支；安装会修改文件，不能在默认/受保护分支上应用。
+
 以下示例选择 `governance` 和 `external`。先在发布包目录生成计划：
 
 ```sh
@@ -80,7 +82,7 @@ python3 -m scripts.github_lifecycle install \
 
 ## 5. 用 PR 取得真实证据
 
-在目标仓库审查并提交安装结果，通过 `gh pr create` 创建 PR。PR 进入 Ready 后，必须同时看到：
+在目标仓库审查并提交安装结果，仅推送对应任务功能分支，通过 `gh pr create` 创建 PR。PR 进入 Ready 后，必须同时看到：
 
 - 目标项目自己的稳定 `validate` check 成功。
 - 新增的 `lifecycle-policy` check 成功。

@@ -14,7 +14,9 @@ description: "为新建或尚未治理的 GitHub 仓库建立可重复的安全�
 
 ## 默认触发
 
-GitHub 项目首次采用 harness 或发现治理漂移时，默认执行本技能，无须用户另行提出这两项设置；遵循[双语默认治理基线](../../../docs/github-repository-defaults.md)。新项目默认 `main`，已有项目保护实际默认分支。缺少可信 CI 证据时先路由到 `github-actions-bootstrap`；保留本技能的远端授权和首次 PR 合并边界，未实际验证不得报告完成。
+GitHub 项目首次采用 harness 或发现治理漂移时，默认执行本技能，无须用户另行提出这两项设置；遵循[默认治理基线](../../../docs/github-repository-defaults.md)。新项目默认 `main`，已有项目保护实际默认分支。缺少可信 CI 证据时先路由到 `github-actions-bootstrap`；保留本技能的远端授权和首次 PR 合并边界，未实际验证不得报告完成。
+
+分支准备、同步、误提交恢复或清理的实际执行使用 `git-branch-management`，不在本技能复制其操作规则；本技能原有 CI、设置或合入判断职责不变。
 
 ## 输入
 
@@ -42,7 +44,7 @@ GitHub 项目首次采用 harness 或发现治理漂移时，默认执行本技�
 7. **请求远端写入授权**：展示目标仓库、Actions 权限、environment 差异、ruleset/check/App、strict、旁路和删分支设置，确认本次设置变更。读取与计划授权不能替代写入授权；引导 PR 的合并需要之后单独确认。
 8. **幂等应用**：只修改已展示字段，不删除未知规则、不覆盖 secrets、不扩大 token scope，也不保存凭据或完整 API 响应。按 Actions 权限、environments、ruleset、仓库设置的顺序应用；部分失败时停止后续动作，报告已生效状态和恢复方式。
 9. **验证有效设置**：重新读取 Actions 权限、environments、ruleset、默认分支有效规则和仓库元数据；确认 check context/App、strict、旁路、protected 状态及 `delete_branch_on_merge=true` 均与计划一致。
-10. **收口首次引导 PR**：仅当交接有效、最新 check 全绿、PR 可合并且用户明确授权时，合并交接中唯一的 bootstrap PR。等待合并提交在默认分支上的 `validate` 成功，再确认远端 head branch 已被自动删除；本地分支仅在不承载未推送提交且不为当前分支时删除。
+10. **收口首次引导 PR**：仅当交接有效、最新 check 全绿、PR 可合并且用户明确授权时，合并交接中唯一的 bootstrap PR。等待合并提交在默认分支上的 `validate` 成功，再确认远端 head branch 已被自动删除；本地分支按[分支规范](../../../docs/git-branch-workflow.md)检查工作区、待保留提交、Squash 内容和其他 worktree，安全切换并同步默认分支后才清理；条件不足时保留并记录原因。
 11. **保持日常边界**：不合并交接之外的 PR，不复用此次授权处理后续 PR。后续开发、评审与合入使用 `$github-pr-integration`；历史分支仅在逐个证明对应 PR 已合并并获得清理授权后处理。
 
 ## 默认基线

@@ -27,6 +27,10 @@
 PLAYBOOK_PYTHON=/path/to/venv/bin/python ./bin/playbook check
 ```
 
+## 任务分支
+
+任何会修改文件的操作（包括 `format`）前，按[分支规范](git-branch-workflow.md)检查工作区、fetch 并创建或复用任务分支。默认/受保护分支仅用于同步、查看和运行验证，不用于任务修改或新提交。同步、误提交恢复及合入后清理遵循同一规范。
+
 ## 依赖与 Action 更新
 
 Dependabot 每周一 UTC 03:00 后分别检查根目录的 Python 开发依赖和全部 GitHub Actions。minor/patch 更新按生态合并成小批次，major 更新保持独立 PR；Dependabot 只创建或 rebase PR，不自动合入。
