@@ -22,6 +22,10 @@
 
 当前稳定版本为 [`v1.2.0`](https://github.com/anzihenry/software-engineering/releases/tag/v1.2.0)，包含版本感知升级、真实 GitHub canary 和完整采用文档。采用前应先查看[兼容矩阵](docs/version-compatibility.md)，只使用固定 tag、完整 commit SHA 或已核验的发布包。
 
+使用 harness 的 GitHub 项目默认必须完成[仓库治理基线](docs/github-repository-defaults.md)：保护默认分支（新项目为 `main`）并开启 PR 合并后自动删除功能分支；首次采用自动路由到现有初始化技能，实际应用和验证后才算完成。
+
+Git 项目的日常开发默认调用[Git 任务分支管理](skills/04-implementation-and-self-test/git-branch-management/SKILL.md)，遵循[分支开发与管理规范](docs/git-branch-workflow.md)：修改前进入任务分支，按当前 coding agent 命名，安全同步、恢复误提交并在合入后核对清理；规则已接入本仓库与目标项目入口模板及开发/集成技能。
+
 ## 三层能力边界
 
 1. **研发知识与 SKILL**：定义如何完成研发工作，包括准则、阶段 workflow、SKILL、交付模板和演练；当前不会被跨项目安装器复制。

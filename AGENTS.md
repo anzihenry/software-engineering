@@ -17,8 +17,14 @@
 
 - For harness asset changes, use `skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md` and obtain independent validation with `skills/05-integration-validation/documentation-delivery-validation/SKILL.md` before delivery.
 - Read `docs/documentation-standard.md`; preserve this repository's skills/workflows/templates organization and existing content-governance/traceability contracts. The target-project directory layout does not reorganize this asset repository.
-- Update affected bilingual standards/templates and routing; assess changes to existing assets explicitly without treating target-project adoption as a wholesale asset migration.
+- Maintain harness standards, workflows, and skills in Chinese; bilingual requirements apply to target-project documents and their applicable templates. Update affected routing and assess existing assets without wholesale migration.
 - Bind checks and independent review to the current commit or file-digest snapshot. Required documentation, translations, or evidence cannot be waived. Do not claim target CI enforcement before it is implemented.
+
+## Git branch workflow
+
+- Before any code, documentation, or configuration edit, use `skills/04-implementation-and-self-test/git-branch-management/SKILL.md` and follow `docs/git-branch-workflow.md`: inspect branch/worktree ownership, fetch remote state, then create or reuse the task feature branch. Do not edit or create task commits on default/protected branches.
+- Name new Agent branches `<current-agent>/<short-task-name>`; reuse an existing task branch across Agent changes. Explicit user names and more specific project conventions take precedence.
+- Interpret commit/push requests as targeting the task branch. Preserve unrelated work; apply the standard's synchronization, mistaken-commit recovery, and post-merge cleanup checks, including squash and other worktrees.
 
 ## GitHub operations
 

@@ -12,6 +12,8 @@ description: "为新建或尚未接入自动化的 GitHub 仓库建立可重复�
 
 把项目已经能够在本地确定执行的质量命令接入 GitHub Actions，并通过首次 PR 自动产生真实 check-run。此 SKILL 负责 workflow 设计、实现、验证和交接；不修改 required-check ruleset 等仓库治理设置，也不虚构项目尚未具备的部署能力。
 
+分支准备、同步、误提交恢复或清理的实际执行使用 `git-branch-management`，不在本技能复制其操作规则；本技能原有 CI、设置或合入判断职责不变。
+
 ## 输入
 
 - 目标仓库、默认分支及 GitHub Actions 可用性。
@@ -23,13 +25,13 @@ description: "为新建或尚未接入自动化的 GitHub 仓库建立可重复�
 
 ## 工作方式
 
-1. **发现项目标准**：读取 `AGENTS.md`、依赖锁文件、构建脚本、formatter/linter/type checker/test 配置和现有 CI；实际执行项目规定的本地门禁。不能从语言生态惯例猜测命令，也不静默升级工具链或新增生产依赖。
+1. **发现项目标准**：先读取 `AGENTS.md` 并在修改前按[分支规范](../../../docs/git-branch-workflow.md)检查工作区和远端基线，创建/复用对应任务分支；再读取依赖锁文件、构建脚本、formatter/linter/type checker/test 配置和现有 CI；实际执行项目规定的本地门禁。不能从语言生态惯例猜测命令，也不静默升级工具链或新增生产依赖。
 2. **选择真实交付模式**：默认从 `ci` 开始；只有存在确定性构建物时选择 `artifact`，只有目标平台、短期身份、环境保护、健康验证和恢复动作均明确时选择 `deployment`。把缺失信息列为后续升级条件。
 3. **定义稳定检查契约**：CI workflow 在 `pull_request` 和默认分支 `push` 上触发，固定汇总 job ID 与显示名为 `validate`。不要用顶层路径过滤跳过整个 required workflow；矩阵或专项 job 的结果必须汇总到稳定 `validate`。
 4. **设计最小权限执行**：顶层默认 `contents: read`，配置 PR concurrency、取消旧运行和 job timeout。禁止用 `pull_request_target` 执行 PR 代码；所有远端 actions 固定完整提交 SHA，并从官方仓库或可信发布记录核对版本。
 5. **生成和审查 workflow**：把已确认的命令与固定 action SHA 写入临时 JSON 计划，用 `scripts/render_workflow.py` 生成 CI。若已有 workflow，先比较职责、触发器和 check 名，优先最小更新；不得未经确认覆盖未知自动化。artifact/deployment workflow 根据真实平台单独设计。
 6. **本地验证**：解析全部 workflow YAML，运行 formatter/linter/build/tests 及仓库自检，审查权限、事件、表达式、缓存键、secret 边界、超时和失败传播。报告本地无法证明的 runner 或平台行为。
-7. **创建首次 PR**：在 `codex/` 主题分支提交最小变更并创建 PR；依赖 `pull_request` 事件自动运行 CI，不要求用户先手动运行。workflow 尚未进入默认分支时不把 `workflow_dispatch` 当作首次验证入口。
+7. **创建首次 PR**：在按当前 coding agent 命名的任务分支（如 `codex/`、`deepseek-harness/`）提交最小变更并创建 PR；已有对应任务分支复用，不因 Agent 变化重命名；依赖 `pull_request` 事件自动运行 CI，不要求用户先手动运行。workflow 尚未进入默认分支时不把 `workflow_dispatch` 当作首次验证入口。
 8. **验证真实运行**：等待当前 PR head SHA 上名为 `validate` 的 check-run 成功；读取其 `name`、`app.id`、head SHA 和 run URL。失败则修复原分支并等待最新 SHA，不沿用旧运行。
 9. **输出受限交接**：按交接契约记录仓库、默认分支、PR/head、成功 check/App、交付模式和 environments。交给 `$github-repository-bootstrap` 配置远端治理；本 SKILL 不自行创建 ruleset 或合并 PR。
 

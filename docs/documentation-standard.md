@@ -2,7 +2,7 @@
 title: "项目文档规范"
 status: current
 owner: process-owner
-updated: "2026-10-09"
+updated: "2026-10-10"
 ---
 
 # 项目文档规范
@@ -16,6 +16,10 @@ updated: "2026-10-09"
 `software-engineering` 是规范、workflow、SKILL 和模板的资产仓库，保留既有结构。下面的目录属于使用 harness 研发的目标项目，不要求资产仓库按目标项目目录重排。规范及模板属于第一层知识资产，不进入现有 GitHub 自动化安装包。
 
 规范和模板已接入 harness 入口、八阶段 workflow 与文档维护/独立验证 SKILL，作为使用本 harness 研发的默认要求。目标项目检查器与 CI 模板已提供，实际门禁按[工具接入](documentation-tooling.md)配置和验证后生效。使用方式见[文档治理接入](documentation-integration.md)。
+
+## harness 资产的语言边界
+
+目标项目正式文档仍必须中英双语；用于生成这些文档的模板保留对应语言版本。harness 自身的规范、workflow、SKILL 及其操作参考只需维护中文，不要求英文副本、互链或翻译评审。资产的内容治理、文件级影响、实际检查、独立评审及当前版本证据仍必须执行；不因资产路径位于 `docs/` 就套用目标项目双语门槛。历史英文资产可在明确评估引用后处理，不要求整库迁移。
 
 ## 组织原则
 
@@ -99,7 +103,7 @@ verified 必须绑定候选摘要和源码提交；候选变更需重新验收�
 title: 文档标题
 status: current
 owner: technical-lead
-updated: "2026-10-09"
+updated: "2026-10-10"
 ```
 
 `owner` 为人员或稳定角色，项目配置必须能将角色映射到实际维护者。`updated` 是最后实质更新或有效性复核日期，格式调整不必更改。版本、来源、适用范围、替代关系可增补字段，不能伪造日期、责任或证据。

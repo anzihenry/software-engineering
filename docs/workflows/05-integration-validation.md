@@ -19,14 +19,18 @@ review_by: "2027-02-26"
 
 ## 流程
 
-1. **创建 Draft PR**：从已完成自测的主题分支创建 PR，关联需求与设计，记录范围、风险、测试、迁移、发布和恢复信息；验证未完成前保持 Draft。
+1. **创建 Draft PR**：按[分支规范](../git-branch-workflow.md)确认任务分支、base/head 和同步证据；提交/推送只针对该任务分支。从已完成自测的主题分支创建 PR，关联需求与设计，记录范围、风险、测试、迁移、发布和恢复信息；验证未完成前保持 Draft。
 2. **执行 CI 自动门禁**：GitHub Actions 在每个 PR 上执行构建、格式化、静态/类型分析、单元测试及适用的依赖与密钥检查；用固定名称的汇总检查作为 required check，失败应定位并修复，而非忽略。
 3. **开展独立代码评审**：微型团队由未参与实现的维护者评审；独立开发者使用全新上下文的 Agent 评审形成独立证据，但不将其冒充人工批准。评审覆盖正确性、边界、兼容、安全、测试和运行影响。
 4. **执行领域专项验证**：按风险进入移动端、Web 前端或后端专项验证；通过路径、标签或手动触发控制昂贵检查，但合入所需证据必须关联当前提交。
 5. **执行跨系统验证**：当风险跨越客户端、服务、数据库或外部依赖时，执行必要的契约、端到端、性能、并发、恢复或安全测试，并说明测试环境与生产差异。
 6. **处理反馈与回归**：作者在原分支逐项回应评审意见；每次实质修改重新执行受影响检查，并复审受影响代码，不沿用旧提交结果。
 7. **判断合入就绪**：确认 PR 已退出 Draft、最新提交的必需检查全绿、阻塞意见解决、专项/系统证据齐全、无冲突且目标分支仍适用。
-8. **通过项目机制合并**：由受保护分支规则执行合入，默认使用 squash merge 并删除主题分支；仅在并发合入频繁且 GitHub 套餐支持时使用 merge queue。合并不等于批准发布。
+8. **通过项目机制合并**：由受保护分支规则执行合入，默认使用 squash merge；合入后调用 [Git 任务分支管理](../../skills/04-implementation-and-self-test/git-branch-management/SKILL.md)，按[分支规范](../git-branch-workflow.md)验证远端实际删除，并核对待保留提交和其他 worktree 后安全清理本地分支；仅在并发合入频繁且 GitHub 套餐支持时使用 merge queue。合并不等于批准发布。
+
+## 首次采用与仓库治理检查
+
+进入 GitHub 集成验证时，先核对[默认仓库治理](../github-repository-defaults.md)：保护默认分支（新项目为 `main`）并启用合并后自动删分支。首次采用或漂移必须路由到 `github-repository-bootstrap`；没有真实稳定 check 时先执行 `github-actions-bootstrap`。配置并重新读取验证前，不报告治理完成或受保护合入就绪。
 
 ## 独立开发者与微型团队的 GitHub 基线
 
@@ -72,6 +76,7 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
+| 同步任务分支、恢复误提交或合入后安全清理 | [`git-branch-management`](../../skills/04-implementation-and-self-test/git-branch-management/SKILL.md) | PR 分支操作需要实际执行时，不替代合入判断 | 分支操作、最新证据与保留/清理理由 |
 | 独立核对本次文档影响、双语内容与证据 | [`documentation-delivery-validation`](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md) | 合入、专题完成或正式发布前 | 对应当前版本的通过/阻塞结论及修正复核 |
 | 为新 GitHub 仓库建立稳定 CI 与适配真实能力的 CD 基线 | [`github-actions-bootstrap`](../../skills/05-integration-validation/github-actions-bootstrap/SKILL.md) | 项目已有可本地执行的质量命令，需要生成安全 Actions workflow 并通过首次 PR 自动取得真实 check-run 时 | CI/CD workflow、首次 PR 运行证据及仓库设置交接 |
 | 为新 GitHub 仓库建立安全仓库设置并收口首次 CI PR | [`github-repository-bootstrap`](../../skills/05-integration-validation/github-repository-bootstrap/SKILL.md) | Actions 引导 PR 已自动产生成功稳定 check，或需要审计 Actions 权限、environments、ruleset 和删分支设置时 | 可验证的仓库治理设置、首次 PR 收口与分支清理证据 |

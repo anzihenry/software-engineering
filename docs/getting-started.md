@@ -2,6 +2,8 @@
 
 本页帮助一个已有 GitHub 仓库采用生命周期自动化。它不会安装第一层研发知识，也不会自动发布、部署、回滚、批准变更或写入敏感事故内容。第一次采用使用当前稳定版本 `v1.2.0`；更早版本的现有安装按 [`UPGRADING.md`](../UPGRADING.md) 迁移。
 
+完整 harness 采用默认要求[分支保护与合并后自动删分支](github-repository-defaults.md)。`full`/`governance` 已实现这两项，但必须执行第 6 步并重新验证；仅安装文件不会生效。显式单项 profile 保持原范围，完整治理另走仓库初始化技能。
+
 ## 1. 准备
 
 需要 Python 3.14、Git、一个干净的目标仓库，以及已认证的 `gh`。`install` 只修改本地目标目录，不需要 GitHub token；`doctor` 读取 GitHub 状态，`bootstrap` 在显式确认后写入仓库设置。
@@ -46,6 +48,8 @@ unzip github-lifecycle.zip -d package
 
 ## 4. 预览并安装
 
+应用安装前，在目标仓库按[分支规范](git-branch-workflow.md)检查工作区与远端基线，创建/复用任务功能分支；安装会修改文件，不能在默认/受保护分支上应用。
+
 以下示例选择 `governance` 和 `external`。先在发布包目录生成计划：
 
 ```sh
@@ -78,7 +82,7 @@ python3 -m scripts.github_lifecycle install \
 
 ## 5. 用 PR 取得真实证据
 
-在目标仓库审查并提交安装结果，通过 `gh pr create` 创建 PR。PR 进入 Ready 后，必须同时看到：
+在目标仓库审查并提交安装结果，仅推送对应任务功能分支，通过 `gh pr create` 创建 PR。PR 进入 Ready 后，必须同时看到：
 
 - 目标项目自己的稳定 `validate` check 成功。
 - 新增的 `lifecycle-policy` check 成功。

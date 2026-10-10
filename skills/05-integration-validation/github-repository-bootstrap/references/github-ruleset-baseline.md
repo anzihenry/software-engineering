@@ -54,7 +54,7 @@ PATCH /repos/{owner}/{repo}
 
 创建仓库级 ruleset 使用 `POST /repos/{owner}/{repo}/rulesets`；更新本 SKILL 已管理的 ruleset 使用其 ID 调用 `PUT /repos/{owner}/{repo}/rulesets/{ruleset_id}`。不要用创建新规则代替对同一职责规则的幂等更新。
 
-最小 payload 结构：
+默认分支保护 payload 结构（完整采用要求见[默认治理](../../../../docs/github-repository-defaults.md)）：
 
 ```json
 {
@@ -81,6 +81,19 @@ PATCH /repos/{owner}/{repo}
         "strict_required_status_checks_policy": true,
         "do_not_enforce_on_create": true
       }
+    },
+    {"type": "deletion"},
+    {"type": "non_fast_forward"},
+    {
+      "type": "pull_request",
+      "parameters": {
+        "allowed_merge_methods": ["squash"],
+        "dismiss_stale_reviews_on_push": false,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_approving_review_count": 0,
+        "required_review_thread_resolution": true
+      }
     }
   ]
 }
@@ -96,7 +109,7 @@ PATCH /repos/{owner}/{repo}
 2. Actions 默认 token 返回 `read`，`can_approve_pull_request_reviews=false`；显式 workflow 权限仍符合设计。
 3. 目标 environments 存在，保护和 deployment branch policy 与计划一致；不存在未声明的虚假部署结论。
 4. required check 的 context、`integration_id` 和 strict 状态与计划一致。
-5. `bypass_actors` 与用户选择一致，并报告当前身份是否可旁路。
+5. `bypass_actors` 默认为空；有效规则包含禁止删除、禁止强推、要求 PR 和对话解决。保留更严格的既有评审条件，报告当前身份是否可旁路。
 6. 默认分支有效规则包含相同 required check，且分支元数据显示 `protected=true`。
 7. 仓库元数据返回 `delete_branch_on_merge=true`。
 

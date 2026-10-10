@@ -2,7 +2,7 @@
 title: "Project documentation standard"
 status: current
 owner: process-owner
-updated: "2026-10-09"
+updated: "2026-10-10"
 ---
 
 # Project documentation standard
@@ -16,6 +16,10 @@ This is the software-development harness's documentation standard for target pro
 `software-engineering` remains an asset repository for standards, workflows, SKILLs, and templates. The directory layout below belongs to projects developed using the harness; it does not require reorganizing the asset repository. The standard and templates are first-layer knowledge assets and are excluded from the existing GitHub automation installation bundle.
 
 The standard and templates now route through harness entry instructions, all eight workflows, and documentation maintenance/independent-validation SKILLs as default requirements for harness-based development. Target-project tooling and CI templates are available; configure and verify actual enforcement through [tooling integration](documentation-tooling.en.md). See [documentation integration](documentation-integration.en.md).
+
+## Language boundary for harness assets
+
+Formal target-project documents still require Chinese and English, and templates that generate those documents retain corresponding language variants. Harness standards, workflows, SKILLs and operational references need only Chinese; English copies, reciprocal language links and translation review are not required. Asset governance, file-level impact, actual checks, independent review and current-version evidence still apply. A path under `docs/` does not make an asset a target-project document. Assess references before handling historical English assets; no whole-repository migration is required.
 
 ## Organization principles
 
@@ -99,7 +103,7 @@ Maintained documents MUST begin with YAML metadata:
 title: Document title
 status: current
 owner: technical-lead
-updated: "2026-10-09"
+updated: "2026-10-10"
 ```
 
 Owner is a person or stable role mapped to a responsible maintainer in project configuration. Updated means the last substantive content update or validity review; formatting alone need not change it. Additional fields may identify versions, sources, scope, and replacement relationships. Never fabricate dates, ownership, or evidence.

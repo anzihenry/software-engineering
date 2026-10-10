@@ -12,6 +12,12 @@
 
 ### Changed
 
+- 将 Git 分支操作封装为 `git-branch-management` 并接入修改前与 PR 路由；harness 规范、workflow、SKILL 及操作参考改为只需中文，目标项目文档及其输出模板保留双语要求。
+
+- 增加默认中文 Git 分支规范，将修改前检查、Agent 前缀与任务分支复用、默认分支边界、同步、误提交恢复和 Squash/worktree 安全清理接入项目入口及开发/集成技能；不改变自动化安装包或声称本地规则已由平台强制。
+
+- 将 GitHub 默认分支保护和 PR 合并后自动删分支明确接入 harness 默认采用、入口模板与合入检查；复用现有 bootstrap，保持单项 profile、dry-run 和远端授权边界。详见[治理基线](docs/github-repository-defaults.md)。
+
 - 将第三层 GitHub 仓库治理实现拆分为调用、状态读取、ruleset 规划、诊断和显式写入模块；保留原导入门面、CLI、确认字符串、dry-run 默认值和权限边界。
 
 ## [v1.2.0] - 2026-09-06
