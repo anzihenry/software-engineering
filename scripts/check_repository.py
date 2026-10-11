@@ -15,6 +15,11 @@ from urllib.parse import unquote
 
 import yaml
 
+if __package__:
+    from .requirements_check import validate as validate_requirements
+else:
+    from requirements_check import validate as validate_requirements
+
 PHASES = {
     1: "01-demand-and-opportunity",
     2: "02-refinement-and-initiation",
@@ -1588,6 +1593,19 @@ def run_checks(root: Path, as_of: date | None = None) -> list[Issue]:
     )
     issues = [issue for check in checks for issue in check(root)]
     issues.extend(check_content_governance(root, as_of=as_of))
+    catalog = root / "docs/harness-requirements.json"
+    if catalog.exists():
+        try:
+            issues.extend(
+                Issue(catalog, message)
+                for message in validate_requirements(
+                    root, json.loads(catalog.read_text(encoding="utf-8"))
+                )
+            )
+        except (ValueError, KeyError, TypeError) as error:
+            issues.append(Issue(catalog, f"invalid requirements catalog: {error}"))
+    else:
+        issues.append(Issue(catalog, "requirements catalog missing"))
     return sorted(issues)
 
 
