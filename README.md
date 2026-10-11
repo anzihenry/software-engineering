@@ -13,6 +13,7 @@
 | 从旧自动化版本安全升级 | [升级指南](UPGRADING.md) | 比较固定的新旧包，只自动更新未经本地修改的托管文件 |
 | 判断版本、profile 或 adapter 是否适用 | [版本兼容矩阵](docs/version-compatibility.md) | 查看已发布版本的 manifest、安装和升级能力 |
 | 了解各版本变化 | [变更日志](CHANGELOG.md) | 查看已发布版本与当前未发布变化 |
+| 推进规范执行闭环 | [Harness P0 落实计划](docs/harness-p0-implementation-plan.md) | 查看四项 P0 的实施顺序、交付物与验收条件；计划不代表目标项目已生效 |
 
 跨项目采用先选择安装范围，再选择语言适配方式：
 
