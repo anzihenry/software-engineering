@@ -108,3 +108,5 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 | 汇总反馈、豁免与最新状态以判断可合入性 | [`merge-readiness`](../../skills/05-integration-validation/merge-readiness/SKILL.md) | 准备合入目标分支时 | 可合入/阻塞结论及剩余事项 |
 
 `github-actions-bootstrap` 负责首次 Actions 接入并产生可信 check-run 交接，`github-repository-bootstrap` 消费该证据完成仓库治理或后续审计，`github-pr-integration` 是面向 GitHub 小团队的日常 PR 编排入口；领域专项验证提供各自风险证据，`mobile-cli-execution` 负责执行官方工具并保存原始产物但不做通过判断，`mobile-validation` 汇总 iOS/Android/HarmonyOS，`web-frontend-validation` 汇总前端三类专项，`backend-validation` 汇总后端五类专项，`system-level-validation` 再保持客户端、服务和外部依赖的跨域汇总责任。所有这些 SKILL 只形成验证与合入结论；生产发布控制由阶段 6 负责。
+
+项目采用验收按[采用规范](../harness-adoption.md)分别核对本地、非作者 Agent 实际行为与远端证据，缺覆盖/译文/真实 CI/可信记录或平台漂移均保持对应门禁阻塞。

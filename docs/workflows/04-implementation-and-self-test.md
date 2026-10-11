@@ -58,7 +58,7 @@ review_by: "2027-02-26"
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
 | 准备/复用任务分支、安全同步或恢复误提交、合入后清理 | [`git-branch-management`](../../skills/04-implementation-and-self-test/git-branch-management/SKILL.md) | Git 项目修改前或执行分支操作时 | 任务分支、同步/恢复映射与安全清理证据 |
-| 采用文档规范、分析影响并同步双语内容 | [`documentation-maintenance`](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md) | 文档采用、迁移或变更交付准备 | 双语更新、影响清单、当前快照和待独立验证记录 |
+| 采用文档规范、分析影响并同步双语内容 | [`documentation-maintenance`](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md) | 文档采用、迁移或变更交付准备 | 固定知识/入口覆盖与实际命令的采用记录、双语更新、影响清单、当前快照和待独立验证记录 |
 | 编排领域不明确或跨领域的实现切片与整体自测 | [`implementation-and-self-test`](../../skills/04-implementation-and-self-test/implementation-and-self-test/SKILL.md) | 已有评审通过的设计与任务，需维持整体范围和证据关联时 | 可构建变更、对应测试和整体自测结论 |
 | 应用语言编码规范和最佳实践 | [`language-coding-standards`](../../skills/04-implementation-and-self-test/language-coding-standards/SKILL.md) | 编写、修改或评审 TypeScript、ArkTS、Python、Swift、Kotlin、Go、SQL、zsh 或 C++ 代码时 | 与项目配置一致的实现、检查证据和已知偏差 |
 | 实现共享移动逻辑或协调多平台交付 | [`mobile-implementation-and-self-test`](../../skills/04-implementation-and-self-test/mobile-implementation-and-self-test/SKILL.md) | 涉及跨平台框架、共享业务逻辑或 iOS/Android/HarmonyOS 一致性时 | 跨平台移动变更、平台影响和整体自测证据 |
@@ -78,3 +78,5 @@ review_by: "2027-02-26"
 | 补齐文档并准备评审交接材料 | [`change-handoff-preparation`](../../skills/04-implementation-and-self-test/change-handoff-preparation/SKILL.md) | 变更已具备提交评审条件时 | 完整 PR 描述、交接信息和已知限制 |
 
 领域 SKILL 负责其特有的实现风险；移动端共享层协调多平台，iOS/Android/HarmonyOS 层处理平台语义，`mobile-cli-execution` 只提供官方工具链执行和原始证据；Web 前端协调层组合 UI/交互与状态/数据；后端协调层组合 API、领域数据与异步集成。数据/配置、本地门禁和交接仍是共享能力。它们不替代阶段 5 的独立评审、受控 CI 和系统级验证。
+
+项目首次采用或入口/知识 pin/命令变化时，文档维护按[采用规范](../harness-adoption.md)诊断，保留实际 Agent 任务轨迹；可访问不等于已加载，远端能力等待真实平台验收。

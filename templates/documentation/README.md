@@ -2,7 +2,7 @@
 title: "项目文档模板"
 status: current
 owner: process-owner
-updated: "2026-10-11"
+updated: "2026-10-12"
 ---
 
 # 项目文档模板
@@ -60,3 +60,7 @@ updated: "2026-10-11"
 ## 公共证据记录
 
 [交付证据模板](evidence-record.md)及[英文版](evidence-record.en.md)复用追溯字段，记录原始报告、独立来源和候选失效条件；不创建第二份评审批准或任务状态。
+
+## 项目采用记录模板
+
+[项目采用与行为验收](adoption-record.md)及[英文版](adoption-record.en.md)分别记录本地、真实 Agent 任务和平台证据，按固定版本复验。

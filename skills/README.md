@@ -30,3 +30,5 @@ CI 门禁、合入就绪和发布就绪技能按[质量门禁规范](../docs/qua
 若不确定阶段，从“当前最需要做出的决定”开始：先判断价值用阶段 1，先确认可验收性用阶段 2，先确认技术可行性用阶段 3；进入代码、评审、发布、运行后依次使用阶段 4 至 8。
 
 在阶段 4 和 5 中，再按主要风险选择领域：移动端区分跨平台共享层与 iOS/Android/HarmonyOS 平台层，实际调用官方工具链时组合 CLI 执行 SKILL；Web 前端开发区分 UI/交互与状态/数据，验证区分功能兼容、视觉可访问性与性能；后端开发区分 API、领域数据与异步集成，验证区分契约、数据、性能、韧性与安全。跨领域变更使用通用 SKILL 维持整体切片、端到端证据与合入结论，并按需组合多个领域 SKILL。
+
+项目首次采用或相关配置改变时，[文档维护](04-implementation-and-self-test/documentation-maintenance/SKILL.md)按[采用与复验](../docs/harness-adoption.md)核对固定知识、入口覆盖和实际命令；[独立文档验证](05-integration-validation/documentation-delivery-validation/SKILL.md)核对实际任务读取/执行轨迹与当前证据，GitHub 平台沿用两个 bootstrap 技能。
