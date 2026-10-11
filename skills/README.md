@@ -14,6 +14,8 @@ Git 项目修改前默认调用 [Git 任务分支管理](04-implementation-and-s
 
 CI 门禁、合入就绪和发布就绪技能按[质量门禁规范](../docs/quality-gates.md)消费原结果、条件结论和例外；职责仍是判断，不自批授权或执行合并/发布。
 
+文档维护、独立验证和合入就绪按[证据契约](../docs/evidence-trust.md)交接原始报告与受控来源，保持作者/评审者/发布者职责分离。
+
 | 阶段 | 何时进入 | SKILL |
 | --- | --- | --- |
 | [01 需求与机会](01-demand-and-opportunity/) | 收到需求、反馈、缺陷或改进线索 | [登记与分诊](01-demand-and-opportunity/opportunity-intake/SKILL.md)、[问题界定](01-demand-and-opportunity/problem-framing/SKILL.md)、[机会排序](01-demand-and-opportunity/opportunity-prioritization/SKILL.md) |

@@ -58,6 +58,10 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 
 遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
 
+## 可信证据来源
+
+独立验证按[证据契约](../evidence-trust.md)区分来源认证与记录一致性；采用受信维护者模式时，合入就绪使用固定读取器回读候选和真实 CI。
+
 ## 输出
 
 - 已批准并可合入的变更、CI 与测试报告、评审决策和已记录的豁免。

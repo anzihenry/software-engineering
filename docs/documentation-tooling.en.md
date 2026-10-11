@@ -2,7 +2,7 @@
 title: "Documentation tooling and CI integration"
 status: current
 owner: process-owner
-updated: "2026-10-09"
+updated: "2026-10-11"
 ---
 
 # Documentation tooling and CI integration
@@ -50,3 +50,7 @@ Configure the actual job as required in branch protection/rulesets, verify passi
 ## Adoption validation
 
 Use an isolated Git project to execute the actual CLI, retain test output, obtain independent review, pass gate, then break translation/implementation bindings to verify failures. Do not create product directories in this harness. Unit tests cover missing translation, broken anchors, missing English navigation, duplicate configuration, symlinks, unregistered/touched legacy files, stale snapshots, self-review, unread files, missing evidence, failed mandatory checks, deletions and permission changes. Evidence only supports the tested revision/environment; other projects need their own adoption records.
+
+## Trusted maintainer integration
+
+The [evidence and trust contract](evidence-trust.md) (Chinese) adds a gh reader that reuses schema 1 and corroborates current publisher permissions, immutable provenance, head/base/merge candidate and actual CI. It does not supply an automatic trusted-record producer for the reusable workflow: its protected caller must still obtain verified records. The small-team permission boundary and blockers are defined in that contract; actual platform adoption requires separate canary evidence.

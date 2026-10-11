@@ -33,6 +33,7 @@ CORE_SOURCES = (
     "docs/local-development.md",
     "docs/harness-requirements.md",
     "docs/quality-gates.md",
+    "docs/evidence-trust.md",
 )
 
 
@@ -219,6 +220,7 @@ def _validate(root: Path, data: dict) -> list[str]:
                 "content": "scripts/check_repository.py",
                 "automation": "scripts/github_lifecycle/__main__.py",
                 "lifecycle": "docs/software-development-lifecycle.md",
+                "trust": "scripts/trusted_review.py",
             }
             for name in names:
                 control = data.get("controls", {}).get(name, {})

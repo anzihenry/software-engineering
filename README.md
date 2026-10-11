@@ -14,6 +14,7 @@
 | 判断版本、profile 或 adapter 是否适用 | [版本兼容矩阵](docs/version-compatibility.md) | 查看已发布版本的 manifest、安装和升级能力 |
 | 了解各版本变化 | [变更日志](CHANGELOG.md) | 查看已发布版本与当前未发布变化 |
 | 盘点规范执行与证据缺口 | [规范落实矩阵](docs/harness-requirements.md) | 查看来源、执行映射和缺口；不代表目标项目已采用 |
+| 核验独立评审与实际 CI 来源 | [证据与可信来源](docs/evidence-trust.md) | 受信维护者接入及能力边界 |
 | 需要判断检查失败、条件结论或例外是否允许推进 | [质量门禁与例外](docs/quality-gates.md) | 节点决策与不可豁免边界 |
 | 推进规范执行闭环 | [Harness P0 落实计划](docs/harness-p0-implementation-plan.md) | 查看四项 P0 的实施顺序、交付物与验收条件；计划不代表目标项目已生效 |
 

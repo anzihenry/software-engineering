@@ -2,7 +2,7 @@
 title: "项目文档模板"
 status: current
 owner: process-owner
-updated: "2026-10-09"
+updated: "2026-10-11"
 ---
 
 # 项目文档模板
@@ -56,3 +56,7 @@ updated: "2026-10-09"
 - [Independent review record](independent-review.json)
 - [CI workflow](documentation-gate.yml)
 - [Tooling guide](../../docs/documentation-tooling.md)
+
+## 公共证据记录
+
+[交付证据模板](evidence-record.md)及[英文版](evidence-record.en.md)复用追溯字段，记录原始报告、独立来源和候选失效条件；不创建第二份评审批准或任务状态。
