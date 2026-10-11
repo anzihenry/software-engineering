@@ -31,6 +31,8 @@ CORE_SOURCES = (
     "docs/cross-project-acceptance.md",
     "docs/github-canary-validation.md",
     "docs/local-development.md",
+    "docs/harness-requirements.md",
+    "docs/quality-gates.md",
 )
 
 

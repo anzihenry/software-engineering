@@ -11,6 +11,7 @@ from scripts.check_repository import (
     DELIVERY_TEMPLATES,
     END_TO_END_EXERCISES,
     PHASES,
+    SUPPLEMENTAL_DELIVERY_TEMPLATES,
     TRACEABILITY_FIELDS,
     WORKFLOW_DELIVERY_TEMPLATES,
     check_adoption_documentation,
@@ -33,7 +34,9 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 def write_valid_delivery_templates(root: Path) -> None:
     templates_root = root / "templates" / "delivery"
     templates_root.mkdir(parents=True)
-    navigation_links = "\n".join(f"[{name}]({name})" for name in DELIVERY_TEMPLATES)
+    navigation_links = "\n".join(
+        f"[{name}]({name})" for name in (DELIVERY_TEMPLATES | SUPPLEMENTAL_DELIVERY_TEMPLATES)
+    )
     (templates_root / "README.md").write_text(
         f"# Templates\n\n{navigation_links}\n", encoding="utf-8"
     )
@@ -65,6 +68,12 @@ def write_valid_delivery_templates(root: Path) -> None:
             f"---\n{frontmatter}---\n# Template\n\n## 追溯信息\n\n{traceability_lines}\n",
             encoding="utf-8",
         )
+
+    for name in SUPPLEMENTAL_DELIVERY_TEMPLATES:
+        for filename in [name, name.replace(".md", ".en.md")]:
+            (templates_root / filename).write_text(
+                (REPOSITORY_ROOT / "templates/delivery" / filename).read_text(), encoding="utf-8"
+            )
 
     workflows_root = root / "docs" / "workflows"
     workflows_root.mkdir(parents=True)

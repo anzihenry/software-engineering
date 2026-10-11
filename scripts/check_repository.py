@@ -68,6 +68,8 @@ DELIVERY_TEMPLATES = {
     "incident-record.md": (7,),
     "outcome-retrospective-actions.md": (8,),
 }
+# Conditional records supplement the eight-stage contract; exercises need not invent exceptions.
+SUPPLEMENTAL_DELIVERY_TEMPLATES = {"gate-exception.md": (4, 5, 6)}
 WORKFLOW_DELIVERY_TEMPLATES = {
     1: ("opportunity-record.md",),
     2: ("requirements-risk-package.md",),
@@ -1335,11 +1337,15 @@ def check_delivery_templates(root: Path) -> list[Issue]:
     if not navigation.is_file():
         issues.append(Issue(navigation, "missing delivery template navigation"))
 
-    expected_paths = {templates_root / name for name in DELIVERY_TEMPLATES}
+    all_templates = DELIVERY_TEMPLATES | SUPPLEMENTAL_DELIVERY_TEMPLATES
+    expected_paths = {templates_root / name for name in all_templates}
+    translations = {
+        templates_root / name.replace(".md", ".en.md") for name in SUPPLEMENTAL_DELIVERY_TEMPLATES
+    }
     actual_paths = set(templates_root.glob("*.md")) - {navigation}
-    for path in sorted(expected_paths - actual_paths):
+    for path in sorted((expected_paths | translations) - actual_paths):
         issues.append(Issue(path, "missing required delivery template"))
-    for path in sorted(actual_paths - expected_paths):
+    for path in sorted(actual_paths - expected_paths - translations):
         issues.append(Issue(path, "unexpected delivery template"))
 
     if navigation.is_file():
@@ -1353,7 +1359,7 @@ def check_delivery_templates(root: Path) -> list[Issue]:
                 Issue(navigation, f"delivery template is missing from navigation: {path.name}")
             )
 
-    for name, lifecycle_stages in DELIVERY_TEMPLATES.items():
+    for name, lifecycle_stages in all_templates.items():
         path = templates_root / name
         if not path.is_file():
             continue
@@ -1386,6 +1392,22 @@ def check_delivery_templates(root: Path) -> list[Issue]:
             label = TRACEABILITY_LABELS[field]
             if f"- {label}：" not in content:
                 issues.append(Issue(path, f"missing visible traceability field: {field}"))
+
+        if name in SUPPLEMENTAL_DELIVERY_TEMPLATES:
+            translated = path.with_name(path.stem + ".en.md")
+            if translated.is_file():
+                translation = translated.read_text(encoding="utf-8")
+                translated_match = FRONTMATTER_PATTERN.match(translation)
+                try:
+                    translated_metadata = (
+                        yaml.safe_load(translated_match.group(1)) if translated_match else None
+                    )
+                except yaml.YAMLError:
+                    translated_metadata = None
+                if translated_metadata != metadata:
+                    issues.append(Issue(translated, "translation traceability contract mismatch"))
+                if f"]({translated.name})" not in content or f"]({path.name})" not in translation:
+                    issues.append(Issue(translated, "delivery translation cross-links required"))
 
     for phase, template_names in WORKFLOW_DELIVERY_TEMPLATES.items():
         workflow = root / "docs" / "workflows" / f"{PHASES[phase]}.md"

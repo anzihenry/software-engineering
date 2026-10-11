@@ -12,6 +12,8 @@ GitHub 项目首次采用默认进入 [仓库初始化](05-integration-validatio
 
 Git 项目修改前默认调用 [Git 任务分支管理](04-implementation-and-self-test/git-branch-management/SKILL.md)，执行[分支规范](../docs/git-branch-workflow.md)：阶段 4 的[实现与自测](04-implementation-and-self-test/implementation-and-self-test/SKILL.md)负责检查并建立/复用任务分支，[交接准备](04-implementation-and-self-test/change-handoff-preparation/SKILL.md)记录提交/推送目标；阶段 5 的[PR 集成](05-integration-validation/github-pr-integration/SKILL.md)和[合入就绪](05-integration-validation/merge-readiness/SKILL.md)核对同步与最新证据，合入后按同一规范安全清理。领域技能、文档和配置工作也必须在修改前遵循此入口要求。
 
+CI 门禁、合入就绪和发布就绪技能按[质量门禁规范](../docs/quality-gates.md)消费原结果、条件结论和例外；职责仍是判断，不自批授权或执行合并/发布。
+
 | 阶段 | 何时进入 | SKILL |
 | --- | --- | --- |
 | [01 需求与机会](01-demand-and-opportunity/) | 收到需求、反馈、缺陷或改进线索 | [登记与分诊](01-demand-and-opportunity/opportunity-intake/SKILL.md)、[问题界定](01-demand-and-opportunity/problem-framing/SKILL.md)、[机会排序](01-demand-and-opportunity/opportunity-prioritization/SKILL.md) |
