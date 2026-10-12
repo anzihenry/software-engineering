@@ -1,4 +1,0 @@
-interface:
-  display_name: "Operational Readiness Maintenance"
-  short_description: "Maintain alerts, recovery, capacity, access, and runbooks"
-  default_prompt: "Use $operational-readiness-maintenance to assess and improve this service's operational readiness."

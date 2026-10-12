@@ -1,4 +1,0 @@
-interface:
-  display_name: "Implementation and Self Test"
-  short_description: "Implement approved changes with risk-matched self-testing"
-  default_prompt: "Use $implementation-and-self-test to implement this approved change and produce risk-matched test evidence."

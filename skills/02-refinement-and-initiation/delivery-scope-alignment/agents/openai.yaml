@@ -1,4 +1,0 @@
-interface:
-  display_name: "Delivery Scope Alignment"
-  short_description: "Align delivery scope, dependencies, owners, and decisions"
-  default_prompt: "Use $delivery-scope-alignment to align this delivery's scope, dependencies, owners, and unresolved decisions."

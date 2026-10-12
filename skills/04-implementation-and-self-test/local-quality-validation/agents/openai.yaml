@@ -1,4 +1,0 @@
-interface:
-  display_name: "Local Quality Validation"
-  short_description: "Run local quality gates and record validation evidence"
-  default_prompt: "Use $local-quality-validation to run the relevant local quality gates and summarize their evidence."

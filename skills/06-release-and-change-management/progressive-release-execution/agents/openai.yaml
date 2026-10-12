@@ -1,4 +1,0 @@
-interface:
-  display_name: "Progressive Release Execution"
-  short_description: "Execute authorized progressive releases with batch records"
-  default_prompt: "Use $progressive-release-execution to execute this authorized release in controlled, observable batches."

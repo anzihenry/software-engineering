@@ -1,4 +1,0 @@
-interface:
-  display_name: "Improvement Action Tracking"
-  short_description: "Track improvement actions through measurable completion"
-  default_prompt: "Use $improvement-action-tracking to turn these findings into owned actions with measurable completion criteria."

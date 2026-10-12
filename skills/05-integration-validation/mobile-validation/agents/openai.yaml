@@ -1,4 +1,0 @@
-interface:
-  display_name: "Mobile Validation"
-  short_description: "Coordinate cross-platform mobile validation"
-  default_prompt: "Use $mobile-validation to coordinate this change across the required iOS, Android, and HarmonyOS matrix."

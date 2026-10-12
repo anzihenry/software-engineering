@@ -1,4 +1,0 @@
-interface:
-  display_name: "Documentation Maintenance"
-  short_description: "Maintain bilingual project docs and delivery impact"
-  default_prompt: "Use $documentation-maintenance to assess this change and update its project documentation and translations."

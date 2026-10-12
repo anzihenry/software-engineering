@@ -1,4 +1,0 @@
-interface:
-  display_name: "Release Readiness"
-  short_description: "Assess release readiness and issue a Go or No-Go decision"
-  default_prompt: "Use $release-readiness to assess this candidate's release conditions and produce a Go or No-Go recommendation."

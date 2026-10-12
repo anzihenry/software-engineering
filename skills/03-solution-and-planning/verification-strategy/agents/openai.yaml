@@ -1,4 +1,0 @@
-interface:
-  display_name: "Verification Strategy"
-  short_description: "Design risk-based verification strategies and evidence"
-  default_prompt: "Use $verification-strategy to map these requirements and risks to a layered verification strategy."

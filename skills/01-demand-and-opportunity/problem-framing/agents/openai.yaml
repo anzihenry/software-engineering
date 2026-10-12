@@ -1,4 +1,0 @@
-interface:
-  display_name: "Problem Framing"
-  short_description: "Frame opportunities as testable problems and outcomes"
-  default_prompt: "Use $problem-framing to turn this opportunity into a testable problem, scope, and success measures."
