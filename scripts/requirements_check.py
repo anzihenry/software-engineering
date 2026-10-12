@@ -37,6 +37,7 @@ CORE_SOURCES = (
     "docs/harness-adoption.md",
     "docs/domain-validation.md",
     "docs/harness-observation.md",
+    "docs/local-delivery-channel.md",
 )
 
 

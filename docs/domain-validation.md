@@ -47,7 +47,7 @@ python -m scripts.domain_reference --port 8765 --output /tmp/reference-http.json
 node tests/fixtures/domain-reference/browser.cjs /tmp/reference-browser
 ```
 
-浏览器采集需要项目已安装的 Playwright；可通过 NODE_PATH 指定既有包、REFERENCE_CHROMIUM 指定匹配的既有浏览器。没有运行时则记录 blocked，不由示例安装或升级依赖。浏览器脚本固定 loopback 8765，保存引擎版本、视口、网络/控制台、正常/故障/恢复/过期/空状态、仅键盘正常/故障/恢复及焦点保持、accessibility tree、宽窄屏/焦点截图和五次导航原始测量。场景用原生语义单选组，结果使用 status live region；禁用按钮后恢复原焦点。真实屏幕阅读器验证仍由适用支持策略要求的人工路径执行，accessibility tree 不能替代它。
+浏览器采集需要项目已安装的 Playwright；可通过 NODE_PATH 指定既有包、REFERENCE_CHROMIUM 指定匹配的既有浏览器。没有运行时则记录 blocked，不由示例安装或升级依赖。浏览器脚本默认 loopback 8765，可由 REFERENCE_URL 指定本次隔离进程的实际 http/127.0.0.1 根 URL，拒绝其他主机、协议、凭据、查询和片段；保存引擎版本、视口、网络/控制台、正常/故障/恢复/过期/空状态、仅键盘正常/故障/恢复及焦点保持、accessibility tree、宽窄屏/焦点截图和五次导航原始测量。场景用原生语义单选组，结果使用 status live region；禁用按钮后恢复原焦点。真实屏幕阅读器验证仍由适用支持策略要求的人工路径执行，accessibility tree 不能替代它。
 
 参考仅验证其明确的合成支持配置，不代表完整 Web 产品已验收。项目若采用生产认证、数据库、其他浏览器、屏幕阅读器、地域故障或真实用户性能预算，须补相应场景并阻塞未执行项。参考的 schema/证据负例同时覆盖必需浏览器/键盘场景缺失、未批准基线、预算失败、环境/原报告缺失、旧候选和只提供替身；项目报告用[双语模板](../templates/documentation/domain-validation.md)记事实与限制。
 

@@ -68,3 +68,5 @@ Use the [evidence template](evidence-record.en.md) and [Chinese version](evidenc
 [Domain validation record](domain-validation.en.md) records full admission, actual execution and current evidence; the schema consumer does not grant approval.
 
 - [Observation and revalidation](harness-observation.en.md): metric definitions, raw events, gaps and current closure.
+
+- [Local delivery channel](local-delivery-channel.en.md): immutable artifacts, actual processes, failure and recovery.

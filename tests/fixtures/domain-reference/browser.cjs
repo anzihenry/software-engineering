@@ -2,18 +2,22 @@ const {chromium} = require('playwright');
 const fs = require('node:fs');
 const path = require('node:path');
 const output = process.argv[2];
+const referenceUrl = new URL(process.env.REFERENCE_URL ?? 'http://127.0.0.1:8765');
+if (referenceUrl.protocol !== 'http:' || referenceUrl.hostname !== '127.0.0.1' || referenceUrl.username || referenceUrl.password || referenceUrl.pathname !== '/' || referenceUrl.search || referenceUrl.hash) throw new Error('isolated loopback URL required');
+const baseUrl = referenceUrl.origin;
 if (!output) throw new Error('output directory required');
 fs.mkdirSync(output, {recursive:true});
 (async () => {
+ let observations;
  const browser = await chromium.launch({executablePath:process.env.REFERENCE_CHROMIUM,headless:true,args:['--no-proxy-server']});
  try {
  const page = await browser.newPage({viewport:{width:1024,height:768}});
- const observations = {layout_shifts:[],resource_entries:[],browser:browser.version(),executed_at:new Date().toISOString(),playwright:require('playwright/package.json').version,viewport:{width:1024,height:768},responses:[],console:[],states:[],loading:[],navigation_samples_ms:[],keyboard_states:[]};
+ observations = {base_url:baseUrl,collection_state:"running",layout_shifts:[],resource_entries:[],browser:browser.version(),executed_at:new Date().toISOString(),playwright:require('playwright/package.json').version,viewport:{width:1024,height:768},responses:[],console:[],states:[],loading:[],navigation_samples_ms:[],keyboard_states:[]};
  page.on('request',r=>{if(r.url().includes('/api/')) (observations.requests??=[]).push({url:r.url(),method:r.method(),headers:r.headers()});});
  page.on('console',m=>observations.console.push({type:m.type(),text:m.text()}));
- page.on('response',async r=>{if(r.url().includes('/api/'))observations.responses.push({url:r.url(),status:r.status(),body:await r.text()});});
+ page.on('response',async r=>{if(r.url().includes('/api/')){try{observations.responses.push({url:r.url(),status:r.status(),body:await r.text()});}catch(error){observations.responses.push({url:r.url(),status:r.status(),body_read_error:String(error)});}}});
  for(let i=0;i<5;i++){
-  await page.goto('http://127.0.0.1:8765');
+  await page.goto(baseUrl);
   observations.navigation_samples_ms.push(await page.evaluate(()=>performance.getEntriesByType('navigation')[0].duration));
  }
  await page.evaluate(()=>{window.referenceShifts=[];new PerformanceObserver(list=>window.referenceShifts.push(...list.getEntries().map(e=>({value:e.value,hadRecentInput:e.hadRecentInput})))).observe({type:'layout-shift',buffered:true});});
@@ -25,7 +29,7 @@ fs.mkdirSync(output, {recursive:true});
   observations.states.push({mode,text:await page.getByRole('status').innerText()});
  }
  const keyboardPage = await browser.newPage();
- await keyboardPage.goto('http://127.0.0.1:8765');
+ await keyboardPage.goto(baseUrl);
  await keyboardPage.keyboard.press('Tab');
  const selectFocus = await keyboardPage.evaluate(()=>document.activeElement.id);
  await keyboardPage.keyboard.press('Tab');
@@ -66,9 +70,11 @@ fs.mkdirSync(output, {recursive:true});
  await page.evaluate(()=>document.body.style.fontSize='36px');
  observations.reflow={method:'actual browser rendering at 375px with body text doubled 18px->36px; controlled text scaling, no desktop zoom claim',text:await page.getByRole('status').innerText(),dimensions:await page.evaluate(()=>({viewport:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth,font:getComputedStyle(document.body).fontSize}))};
  await page.screenshot({path:path.join(output,'browser-reflow-error.png'),fullPage:true});
+ observations.collection_state='completed';
  fs.writeFileSync(path.join(output,'browser.json'),JSON.stringify(observations,null,2));
  } finally {
   await browser.close();
+  if(observations && observations.collection_state !== 'completed') fs.writeFileSync(path.join(output,'browser-partial.json'),JSON.stringify(observations,null,2));
  }
 })().catch(error => {
  console.error(error);

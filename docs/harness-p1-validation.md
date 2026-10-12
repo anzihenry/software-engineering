@@ -62,3 +62,19 @@ P1-01 最终复核：当前参考源摘要 `b23cff3d863633d9da1e30942879987a4451
 P1-02 独立复算发现截止时间未限制后来的样本评审/缺口记录，已修正为复核不晚于 until、缺口记录在同一 `[from, until)`，增加未来记录不能改写早期观察的反例。旧配置/汇总仍保留；要求清单变化使用新当前指纹并重新请求非作者复核，不把旧闭环记录复制到新指纹。
 
 P1-02 最终汇总接入真实 block-review/closure-review：两个有效样本89/89，旧阻塞样本0/89，已复核误阻塞0/1、未复核0，知识/条款/到期复验对象closed。原始初始配置、旧闭环和初始汇总保留，当前汇总以真实后续until为截止；这些是限定范围复算与闭环，不表示总体改善或生产授权。
+
+## P1-03 的隔离本地交付渠道
+
+本包基线180d8dee4c111ddb7edfe59d13932bc896a07a6e，按用户授权仅执行合成后端/Web真实本地渠道。[渠道参考](local-delivery-channel.md)、内部项目侧工具、双语渠道报告及阶段6/六项既有发布技能/导航已更新；正式候选已合入/Actions构建、云身份/环境/生产Go等门槛不因local-rehearsal而关闭，不扩第二层或安装包。实际owner为本机UID/anzihenry，executor/root。
+
+证据在 `/tmp/harness-p1-evidence/03`。fixed-channel/exercise.json 为独立反馈修正后当前工具摘要冻结的真实执行：旧source b6aca49cb3fc7bd632a2304bea37a7e68098319b、制品960c0511889e6a503487cf1c33d74af8d3a417880e7c8a1a56d948bcc5c11841；当前source180d8dee4c111ddb7edfe59d13932bc896a07a6e、制品9d7e32465c9f2e80e96bfdd70d787dc39ecc124f90e077b215a8d4c468fd20e3。真实构建读取固定Git文件、Python compile、manifest/摘要与工具时间保存；示例业务字节相同，manifest/source与制品身份不同，不声称业务变更效果。新制品在后端/Web两真实目标消费，failed仍同一新制品，restored使用原旧ZIP，无部署重建。
+
+各role四阶段healthy/healthy/实际health503 paused/healthy restored；三次间隔健康+身份、API200/匿名401/HTML与制品header均验证。Web候选与恢复各自真实隔离Chromium跑五状态、Loading/键盘503恢复与焦点、宽窄/文字reflow、原请求/资源/截图，浏览器脚本摘要绑定；未重跑原生AT，因为HTML与其路径沿用P1-01且本包仅渠道/动态loopback地址变化，复用适用范围已由非作者核准，旧原生执行身份保留。全部本次Popen子进程实际returncode/stopped记录保留，不停止其他服务、不声称仍在线。
+
+fixed-negatives/observations.json 保存当前实际制品篡改、target/source漂移、UID不匹配、200ms/50ms真实健康超时、排他锁并发和ready后取消；对应child实际停止。9项行为测试覆盖确定性制品不覆盖、非法manifest/路径、所有权、双领域失败恢复、重复目录保护、取消/超时与并发。首次调用把旧完整SHA抄错，Git正确阻塞，纠正为实际rev-parse结果后执行；incorrect-source-first-attempt保留。real-channel/runtime-bound-channel/final-channel及早期negatives为执行历史，不能覆盖final冻结版本的成功。
+
+文件级影响：研究/产品无需更新（无产品研究、业务/SLO或分发改变）；设计/工程已更新渠道契约/制品兼容/运行工具与目标生命周期；指南更新真实命令与停止恢复；计划更新P1-03验收中状态；专题/正式发布不适用（资产、本地演练）；导航更新阶段6、六技能、skills/README、双语模板入口与要求清单。Python/Ruff沿用项目工具，浏览器JS无新增formatter/type checker，实际Node syntax与浏览器行为验证；不升级依赖。全量检查及当前文件/源码/制品/配置/原始证据的非作者内容与双语核准后再提交。
+
+P1-03 独立发现健康检查失败中途raw及browser超时部分输出丢失，另核对取消可能遗留collector；已修正为逐次共享原响应、owned collector/独立组、有限SIGINT/等待、超时与取消partial输出/报告和实际returncode。真实Chromium两次负例保存browser-lifecycle：Node均130、无forced fallback，本次启动PID72316/72345的后续ps均无进程；服务子进程亦停止。domain-validation默认8765文案同步为仅允许本次动态loopback根URL，旧条款退役替代保留约束。修正后完整229测试及仓库检查通过；源码/工具/浏览器摘要冻结后的fixed-channel重跑两领域交付/503/恢复均通过，当前非作者已核准21文件、全部实际证据与三项缺口关闭，限定本地真实渠道范围通过。
+
+P1-03 最终独立验证通过：制品/Git字节、八阶段身份与健康/API/浏览器、实际取消/超时与自持进程清理、默认/动态URL兼容、旧AT限定复用及双语模板一致。当前整包文件快照和最后检查以独立评审记录为准，结论只关闭本轮已授权的隔离本地渠道，不代表正式发布、main合入或其他平台能力。

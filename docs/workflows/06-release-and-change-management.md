@@ -106,3 +106,7 @@ GitHub 某些 Environment 审批、等待或密钥能力受仓库可见性和套
 | 收口稳定发布并交接运行信息 | [`release-closure`](../../skills/06-release-and-change-management/release-closure/SKILL.md) | 观察窗口稳定、准备完成发布时 | 发布结论、变更记录和支持交接 |
 
 `github-release-management` 是阶段编排入口；候选准备、就绪判断、渐进执行、健康判断、恢复执行、紧急通道和收口分别保留独立职责。实际部署、商店/包发布、回滚、前滚、Environment 审批和管理员旁路均须由具备权限的人员或自动化在明确授权下执行。
+
+## 隔离本地渠道
+
+已授权合成后端/Web本地演练按[项目侧渠道参考](../local-delivery-channel.md)，由既有候选、就绪、执行、健康、恢复和收口技能记录真实制品/进程/关键路径与限制；不把本地成功当正式发布或生产Go，不扩大第二层部署写权限。
