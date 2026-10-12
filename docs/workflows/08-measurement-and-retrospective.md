@@ -63,3 +63,7 @@ review_by: "2027-02-26"
 | 依据验证结果演进准则、workflow 和 SKILL | [`playbook-evolution`](../../skills/08-measurement-and-retrospective/playbook-evolution/SKILL.md) | 稳定做法需要沉淀或现有规范需要修正时 | 版本化更新、试行与复审计划 |
 
 复盘与流程更新必须以证据为基础，不将指标或复盘内容作为个人绩效的简化代理。
+
+## Harness 观察与持续复验
+
+按[运行指标与复验](../harness-observation.md)采集实际检查和复核样本，按候选策略分组、保留取消/失败/缺失，使用[双语观察报告](../../templates/documentation/harness-observation.md)。入口/知识/要求/命令依赖/环境支持/责任/权限规则变化或复审到期，交给原采用、领域和平台入口复验；非作者核准当前范围后关闭，不由指标自动豁免或改日期。

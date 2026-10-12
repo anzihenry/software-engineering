@@ -34,3 +34,5 @@ CI 门禁、合入就绪和发布就绪技能按[质量门禁规范](../docs/qua
 项目首次采用或相关配置改变时，[文档维护](04-implementation-and-self-test/documentation-maintenance/SKILL.md)按[采用与复验](../docs/harness-adoption.md)核对固定知识、入口覆盖和实际命令；[独立文档验证](05-integration-validation/documentation-delivery-validation/SKILL.md)核对实际任务读取/执行轨迹与当前证据，GitHub 平台沿用两个 bootstrap 技能。
 
 后端/Web 风险选择、场景与证据交接遵循[领域执行契约](../docs/domain-validation.md)：阶段 3 固定触发/支持/预算，阶段 4 保存真实执行，阶段 5 按完整专项和非作者内容评审汇总；机器一致性不替代批准。
+
+Harness 执行指标与持续复验按[运行观察规范](../docs/harness-observation.md)，由阶段 8 的效果度量、改进行动跟踪与手册演进承接；只读采集不替代实际独立核验。
