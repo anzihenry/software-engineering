@@ -90,6 +90,15 @@ def _validate(root: Path, data: dict) -> list[str]:
     )
     if commit.returncode or commit.stdout.strip() != data["baseline"]:
         errors.append("baseline is not an existing commit")
+    depth = subprocess.run(
+        ["git", "rev-parse", "--is-shallow-repository"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if depth.returncode or depth.stdout.strip() != "false":
+        errors.append("catalog history requires a complete checkout")
     expected = source_paths(root)
     sources = data.get("sources", [])
     if data.get("scope") != expected or sorted(s["path"] for s in sources) != expected:
@@ -123,19 +132,36 @@ def _validate(root: Path, data: dict) -> list[str]:
             retired_ids.add(old)
         if not commit.returncode:
             historic = set()
-            previous = subprocess.run(
-                ["git", "show", "HEAD:docs/harness-requirements.json"],
+            history = subprocess.run(
+                [
+                    "git",
+                    "log",
+                    "--full-history",
+                    "--format=%H",
+                    "--",
+                    "docs/harness-requirements.json",
+                ],
                 cwd=root,
                 capture_output=True,
                 text=True,
-                check=False,
+                check=True,
             )
             previous_ids = set()
-            if not previous.returncode:
+            for revision in history.stdout.splitlines():
+                previous = subprocess.run(
+                    ["git", "show", revision + ":docs/harness-requirements.json"],
+                    cwd=root,
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                )
+                # Deletion commits have no file; the preceding versions remain in full history.
+                if previous.returncode:
+                    continue
                 previous_data = json.loads(previous.stdout)
                 if data["baseline"] != previous_data["baseline"]:
                     errors.append("catalog baseline changed; explicit migration required")
-                previous_ids = {r["id"] for r in previous_data["requirements"]}
+                previous_ids.update(r["id"] for r in previous_data["requirements"])
                 previous_ids.update(r["id"] for r in previous_data["retired"])
             archive = subprocess.run(
                 ["git", "archive", data["baseline"]], cwd=root, capture_output=True, check=True
