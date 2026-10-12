@@ -12,6 +12,10 @@ GitHub 项目首次采用默认进入 [仓库初始化](05-integration-validatio
 
 Git 项目修改前默认调用 [Git 任务分支管理](04-implementation-and-self-test/git-branch-management/SKILL.md)，执行[分支规范](../docs/git-branch-workflow.md)：阶段 4 的[实现与自测](04-implementation-and-self-test/implementation-and-self-test/SKILL.md)负责检查并建立/复用任务分支，[交接准备](04-implementation-and-self-test/change-handoff-preparation/SKILL.md)记录提交/推送目标；阶段 5 的[PR 集成](05-integration-validation/github-pr-integration/SKILL.md)和[合入就绪](05-integration-validation/merge-readiness/SKILL.md)核对同步与最新证据，合入后按同一规范安全清理。领域技能、文档和配置工作也必须在修改前遵循此入口要求。
 
+CI 门禁、合入就绪和发布就绪技能按[质量门禁规范](../docs/quality-gates.md)消费原结果、条件结论和例外；职责仍是判断，不自批授权或执行合并/发布。
+
+文档维护、独立验证和合入就绪按[证据契约](../docs/evidence-trust.md)交接原始报告与受控来源，保持作者/评审者/发布者职责分离。
+
 | 阶段 | 何时进入 | SKILL |
 | --- | --- | --- |
 | [01 需求与机会](01-demand-and-opportunity/) | 收到需求、反馈、缺陷或改进线索 | [登记与分诊](01-demand-and-opportunity/opportunity-intake/SKILL.md)、[问题界定](01-demand-and-opportunity/problem-framing/SKILL.md)、[机会排序](01-demand-and-opportunity/opportunity-prioritization/SKILL.md) |
@@ -26,3 +30,5 @@ Git 项目修改前默认调用 [Git 任务分支管理](04-implementation-and-s
 若不确定阶段，从“当前最需要做出的决定”开始：先判断价值用阶段 1，先确认可验收性用阶段 2，先确认技术可行性用阶段 3；进入代码、评审、发布、运行后依次使用阶段 4 至 8。
 
 在阶段 4 和 5 中，再按主要风险选择领域：移动端区分跨平台共享层与 iOS/Android/HarmonyOS 平台层，实际调用官方工具链时组合 CLI 执行 SKILL；Web 前端开发区分 UI/交互与状态/数据，验证区分功能兼容、视觉可访问性与性能；后端开发区分 API、领域数据与异步集成，验证区分契约、数据、性能、韧性与安全。跨领域变更使用通用 SKILL 维持整体切片、端到端证据与合入结论，并按需组合多个领域 SKILL。
+
+项目首次采用或相关配置改变时，[文档维护](04-implementation-and-self-test/documentation-maintenance/SKILL.md)按[采用与复验](../docs/harness-adoption.md)核对固定知识、入口覆盖和实际命令；[独立文档验证](05-integration-validation/documentation-delivery-validation/SKILL.md)核对实际任务读取/执行轨迹与当前证据，GitHub 平台沿用两个 bootstrap 技能。

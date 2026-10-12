@@ -48,6 +48,8 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 
 ## 决策门禁
 
+例外与总体结论按[质量门禁规范](../quality-gates.md)判断；必过 CI、文档、译文、证据和独立性不可豁免，专项有条件通过不等于可合入。
+
 进入“发布与变更管理”前，必需 CI 全绿，阻塞性评审意见已解决，高风险验收与非功能要求均有验证证据。豁免必须由有权限的负责人记录原因、范围、到期时间和补救计划。
 
 ## 文档治理
@@ -55,6 +57,10 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 合入前必须由非作者人类或独立 Agent 使用文档交付验证技能，独立读取实现、双语文档和证据。全部本次必需检查与评审通过、快照有效才可合入；必需文档、英文或证据缺失不得豁免，实质变更后重验受影响范围。
 
 遵循[项目文档规范](../documentation-standard.md)和[接入说明](../documentation-integration.md)。[文档维护](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md)负责准备与更新，[独立文档验证](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)负责检查结论，使用[统一交付检查模板](../../templates/documentation/delivery-check.md)。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。
+
+## 可信证据来源
+
+独立验证按[证据契约](../evidence-trust.md)区分来源认证与记录一致性；采用受信维护者模式时，合入就绪使用固定读取器回读候选和真实 CI。
 
 ## 输出
 
@@ -102,3 +108,5 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 | 汇总反馈、豁免与最新状态以判断可合入性 | [`merge-readiness`](../../skills/05-integration-validation/merge-readiness/SKILL.md) | 准备合入目标分支时 | 可合入/阻塞结论及剩余事项 |
 
 `github-actions-bootstrap` 负责首次 Actions 接入并产生可信 check-run 交接，`github-repository-bootstrap` 消费该证据完成仓库治理或后续审计，`github-pr-integration` 是面向 GitHub 小团队的日常 PR 编排入口；领域专项验证提供各自风险证据，`mobile-cli-execution` 负责执行官方工具并保存原始产物但不做通过判断，`mobile-validation` 汇总 iOS/Android/HarmonyOS，`web-frontend-validation` 汇总前端三类专项，`backend-validation` 汇总后端五类专项，`system-level-validation` 再保持客户端、服务和外部依赖的跨域汇总责任。所有这些 SKILL 只形成验证与合入结论；生产发布控制由阶段 6 负责。
+
+项目采用验收按[采用规范](../harness-adoption.md)分别核对本地、非作者 Agent 实际行为与远端证据，缺覆盖/译文/真实 CI/可信记录或平台漂移均保持对应门禁阻塞。

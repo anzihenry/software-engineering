@@ -2,7 +2,7 @@
 title: "Project documentation templates"
 status: current
 owner: process-owner
-updated: "2026-10-09"
+updated: "2026-10-12"
 ---
 
 # Project documentation templates
@@ -56,3 +56,11 @@ Keep raw reports once with bilingual entries or summaries. Asset metadata descri
 - [Independent review record](independent-review.json)
 - [CI workflow](documentation-gate.yml)
 - [Tooling guide](../../docs/documentation-tooling.en.md)
+
+## Common evidence record
+
+Use the [evidence template](evidence-record.en.md) and [Chinese version](evidence-record.md) for original reports, independent provenance and candidate invalidation. Reuse traceability fields without creating duplicate approval or task state.
+
+## Project adoption record
+
+[Project adoption and behavior record](adoption-record.en.md) and its [Chinese pair](adoption-record.md) distinguish local checks, an actual independent Agent task and platform evidence, revalidated against pinned versions.

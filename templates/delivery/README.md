@@ -27,6 +27,8 @@
 
 交付记录继续使用本目录追溯契约；文档位置与内容遵循[项目文档规范](../../docs/documentation-standard.md)。变更交接、验证矩阵与发布记录统一引用[文档交付检查](../documentation/delivery-check.md)，避免复制多个结论。检查必须由非作者独立执行，绑定当前版本；文档 status 与交付 record_status 分开。
 
+节点决策与例外引用[质量门禁规范](../../docs/quality-gates.md)；例外记录使用[中英模板](gate-exception.md)，保留失败结果与受控授权来源。
+
 ## 模板导航
 
 | 阶段 | 模板 | 主要交付物 |
