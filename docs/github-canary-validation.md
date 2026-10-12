@@ -45,3 +45,11 @@
 - canary 不自动创建、重置或删除仓库，不自动合入 PR，也不自动放宽 ruleset。需要新一轮干净基线时由维护者明确决定保留策略。
 - 任一 check、`doctor` 或 bootstrap 验证失败即停止后续写入；保留失败记录并在源仓库修复，不用重跑掩盖失败。
 - 若证据来源、仓库或固定源码版本变化，必须更新证据 JSON、本文和仓库自检测试；历史 PR 不改写。
+
+## P1 后端/Web 当前候选试点
+
+P1 使用新的隔离 PR，复用已有保护，不重新执行历史四组合设置写入。正常候选 [PR #7](https://github.com/anzihenry/software-engineering-canary/pull/7) 固定知识 eb674f606ba36b6b8e5b7da3c00c40b915c49f17；缺必需译文负例 [PR #8](https://github.com/anzihenry/software-engineering-canary/pull/8) 必须在真实 validate 阻塞，不能用 Draft 状态本身证明违规拒绝。
+
+独立评审与 snapshot 由未参与修改者实际读取/执行后产生；维护者只发布经内容审查和公开出站授权的精确 envelope，其他原始材料按本地保留策略保存。不可变记录位于 [fa7f2a0 的 review-evidence.json](https://github.com/anzihenry/software-engineering-canary/blob/fa7f2a0ab852ce36000fbd63a6c63abb2da43b16/review-evidence.json)。候选文件不能携带自身批准，必需检查不能豁免；固定 clean 读取器核对原报告、当前开放 PR、head/base/merge、发布者、实际 CI/App 与权限。
+
+本轮 ruleset 22393223 的 validate/lifecycle-policy 仍绑定 App 15368，harness-independent-review 仍为已授权现存必过状态，strict 和无旁路保持；不增加设置写入。单 owner 的 API 可见审计不覆盖组织/第三方 App/token 的全部写入路径。读取通过后仍不获得合入或生产授权，试点关闭而不合入，实际时间和结果见[分步记录](harness-p1-validation.md)。

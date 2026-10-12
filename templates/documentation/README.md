@@ -64,3 +64,9 @@ updated: "2026-10-12"
 ## 项目采用记录模板
 
 [项目采用与行为验收](adoption-record.md)及[英文版](adoption-record.en.md)分别记录本地、真实 Agent 任务和平台证据，按固定版本复验。
+
+[领域专项记录](domain-validation.md)记录完整准入、实际执行与当前证据；schema 消费者不授予批准。
+
+- [运行观察与复验](harness-observation.md)：指标口径、原始事件、缺口与当前闭环。
+
+- [本地交付渠道](local-delivery-channel.md)：不可变制品、实际进程、失败与恢复。
