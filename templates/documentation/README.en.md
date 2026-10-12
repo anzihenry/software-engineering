@@ -64,3 +64,5 @@ Use the [evidence template](evidence-record.en.md) and [Chinese version](evidenc
 ## Project adoption record
 
 [Project adoption and behavior record](adoption-record.en.md) and its [Chinese pair](adoption-record.md) distinguish local checks, an actual independent Agent task and platform evidence, revalidated against pinned versions.
+
+[Domain validation record](domain-validation.en.md) records full admission, actual execution and current evidence; the schema consumer does not grant approval.

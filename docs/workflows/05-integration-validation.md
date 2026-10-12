@@ -110,3 +110,5 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 `github-actions-bootstrap` 负责首次 Actions 接入并产生可信 check-run 交接，`github-repository-bootstrap` 消费该证据完成仓库治理或后续审计，`github-pr-integration` 是面向 GitHub 小团队的日常 PR 编排入口；领域专项验证提供各自风险证据，`mobile-cli-execution` 负责执行官方工具并保存原始产物但不做通过判断，`mobile-validation` 汇总 iOS/Android/HarmonyOS，`web-frontend-validation` 汇总前端三类专项，`backend-validation` 汇总后端五类专项，`system-level-validation` 再保持客户端、服务和外部依赖的跨域汇总责任。所有这些 SKILL 只形成验证与合入结论；生产发布控制由阶段 6 负责。
 
 项目采用验收按[采用规范](../harness-adoption.md)分别核对本地、非作者 Agent 实际行为与远端证据，缺覆盖/译文/真实 CI/可信记录或平台漂移均保持对应门禁阻塞。
+
+后端/Web 风险选择、场景与证据交接遵循[领域执行契约](../domain-validation.md)：阶段 3 固定触发/支持/预算，阶段 4 保存真实执行，阶段 5 按完整专项和非作者内容评审汇总；机器一致性不替代批准。

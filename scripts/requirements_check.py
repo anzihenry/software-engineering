@@ -35,6 +35,7 @@ CORE_SOURCES = (
     "docs/quality-gates.md",
     "docs/evidence-trust.md",
     "docs/harness-adoption.md",
+    "docs/domain-validation.md",
 )
 
 

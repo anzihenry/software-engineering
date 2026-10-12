@@ -63,3 +63,5 @@ review_by: "2027-02-26"
 | 独立评审设计和风险处置 | [`technical-design-review`](../../skills/03-solution-and-planning/technical-design-review/SKILL.md) | 中高风险或跨边界设计进入开发前 | 评审结论与待解决事项 |
 
 这些 SKILL 定义设计和计划证据；实际开发、CI 验证和生产发布分别属于后续阶段。
+
+后端/Web 风险选择按[领域执行契约](../domain-validation.md)固定完整触发清单、支持矩阵、阈值和失败动作，交给阶段 4 实际执行及阶段 5 非作者汇总；缺环境不裁剪已触发必过项。

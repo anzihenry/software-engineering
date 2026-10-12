@@ -1,0 +1,48 @@
+---
+title: "Harness P1 分步验证记录"
+status: current
+owner: quality-lead
+updated: "2026-10-12"
+---
+
+# Harness P1 分步验证记录
+
+工作包状态只在[实施计划](harness-p1-implementation-plan.md)维护；本文记录本轮实际范围、运行与文档影响，不代表 main 合入或正式发布。
+
+## P1-01 的参考范围与证据
+
+用户确认使用隔离合成后端/Web 项目与 canary；交付渠道仅本地。任务分支 `codex/harness-p1-plan`，本包基线 `a703737acf561f2c0e2a752a71f1723b5611156a`。参考维护者为 anzihenry，执行者 Agent `/root`，独立验证身份与结论以外部实际评审记录为准；不冒充维护者的人类批准。
+
+本包新增[领域执行契约](domain-validation.md)、schema 1 内部读取器、双语目标输出模板和 loopback HTTP/静态 Web 合成项目。真实运行 Python 3.14.8、Node 24.19.0、已有 Playwright 1.62.1 与 Chromium 153.0.8010.12；原生 Chrome 155.0.8059.39/VoiceOver 在 macOS 27.0.1；无需安装生产依赖。Playwright CLI 缺失且 npm 镜像 DNS 不可用，内置浏览器走代理无法连接；改用已安装库的隔离无代理浏览器测试，未控制用户现有标签页。Ruff 0.16.7 使用仓库 py314 配置；未配置独立 Python type checker，不声称执行其检查。
+
+原始材料位于 `/tmp/harness-p1-evidence/01`，首轮及 recheck/final/final-keyboard/radio 保留历史；当前候选报告在 candidate 子目录，current 保留第二轮历史：`http.json`（真实 HTTP、16 次/4 workers 不可变读）、`browser.json`（请求/响应、日志、五种状态、完整键盘路径、实际环境与 accessibility tree）、宽窄屏 PNG、`server.log`、`candidate/policy.json`、`candidate/report.json`、`candidate/admission.json`（九类来源 100 条原文与要求 ID）、仓库检查与独立评审。路径为本机试点证据；远端不可变保留在 P1-04 验证前不声称完成。重跑写新目录，旧报告保留。
+
+合成准入只覆盖 HTTP 版本/序列化/错误、合成身份默认拒绝与对象边界、无状态故障恢复、不可变并发读、当前浏览器五种状态/键盘/宽窄屏、局部性能与跨边界路径。数据专项未触发：没有持久写、数据库、事务、迁移或最终一致性。消息、真实 IdP、第三方依赖、缓存/SSR、跨地域、真实容量与用户指标均不存在，不能从参考得出对应通过。用户已授权临时开启 VoiceOver 和系统 AppleScript 控制并恢复；首轮曾取得 Scenario/Load item/Reference item 的真实语义朗读，当前候选真实操作已执行：Service failure 单选 → Load item → 503 错误朗读 → Normal 单选 → Load item → Reference item 恢复朗读；当前非作者已核准限定路径与旧执行证据的适用范围，保留原 source 身份。accessibility tree 不能替代它，参考不能关闭完整 Web 产品的辅助技术验收。
+
+本参考预算为全部非超时 HTTP 原始观察的最大值/五次导航最大值 2000 ms，用于超时与数值门禁演示，不是 SLO、吞吐或尾延迟容量批准。视觉为首次参考设计，截图须经非作者读取批准后才形成该参考基线；缺批准的实际报告保持 blocked；本轮限定参考基线已由非作者实际读图核准。正常、匿名 401、对象 403、版本 409、控制故障 503/恢复 200 都保留真实输出；单项有预期拒绝不是免除产品缺陷。
+
+负向行为测试覆盖候选/环境漂移、场景遗漏、替身、证据缺失/篡改/路径穿越、未批准或作者自批基线、数值预算失败/NaN/布尔、未知 schema；不把合成报告当真实平台 CI。P1-04 才接通本轮 canary 新候选、真实必过 checks 和可信来源。
+
+## 文件级文档影响与检查
+
+| 类别 | 影响及处理 |
+| --- | --- |
+| 研究 | 经检查无需更新：不引入产品/用户研究；原始试点观察只在本文及原报告 |
+| 产品 | 经检查无需更新：三层权限/安装边界不变；新增内部支持工具没有分发承诺 |
+| 设计 | 已更新 domain-validation.md：支持、预算与基线批准/辅助技术边界；无目标产品设计系统变更 |
+| 工程 | 已更新 domain-validation.md、读取器与测试：独立 schema、旧报告兼容和失败行为；不改 P0 schema |
+| 指南 | 已更新 domain-validation.md：真实运行命令、既有工具发现、证据保留和阻塞方式 |
+| 计划 | 已更新实施计划：本地/合成/canary 范围落实，工作包状态唯一维护 |
+| 专题 | 不适用：harness 资产保持现有组织；目标项目记录用双语模板，不创建空目标目录 |
+| 发布 | 不适用：本包无版本发布、渠道交付或生产验收 |
+| 导航与职责 | 已更新阶段 3–5、skills/README、三个协调 SKILL、模板双语导航、要求来源清单 |
+
+本包使用 Git 分支管理、语言编码规范（common/Python）、文档维护和独立文档验证 SKILL。机械检查执行 canonical `.venv/bin/python -m scripts.development check`，额外 Python compileall 与浏览器脚本 Node syntax check；实际结果/当前文件摘要/独立内容与模板翻译评审记录在同目录。未实现周期任务、CI 领域报告消费者或生产发布，不声称已强制。全部必过文档检查与当前快照独立评审通过后才提交本包。
+
+首轮非作者验收阻塞并发现完整准入/漏报屏幕阅读器、非法输入与无断言缺口；已修正为逐条字段与双向场景映射、未执行项显式阻塞。真实补测发现按钮禁用造成焦点丢失，已修复；当前 Loading 五次、键盘正常/503/恢复和焦点保持、五次导航与真实客户端超时均有原始记录。匿名授权/协议拒绝等结果保留；favicon 404 为未定义可选图标资源，不影响合成请求路径，日志不删除。视觉与准入已由当前非作者逐项复核，相应 blocked 已解除。
+
+最终补测增加两个实际主体/资源的正常与双向对象授权、1024 query 上限及重复参数/路径/SQL状输入/NaN版本拒绝。375 px 错误长文本在 18→36 px 的 200%文字渲染下 scrollWidth=375，明确不声称执行桌面缩放按钮；真实 computed style 得出正文对比度 16.451622、焦点 6.878484，原色/公式与独立复算保存。五次导航、交互耗时、layout-shift 与 resource entries 保存原数组；同一服务 PID 的 CPU/RSS 样本不外推容量。辅助技术原始 native 输出保留 voiceover-*.txt 与执行元信息，未经批准没有向其他窗口扩张访问；首次模糊窗口动作被自动审批拒绝，随后确切标题校验、用户手动置前与实际语义导航完成受限目标测试。用户手动解锁后已实际核对恢复：VoiceOver off、AppleScript 控制 0、ChatGPT→VoiceOver 的新增自动化权限 off；未改变既有 System Events 权限。原生测试与恢复分开记录，避免把设置开启当测试通过。
+
+后续独立真实请求发现空参数丢弃和 empty=0 对象响应错误，已用 keep_blank_values 和按已授权资源组装响应修复；增加两项实际 ephemeral loopback 回归。报告 equals 按 JSON 类型区分 bool/number（含嵌套），CLI 输入缺失/坏 JSON/重复键输出结构化 blocked。修正后重新运行全部 HTTP/浏览器与仓库检查；旧 source/原报告保留，HTML 与原生 VoiceOver 相关正常/故障路径未改变时，仅由非作者明确核准可复用范围，不静默重写旧版本。
+
+P1-01 最终复核：当前参考源摘要 `b23cff3d863633d9da1e30942879987a445156a1b58d8b461c26238f1232727e`；独立 Agent `/root/validate_p1_01` 核准九领域 100 条准入（89 适用、11 数据项不适用）、视觉和限定 VoiceOver 路径。全部 39 场景的实际一致性汇总通过，原始独立记录与 domain-gate-final.json 保存在 candidate。210 项测试、Ruff 与完整仓库检查通过。当前服务 PID 88299 的独立 CPU/RSS 样本保存于 independent-process-resource.txt；旧 PID 78986 样本只属于旧 source 历史。最终文件快照与内容/双语/恢复核对以独立评审记录为准；此包结论仅覆盖已声明的合成范围。
