@@ -78,3 +78,29 @@ fixed-negatives/observations.json 保存当前实际制品篡改、target/source
 P1-03 独立发现健康检查失败中途raw及browser超时部分输出丢失，另核对取消可能遗留collector；已修正为逐次共享原响应、owned collector/独立组、有限SIGINT/等待、超时与取消partial输出/报告和实际returncode。真实Chromium两次负例保存browser-lifecycle：Node均130、无forced fallback，本次启动PID72316/72345的后续ps均无进程；服务子进程亦停止。domain-validation默认8765文案同步为仅允许本次动态loopback根URL，旧条款退役替代保留约束。修正后完整229测试及仓库检查通过；源码/工具/浏览器摘要冻结后的fixed-channel重跑两领域交付/503/恢复均通过，当前非作者已核准21文件、全部实际证据与三项缺口关闭，限定本地真实渠道范围通过。
 
 P1-03 最终独立验证通过：制品/Git字节、八阶段身份与健康/API/浏览器、实际取消/超时与自持进程清理、默认/动态URL兼容、旧AT限定复用及双语模板一致。当前整包文件快照和最后检查以独立评审记录为准，结论只关闭本轮已授权的隔离本地渠道，不代表正式发布、main合入或其他平台能力。
+
+## P1-04 的跨项目闭环
+
+本包基线 eb674f606ba36b6b8e5b7da3c00c40b915c49f17，复用任务分支，固定干净知识 checkout。同一合成应用分别进入新后端 ea8c19eb50b3ae7d0a335549b53562f1118985ed、成熟 Web 806c21a81d17b724054ebc34cfd6a00e55c6b968 与 canary e2b9a92bed1b3453560e227a598db6f1a3d26ae9；这些是不同项目提交/制品身份，不声称不同业务实现或更多技术栈。成熟项目原入口段、已有 CI、双语指南和未知文件保留。内部准备器、[矩阵操作参考](cross-project-acceptance.md)、[canary 参考](github-canary-validation.md)及两项新目标保护/固定来源边界测试已落地，安装 manifest/profile 与分发边界未扩张。
+
+三项目分别实际运行格式、静态、compileall、两项 loopback 回归及文档检查，另起非作者 Agent `/root/p1_project_independent` 自行读取项目入口/固定规范/九领域 SKILL/实际代码与中英内容并重跑这些命令。每项目从自己的固定当前/旧 application Git 提交构建 ZIP，后端/Web 各四阶段：baseline、候选、同一候选真实 health503 停止、原旧 ZIP 恢复；候选/恢复真实 Chromium、身份/制品/HTTP/匿名401/HTML和进程停止记录保留。独立评审另建自己的制品/进程并完整重跑，不用作者摘要代替行为轨迹。
+
+每项目九领域 100 原条款，89 适用、11 数据条款按真实无持久化来源不适用；39 场景当前 gate 全部 passed。非作者实际读 12 张图、原 HTTP/并发/截止/浏览器原数组与当前进程样本，批准首次限定视觉基线；HTML/正常故障恢复/语义焦点未变时，限定复用原 VoiceOver 执行 9158f36d936ca80eed263e27c7cd299dd1f1c6e01b65aefef47d3ce9c1e92750 的 source/time，不重写为当前执行。真实浏览器→服务→UI 五状态和键盘路径已执行；不是全浏览器、真实 IdP、持久化数据、饱和容量或完整 WCAG 验收。
+
+每项目两次当前实际 reader capture，共六样本，各89/89有效；约3.19–3.30ms只衡量一致性读取，短窗口不证明效果改善或业务/CI耗时，误阻塞无复核样本为 null。旧source、环境漂移、缺system场景、原摘要篡改、未完成采集的受控报告均实际阻塞，原修正配置恢复通过；新后端/成熟Web的入口、知识、命令缺失与owner缺失在采用节点阻塞。规则漂移/写权限/最新失败check等受控API测试沿用真实机器检查，不写远端设置来制造反例。渠道实际503负例在当前制品停止并恢复。首次外部探针使用系统Python3.9和未resolve的/tmp路径失败，改为既有3.14环境及真实路径后复算；这些探针错误不伪报候选检查失败或初次通过。
+
+真实升级使用旧 main c8b47b6f53813a91308e171905a62750ba08d1fd 与固定 P1 eb674f6：安装、升级、同版重跑、托管修改冲突拒绝与保持、回退和未知内容保留均实际验证；非作者另行重演。上游删除保留用两个内容摘要绑定的受控包验证，只证明删除保护契约，不声称已发布上游曾实际删文件。原离线16组合及2026-09-07四语言 canary 历史证据保持原范围，没有提升为本轮领域/生产能力。
+
+### 当前 GitHub 与留存
+
+正常 [PR #7](https://github.com/anzihenry/software-engineering-canary/pull/7) 的 head 如上、base a37d46a346b0d955d99db1c55aa65df1fb281a71、merge c2f1063c043ce6192b39cea17a9df3f15cfaec74；validate job114771714512 与 Ready后最新 lifecycle-policy job114787265179 均真实成功/App15368。缺独立状态时固定受信读取器实际 blocked；非作者当前内容/双语/全部文件snapshot核准后，维护者发布用户精确授权的[不可变独立记录](https://github.com/anzihenry/software-engineering-canary/blob/fa7f2a0ab852ce36000fbd63a6c63abb2da43b16/review-evidence.json)，SHA256 b4c5069786a708e266ded51586c50ba65a46c6d4e84da9dd3da9ee8cbc4ce81c。固定 clean 读取器两次实际通过，Ready后最新CI再次核对；当时服务器 mergeable=true、mergeable_state=clean。该记录是非作者原报告与当前项目快照，不是 GitHub 人工 approve 或 root整包最终批准。
+
+缺 README.en.md 的 [PR #8](https://github.com/anzihenry/software-engineering-canary/pull/8)，head f973c23150a30be5ce43c4b22d59f0b8a3fa6429，真实validate run38241392580/job114784594550失败，原日志明确缺Git inventory；两项业务测试通过未掩盖译文失败，lifecycle-policy仍成功/App15368。两个PR均closed且merged=false，保留分支/原CI，不合入。前后同字段回读证明 ruleset22393223、严格三context/无旁路、Actions只读/noapprove、可见owner权限和main SHA保持；未新增设置写入。小型单owner/API可见模型不覆盖组织/App/token全量权限路径。
+
+原始材料仍在 `/tmp/harness-p1-evidence`，本轮选择的原字节、原始失败/复核、项目执行/独立任务与工具副本已复制到根 `.local-evidence/harness-p1` 并以无remote的本地Git固定；原记录封装于 records.zip，解压到仓库外新目录后按原路径复算，原字节也保留在本地Git历史。根ignore排除，维护者anzihenry至少保留到2027-04-12，不自动删除。这里只承诺所选记录本机保留，不承诺所有临时探针/历史目录或远端备份；重跑写新目录。整批公开出站被自动审批拒绝后，仅用户明确授权的32,218字节单文件及关联状态已公开，其余原始材料保持本地。后续公开需重新审查具体内容/目的地并取得适用授权，不静默脱敏后冒称原字节。
+
+### 文件影响与最终交付
+
+研究/产品经检查无需更新（无新产品研究、业务或三层分发）；设计/工程已更新跨项目矩阵、固定来源/兼容/失败节点与准备器/边界测试；指南已更新复跑、保留和真实canary操作；计划只在实施计划维护状态；专题/正式发布不适用（harness资产、本地合成演练）；导航沿用已存在跨项目/canary与P1记录入口，未新增/删除SKILL或改变职责，workflow与skills/README无需变更。规范来源清单同步受影响原条款，历史ID/退役链保留；harness中文适用，无新目标模板翻译豁免。最终全量检查、当前根文件摘要与非作者内容核准后才提交本包，不批准main合入或生产发布。
+
+P1-04 最终整包独立验证通过：非作者实际复跑准备器CLI、新旧升级/保护、三项目gate/指标/负例、公开单文件与真实平台回读，并逐字节核对876个归档成员与本地Git原对象。当前八文件摘要、原检查及整包评审保留在本地归档；231项测试、Ruff/格式、compileall与完整仓库自检通过。初次自检扫描展开证据夹具的断链已通过原字节归档修正，未削弱检查。两个PR关闭后再次读取正确阻塞closed候选，早期open通过不构成当前合入许可。首批P1四包均按范围完成，root分支仍未合入main。
