@@ -289,7 +289,7 @@
   },
   {
     "path": "docs/software-development-lifecycle.md",
-    "sha256": "785cd1a84a7bfb613398bd951db671698bd9e6b4eebb6e98ee2ae58477773c04",
+    "sha256": "65a4ccf71389655f14ecbc808bbcc8bde3fca732fe73a6090fba6919bae27e70",
     "translation": null
   },
   {
@@ -299,17 +299,17 @@
   },
   {
     "path": "docs/workflows/01-demand-and-opportunity.md",
-    "sha256": "2c16de3bf452ae0c869ce79374552bcfc02ec8865a6eded7fcc63bdc69aa4f0f",
+    "sha256": "5abb5a501362fa5bc9ae0ca785d7541f454a5125449ee83019cf72b183e18c6d",
     "translation": null
   },
   {
     "path": "docs/workflows/02-refinement-and-initiation.md",
-    "sha256": "50128d5b138f87c006a9b02d56fbd82de4a79f87300948fce5967dcd964047a8",
+    "sha256": "a47af727b2e00bf21d70484b440fe32e3cab25646eb4fd8ef30c541e698eccb6",
     "translation": null
   },
   {
     "path": "docs/workflows/03-solution-and-planning.md",
-    "sha256": "bd210ea891f1a27621e4e6feda67c4446cad32a7dc44299fc3a3b87f581fcca1",
+    "sha256": "b138e5a15620bd10ada3519c656a45b6ab5b936713839a518598648c0145832e",
     "translation": null
   },
   {
@@ -824,7 +824,7 @@
   },
   {
     "path": "skills/README.md",
-    "sha256": "1b60794a7a9fff7e2970591e25513c89c1baa119fd16f9c56f538434eb5ca529",
+    "sha256": "56416973d65c2eb60c41176f69fcc7938f5e6934fab0049f3446c0ad0b4f26e4",
     "translation": null
   },
   {
@@ -1677,7 +1677,7 @@
     {"id": "REQ-2bb794c5f3cc2599", "source": "docs/software-development-lifecycle.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 15, "section": "指导准则", "summary": "5. **安全与隐私内建**：不把密钥、个人数据、合规性作为发布前的补救事项。", "text_sha256": "e068d6b51760a7bfd88209ff631627faef2e74ec7c31b03ccfee081b23eed0a8", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-920dee122651ee00", "source": "docs/software-development-lifecycle.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 16, "section": "指导准则", "summary": "6. **系统测量与学习**：用运行数据验证假设，使复盘结果改善流程与产品。", "text_sha256": "37b1899ab1af959fbef7df35e241a593056bb3990bf414bef36aad045a96da41", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-7bc5f6cffca22dd7", "source": "docs/software-development-lifecycle.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 32, "section": "端到端流程", "summary": "阶段 | 目标 | 核心交付物 | 离开条件（质量门禁）", "text_sha256": "3e08e32116985dd0de3e071a1d55cda4f0f1153546f47c7a6a8e7a1ace6e53f1", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-955d1c884b7f41e3", "source": "docs/software-development-lifecycle.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 34, "section": "端到端流程", "summary": "1. 需求与机会 | 确认问题值得解决 | 问题陈述、目标、成功指标、范围与约束 | 价值、优先级和负责人明确；不在范围的事项已记录", "text_sha256": "892475eb093cabbcf0cc2282eb805e6afe569c7a3d64c3ea73fece671879bc4b", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-06e9a2f444df89ad", "source": "docs/software-development-lifecycle.md", "line": 34, "section": "端到端流程", "summary": "1. 需求与机会 | 判断是否值得投入澄清 | 机会主记录、问题证据、可观察结果、初步范围/风险与决定 | 满足[阶段 01 六项标准](workflows/01-demand-and-opportunity.md#决策门禁)，有权负责人仅批准澄清投入，不承诺开发", "text_sha256": "f5c067ec8a8a8322c2ebf37a625c2b770486c3d3aea0d064a100099d302cefcd", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-bf9b148b4f0a2af9", "source": "docs/software-development-lifecycle.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 35, "section": "端到端流程", "summary": "2. 澄清与立项 | 把需求变成可验收的交付 | 用户故事/缺陷说明、验收标准、风险分级、非功能需求 | 利益关系人对验收意义达成一致；高风险项已触发安全/合规评审", "text_sha256": "3b2b3d1be99750efe4d9993767e7aa1bea4a5ce060e19fdd6702a8a9e2e2714b", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-bc1c2671d27827c5", "source": "docs/software-development-lifecycle.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 36, "section": "端到端流程", "summary": "3. 方案与计划 | 选择可实施的路径 | 技术设计、数据/接口契约、测试策略、发布/回滚预案 | 架构、安全、可运维性与依赖风险被处理；工作拆分可估算", "text_sha256": "f3dd98226d14cb5775355804aae0a5d0936143e685d7295cea1069b0f69f5e35", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-4a0f9487d465204b", "source": "docs/software-development-lifecycle.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 37, "section": "端到端流程", "summary": "4. 开发与自测 | 实现可读、可维护的变更 | 代码、单元测试、迁移脚本、更新的文档 | 本地检查通过；变更与设计、验收标准可追溯", "text_sha256": "93185cf46b6f71a105c92fae2cfd1f8b5d5902ac6eaf1cbc81a9386da93894da", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
@@ -1750,37 +1750,56 @@
     {"id": "REQ-88d39bb53b41165b", "source": "docs/version-compatibility.md", "execution_asset": "docs/version-compatibility.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 43, "section": "GitHub 能力边界", "summary": "Rulesets、Private Vulnerability Reporting 和 Actions 设置的可用性仍受目标仓库可见性、GitHub 套餐和调用者权限约束。", "text_sha256": "e5c297586cfa7b43e7a8c33a1dbaf5a36c03e84405c933821a8ee357c2b09cee", "kind": "instruction", "controls": ["automation", "governance"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-04"]},
     {"id": "REQ-464a852e1b707908", "source": "docs/version-compatibility.md", "execution_asset": "docs/version-compatibility.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 44, "section": "GitHub 能力边界", "summary": "正式 Release、部署、回滚、高风险批准和敏感事故存储不在自动化兼容承诺内。", "text_sha256": "03d91ba9e49af0f7cee1c2ca7bb16678d81e3cd2cb182492974022acaca32d35", "kind": "instruction", "controls": ["automation"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-04"]},
     {"id": "REQ-d0bfc5c7f07af9d5", "source": "docs/version-compatibility.md", "execution_asset": "docs/version-compatibility.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 46, "section": "GitHub 能力边界", "summary": "具体迁移命令和冲突恢复见 `UPGRADING.md`。真实平台证据见 GitHub canary 验收。", "text_sha256": "dbd9804cb6d7155ec3430cc1d6b9b9cd51505c49b5fc9a0a4cf6bb87adcdcf41", "kind": "context", "controls": ["automation"], "capability": "reference", "adoption": "unverified", "gaps": ["GAP-04"]},
-    {"id": "REQ-afddb65e19bb1a9c", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 12, "section": "目标", "summary": "确认待解决的问题具有明确的用户价值和业务优先级，且值得投入下一阶段的澄清成本。", "text_sha256": "831036f21bfafd139d1a3526d140ab8df9a8b443466b011affbf51c04a1ca680", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-0449a3fceec7f790", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 12, "section": "目标", "summary": "判断一个问题是否值得投入下一阶段的澄清成本。完成本阶段仅表示有权决策人批准投入澄清，不承诺开发、排期或交付日期。阶段 02 明确范围与验收，阶段 03 完成可行方案、投入与计划后，才由有权角色确认开发承诺；阶段完成本身不自动产生授权。", "text_sha256": "df52b5413c73a27764594e99b4d8f01388e223e887072cfd96efbc3faf9d76ce", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-15c5e6d62437ce6e", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 16, "section": "输入", "summary": "用户反馈、客户请求、市场信号、业务目标、运行指标异常、事故或技术债线索。", "text_sha256": "d5bc413ea3c2ed58ea7fd408ac31f4fe27e03fb965a1a6c6579f4f648f5ce8c9", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-855ab54624240a5d", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 17, "section": "输入", "summary": "已知背景：目标用户、当前行为、相关产品能力、时间或资源约束。", "text_sha256": "69d1be235ba1bcaaa48fbf865d8de2947210c19160010954127c2ef3633d0385", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-a8b1d3cde6aac36b", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 21, "section": "流程", "summary": "1. **登记机会**：创建唯一的需求、缺陷或改进记录，标明提出人、来源和日期；先描述问题，不直接把某个方案当作需求。", "text_sha256": "c25da9fc71268ad28300703ffbca9b40299b58021d63ca4fcfc37c3751a7c188", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-66af8a0ad082e4f3", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 22, "section": "流程", "summary": "2. **理解现状**：收集用户影响、发生频率、影响范围和现有替代方案。缺陷需包含复现条件与实际/预期行为。", "text_sha256": "c36bc3c3b166d9bb57e17b7f29d1b3ada7f7e186348ce5dcb9f80d35fab9c40f", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-4d26efaeb14231c0", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 23, "section": "流程", "summary": "3. **定义结果**：写明目标用户、待改善的结果、可观察的成功指标及基线；同时记录不做什么。", "text_sha256": "d92e9710a17e2d9251f13e06a2a6069f0acf09298440bdb197ad4039b70de388", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-3320261593a8dbc8", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 24, "section": "流程", "summary": "4. **初步评估**：判断价值、紧迫度、置信度、粗略成本和依赖项；发现安全、隐私、合规、资金或信誉影响时标记为高风险候选。", "text_sha256": "ae68deb5491fa58ea5dedcc661474b8a4938338ec94ab93ca18fb8571d064870", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-495efd212889a47a", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 25, "section": "流程", "summary": "5. **排序决策**：业务负责人决定进入澄清、进入候选池、延后或关闭，并说明原因。", "text_sha256": "1674dadaf30d5eb7ad0b138d4fc5ccadf5d009f60b30c0f73281eb11c769e656", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-94ddb35f23dc2290", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 29, "section": "决策门禁", "summary": "进入“澄清与立项”前，记录必须有问题陈述、目标/成功指标、负责人、优先级和明确范围。若无法说明价值或验证方式，应先补充调研或关闭。", "text_sha256": "7b087397466f175f58350137a73ac364e6f65134ee6a98aadedb910b6da3235e", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-63583484fb3e64aa", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 33, "section": "文档治理", "summary": "登记机会与研究时保留唯一来源、研究时间、范围与局限。跨专题可复用结论放 research，专题资料跟随专题；不要重复存原始材料。进入需求准备时调用文档维护技能确定归属与双语交付范围。", "text_sha256": "4144197e251da6f65fa4766d2b8f50a20439003d7f81fde20468af761d5ee1e2", "kind": "instruction", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
-    {"id": "REQ-bb5d2aa0c6e72c77", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 35, "section": "文档治理", "summary": "遵循项目文档规范和接入说明。文档维护负责准备与更新，独立文档验证负责检查结论，使用统一交付检查模板。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。", "text_sha256": "8b6c5245938c45f16eab56e77afeb48092feecc6a3e4fc3512e423cc91e60f08", "kind": "mandatory", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
-    {"id": "REQ-8808b150284b2119", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 39, "section": "输出", "summary": "已排序的机会记录，包含问题、受影响对象、成功指标、范围、约束和初步风险。", "text_sha256": "c7e35eab60d5cdf60878e27798cb3bcc90645025b44ca5d6349f8bf11a5b6586", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-926afeb3d21c8fce", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 40, "section": "输出", "summary": "决策状态：`进入澄清`、`候选池`、`延后` 或 `关闭`，以及决策理由。", "text_sha256": "06b84b3320aedb2b34be47c592411c7152bfb72eaacc978a54d8669f2c7a0122", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-6a3f77315e9e1580", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 41, "section": "输出", "summary": "可使用机会记录模板保留统一追溯字段并交接下一阶段。", "text_sha256": "d593db1e8323a902fad441db276b3029bc997299d6e787a491baea6409d88216", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-825337e3c2a80ca0", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 45, "section": "异常与回流", "summary": "证据不足：回到用户研究、数据分析或故障排查，不以假设直接立项。", "text_sha256": "2bcbebad1a94ef9eb59b6d3a2103744a656a441f4fc8d847d51056337352f803", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-dbbffcc94088a142", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 46, "section": "异常与回流", "summary": "外部事件导致优先级变化：更新排序并通知受影响的计划。", "text_sha256": "785dc996bcb4af8a3bb8f13501fab80c10a1d007433217da8c493ee2bbe6d3e5", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-df80dea4a90401e1", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 47, "section": "异常与回流", "summary": "实施过程中发现目标失效：回到本阶段重新确认价值与范围。", "text_sha256": "28f891ab01891878d4b47c13e2a3e36d0966b50ba695636dddcf74a4b14ffb65", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-dfdd6111368ecd67", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 51, "section": "交接给下一阶段", "summary": "交接机会记录及所有调研证据。下一阶段负责将其转化为可验收的变更，不默认继承任何具体实现方案。", "text_sha256": "941ec39d88b92db03b82c65a61776af13564ae3ff2e0dc4c7e081d509e1e40f2", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-b259dd58cc963f92", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 55, "section": "固化为 SKILL", "summary": "行为 | SKILL | 适用边界 | 产出", "text_sha256": "8e55a51547dfb73921c22b471cbea93ed05a9059f856129fcd91e068e06a2aa5", "kind": "context", "controls": ["lifecycle"], "capability": "reference", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-b1e6e19be6f3a77d", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 57, "section": "固化为 SKILL", "summary": "登记机会、去重与初步风险识别 | `opportunity-intake` | 原始信号尚未被规范记录时 | 可追溯的机会记录或待补充信息清单", "text_sha256": "9233e9c35921d7de5a43ad64c5cf4542c3dda91627dd6137f9ed6aee80823897", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-1c4ba270528b7110", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 58, "section": "固化为 SKILL", "summary": "理解现状、界定问题与成功结果 | `problem-framing` | 已有机会记录，需判断是否值得投入澄清成本时 | 问题框架与研究/澄清建议", "text_sha256": "ce729d7028dd6f6c4b83a18cf7713cf9a470b4780bc73a6d9d6588d2d21f7646", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-1e52fc66dd876abd", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 59, "section": "固化为 SKILL", "summary": "依据价值与约束形成排序建议 | `opportunity-prioritization` | 多个问题框架需要比较投入顺序时 | 可由业务负责人确认的排序建议", "text_sha256": "ed285e714e91b1b4943ff062e1531fec900448acb85354b1d60087714f724f10", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-6179aa778d2c5a81", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 61, "section": "固化为 SKILL", "summary": "三个 SKILL 串联使用，但都不直接创建项目承诺：立项和最终优先级仍由明确的业务负责人确认。", "text_sha256": "ebf2291f4fe7a6d3ce4807569dee3d18617622b1a685df889d93cddbe6496cbd", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-7717902ec2e3098c", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 18, "section": "输入", "summary": "- 既有机会、任务与决定的唯一维护位置；如暂无，先确定主记录与稳定 ID。", "text_sha256": "00a1211dcf91bed4cc04b1d6129c2934c00c8417b39fa7c828a98e576c9df328", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-779d2e0e94692647", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 22, "section": "流程", "summary": "1. **分诊和登记**：先识别正在发生的严重事故或安全/隐私事件，立即转入[事故响应](../../skills/07-operations-and-support/incident-triage-and-response/SKILL.md)或[安全响应](../../skills/07-operations-and", "text_sha256": "6953a31041514465c68dfc21286b8caf97aed0cdab9d55bbbb77ebeeb74e219f", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-4eae51f1baae5081", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 23, "section": "流程", "summary": "2. **理解问题**：记录受影响对象、情境、影响、频率与现有替代方式；缺陷补充实际/预期行为及可用复现条件。保留用户原始请求，区分背后问题、明确指定方案/约束和待验证假设，不擅自替换用户约束。", "text_sha256": "a4f4f3b48a588ab837ae519147ddf232304a39a18f9464f72f877ef30382a9ca", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-0345e99855dc00bf", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 24, "section": "流程", "summary": "3. **定义结果和未知项**：明确可观察的改善、初步范围/非目标与风险。成功判据可定性；数值基线缺失时注明获取方式及限制，不编造精确值。会改变是否投入判断的关键未知先有限验证，其他未知注明负责人和下一步交阶段 02，技术细节留阶段 03。", "text_sha256": "82a1cfefa6e2c4875bac9e8914622a9d0e431f64f979076d2251d1e34a0b378f", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-161c845513c257f3", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 25, "section": "流程", "summary": "涉及账户/权限、资金、敏感数据、合规、对外承诺、数据完整性、关键服务可用性或重大信誉影响时，必须标记高风险候选并记录触发项和需参与的安全/合规/运维等角色；不是正在发生的事件也需识别，不以材料精简降低门槛。", "text_sha256": "0c35494735c47fdf192b3bb0d6cbf5b5bd46ba2714de8b4cb11043c6e1990ceb", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-6b4cc27968b78ce8", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 27, "section": "流程", "summary": "4. **选择投入深度**：小型明确问题沿用一条记录完成判断，不强制研究报告或重复运行三个技能；复杂跨域问题补适用研究与相关负责人判断。有限验证先由实际负责人确认假设、方法、负责人、时间或成本上限、结束判据和后续决策；到上限、无结论或发现新风险时停止扩大，记录结果/限制并决定补充、候选、延后或关闭，追加投入须重新确认，", "text_sha256": "b3b5623bcd241a6df2ce46f3da8ae363fbc881d0acaeb5d60bc191079fdeaf82", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-f3a645520f6b1ab7", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 28, "section": "流程", "summary": "5. **排序和确认**：按价值/影响、紧迫度、证据/不确定性、澄清投入、依赖/容量作相对判断，公开决策窗口、取舍、挤出事项与重排条件，不强制数值公式。高潜力低置信机会可优先有限验证；单机会仍与容量/已有承诺比较，不制造比较对象。粗略实施成本仅作约束。必须处理的外部约束由有权角色确认后单列；业务负责人确认去向，Agen", "text_sha256": "eda07dcca86088f682691a06fdb9a9b0c0addbb10050a473b709cbad94ec8fb3", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-17f7ec9c4c19d64e", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 32, "section": "决策门禁", "summary": "进入阶段 02 前，主记录必须满足以下六项，并有可追溯的实际批准；定性判据不降低证据、授权、适用文档或高风险门槛。", "text_sha256": "f1c3eea82de87dcc500df950fb1c7fef83c78a65df535bddfc94e5e81193959b", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-81b40dc61b6603c9", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 34, "section": "决策门禁", "summary": "最小标准 | 必需内容", "text_sha256": "262665b58ec1630fcb164df7de9d3d5463dca19e0c9f185a4f49f90574546720", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-4fd3f20618426c86", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 36, "section": "决策门禁", "summary": "受影响对象 | 用户、角色或系统及问题发生情境", "text_sha256": "0484f6f81f1c93a56d2bf9a6a508b16cc58d0699579d5b23d21192c8710b4cda", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-da04520302289691", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 37, "section": "决策门禁", "summary": "可观察的问题 | 当前行为、影响和原始请求，缺陷有可用复现信息", "text_sha256": "b867719e1ff89fead86cc3e7ec4180449d8c634077ab2328a74e56454a64e306", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-c1cbc92378dc388d", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 38, "section": "决策门禁", "summary": "来源证据 | 可追溯来源，事实、假设和未知分开", "text_sha256": "f0cfc87edf89ce1cd26eb73b56263d9ac87261d10b47db2461017511f5fe21bd", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-4d2fc119208bff13", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 39, "section": "决策门禁", "summary": "期望结果 | 可观察改善与判断方式，可定性；缺数值时有获取方式及限制", "text_sha256": "5e2671dc3d2380f903780e44b9eed1e805cd224db1c01d7d57d80a48215bcdd6", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-32a4da607bc8a0b8", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 40, "section": "决策门禁", "summary": "投入理由 | 价值、紧迫度、初步范围/非目标、约束与风险、值得澄清的理由", "text_sha256": "b612a6aed46bac5af1117cb5f7245d0923d5e31a5ff3b713306875931cdb98a7", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-9f8cb5fc4ddd581c", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 41, "section": "决策门禁", "summary": "责任与决定 | 澄清负责人、有权决策人、批准理由和带时区时间；小团队可一人兼任", "text_sha256": "7e66fe12a83e6217e2886c4e8017a96381cf432972263d23963c28eaaac6a255", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-32b2093f2cc28b47", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 43, "section": "决策门禁", "summary": "数值目标、完整验收、技术方案和准确工作量不是本阶段统一前置要求。无法说明价值或合理验证方式时先补信息、有限验证或由决策人延后/关闭；缺关键事实不能伪造通过。", "text_sha256": "fab21323e03d7658389d32966196f9274812bc8afc51e7381dd136fed8c95db3", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-1874bee92aebd497", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 47, "section": "机会状态与转换", "summary": "本节是机会状态的唯一规则来源，模板和技能引用本节。状态在机会主记录维护，不混用文档 frontmatter、专题、需求或发布状态。", "text_sha256": "9a19cbed7682cbb613a03c1910d52a7d0c2a437c06bb1d70a47c9082a8ed3975", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-4871a2ced6b4cc29", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 49, "section": "机会状态与转换", "summary": "状态 | 含义 | 必需记录与退出条件", "text_sha256": "c60d56d183c8ab1aea86a6847bebfe3eefd87bb4e45ced79851ef6f45f3cc002", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-6dc0ee0fd2c99277", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 51, "section": "机会状态与转换", "summary": "待补充 | 最小事实不足 | 缺什么、谁补、复查时间；补齐后重新界定或转有限验证", "text_sha256": "36fa4328e9ac825ad1a405947f8c810e4ea49d1aae302adb4cb7a15f16f9d8b5", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-3b7136fb1203257e", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 52, "section": "机会状态与转换", "summary": "验证中 | 影响投入的关键未知正在有限验证 | 假设、方法、负责人、投入上限、结束判据；结束后按真实结果重新决定，不能自动转入澄清", "text_sha256": "c1a1c82fe19cc797d447b13077778e62eebff99e724a75100fe9b8eeb8d7f9e1", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-cf70d14abaa5e380", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 53, "section": "机会状态与转换", "summary": "候选池 | 值得关注但尚未选中投入澄清 | 保留/排序理由、负责人、复查触发条件；容量或证据改变后重排", "text_sha256": "567e1f5a16e96cdab2c166c60b4cc025183b705cfc0631b5e06d633dd7fdb406", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-64f4b325262c0ac0", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 54, "section": "机会状态与转换", "summary": "进入澄清 | 已满足六项标准且批准投入阶段 02 | 决定及依据、决策人/时间、澄清负责人、范围和待解问题；关联下游记录", "text_sha256": "bf1d7c30b6da07dc2e83f755e44f29a468a124e4ebfa10cccd382415a1c80bff", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-76c6782e53ad9423", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 55, "section": "机会状态与转换", "summary": "延后 | 已明确决定暂缓 | 原因、负责人、恢复条件或复查时间；触发后重评", "text_sha256": "755968b127cc225d8fee9d23f9cc66d20d3bcf14b802828b8bcb3bf059b7d95a", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-871a21d34a7b536c", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 56, "section": "机会状态与转换", "summary": "关闭 | 当前决定不再推进 | 原因、证据、决定人/时间、关联及必要重开条件；保留历史", "text_sha256": "3e70ce96ff7a85155f4c3c32fbdfd892c9ecb7557dfd4dc1b89928001431a563", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-e7098e55d13b4622", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 58, "section": "机会状态与转换", "summary": "待补充/验证中表示分析进度，其余表示决策去向；候选池不是已决定暂缓的延后。每次转换保留前后状态、原因、决定主体、带时区时间和证据；决定主体须有对应权限，Agent 只能在已授权范围维护记录。关闭遇到新信号优先重开/关联原记录；进入澄清后价值失效或范围明显改变也须重评，不沿用旧批准覆盖新范围。复查条件是记录要求，不代表自", "text_sha256": "c09b21357478c6d818f0e6dc865fdc15ee3b99c1b6269036b0e4090f070d3a77", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"id": "REQ-63583484fb3e64aa", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 62, "section": "文档治理", "summary": "登记机会与研究时保留唯一来源、研究时间、范围与局限。跨专题可复用结论放 research，专题资料跟随专题；不要重复存原始材料。进入需求准备时调用文档维护技能确定归属与双语交付范围。", "text_sha256": "4144197e251da6f65fa4766d2b8f50a20439003d7f81fde20468af761d5ee1e2", "kind": "instruction", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
+    {"id": "REQ-bb5d2aa0c6e72c77", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 64, "section": "文档治理", "summary": "遵循项目文档规范和接入说明。文档维护负责准备与更新，独立文档验证负责检查结论，使用统一交付检查模板。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。", "text_sha256": "8b6c5245938c45f16eab56e77afeb48092feecc6a3e4fc3512e423cc91e60f08", "kind": "mandatory", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-84129c666c923e16", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 68, "section": "输出", "summary": "- 一份稳定 ID 的机会主记录：六项判断、实际去向/理由、当前负责人、待解问题、状态历史与证据链接；问题框架和排序是该记录的视图/附件，不另复制任务状态。", "text_sha256": "c9ce85dded8903b78c9fda8877490e70ab7f7edd6ed815795302b4a9dcb520ef", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-5e97e401bb71b9cb", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 69, "section": "输出", "summary": "- 建议与实际批准分别注明；事故/安全分流关联受控响应记录，不以机会关闭代替事件结束。", "text_sha256": "7015649b3c4de7583a6829b1b976218b497563c3c50b6fbf2b16c5fb2b0a07f9", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-4d1fa1a844b797ef", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 70, "section": "输出", "summary": "- 使用[机会记录模板](../../templates/delivery/opportunity-record.md)保留统一追溯字段，按项目事实选择 Issue、任务或文档承载。模板与技能的逐步适配进度见[实施计划](../phase01-optimization-plan.md)，不能把旧状态标签当新基线达标。", "text_sha256": "8f708ccd3a6329ffdcde75816d1027058e4499c8f1808a22a1f80fe5224a1e2c", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-4804a0652616efb2", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 74, "section": "异常与回流", "summary": "- 证据不足：按关键性选择待补充或有限验证，不以假设立项；高风险未知转相应角色判断。", "text_sha256": "1a4366bd002463ce8e54d915a0894049302bd87d2288ef59ec4244a79081b3be", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-9329c39d5a904256", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 75, "section": "异常与回流", "summary": "- 外部约束或容量变化：重排并在原记录保留决定与对已有计划的影响；外部通知另遵循实际授权。", "text_sha256": "3223956ce3ca045361d80de35b2847779e49bbf58c4fd0031b61788bfb519c84", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-6181c619babf36c3", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 76, "section": "异常与回流", "summary": "- 实施发现价值依据失效、范围扩大或假设被推翻：关联原决定回本阶段复核，下游保留自己的状态与承诺影响，不能通过回流抹去历史。", "text_sha256": "cb2cf49da94e5bd18a53cc58a8b4770a55a9ecfa3c9c78491384856ff8cf42a6", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-1039b644a18e74ee", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 80, "section": "交接给下一阶段", "summary": "向阶段 02 交接主记录 ID、问题与来源证据、期望结果、初步范围/非目标、约束/风险、未解问题及负责人/下一步、批准澄清的决定。用户指定方案或约束原样保留并标明性质，未验证实现假设保持假设，不默认成为批准方案。阶段 02 细化验收；需要重新确认价值或显著改变范围时回流。", "text_sha256": "7a07fabb2bf656570868b12cc4303356c4035a0d395ef0e22e267a66df0bef17", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"id": "REQ-b259dd58cc963f92", "source": "docs/workflows/01-demand-and-opportunity.md", "execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 84, "section": "固化为 SKILL", "summary": "行为 | SKILL | 适用边界 | 产出", "text_sha256": "8e55a51547dfb73921c22b471cbea93ed05a9059f856129fcd91e068e06a2aa5", "kind": "context", "controls": ["lifecycle"], "capability": "reference", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-2108a2adbf71d25e", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 86, "section": "固化为 SKILL", "summary": "登记机会、去重与初步风险分诊 | [`opportunity-intake`](../../skills/01-demand-and-opportunity/opportunity-intake/SKILL.md) | 原始信号未规范记录或出现新来源时 | 主记录更新、最少补充问题或紧急分流", "text_sha256": "4610753839f032dde797f0a955c40885abed8de2a63fb369ba5c4d8d26b1d2f3", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-7da1f6536ce991b9", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 87, "section": "固化为 SKILL", "summary": "界定问题、结果与关键未知 | [`problem-framing`](../../skills/01-demand-and-opportunity/problem-framing/SKILL.md) | 需判断问题价值或设计有限验证时 | 主记录的问题框架、验证安排或澄清建议", "text_sha256": "f0a67252a4215dc09cfef8579503fce33ca38697b82602b147e8a6cfbc63f334", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-be9d45c23c67acbf", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 88, "section": "固化为 SKILL", "summary": "比较澄清/验证投入与取舍 | [`opportunity-prioritization`](../../skills/01-demand-and-opportunity/opportunity-prioritization/SKILL.md) | 多机会排序或单机会与容量/承诺比较时 | 可由业务负责人确认的相对排序/", "text_sha256": "e3e45ae249e459e6b00a61fd166ea73a22aa0401495a311b46dccda818e08f92", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/01-demand-and-opportunity.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-8429e37692cd13ec", "source": "docs/workflows/01-demand-and-opportunity.md", "line": 90, "section": "固化为 SKILL", "summary": "三个技能按实际缺口组合；输入已完整则复用，不重复登记、填表或强制依次执行。它们不直接创建开发承诺，立项和最终优先级仍由有权负责人确认。", "text_sha256": "592fe9dadedbd27f3504f30c93e525793547a7b8928fe15c559bb424aa8d4b02", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-e1582235a6f5e1ee", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 12, "section": "目标", "summary": "将已确认的机会或问题收敛为各方理解一致、可验证、可估算的交付项。", "text_sha256": "3cd86cb6fd0be4c7a4e1a3bd8f8630f5844bd98dba7efc3c6721b89f5c527748", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-3d3a21c976769907", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 16, "section": "输入", "summary": "已排序的机会记录、调研证据、现状数据和业务约束。", "text_sha256": "61753eb6b0c540b17fd92178ab05bec2eb518e35c2b11413d6d2367c815d39df", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-194ca5e10331d833", "source": "docs/workflows/02-refinement-and-initiation.md", "line": 16, "section": "输入", "summary": "- 已按[阶段 01 门禁](01-demand-and-opportunity.md#决策门禁)批准投入澄清的机会主记录、调研证据、现状与业务约束；接收可定性结果、待明确基线和有负责人/下一步的非关键未知，不要求上游预先完成本阶段验收。", "text_sha256": "6c3aabe9dd3a18b27dd44b021de87e54921cf4d80ad753e6597e8c3a32f249c7", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-ed059deabeef1fd8", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 17, "section": "输入", "summary": "相关系统、用户旅程、既有接口或政策信息。", "text_sha256": "dfaea6d8dc3cc316adf1c72196d14153f7e950f4410995f7dd713c1b568d8e47", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-c2f3072d48075c23", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 21, "section": "流程", "summary": "1. **界定边界**：拆分为可独立交付的用户故事、缺陷或技术任务；明确参与者、前置条件、主流程、异常流程和不在范围内的事项。", "text_sha256": "e051307512a127b025aa07f787ff67fc24f57a090ce736c451e2176521c62602", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-53e606007a7cc49e", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 22, "section": "流程", "summary": "2. **定义验收标准**：以可观察的行为和结果写出完成条件；同时明确性能、可靠性、可访问性、数据保留等非功能要求。", "text_sha256": "fe0ed42148e1617e7775c12c36bec993a2d6b8d06f39b66577d9e2299834fe77", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-c961cdbbe15dfb77", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 23, "section": "流程", "summary": "3. **澄清依赖**：识别上下游团队、第三方、数据源、许可证和环境依赖，并确认责任人与时序。", "text_sha256": "fde23171d7b3802b67fb719c008c60622c585fd7950236dc9a2582204bf12e5a", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-be38e225f404019b", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 24, "section": "流程", "summary": "4. **风险分级**：按低、中、高评估影响范围。涉及身份、权限、资金、敏感数据、对外契约、数据迁移或关键基础设施时，按高风险处理，触发相应专家参与。", "text_sha256": "009a1e2ef420b376e3e99853d5cbdf0695b0722c3a27ab465b3c7261887eea17", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-2a4eb0f6c9f5c671", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 25, "section": "流程", "summary": "5. **形成共识并立项**：产品/业务负责人、开发负责人及必要的安全、合规、运维代表确认验收含义、优先级和可投入性。", "text_sha256": "1fcb233b4e468fcae8c239f8582a3573411db5862f8c381a049ff869231e2bcb", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-887babf7dbf63318", "source": "docs/workflows/02-refinement-and-initiation.md", "line": 25, "section": "流程", "summary": "5. **形成共识并立项**：产品/业务负责人、开发负责人及必要的安全、合规、运维代表确认验收含义、优先级和进入方案阶段的可投入性；这不代表开发或日期承诺，须待阶段 03 可行方案、投入和计划完成后由有权角色确认。", "text_sha256": "0b67777215da2f618f5d9e4e5825f342220eac2560048b1f976365f25f3534b4", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-a4f87d12f2afa5e6", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 29, "section": "决策门禁", "summary": "进入“方案与计划”前，验收标准必须可测试，范围和非目标明确，依赖有所有者，高风险项已进入设计/安全评审队列。存在关键未决问题时，不承诺交付日期。", "text_sha256": "e2e20296d2bd7c3498a6d1425c7584a773451e32619dffacca8f3547fe9776d9", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-9fa8e4f96294f000", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 33, "section": "文档治理", "summary": "把本次需求、范围与验收标准放在专题或已有 Issue/PR 记录，生效的产品规则由 product 维护。列出初步文档影响、负责人和双语要求；小工作不强制建专题，新项目或迁移项目由文档维护技能补采用配置。", "text_sha256": "9788d3391389ad40067e5fa4dab78af405eddc66c126a5f5cd719aa99d693689", "kind": "mandatory", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
     {"id": "REQ-6cf14f905af83fa9", "source": "docs/workflows/02-refinement-and-initiation.md", "execution_asset": "docs/workflows/02-refinement-and-initiation.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 35, "section": "文档治理", "summary": "遵循项目文档规范和接入说明。文档维护负责准备与更新，独立文档验证负责检查结论，使用统一交付检查模板。缺少专用检查器时保留逐项实际核对证据，不能声称第三阶段自动门禁已启用。", "text_sha256": "8b6c5245938c45f16eab56e77afeb48092feecc6a3e4fc3512e423cc91e60f08", "kind": "mandatory", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
@@ -1803,7 +1822,7 @@
     {"id": "REQ-d03e5d695c6ec48b", "source": "docs/workflows/03-solution-and-planning.md", "execution_asset": "docs/workflows/03-solution-and-planning.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 22, "section": "流程", "summary": "2. **选定设计**：记录关键决策、取舍和被否决的方案。涉及外部或跨服务接口时定义版本、错误语义、幂等性、兼容性和迁移策略。", "text_sha256": "06765aa2840b66aef06c4a533589f1617c2f70cae81f52dc4f1ca3a365e9eb6d", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-64c023f41653376c", "source": "docs/workflows/03-solution-and-planning.md", "execution_asset": "docs/workflows/03-solution-and-planning.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 23, "section": "流程", "summary": "3. **设计验证策略**：将每条验收和非功能要求映射到单元、集成、端到端、性能、安全或人工验收方式。", "text_sha256": "c6b321b62413b6a42472170bd4eb850443dff5fbb50e35702c1786857aaaa0c0", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-7ead443cce98418b", "source": "docs/workflows/03-solution-and-planning.md", "execution_asset": "docs/workflows/03-solution-and-planning.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 24, "section": "流程", "summary": "4. **设计发布与恢复**：明确特性开关、环境推进、迁移次序、监控指标、告警阈值和可执行的回滚/前滚方案。", "text_sha256": "fd7ca91873fffc56bc0341f9bf3137d3a9ff51a74ac6505ca2171e12a2e0aed2", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-6dce1400ea08695b", "source": "docs/workflows/03-solution-and-planning.md", "execution_asset": "docs/workflows/03-solution-and-planning.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 25, "section": "流程", "summary": "5. **拆分与估算**：将工作拆成可审查的小变更，标出依赖、责任人和顺序；仅在关键不确定性被处理后承诺计划。", "text_sha256": "c0041b4fae782b537948f086695a8ffbfd42d35a4c1d18b76879e3bc7cb5e1e8", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/workflows/03-solution-and-planning.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-be3ca3b960395f06", "source": "docs/workflows/03-solution-and-planning.md", "line": 25, "section": "流程", "summary": "5. **拆分与估算**：将工作拆成可审查的小变更，标出依赖、责任人和顺序；阶段 02 范围/验收与本阶段可行方案、投入和计划均就绪、关键不确定性被处理后，才交有权角色确认开发承诺，不从阶段 01 澄清批准自动继承排期。", "text_sha256": "38a3a3ced8ad4b44847e4696778b15c6b8502fbe92989b99e82070c57b1a1206", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-52b7d10eb09585d9", "source": "docs/workflows/03-solution-and-planning.md", "execution_asset": "docs/workflows/03-solution-and-planning.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 26, "section": "流程", "summary": "6. **评审并批准**：中高风险变更组织设计评审；高风险同时完成安全、合规与运维可行性确认。", "text_sha256": "34f7dc62d19bf75884b970d5e33160d3755b7fa5f8d45da6d624aa7f3a338317", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-c057051ec791a616", "source": "docs/workflows/03-solution-and-planning.md", "execution_asset": "docs/workflows/03-solution-and-planning.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 30, "section": "决策门禁", "summary": "进入“开发与自测”前，选定方案必须覆盖验收标准、数据和接口契约、测试策略以及发布/回滚路径；关键风险均有处置人。未验证的高影响假设应先做 Spike 或原型。", "text_sha256": "5c06ba33d2799ca4dc6c2b0a9c7d9d62a0b6ea57560e6327d973440a9314c3d3", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-59c7295c8f496cbb", "source": "docs/workflows/03-solution-and-planning.md", "execution_asset": "docs/workflows/03-solution-and-planning.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 34, "section": "文档治理", "summary": "专题保存方案过程，长期体验规则和技术契约分别归入 design 与 engineering。长期技术决策使用编号记录并保留替代关系；计划明确文档更新、双语同步、实际检查和独立评审任务，任务状态只维护一次。", "text_sha256": "af915e94b9021c46fd5fcfdba02ad2ee7139c360882f86adb803d0ecfa778790", "kind": "instruction", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
@@ -3367,12 +3386,13 @@
     {"id": "REQ-22095eb7ba443ea9", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 26, "section": "SKILL 导航", "summary": "06 发布与变更管理 | 可合入版本准备进入目标环境或生产 | GitHub 小团队编排：发布管理；通用：候选准备、发布就绪、渐进发布、健康评估、恢复执行、紧急变更、发布收口", "text_sha256": "427f0cd70be13d93e6450ef5037a7f569834aaeaab35edfa14a4bc13bc523165", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
     {"id": "REQ-62b9a1278d69d2e0", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 27, "section": "SKILL 导航", "summary": "07 运行与支持 | 服务已运行，需要监测、响应或支持用户 | 健康监测、事件响应、安全/隐私事件响应与证据保全、支持处置、运行维护", "text_sha256": "1558ad22012e50dabffeaf6dbabd7fb79248d5583bf6a934f5c7128a6f2c5d3e", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
     {"id": "REQ-32bc3fdbca5e10fe", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 28, "section": "SKILL 导航", "summary": "08 度量与复盘 | 需要验证结果、复盘并推动流程改进 | 效果度量、交付复盘、事件复盘、行动跟踪、手册演进", "text_sha256": "0aea6c3c7334834f35202b50ec9954fbc83dc028471627e002b0b20ffb5d0e4a", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
-    {"id": "REQ-9b32028ac2b5e056", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 30, "section": "SKILL 导航", "summary": "若不确定阶段，从“当前最需要做出的决定”开始：先判断价值用阶段 1，先确认可验收性用阶段 2，先确认技术可行性用阶段 3；进入代码、评审、发布、运行后依次使用阶段 4 至 8。", "text_sha256": "ccb4fd6a9ad5a0b4a8a3b8b8c0a9ec1dbd4c73716cf4854597d4eb536d777941", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
-    {"id": "REQ-f871bd7c8d7cc115", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 32, "section": "SKILL 导航", "summary": "在阶段 4 和 5 中，再按主要风险选择领域：移动端区分跨平台共享层与 iOS/Android/HarmonyOS 平台层，实际调用官方工具链时组合 CLI 执行 SKILL；Web 前端开发区分 UI/交互与状态/数据，验证区分功能兼容、视觉可访问性与性能；后端开发区分 API、领域数据与异步集成，验证区分契约、数据", "text_sha256": "41cb4d353c5385e21b0d781c390736fa7ee7ea67f851912ad439cc5e9d712e6b", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
-    {"id": "REQ-a16942b8662872b1", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 34, "section": "SKILL 导航", "summary": "项目首次采用或相关配置改变时，文档维护按采用与复验核对固定知识、入口覆盖和实际命令；独立文档验证核对实际任务读取/执行轨迹与当前证据，GitHub 平台沿用两个 bootstrap 技能。", "text_sha256": "9b4955c5750978a4099f9a06ba98e1776e222d511f455cd684735fffca791b43", "kind": "instruction", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
-    {"id": "REQ-f0cc406acf50d2ee", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 36, "section": "SKILL 导航", "summary": "后端/Web 风险选择、场景与证据交接遵循领域执行契约：阶段 3 固定触发/支持/预算，阶段 4 保存真实执行，阶段 5 按完整专项和非作者内容评审汇总；机器一致性不替代批准。", "text_sha256": "41955586943c62c9d34805801fbad7bf38d5ce839e4779c4500d57e07ce56622", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-0a691fd2a4196973", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 38, "section": "SKILL 导航", "summary": "Harness 执行指标与持续复验按运行观察规范，由阶段 8 的效果度量、改进行动跟踪与手册演进承接；只读采集不替代实际独立核验。", "text_sha256": "13a629d0f871910c65f5d712ca1f4e8c3a3d8c38e9fc21208ef2bb5d15efc7bd", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-9e586be5c6914d42", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 40, "section": "SKILL 导航", "summary": "隔离本地后端/Web交付演练按渠道参考由阶段6既有发布技能承接；生产与其他平台保留实际身份、保护和具体人类授权门槛。", "text_sha256": "fe6abd61ed217fe5b18331e978ff38d69a1f4b5863310dbca5f3ed2513d0dccf", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-9c6765f2d1a22de2", "source": "skills/README.md", "line": 30, "section": "SKILL 导航", "summary": "阶段 01 的[完成标准与六状态](../docs/workflows/01-demand-and-opportunity.md#机会状态与转换)以 workflow 为准；三个技能按缺口组合，复用机会主记录。完成只批准澄清投入，阶段 02/03 就绪后再由有权角色确认开发承诺。", "text_sha256": "844ab7ed605afcdaa209cafb65822c4965fd16af61bb22f30444ca1056894039", "kind": "instruction", "controls": ["lifecycle", "content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01", "GAP-02"]},
+    {"id": "REQ-9b32028ac2b5e056", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 32, "section": "SKILL 导航", "summary": "若不确定阶段，从“当前最需要做出的决定”开始：先判断价值用阶段 1，先确认可验收性用阶段 2，先确认技术可行性用阶段 3；进入代码、评审、发布、运行后依次使用阶段 4 至 8。", "text_sha256": "ccb4fd6a9ad5a0b4a8a3b8b8c0a9ec1dbd4c73716cf4854597d4eb536d777941", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
+    {"id": "REQ-f871bd7c8d7cc115", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 34, "section": "SKILL 导航", "summary": "在阶段 4 和 5 中，再按主要风险选择领域：移动端区分跨平台共享层与 iOS/Android/HarmonyOS 平台层，实际调用官方工具链时组合 CLI 执行 SKILL；Web 前端开发区分 UI/交互与状态/数据，验证区分功能兼容、视觉可访问性与性能；后端开发区分 API、领域数据与异步集成，验证区分契约、数据", "text_sha256": "41cb4d353c5385e21b0d781c390736fa7ee7ea67f851912ad439cc5e9d712e6b", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
+    {"id": "REQ-a16942b8662872b1", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 36, "section": "SKILL 导航", "summary": "项目首次采用或相关配置改变时，文档维护按采用与复验核对固定知识、入口覆盖和实际命令；独立文档验证核对实际任务读取/执行轨迹与当前证据，GitHub 平台沿用两个 bootstrap 技能。", "text_sha256": "9b4955c5750978a4099f9a06ba98e1776e222d511f455cd684735fffca791b43", "kind": "instruction", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
+    {"id": "REQ-f0cc406acf50d2ee", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 38, "section": "SKILL 导航", "summary": "后端/Web 风险选择、场景与证据交接遵循领域执行契约：阶段 3 固定触发/支持/预算，阶段 4 保存真实执行，阶段 5 按完整专项和非作者内容评审汇总；机器一致性不替代批准。", "text_sha256": "41955586943c62c9d34805801fbad7bf38d5ce839e4779c4500d57e07ce56622", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"id": "REQ-0a691fd2a4196973", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 40, "section": "SKILL 导航", "summary": "Harness 执行指标与持续复验按运行观察规范，由阶段 8 的效果度量、改进行动跟踪与手册演进承接；只读采集不替代实际独立核验。", "text_sha256": "13a629d0f871910c65f5d712ca1f4e8c3a3d8c38e9fc21208ef2bb5d15efc7bd", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"id": "REQ-9e586be5c6914d42", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 42, "section": "SKILL 导航", "summary": "隔离本地后端/Web交付演练按渠道参考由阶段6既有发布技能承接；生产与其他平台保留实际身份、保护和具体人类授权门槛。", "text_sha256": "fe6abd61ed217fe5b18331e978ff38d69a1f4b5863310dbca5f3ed2513d0dccf", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-c391e60823e7deae", "source": "templates/codex/AGENTS.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 5, "section": "Coding standards", "summary": "For every source-code change or review, use `$language-coding-standards`.", "text_sha256": "57e6d07de720bcd25e8b7aedfb9bd70200516c83251d59bc2196866d17a79955", "kind": "instruction", "controls": ["coding", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01", "GAP-02"]},
     {"id": "REQ-5994d87c1dfa971f", "source": "templates/codex/AGENTS.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 6, "section": "Coding standards", "summary": "`$language-coding-standards` is a repository prerequisite. If it is unavailable, do not claim compliance; request installation or use a checked-in equivalent be", "text_sha256": "d1323e48a07f5afa534b6590345115350012bebd8b2d5c7d8f51b8ea1816a244", "kind": "mandatory", "controls": ["coding", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01", "GAP-02"]},
     {"id": "REQ-4677ee5d6d6d0794", "source": "templates/codex/AGENTS.md", "execution_asset": "docs/software-development-lifecycle.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 7, "section": "Coding standards", "summary": "Read the common rules and only the references for languages touched by the task.", "text_sha256": "a3b4d2bc4b140147f51152dffe8b37d22989c0a4a75062d044fa81e484975d63", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
@@ -3963,6 +3983,305 @@
       "REQ-cc81d4b68e92319b",
       "REQ-eaad0934c139de97",
       "REQ-f3f186c8b51acaaf"
+    ]
+  },
+  {
+    "id": "REQ-955d1c884b7f41e3",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-7bc5f6cffca22dd7",
+      "REQ-06e9a2f444df89ad",
+      "REQ-bf9b148b4f0a2af9",
+      "REQ-bc1c2671d27827c5",
+      "REQ-4a0f9487d465204b",
+      "REQ-eecdd428953408a8",
+      "REQ-faf8e097274abc1b",
+      "REQ-3c77836e3f3f1268",
+      "REQ-c16901e194e303fd"
+    ]
+  },
+  {
+    "id": "REQ-afddb65e19bb1a9c",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-0449a3fceec7f790"
+    ]
+  },
+  {
+    "id": "REQ-a8b1d3cde6aac36b",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-779d2e0e94692647",
+      "REQ-4eae51f1baae5081",
+      "REQ-0345e99855dc00bf",
+      "REQ-161c845513c257f3",
+      "REQ-6b4cc27968b78ce8",
+      "REQ-f3a645520f6b1ab7"
+    ]
+  },
+  {
+    "id": "REQ-66af8a0ad082e4f3",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-779d2e0e94692647",
+      "REQ-4eae51f1baae5081",
+      "REQ-0345e99855dc00bf",
+      "REQ-161c845513c257f3",
+      "REQ-6b4cc27968b78ce8",
+      "REQ-f3a645520f6b1ab7"
+    ]
+  },
+  {
+    "id": "REQ-4d26efaeb14231c0",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-779d2e0e94692647",
+      "REQ-4eae51f1baae5081",
+      "REQ-0345e99855dc00bf",
+      "REQ-161c845513c257f3",
+      "REQ-6b4cc27968b78ce8",
+      "REQ-f3a645520f6b1ab7"
+    ]
+  },
+  {
+    "id": "REQ-3320261593a8dbc8",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-779d2e0e94692647",
+      "REQ-4eae51f1baae5081",
+      "REQ-0345e99855dc00bf",
+      "REQ-161c845513c257f3",
+      "REQ-6b4cc27968b78ce8",
+      "REQ-f3a645520f6b1ab7"
+    ]
+  },
+  {
+    "id": "REQ-495efd212889a47a",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-779d2e0e94692647",
+      "REQ-4eae51f1baae5081",
+      "REQ-0345e99855dc00bf",
+      "REQ-161c845513c257f3",
+      "REQ-6b4cc27968b78ce8",
+      "REQ-f3a645520f6b1ab7"
+    ]
+  },
+  {
+    "id": "REQ-94ddb35f23dc2290",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-17f7ec9c4c19d64e",
+      "REQ-81b40dc61b6603c9",
+      "REQ-4fd3f20618426c86",
+      "REQ-da04520302289691",
+      "REQ-c1cbc92378dc388d",
+      "REQ-4d2fc119208bff13",
+      "REQ-32a4da607bc8a0b8",
+      "REQ-9f8cb5fc4ddd581c",
+      "REQ-32b2093f2cc28b47"
+    ]
+  },
+  {
+    "id": "REQ-8808b150284b2119",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-84129c666c923e16",
+      "REQ-5e97e401bb71b9cb",
+      "REQ-4d1fa1a844b797ef"
+    ]
+  },
+  {
+    "id": "REQ-926afeb3d21c8fce",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-84129c666c923e16",
+      "REQ-5e97e401bb71b9cb",
+      "REQ-4d1fa1a844b797ef"
+    ]
+  },
+  {
+    "id": "REQ-6a3f77315e9e1580",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-84129c666c923e16",
+      "REQ-5e97e401bb71b9cb",
+      "REQ-4d1fa1a844b797ef"
+    ]
+  },
+  {
+    "id": "REQ-825337e3c2a80ca0",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-4804a0652616efb2",
+      "REQ-9329c39d5a904256",
+      "REQ-6181c619babf36c3"
+    ]
+  },
+  {
+    "id": "REQ-dbbffcc94088a142",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-4804a0652616efb2",
+      "REQ-9329c39d5a904256",
+      "REQ-6181c619babf36c3"
+    ]
+  },
+  {
+    "id": "REQ-df80dea4a90401e1",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-4804a0652616efb2",
+      "REQ-9329c39d5a904256",
+      "REQ-6181c619babf36c3"
+    ]
+  },
+  {
+    "id": "REQ-dfdd6111368ecd67",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1039b644a18e74ee"
+    ]
+  },
+  {
+    "id": "REQ-b1e6e19be6f3a77d",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-b259dd58cc963f92",
+      "REQ-2108a2adbf71d25e",
+      "REQ-7da1f6536ce991b9",
+      "REQ-be9d45c23c67acbf",
+      "REQ-8429e37692cd13ec"
+    ]
+  },
+  {
+    "id": "REQ-1c4ba270528b7110",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-b259dd58cc963f92",
+      "REQ-2108a2adbf71d25e",
+      "REQ-7da1f6536ce991b9",
+      "REQ-be9d45c23c67acbf",
+      "REQ-8429e37692cd13ec"
+    ]
+  },
+  {
+    "id": "REQ-1e52fc66dd876abd",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-b259dd58cc963f92",
+      "REQ-2108a2adbf71d25e",
+      "REQ-7da1f6536ce991b9",
+      "REQ-be9d45c23c67acbf",
+      "REQ-8429e37692cd13ec"
+    ]
+  },
+  {
+    "id": "REQ-6179aa778d2c5a81",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-b259dd58cc963f92",
+      "REQ-2108a2adbf71d25e",
+      "REQ-7da1f6536ce991b9",
+      "REQ-be9d45c23c67acbf",
+      "REQ-8429e37692cd13ec"
+    ]
+  },
+  {
+    "id": "REQ-3d3a21c976769907",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-194ca5e10331d833",
+      "REQ-ed059deabeef1fd8"
+    ]
+  },
+  {
+    "id": "REQ-2a4eb0f6c9f5c671",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-c2f3072d48075c23",
+      "REQ-53e606007a7cc49e",
+      "REQ-c961cdbbe15dfb77",
+      "REQ-be38e225f404019b",
+      "REQ-887babf7dbf63318"
+    ]
+  },
+  {
+    "id": "REQ-6dce1400ea08695b",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-4fa4b0c309243224",
+      "REQ-d03e5d695c6ec48b",
+      "REQ-64c023f41653376c",
+      "REQ-7ead443cce98418b",
+      "REQ-be3ca3b960395f06",
+      "REQ-52b7d10eb09585d9"
     ]
   }
 ]

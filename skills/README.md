@@ -27,6 +27,8 @@ CI 门禁、合入就绪和发布就绪技能按[质量门禁规范](../docs/qua
 | [07 运行与支持](07-operations-and-support/) | 服务已运行，需要监测、响应或支持用户 | [健康监测](07-operations-and-support/service-health-monitoring/SKILL.md)、[事件响应](07-operations-and-support/incident-triage-and-response/SKILL.md)、[安全/隐私事件响应与证据保全](07-operations-and-support/security-privacy-incident-response/SKILL.md)、[支持处置](07-operations-and-support/support-case-resolution/SKILL.md)、[运行维护](07-operations-and-support/operational-readiness-maintenance/SKILL.md) |
 | [08 度量与复盘](08-measurement-and-retrospective/) | 需要验证结果、复盘并推动流程改进 | [效果度量](08-measurement-and-retrospective/outcome-measurement/SKILL.md)、[交付复盘](08-measurement-and-retrospective/delivery-retrospective/SKILL.md)、[事件复盘](08-measurement-and-retrospective/incident-review/SKILL.md)、[行动跟踪](08-measurement-and-retrospective/improvement-action-tracking/SKILL.md)、[手册演进](08-measurement-and-retrospective/playbook-evolution/SKILL.md) |
 
+阶段 01 的[完成标准与六状态](../docs/workflows/01-demand-and-opportunity.md#机会状态与转换)以 workflow 为准；三个技能按缺口组合，复用机会主记录。完成只批准澄清投入，阶段 02/03 就绪后再由有权角色确认开发承诺。
+
 若不确定阶段，从“当前最需要做出的决定”开始：先判断价值用阶段 1，先确认可验收性用阶段 2，先确认技术可行性用阶段 3；进入代码、评审、发布、运行后依次使用阶段 4 至 8。
 
 在阶段 4 和 5 中，再按主要风险选择领域：移动端区分跨平台共享层与 iOS/Android/HarmonyOS 平台层，实际调用官方工具链时组合 CLI 执行 SKILL；Web 前端开发区分 UI/交互与状态/数据，验证区分功能兼容、视觉可访问性与性能；后端开发区分 API、领域数据与异步集成，验证区分契约、数据、性能、韧性与安全。跨领域变更使用通用 SKILL 维持整体切片、端到端证据与合入结论，并按需组合多个领域 SKILL。
