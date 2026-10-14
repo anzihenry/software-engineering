@@ -70,6 +70,7 @@ DELIVERY_TEMPLATES = {
 }
 # Conditional records supplement the eight-stage contract; exercises need not invent exceptions.
 SUPPLEMENTAL_DELIVERY_TEMPLATES = {"gate-exception.md": (4, 5, 6)}
+TRANSLATED_DELIVERY_TEMPLATES = {"opportunity-record.md", *SUPPLEMENTAL_DELIVERY_TEMPLATES}
 WORKFLOW_DELIVERY_TEMPLATES = {
     1: ("opportunity-record.md",),
     2: ("requirements-risk-package.md",),
@@ -1340,7 +1341,7 @@ def check_delivery_templates(root: Path) -> list[Issue]:
     all_templates = DELIVERY_TEMPLATES | SUPPLEMENTAL_DELIVERY_TEMPLATES
     expected_paths = {templates_root / name for name in all_templates}
     translations = {
-        templates_root / name.replace(".md", ".en.md") for name in SUPPLEMENTAL_DELIVERY_TEMPLATES
+        templates_root / name.replace(".md", ".en.md") for name in TRANSLATED_DELIVERY_TEMPLATES
     }
     actual_paths = set(templates_root.glob("*.md")) - {navigation}
     for path in sorted((expected_paths | translations) - actual_paths):
@@ -1393,7 +1394,7 @@ def check_delivery_templates(root: Path) -> list[Issue]:
             if f"- {label}：" not in content:
                 issues.append(Issue(path, f"missing visible traceability field: {field}"))
 
-        if name in SUPPLEMENTAL_DELIVERY_TEMPLATES:
+        if name in TRANSLATED_DELIVERY_TEMPLATES:
             translated = path.with_name(path.stem + ".en.md")
             if translated.is_file():
                 translation = translated.read_text(encoding="utf-8")
@@ -1408,6 +1409,32 @@ def check_delivery_templates(root: Path) -> list[Issue]:
                     issues.append(Issue(translated, "translation traceability contract mismatch"))
                 if f"]({translated.name})" not in content or f"]({path.name})" not in translation:
                     issues.append(Issue(translated, "delivery translation cross-links required"))
+                if "## Traceability\n" not in translation:
+                    issues.append(
+                        Issue(translated, "delivery translation traceability section required")
+                    )
+                for field, label in zip(
+                    TRACEABILITY_FIELDS,
+                    (
+                        "Record ID",
+                        "Record type",
+                        "Record status",
+                        "Owner",
+                        "Decision authority",
+                        "Risk level",
+                        "Related records",
+                        "Source/artifact version",
+                        "Environment and scope",
+                        "Evidence",
+                        "Created at with timezone",
+                        "Updated at with timezone",
+                    ),
+                    strict=True,
+                ):
+                    if f"- {label}:" not in translation:
+                        issues.append(
+                            Issue(translated, f"missing translated traceability field: {field}")
+                        )
 
     for phase, template_names in WORKFLOW_DELIVERY_TEMPLATES.items():
         workflow = root / "docs" / "workflows" / f"{PHASES[phase]}.md"
