@@ -174,7 +174,7 @@
   },
   {
     "path": "README.md",
-    "sha256": "b860576f608e75677712e08c89718dfeedc445efcd258f6179ed973e464ff1f4",
+    "sha256": "a2397a6cc46c9d3518e36fbcc89e6c9adda0c4a25bbca44801ac185d46d29788",
     "translation": null
   },
   {
@@ -1107,7 +1107,7 @@
     {"id": "REQ-4cf4a0eb693a3a7c", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 19, "section": "从这里开始", "summary": "验证目标项目采用与加载 | 采用与复验 | 固定知识来源、实际入口和命令；以独立任务及平台正反例验收", "text_sha256": "6b230ebec5bdf3b54f11f2dbced6a9c2b594df7a067e9a29cfd11e523ffc3820", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-2a39db485f05c213", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 20, "section": "从这里开始", "summary": "推进规范执行闭环 | Harness P0 落实计划 | 查看四项 P0 的实施顺序、交付物与验收条件；计划不代表目标项目已生效", "text_sha256": "9533c4e9231fa1f21432e589cba9656276afbd3dea6d400591828aeb00e19a09", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-a3d288d94afde3e1", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 21, "section": "从这里开始", "summary": "查看后端与 Web 的规范落实 | Harness P1 实施计划 | 查看四包完成状态与分步验证；本轮覆盖合成项目和隔离本地渠道", "text_sha256": "f77003cf0b822384d59cd8b6510cb0aa4feff7241ed2d7e7abbddc6c72bce415", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-6576aafbcb2f8d20", "source": "README.md", "execution_asset": "docs/phase01-optimization-plan.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 22, "section": "从这里开始", "summary": "优化需求与机会阶段 | [阶段 01 优化计划](docs/phase01-optimization-plan.md) | 查看已确认设计、四个待实施工作包和验收场景；计划交付不代表规则已实施", "text_sha256": "1b441074ba691494cc8ca0533823f17dfc9a17457af6606f4c73e88f6cd03fab", "kind": "context", "controls": ["lifecycle"], "capability": "reference", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-00b6946c09c7c053", "source": "README.md", "line": 22, "section": "从这里开始", "summary": "优化需求与机会阶段 | [阶段 01 优化计划](docs/phase01-optimization-plan.md) | 查看四包实施、分步验证和验收场景；本地验证不代表目标项目已采用", "text_sha256": "40fd65751c17a9ab1202dc5b9630b5612c89440d4228c6e0f10aac899fa71b91", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-602296832255729e", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 24, "section": "从这里开始", "summary": "跨项目采用先选择安装范围，再选择语言适配方式：", "text_sha256": "91f820f255d8f7555b2034845d4e7a244fe000e2ec162f184af33bad476a3bce", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-a61340e2a4aa44c4", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 26, "section": "从这里开始", "summary": "Profile：`governance` 只安装 PR/policy/ruleset，`incident` 安装安全入口与事故/复盘，`release` 安装通用 Draft Release，`full` 安装完整并集。", "text_sha256": "e6732126218704b39c66c581456efe3a134347f00ce8f6a38377080947ecfbcf", "kind": "instruction", "controls": ["governance", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-04"]},
     {"id": "REQ-2a3a9507fb567aa7", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 27, "section": "从这里开始", "summary": "Adapter：Python、Node、Swift、Go 使用内置本地检查与 Dependabot 生态；成熟项目使用 `external` 保留现有实现，或使用 `custom` 显式提供配置。", "text_sha256": "acaa10b1c714e4b11a16b3418d362afccba7760c78f05b3f61e33073aee684cc", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
@@ -5555,6 +5555,35 @@
       "REQ-f04f51f85bc47890",
       "REQ-f590ff6d1b036447",
       "REQ-fabe197e2286d87d"
+    ]
+  },
+  {
+    "id": "REQ-6576aafbcb2f8d20",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段01优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-00b6946c09c7c053",
+      "REQ-09b062424b40003e",
+      "REQ-2a39db485f05c213",
+      "REQ-2a3a9507fb567aa7",
+      "REQ-2ac2f97326c5f77d",
+      "REQ-458c48bae988423c",
+      "REQ-4cf4a0eb693a3a7c",
+      "REQ-5541fbf306111f24",
+      "REQ-602296832255729e",
+      "REQ-66103c8479e70f48",
+      "REQ-8ba4278ab1dc3a8a",
+      "REQ-9332fc387bb11417",
+      "REQ-9db4198894b4da2c",
+      "REQ-a3d288d94afde3e1",
+      "REQ-a61340e2a4aa44c4",
+      "REQ-ad80a64ccf122638",
+      "REQ-bb2c75541834acb2",
+      "REQ-cc81d4b68e92319b",
+      "REQ-eaad0934c139de97",
+      "REQ-f3f186c8b51acaaf"
     ]
   }
 ]
