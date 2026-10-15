@@ -73,7 +73,7 @@ Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md
 
 workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见[内容治理](docs/content-governance.md)；过期内容由仓库自检阻止合入。
 
-阶段06维护见[优化计划](docs/phase06-optimization-plan.md)；发布的候选、授权、批次验证观察及运行接收以[发布流程](docs/workflows/06-release-and-change-management.md)为准。
+阶段06维护见[优化计划](docs/phase06-optimization-plan.md)和[验证报告](docs/phase06-validation.md)；发布的候选、授权、批次验证观察及运行接收以[发布流程](docs/workflows/06-release-and-change-management.md)为准。
 
 ## 仓库自检
 

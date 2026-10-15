@@ -174,7 +174,7 @@
   },
   {
     "path": "README.md",
-    "sha256": "ed40b4a1ca644db8ebe58cbb13fbfe8e7c072995ece98d2698e4f89221e68982",
+    "sha256": "9b831ca54bfdffa77f7f0748bf354383f4c3a60e0b3677fca0c1ac5e2d32533c",
     "translation": null
   },
   {
@@ -269,7 +269,7 @@
   },
   {
     "path": "docs/local-delivery-channel.md",
-    "sha256": "93113f467cadc18c28788b28053b22bf4c7c2dcba99c6714760de751da55830f",
+    "sha256": "693d8bdf25f33824ebc5fb1a11d5afb7c487a343e471a46303c9b5967f517e05",
     "translation": null
   },
   {
@@ -1139,7 +1139,7 @@
     {"id": "REQ-02f77c1bf293cdaf", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 70, "section": "三层能力边界", "summary": "项目文档治理见项目文档规范、双语模板与接入说明。它们是面向目标项目的第一层 harness 资产，已接入入口、八阶段 workflow 与文档维护/独立验证 SKILL；目标项目检查器与 CI 模板已提供，实际平台门禁须由项目接入并验证。", "text_sha256": "6bc6e6b410614da67752734b6beb393dc1c0522bbbef6f2d1896cdfc50c3c9ab", "kind": "mandatory", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
     {"id": "REQ-5bc4ba4b9f6325cb", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 72, "section": "三层能力边界", "summary": "Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md)，当前覆盖 TypeScript 7、ArkTS、Python 3.14、Swift 6.4 及以上、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20。", "text_sha256": "803936af90ef34532755de59151d79bc132f3a0f484750e86c433e889b9485da", "kind": "instruction", "controls": ["coding"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
     {"id": "REQ-44d2ad808b8491b7", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 74, "section": "三层能力边界", "summary": "workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见内容治理；过期内容由仓库自检阻止合入。", "text_sha256": "0d329caea73014c6ed6c07f53a829deebbe5198bab4f4119456baaff3941efc8", "kind": "instruction", "controls": ["content", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01", "GAP-02"]},
-    {"execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-b6c41f29e43d682d", "source": "README.md", "line": 76, "section": "三层能力边界", "summary": "阶段06维护见[优化计划](docs/phase06-optimization-plan.md)；发布的候选、授权、批次验证观察及运行接收以[发布流程](docs/workflows/06-release-and-change-management.md)为准。", "text_sha256": "e2ea9c3540f926cf56ccb8d3670f0c87cdb56f2ce431fe97652f32f37ea75e20", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-e15c222c71860931", "source": "README.md", "line": 76, "section": "三层能力边界", "summary": "阶段06维护见[优化计划](docs/phase06-optimization-plan.md)和[验证报告](docs/phase06-validation.md)；发布的候选、授权、批次验证观察及运行接收以[发布流程](docs/workflows/06-release-and-change-management.", "text_sha256": "b0e07e634bfc69dfe7aab34e77f49ea0a6be7973b6a51cba85e5c1380744d74f", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-705f9b7d1eb51352", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 80, "section": "仓库自检", "summary": "仓库使用 Python 3.14 执行确定性的结构与格式门禁，覆盖 YAML 解析、GitHub 自动化权限与固定 Action、SKILL frontmatter、workflow/SKILL 内容治理和复审期限、交付物模板及追溯契约、端到端演练覆盖、目录与名称一致性、站内相对链接、导航/workflow 覆盖以及 ", "text_sha256": "3ad1378033ed64f36da2f56ec985409fa7a28395f84d95b963fc8fd727bce9db", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-2bb8523e1b4803f7", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 82, "section": "仓库自检", "summary": "日常开发优先使用统一的本地开发入口：", "text_sha256": "363fbcea48349aae10b468f42dd1bde252f5aed239bd5220226064ea19687487", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-a738d61e7cdd8cad", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 89, "section": "仓库自检", "summary": "Dependabot 每周为 Python 开发依赖和固定 SHA 的 GitHub Actions 创建更新 PR；更新仍须通过相同门禁并由人类审查后合入。", "text_sha256": "5ad3b795fcac58e99b547b756de668353f50b281ef69bef4fbea75f427e07239", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
@@ -1618,6 +1618,7 @@
     {"id": "REQ-5c65daf1d2257fba", "source": "docs/local-delivery-channel.md", "execution_asset": "docs/local-delivery-channel.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 36, "section": "健康、失败与恢复", "summary": "异常阶段stage.json、逐次失败响应与进程日志保留；browser collector由独占Popen/进程组持有，中断通知既有Playwright关闭其自身Chromium组，有限等待/必要时强制停止本次组，保存partial stdout/stderr、可取得的部分浏览器报告和实际returncode。强制f", "text_sha256": "215084c7ebc8eb65124f0b985eebf3f719ad87468a49c01c5ac47437510d0c6b", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-0afd5c099c809394", "source": "docs/local-delivery-channel.md", "execution_asset": "docs/local-delivery-channel.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 44, "section": "执行与交接", "summary": "实际浏览器工具路径按领域参考发现已有安装，通过NODE_PATH/REFERENCE_CHROMIUM使用；不安装新生产依赖。REFERENCE_URL仅接受http/127.0.0.1根路径，无凭据/查询/片段；实际不同端口服务来自本次子进程。`--browser-timeout`在40秒内指定受控采集截止；`--c", "text_sha256": "1439e4f36ab25f4b0915f3a7c93515ee6bf780ac3d46297ca7b9d38f9943f28d", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-e38393abb5c16e17", "source": "docs/local-delivery-channel.md", "execution_asset": "docs/local-delivery-channel.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 46, "section": "执行与交接", "summary": "使用双语渠道报告，记录授权/预案、候选与不可变制品、构建/配置/依赖/工具、目标与逐阶段raw、健康/API/浏览器、失败停止/恢复/取消、剩余限制和独立核准。通过仅表示指定本地渠道演练满足声明范围；main合入、正式发布、生产和其他渠道另行判断。P1-04将核对采用/升级/真实GitHub门禁及不可变证据保留，不预先", "text_sha256": "a562b9801e541d163bb1fe7cbb6b961f34bef4f52cbad8afa09032454c355d0e", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "docs/local-delivery-channel.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-0ba8d8538cc25447", "source": "docs/local-delivery-channel.md", "line": 50, "section": "执行结果与渠道验收的区别", "summary": "现有CLI允许不传browser-script；此时restored/退出0只证明已执行的HTTP制品/进程/恢复子范围，不证明完整Web渠道验收。调用者必须逐项核对实际报告的覆盖；Web候选和恢复缺真实浏览器证据仍按上文保持完整渠道验收阻塞，不能用HTML200或CLI退出码替代。仅HTTP机制试用可记录自身范围通过", "text_sha256": "c4510aa4608d887aee9756a1b59fa56a20cc7019e4e5ef64d5af5b34fa37beff", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-61a359f40ae1a0e6", "source": "docs/local-development.md", "execution_asset": "docs/local-development.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 3, "section": "本地开发入口", "summary": "仓库以 Python 3.14、`requirements-dev.txt` 和 `pyproject.toml` 为可执行开发基线。激活目标虚拟环境后，在仓库根目录运行统一入口：", "text_sha256": "5a9852e388e0092e2b53aaa4a5bbfaae8f47ba2cbc091462a155dd24835ed0ea", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-b27c7c8c5e5d46da", "source": "docs/local-development.md", "execution_asset": "docs/local-development.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 10, "section": "本地开发入口", "summary": "入口根据自身位置解析仓库根目录；从其他目录调用时可以使用它的绝对路径。", "text_sha256": "e7ac5f67eca26aceb85266701b09e369b30f67384f8bf83186150464030fbb93", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-4b7d0ecec846214c", "source": "docs/local-development.md", "execution_asset": "docs/local-development.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 12, "section": "本地开发入口", "summary": "`setup` 安装固定版本的开发依赖；`check` 按 CI 相同顺序执行 Ruff 静态检查、Ruff 格式检查、全部单元测试和仓库自检。入口在任一步失败时立即返回该命令的非零状态，不掩盖后续门禁。", "text_sha256": "8411b3f032c03adb7526201be75b5a83986f584b19e52344d5b7f5960805b0fc", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
@@ -16388,6 +16389,16 @@
     "disposition": "replaced",
     "replacements": [
       "REQ-51dc51a2f356d987"
+    ]
+  },
+  {
+    "id": "REQ-b6c41f29e43d682d",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段06优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-16 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-e15c222c71860931"
     ]
   }
 ]
