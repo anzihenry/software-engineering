@@ -159,6 +159,8 @@ GitHub 某些 Environment 审批、等待或密钥能力受仓库可见性和套
 
 ## 固化为 SKILL
 
+八技能分别消费本流程的候选组合/有效批准、批次中断、四类健康、恢复验证及八项收口要求；GitHub入口编排，叶技能只负责对应决定或已有授权动作，主发布记录统一追溯。
+
 | 行为 | SKILL | 适用边界 | 产出 |
 | --- | --- | --- | --- |
 | 编排 GitHub 小团队从候选到发布收口 | [`github-release-management`](../../skills/06-release-and-change-management/github-release-management/SKILL.md) | 独立开发者或微型团队需要用 GitHub 串联候选、环境、部署、健康、恢复和 Release 时 | 当前发布状态、门禁、授权和下一动作 |
