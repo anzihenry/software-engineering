@@ -63,7 +63,7 @@ Git 项目的日常开发默认调用[Git 任务分支管理](skills/04-implemen
 
 项目文档治理见[项目文档规范](docs/documentation-standard.md)、[双语模板](templates/documentation/README.md)与[接入说明](docs/documentation-integration.md)。它们是面向目标项目的第一层 harness 资产，已接入入口、八阶段 workflow 与文档维护/独立验证 SKILL；目标项目检查器与 CI 模板已提供，实际平台门禁须由项目接入并验证。
 
-Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md)，当前覆盖 TypeScript 7、ArkTS、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20。
+Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md)，当前覆盖 TypeScript 7、ArkTS、Python 3.14、Swift 6.4 及以上、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20。
 
 workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见[内容治理](docs/content-governance.md)；过期内容由仓库自检阻止合入。
 
