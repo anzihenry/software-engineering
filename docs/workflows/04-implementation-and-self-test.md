@@ -21,7 +21,7 @@ review_by: "2027-02-26"
 1. **准备变更**：修改任何代码、文档或配置前调用 [Git 任务分支管理](../../skills/04-implementation-and-self-test/git-branch-management/SKILL.md)，按[分支规范](../git-branch-workflow.md)检查分支、工作区和任务归属，fetch 后创建/复用功能分支；默认/受保护分支不承载任务修改或新提交。确认实际基线、环境和依赖版本，将任务与需求、设计和风险记录关联；发现误提交先按规范安全恢复。
 2. **实现最小切片**：优先编写可独立评审、可回退的变更；遵循既有边界、契约和安全处理方式，不在同一变更中夹带无关重构。按主要影响域进入移动端、Web 前端或后端实现与自测；跨域变更保持共同验收标准和契约可追溯。
 3. **处理数据与配置**：对迁移、配置和密钥使用受控机制；迁移应评估向前兼容、回填、恢复和执行时长，密钥不得进入代码或日志。
-4. **编写并运行测试**：按测试策略覆盖正常、边界、失败和授权场景；运行格式化、静态分析、类型检查、单元测试及适用的本地集成检查。
+4. **编写并运行测试**：调用[语言编码规范](../../skills/04-implementation-and-self-test/language-coding-standards/SKILL.md)确认实际配置，按其[风险验证表](../../skills/04-implementation-and-self-test/language-coding-standards/references/common.md#按变更风险选择验证)把受影响行为映射到检查；覆盖正常、边界、失败和授权场景，运行项目必过格式化、静态分析、类型检查、构建、单元测试及适用的本地集成检查，保留当前对象与原始结果。
 5. **更新交付信息**：同步接口契约、运维说明、用户文档和变更说明；记录未自动化验证的项目及原因。
 6. **发起评审**：PR 描述须包含变更目的、范围、风险、测试证据、发布影响和回滚注意事项。
 
@@ -60,7 +60,7 @@ review_by: "2027-02-26"
 | 准备/复用任务分支、安全同步或恢复误提交、合入后清理 | [`git-branch-management`](../../skills/04-implementation-and-self-test/git-branch-management/SKILL.md) | Git 项目修改前或执行分支操作时 | 任务分支、同步/恢复映射与安全清理证据 |
 | 采用文档规范、分析影响并同步双语内容 | [`documentation-maintenance`](../../skills/04-implementation-and-self-test/documentation-maintenance/SKILL.md) | 文档采用、迁移或变更交付准备 | 固定知识/入口覆盖与实际命令的采用记录、双语更新、影响清单、当前快照和待独立验证记录 |
 | 编排领域不明确或跨领域的实现切片与整体自测 | [`implementation-and-self-test`](../../skills/04-implementation-and-self-test/implementation-and-self-test/SKILL.md) | 已有评审通过的设计与任务，需维持整体范围和证据关联时 | 可构建变更、对应测试和整体自测结论 |
-| 应用语言编码规范和最佳实践 | [`language-coding-standards`](../../skills/04-implementation-and-self-test/language-coding-standards/SKILL.md) | 编写、修改或评审 TypeScript、ArkTS、Python、Swift、Kotlin、Go、SQL、zsh 或 C++ 代码时 | 与项目配置一致的实现、检查证据和已知偏差 |
+| 确认实际配置、应用语言规范并选择风险验证 | [`language-coding-standards`](../../skills/04-implementation-and-self-test/language-coding-standards/SKILL.md) | 源码实现、重构或评审；按实际语言和跨语言边界加载参考 | 实现交接的验证映射/当前报告，或评审的具体风险/证据缺口；不批准合入 |
 | 实现共享移动逻辑或协调多平台交付 | [`mobile-implementation-and-self-test`](../../skills/04-implementation-and-self-test/mobile-implementation-and-self-test/SKILL.md) | 涉及跨平台框架、共享业务逻辑或 iOS/Android/HarmonyOS 一致性时 | 跨平台移动变更、平台影响和整体自测证据 |
 | 通过官方移动端 CLI 执行构建、测试和证据采集 | [`mobile-cli-execution`](../../skills/04-implementation-and-self-test/mobile-cli-execution/SKILL.md) | Agent 需要实际调用 Apple/Android/HarmonyOS 工具链、管理目标设备或保存原始产物时 | 可重复命令、目标身份、原始结果与安全收口记录 |
 | 实现并自测 iOS/iPadOS 平台行为 | [`ios-implementation-and-self-test`](../../skills/04-implementation-and-self-test/ios-implementation-and-self-test/SKILL.md) | 涉及 Apple 生命周期、并发、系统能力、数据保护或 Xcode target 时 | iOS 平台变更、测试和代表性设备自测证据 |
