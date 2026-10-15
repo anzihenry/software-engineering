@@ -54,7 +54,7 @@ updated: "2026-10-15"
 | 工作包 | 主要文件与产出 | 依赖/规模依据 | 责任角色 | 状态 |
 | --- | --- | --- | --- | --- |
 | S02-01 | 阶段 02 workflow 维护七项门禁、五状态、未知/依赖/风险和变更；生命周期、阶段 03/导航引用 | 已确认设计；中：跨阶段语义 | delivery-lead / process-owner | 已完成 |
-| S02-02 | requirements-refinement、change-risk-assessment、delivery-scope-alignment；描述、输入输出/停止和实际组合使用 | S02-01；中：三个技能决策及路由 | delivery-lead / implementation-lead | 待实施 |
+| S02-02 | requirements-refinement、change-risk-assessment、delivery-scope-alignment；描述、输入输出/停止和实际组合使用 | S02-01；中：三个技能决策及路由 | delivery-lead / implementation-lead | 已完成 |
 | S02-03 | 需求包中英模板、基线/变更/交接、旧记录复核，英文配对检查器和行为负例 | S02-01/02；中：模板/翻译/消费者/代码联动 | implementation-lead / quality-lead | 待实施 |
 | S02-04 | 现有演练阶段 02、原始场景、独立前向输出、分步验证及最终收口 | S02-01–03；中：正反例及非作者核对 | quality-lead / process-owner | 待实施 |
 
@@ -96,3 +96,7 @@ updated: "2026-10-15"
 作者 `/root` 更新阶段 02 workflow 的七项标准、验收、未知/依赖、风险/节点、基线变更、五状态及交接；生命周期和阶段 03/技能导航引用，避免重复制定规则。后续技能/模板尚待适配，不宣称整阶段已验收。用户为方向决策人，非作者实际评审身份与快照见本包报告。
 
 九领域影响：研究不适用；产品/设计/工程无需更新（无目标行为/架构/代码变化）；指南已更新（workflow）；计划已更新；目标项目专题/发布不适用；导航已更新（技能入口/来源清单）。均为中文 harness；四检查、非作者场景判断与摘要绑定本步外部证据目录 `S02-01`，实际通过并独立复核后提交，相关变化需重验。
+
+### S02-02 实施记录
+
+三技能按范围/验收、风险、依赖与决定区分触发；引用 workflow 统一规则，去掉独立输出表和冲突状态。明确数据迁移高风险、拟议控制与实际验证、七项和批准区分。产品/设计/工程/指南相关执行入口及导航已更新；研究不适用（无实际研究），计划更新本记录，专题不适用（harness资产），发布不适用（未发布）。语言仅中文 harness 技能，无目标项目译文变更；目标项目双语要求保留。quick_validate、四检查、独立场景与摘要证据位于 `/private/tmp/phase02-implementation-evidence/S02-02`，以实际报告为准。

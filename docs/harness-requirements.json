@@ -354,17 +354,17 @@
   },
   {
     "path": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md",
-    "sha256": "9f0a1c36394de0bbb331f60f4eb5e48a509c6c45c0fb18f43d4794adf22a3bc3",
+    "sha256": "b44a36161ee47a5d2c292c9893650249f63f99174ad68af71d0fe9a3441f88ce",
     "translation": null
   },
   {
     "path": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md",
-    "sha256": "f0480f8094375259e2be2984b97a6630b3f261d7825d5c352baa898cf6e652af",
+    "sha256": "dfe96b57182cbf55a19407f9306678bb7a22ada598266d008097e97f42a27cd3",
     "translation": null
   },
   {
     "path": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md",
-    "sha256": "b2901f836a8a13aa6483d59ec25823de4ea6a00f16a1300e9465656592c27d9d",
+    "sha256": "469c31ea655a6751f29e83f6c5c6081d4ac25ed99d06ee2880d5696154a269a0",
     "translation": null
   },
   {
@@ -824,7 +824,7 @@
   },
   {
     "path": "skills/README.md",
-    "sha256": "cb51468a62fb6495b762b88bdacd95ab61d6a21ccdb866828433c079c5dbb3aa",
+    "sha256": "9e2b0fb1362bbd95c64f39e6fa43ec0b083e8d051a3af489dd63f70c5c72a5e2",
     "translation": null
   },
   {
@@ -2123,45 +2123,30 @@
     {"execution_asset": "skills/01-demand-and-opportunity/problem-framing/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-781a70fb32942c01", "source": "skills/01-demand-and-opportunity/problem-framing/SKILL.md", "line": 27, "section": "有限验证与轻量路径", "summary": "到达上限、结果无结论、出现新风险或假设已被推翻时停止扩大，记录实际结果/限制，交决策人选择补充、候选、延后、关闭或在满足六项标准时批准澄清。追加验证投入需重新确认，不无限调研，不把验证完成自动转为开发承诺。访谈、外部实验、生产数据访问等仅在实际授权和可用条件下开展，模拟材料注明模拟。", "text_sha256": "25b441d7742697458c134595bd87e0f48a014814b404e95c6a5f77fdc4b37edc", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"execution_asset": "skills/01-demand-and-opportunity/problem-framing/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-826bf3f36d8e821b", "source": "skills/01-demand-and-opportunity/problem-framing/SKILL.md", "line": 31, "section": "输出与交接", "summary": "沿用机会主记录，输出问题/来源、期望结果及观察方式、初步范围/非目标、约束/风险、关键与非关键未知、有限验证安排/真实结果（如适用），以及六项标准尚缺什么、建议去向和需谁确认。必要附件链接引用，机会状态和负责人不复制。", "text_sha256": "f47be230ad78d5a3053bd2c5bec2d2f3b31a984e63dec2a0f0068a4e1820b909", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"execution_asset": "skills/01-demand-and-opportunity/problem-framing/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-9630a163d85a75bf", "source": "skills/01-demand-and-opportunity/problem-framing/SKILL.md", "line": 33, "section": "输出与交接", "summary": "六项标准齐备且关键未知已处理时可建议进入澄清，实际批准、责任人和时间由有权决策人记录；也可交 `opportunity-prioritization` 比较容量。价值不足或无法定义合理判据时，说明证据并建议延后/关闭。已批准范围扩大或价值失效时关联原决定回评，保留下游承诺影响。不在此技能细化完整验收、实现方案或工期。", "text_sha256": "516e768b615765f7eda4e37e5d987b96a12d2f3af5cfb8c37ec8482a5d8810d0", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-2f4f7dc05dd92d80", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 13, "section": "变更风险评估", "summary": "判断变更需要何种证据、评审和发布控制，以匹配其影响面。此 SKILL 不替代安全、隐私、合规或架构专家的正式评审，也不批准风险例外。", "text_sha256": "0db8f5c4b3224f1ed7f39991ad7c3ef355350bc4122efdd6e8996d0f92339a69", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-2f1d4e9172a2378e", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 17, "section": "输入", "summary": "需求包、涉及的系统/数据/接口、非功能要求和已知依赖。", "text_sha256": "4fdefbe27eb5ea0aaf823bc19d29378969d7dae866c1eb114628f35bc700cb78", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-a718c9f2764b895d", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 18, "section": "输入", "summary": "当前服务关键性、用户影响、已有控制措施和相关历史事件（如有）。", "text_sha256": "af832d484bd43f93650d2f8e1fa7718d1e69aef30bb1e403b3f3e4cc6c1edd07", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-98171b37881c5095", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 22, "section": "工作方式", "summary": "1. 识别影响对象与故障后果：用户、收入、数据完整性、可用性、法律/合规义务、外部合作方及品牌信誉。", "text_sha256": "11e8508746616077e87edc1ec02853e24936153bf6525e04e3550cf6beedd427", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-52b0580e38bc89a5", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 23, "section": "工作方式", "summary": "2. 检查高风险触发项：身份或权限、资金操作、敏感数据、对外 API/契约、不可逆数据迁移、关键基础设施、重大安全暴露或严格监管要求。命中任一项时，默认按高风险候选处理。", "text_sha256": "cdb54a7c550e56dd5c54b8df70a6925043ea1d71bb8c05d1588386aebe699d54", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-c91c4e64cd1d2ab5", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 24, "section": "工作方式", "summary": "3. 评估影响范围、可逆性、检测能力和恢复能力。无法快速发现或恢复的变更应提高风险等级，即使预计发生概率较低。", "text_sha256": "c3a6686f41a9b482d3dc4938cc1b70687cf56693bc4a2a2f79e8d3b42bbf16e2", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-2ba9015e5766c6e0", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 25, "section": "工作方式", "summary": "4. 给出低、中或高的建议等级，并逐项说明证据、假设和可降低风险的控制措施；未知因素应倾向于保守处理或先补证据。", "text_sha256": "b6af9af49c524014a01c306556fa761c76ffe333cbac4f008f07aff2205ceca5", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-7b7fac3df64cc724", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 26, "section": "工作方式", "summary": "5. 将等级映射为最低门禁：", "text_sha256": "4fafe451d39a817eca17b48373451188babf00eb93fb5924834809ab44b43e4d", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-b348913f47277fa3", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 27, "section": "工作方式", "summary": "低：变更说明、相关自动检查、代码评审。", "text_sha256": "3b0d53bf0e90bdd3c391fa908991b49f7c869d97c86918367aa5800c57cffef7", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-1c1ce3e4bb3e788a", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 28, "section": "工作方式", "summary": "中：低级要求，加验收标准、测试证据、CI 和发布记录。", "text_sha256": "39a6530930260725b1abd8ce0c4688b0731fb66555095b11f6b2f3b95775e08c", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-95419d6ec02e179b", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 29, "section": "工作方式", "summary": "高：中级要求，加设计评审、安全/合规评审、渐进发布及经验证的回滚方案。", "text_sha256": "4bf5365aba52d1c4e258450651a2c7a97bc8d3324eff44d549872239df7417c6", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-507310d273446656", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 30, "section": "工作方式", "summary": "6. 明确需要参与的角色、待完成的评审和不可接受的剩余风险，交由具有相应权限的负责人决定。", "text_sha256": "2bbd3f3e8c01e16d9bf55b0b4316724ebb4b4d8824d05c16eff9b3b522b45f1a", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-06b8e71068bffdb9", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 50, "section": "停止条件", "summary": "当建议等级、理由、必需门禁和责任方清晰时，交给范围与依赖对齐及后续设计。", "text_sha256": "56ef803b7f7a15948f336c61888b5dac04b14dfaf45a04de8b9b9861986097d3", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-2b9f00876f889c3c", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 51, "section": "停止条件", "summary": "当高风险触发项的影响无法判断时，停止降级结论，要求安全、合规、架构或运维专家补充评估。", "text_sha256": "1c19b90591906edccfbc38b2155620e8e53d6b5b678e79c096054f0f800e4106", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-8fef3e46c3492350", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 52, "section": "停止条件", "summary": "不以“尚未发生事故”或“工期紧张”作为降低风险等级的理由。", "text_sha256": "e8ff41411751b8f2a4aac6a5c9c09eaa14c22e2a57090299aee91717f52e92f2", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-f833b32c9fca5c82", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 13, "section": "交付范围与依赖对齐", "summary": "确认交付项的边界、责任和依赖已被相关方理解，并明确是否具备进入方案阶段的条件。此 SKILL 不替其他团队接受承诺，不创建未经确认的排期。", "text_sha256": "491cfc3fbfb91249c29216cecb1086fcbf0f11fe97b57b85039a55f66b84c7ef", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-752e8b39401c1bb9", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 17, "section": "输入", "summary": "需求包、风险评估、业务优先级和已有计划约束。", "text_sha256": "ce3f3a5b627b3988825252bba3872bd2c0e55aa1c2221f51b03fdb60aa66dbd0", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-4edebdbed7767f11", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 18, "section": "输入", "summary": "已知上下游系统、团队、第三方、数据源、许可证、环境和政策依赖。", "text_sha256": "4d11015732a9af9e4a045a5a81f24a2613d65c9a358976eae6439a42fa830109", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-9136e799597e9038", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 22, "section": "工作方式", "summary": "1. 区分本次交付范围、明确非目标和后续候选项；将过大的目标拆为可单独验收和发布的切片。", "text_sha256": "a6fc45f02443e1d7bc349b0760ffdc02a0ed73a1abeda0396f13f8ac8e27e851", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-4b57a3ae1d1f66d7", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 23, "section": "工作方式", "summary": "2. 建立依赖清单，写明每个依赖的交付内容、提供方、消费方、负责人、所需时间点、状态和失败影响。不要把“某团队会配合”视为已确认依赖。", "text_sha256": "029d0ea2bdde0c94b4922545991c53360f572cfa3f42a4914fd8a7603b7d2b7b", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-1e9fd0ab3b33833a", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 24, "section": "工作方式", "summary": "3. 对齐责任边界：谁决定业务规则、谁提供接口/数据、谁验证、谁发布、谁在运行期支持。责任未知时保留待决项。", "text_sha256": "7aa09b44af8e55f9e1fedb3d57178d937957af5c4eeceade23cdf7017ffeaadd", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-ab12c11dcd0e7f9e", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 25, "section": "工作方式", "summary": "4. 与相关方核对验收含义、风险门禁、约束和依赖；记录确认、异议与尚未达成共识的事项。", "text_sha256": "f6cfb7044639ac7d8f4a6de56d3c2c0d94a1cf54388e4b071e93c3b26edae463", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-fa6fb5b9e99bd22a", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 26, "section": "工作方式", "summary": "5. 评估可投入性：范围可控、关键依赖有所有者且时序可行、高风险事项已进入相应评审队列时，建议进入方案；否则给出最小解阻动作。", "text_sha256": "3213a9c7636bffc65a80b65a2a2e2e56b338cea8d4e1310c3b484e00a4afbcb9", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-9ab2b79a6b31b1ee", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 48, "section": "停止条件", "summary": "当范围、非目标、关键依赖、责任和进入方案条件都已透明时，输出可投入性结论。", "text_sha256": "14d3be965e12782968ac0f4fdfe364c20a936b071824f6777f0011306fe2aabc", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-5cae937632580217", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 49, "section": "停止条件", "summary": "当关键依赖无负责人、验收含义冲突或范围仍无法控制时，不建议进入方案；明确最低解阻动作并回流。", "text_sha256": "008a1228a8ca16669da76266bb5e54fc79dd256115979755abab29a0b5af4143", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-d5380adf258514df", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 50, "section": "停止条件", "summary": "不在没有相应所有者确认的情况下，把依赖标记为已承诺。", "text_sha256": "a97d8a23531fd2d6b524159d0fe415a960065de782f59c9333ebd4e083d32b46", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-54aa84695e429b99", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 13, "section": "需求细化", "summary": "将已经界定的问题转为能够被开发、测试和业务共同理解的需求包。此 SKILL 描述预期结果，不设计技术实现，也不替代业务负责人确认范围。", "text_sha256": "e9b7c74b1dbe3dc31a7383c29295aca9602815860eb978a286cc5a36ce210361", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-4e6f499d41ef7f1b", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "line": 17, "section": "输入", "summary": "- 按[阶段 01 门禁](../../../docs/workflows/01-demand-and-opportunity.md#决策门禁)批准投入澄清的主记录：问题/证据、可定性期望结果、初步范围/非目标、约束/风险、指定方案/假设性质和批准决定；接收待明确基线及有负责人/下一步的非关键未知，在本阶段细化验收，不", "text_sha256": "348542fc77c8dd6a38d19383b737539b9711c6aec49dd50d2cf23ea2f73db55c", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-a690c8035f4fe38c", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 18, "section": "输入", "summary": "已知的用户旅程、业务规则、数据政策、现有能力及相关反馈。", "text_sha256": "ddeac35841de98feb03030e0d78a4480622ee1114833fd5bdbd754c18809df13", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-ba45f1dea07b1092", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 22, "section": "工作方式", "summary": "1. 以用户或系统行为为单位拆分最小交付项；每项应能独立产生价值或降低明确风险，避免按前端、后端等技术层机械拆分。", "text_sha256": "05cc3beea524b89dbc8c3175cbc58781c51457704495a78329927a02ca705198", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-560b4b4b8011b055", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 23, "section": "工作方式", "summary": "2. 对每项写清参与者、前置条件、触发、期望结果、失败/边界情况和不在范围内的行为。若同一规则在不同角色或状态下有差异，显式列出差异。", "text_sha256": "0f85f013915e5645513faa0ffdd24a7fbc1d24a90a1e02cc24820f43a245c86c", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-b6e3d4b7399c9b0d", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 24, "section": "工作方式", "summary": "3. 编写可观察、可判定的验收标准。标准应描述结果而非指定内部实现；不能被合理验证的标准需回到澄清，不以模糊词替代。", "text_sha256": "fd0f7e33d95f3e793c435660ea4ac6e8c16f1beb7daf103191425de55b3b4432", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-1af2ce71b3d5a1dc", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 25, "section": "工作方式", "summary": "4. 提取适用的非功能要求：性能、可用性、可靠性、可访问性、数据正确性/保留、审计、兼容性或本地化。没有明确需求时标注待确认，不默认“无要求”。", "text_sha256": "4a8b91fa39151cdb392fe6c186856bb9925277d8951db135843a943da98e2ede", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-26d965d2164b4626", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 26, "section": "工作方式", "summary": "5. 建立追溯：每个交付项关联原问题、成功指标和已知约束；识别仍会阻塞开发、验收或发布的未知项。", "text_sha256": "464fd6450d34038254fc8e5b78a3405ae26161382b6297635497486294761322", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-86b94cbca21ecbfb", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 27, "section": "工作方式", "summary": "6. 检查需求包是否引入了新目标或实现假设。若有，回写问题框架或列为待决决策，不静默扩展范围。", "text_sha256": "edfec8a1d2c2919198c24d5fda9a59660f9cdae795871dbed38cea4836ea1efb", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-9226eb60b1150c1b", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 31, "section": "文档交付要求", "summary": "需求准备时调用 `documentation-maintenance` 明确目标项目采用配置、专题/Issue 归属及初步文件级影响。需求变化需同步中英文，生效规则回写 product；按规范与接入说明执行。", "text_sha256": "28fc5d8d1edc055832d5123485c7f827a82bb4c2e34867e9491d8a720e785faa", "kind": "instruction", "controls": ["documentation", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
-    {"id": "REQ-4cf3760f62be3101", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 55, "section": "停止条件", "summary": "当每个交付项具备可判定验收标准、明确边界和已标注的非功能要求时，交给风险评估与范围对齐。", "text_sha256": "d53b30102a36b90f784e82ead859275168993a91bb0716d78ce4087c8ba4c6ca", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-04471c46789751a9", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 56, "section": "停止条件", "summary": "当关键业务规则、用户对象或成功结果不明确时，停止细化，返回 `problem-framing` 或请求业务澄清。", "text_sha256": "b3117afb56e090a836e97e7585009be04da14e30084e252cd564ffac1741d0a8", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"id": "REQ-0a9dfa8713cfa9d9", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 57, "section": "停止条件", "summary": "不在本 SKILL 中承诺技术方案、实现工期或发布日期。", "text_sha256": "110df1dfe893a25ce90d17e5b163cc7dc1ff13c80c930d35a6d2f3c213ed5b1c", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-1272b77f978ab400", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "line": 15, "section": "依据与输入", "summary": "读取[阶段 02 workflow](../../../docs/workflows/02-refinement-and-initiation.md)和[质量门禁](../../../docs/quality-gates.md)，接收当前需求基线、系统/数据/外部契约、适用非功能要求、依赖和实际控制证据。风险等级和可进", "text_sha256": "ac7d4212e951b5ed034c6f38a83e96bf2bd47381447d611ce7299dadd0571de9", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-ad3180e84edb2065", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "line": 19, "section": "评估与控制", "summary": "1. 说明影响对象及最坏后果，包括用户、收入、数据完整性、可用性、外部方和法律/合规义务；核对影响范围、可逆性、检测/恢复能力及证据局限。", "text_sha256": "718aab1044e0623d3273d8addb61ee723d4af39090d1107cd68f07d0f0e22e71", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-6f0b78e2a1076d76", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "line": 20, "section": "评估与控制", "summary": "2. 命中身份/权限、资金、敏感数据、对外 API/契约、数据迁移、关键基础设施、重大安全暴露或严格监管等既有高风险触发项，按高风险要求处理。数据迁移不限于不可逆迁移；具体规则更严时遵循。不能因代码少、工期紧、概率低或尚无事故降级。", "text_sha256": "cb4efb725632c02d16862aaea3b0ed7b5d12503bd9d335b37c3ee5a526ad7ebe", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-5c064551615d56db", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "line": 21, "section": "评估与控制", "summary": "3. 给出低/中/高建议、依据与未知。控制分拟议和已验证，注明验证对象/版本、原始证据和局限；计划审计/回滚不能当现有保障，高风险影响无法判断时补适用专业评估，暂停受影响推进而非给出乐观等级。", "text_sha256": "94f426baa5e361633cd7bbfb8f874c245b55cfff353fcc7e95a0d9df7ce6c0dd", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-4fef826e011caf2a", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "line": 22, "section": "评估与控制", "summary": "4. 保留既有最低门禁：低含变更说明、相关自动检查和代码评审；中加验收标准、测试证据、CI和发布记录；高加设计评审、安全/合规评审、渐进发布及经验证回滚。按实际项目/领域规则补全，不以清单替代原必过检查。", "text_sha256": "dfb4ec9c447230994beb1151e3b3e8243f5221266337ab8a147cf2a26c3619ae", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-b2c75c1ba80cd832", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "line": 23, "section": "评估与控制", "summary": "5. 每项必需控制/评审列适用理由、责任角色/实际负责人、完成节点、验收证据及失败停止动作。进入方案前必需评估实际完成；方案/实施/发布节点的后续验证保持待完成并交接，不要求虚构提前通过，也不能将本节点必需评估以“已进队列”放行。", "text_sha256": "497320e8a611d83d0fc2145cca93e16d5061a633cf69755563a72ef1356d6508", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-edf71246de190b66", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "line": 27, "section": "输出与权限", "summary": "在原需求主记录的风险区保留触发/后果、建议等级及理由、实际专业确认、控制/评审矩阵和剩余未知，引用来源，不创建第二份状态。交 `delivery-scope-alignment` 结合 workflow 七项判断；材料不足输出缺口、负责人和最小补证动作。", "text_sha256": "6123ccc4b52171786c9ef06e282db10f8f851d13da9e34d89cf9d629a0f96d32", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-5952deb1e9d12fac", "source": "skills/02-refinement-and-initiation/change-risk-assessment/SKILL.md", "line": 29, "section": "输出与权限", "summary": "Agent 建议不替代安全/隐私/合规/架构等实际评审，不代替有权人确认高风险接受或例外。例外只按质量门禁允许范围办理，不能豁免必需文档、译文、证据、独立性、必过 CI 或高风险/生产授权；不能把未来控制当降低当前等级的事实。", "text_sha256": "3a47cfbbe79266af9fe1c86335862fc3ae0418d675ac01574b4a63c2dbf96a58", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-cfb7d1f7c859fe44", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "line": 15, "section": "依据与输入", "summary": "读取[阶段 02 workflow](../../../docs/workflows/02-refinement-and-initiation.md)的依赖、七项门禁、状态和基线变更规则，接收当前需求与风险包、原始确认、上游机会、项目权限和既有约束。复用已有细化/风险结果，只补实际缺口，不重复执行三个技能或另建主记录。", "text_sha256": "9ddcc9606fdb2f042f599b0ea984e6ead20477322d763917f43391e07b4ec182", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-c611cbf72d897bcf", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "line": 19, "section": "对齐与就绪判断", "summary": "- 明确本次完整结果切片、非目标、原约束及谁决定业务规则、提供接口/数据、验证、发布和运行支持。只知道团队名称或对接人不等于接受责任，不替其他团队作承诺。", "text_sha256": "015583f795f5e132305a0f47e83065d370ac7abc7e9a448786806ff9bfd047ae", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-9a39bfaca24e395d", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "line": 20, "section": "对齐与就绪判断", "summary": "- 逐项记录依赖提供/消费方、负责人、具体内容/条件/所需节点、状态依据、失败影响和解阻动作。区分已识别、待确认、已确认；只有对应负责人接受具体条件且可追溯才属已确认。无回复不算同意，未来路线图不当当前能力，条件变化重验。", "text_sha256": "ad6d3d70b2979209269eb38f19a8b2cef204f943463fef0b04e98bd315691c2b", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-3803998c1e27e8c1", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "line": 21, "section": "对齐与就绪判断", "summary": "- 会改变范围/验收/关键风险判断的依赖先澄清。其他依赖不要求实施资源提前交付，但带入方案须有负责人、授权的探索边界、验证判断/退出条件及失败动作，保留实际待确认/未交付状态，不能因“有人负责”整体放行。", "text_sha256": "858c7661c8b221406d481f45c81ae0a97ccdead972249fbe3c2d79c299721708", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-0c7b983db84711e8", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "line": 22, "section": "对齐与就绪判断", "summary": "- 按 workflow 为未知分类：业务/验收阻塞留本阶段；明确需求的技术验证带负责人、目标/判断、探索/退出及失败处理交阶段 03；非阻塞细节有允许调整边界与确认节点；高风险影响未知先做适用专业评估。本节点必需评审实际完成，排队不等于通过。", "text_sha256": "084e19129006ab86ac6c81b89f49764bbf0622b21d0438a83e4fc255d52beefb", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-fac889efe2682060", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "line": 23, "section": "对齐与就绪判断", "summary": "- 逐项核对七项：范围、验收、适用 NFR、风险/必需评审、关键依赖、未知去向及有权实际批准。分别列证据/缺口，不用“可估算、可实施”代替门禁；Agent 给建议，有权角色的确认来源、理由、范围/限制、时间及时区和基线才是实际决定。", "text_sha256": "ebcd8076ea1e623c541cfb7558ccb220955f66e1a89bbb8ea69eabf3af60bb9c", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-1b255186ce0a45be", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "line": 27, "section": "主记录、状态与变更", "summary": "在一份[需求主记录](../../../templates/delivery/requirements-risk-package.md)更新依赖/未知、责任和门禁判断。需求仅用 workflow 的五状态：细化中、待对齐、可进入方案、阻塞、已取消；与机会及文档状态分开。待对齐用于正常等待确认，已知关键冲突记阻塞；就绪须", "text_sha256": "f7dc863c0e863f5d99715b87ad350a2ee69e49f12fe0c9f537dfdfa903ab0600", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-3000ed7eddf9448f", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "line": 29, "section": "主记录、状态与变更", "summary": "批准设计时固定可引用版本/摘要、上游机会、范围/非目标、行为/NFR验收、风险控制、依赖/未知及实际决定。变更记录原因、确认、影响下游/证据及可继续/需等待范围：纯措辞原记录修订，业务/范围/验收回阶段 02，用户/价值/优先级回阶段 01，纯技术交阶段 03；影响验收/成本约束/风险时反馈阶段 02。旧授权不覆盖新增", "text_sha256": "783ae03d44caf98dcf81275dea125803ab9d44e7ae53b89fde14804e9793631c", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-06c8c94503fa2edc", "source": "skills/02-refinement-and-initiation/delivery-scope-alignment/SKILL.md", "line": 33, "section": "交接与完成边界", "summary": "交阶段 03 的材料包含当前基线、行为/NFR验收、风险/必需控制的责任/节点/证据、依赖/未知事实和验证退出条件、批准范围/理由/时间及原指定方案/假设。缺业务含义继续澄清，不能交给设计猜测。可进入方案只批准设计投入；不证明技术可行、不承诺开发或日期，阶段 03 后仍须有权决定。", "text_sha256": "04088aca554c055050ff1bd27f84a9ca2dcc29c3f807d95f960364a0ad9eb673", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-9947def794e0764c", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "line": 15, "section": "依据与输入", "summary": "读取[阶段 02 workflow](../../../docs/workflows/02-refinement-and-initiation.md)，按其验收质量、未知分类和回流规则执行；它是完整门禁和需求状态的规则来源。接收按[阶段 01 门禁](../../../docs/workflows/01-demand-", "text_sha256": "42fdbf68552c9eddd0c26c45299588142917d4be6d4755cee18898f8b2db19d3", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-ecb69110ae23860e", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "line": 19, "section": "细化与判断", "summary": "- 用独立需求 ID 关联机会，按完整用户/系统结果切片，明确对象、范围/非目标、角色/状态差异。保留用户指定方案作为约束；其可行性未证实就保留待验证性质，不静默替换产品或扩展目标。", "text_sha256": "db4d9226a716a05068580f9dc6613f761328118e469ca167d03fdee7f885533e", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-593f6e0ce28caecd", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "line": 20, "section": "细化与判断", "summary": "- 将关键行为转成可观察结果，注明必要前置/输入/触发、预期及判断依据/方法，按适用性覆盖主流程、边界、失败、权限、取消/恢复。每项标准关联稳定要求 ID 与原始来源；不以内部步骤或“正常、友好”代替验收。", "text_sha256": "318e2b17a7af9e4ac99e3ec5281ea8e27559c941d2a98ce71eb1b2d33c024450", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-d301df33585234de", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "line": 21, "section": "细化与判断", "summary": "- 小任务可用清晰条目，复杂角色/状态可用表格或 Given–When–Then；不强制统一句式或所有条件量化。性能、可靠性、可访问性、数据保留/正确性、审计、兼容/本地化等按实际触发识别，保留来源、判据及验证负责人。不适用说明事实理由，缺关键阈值/业务定义继续澄清，不造数或一律留阶段 03。", "text_sha256": "e77a11d24c39f99b421d84344f6b861cd766d706c640de573eba6342cb677552", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-3da5ff0f261c0812", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "line": 22, "section": "细化与判断", "summary": "- 将未知按 workflow 分类。业务/范围/验收含义缺口留阶段 02，列决策人和解阻动作；价值/用户/优先级变化才回阶段 01。已明确需求的技术未知可带验证目标/判断、负责人、探索/退出边界及失败动作交阶段 03；非阻塞细节限定调整边界与确认节点。高风险影响未知先交适用专业评估，不能改名绕过。", "text_sha256": "5b436971658180399c7d5fd3fc1022a208f5973316c0c5a675d712ef28862b51", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-cb16d79fde86ec10", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "line": 26, "section": "输出与交接", "summary": "在一份[需求与风险包](../../../templates/delivery/requirements-risk-package.md)或现有 Issue 中更新范围、行为/NFR验收、追溯及缺口。复用已有有效材料，不另建状态或重复三份表。按需要调用 `change-risk-assessment` 处理风险、`de", "text_sha256": "f23bb35b536d27e65f69b115a142e336defdb5296b7a43cf5ad80eb23b2da2e3", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-bd8894497070fc47", "source": "skills/02-refinement-and-initiation/requirements-refinement/SKILL.md", "line": 28, "section": "输出与交接", "summary": "按[文档规范](../../../docs/documentation-standard.md)调用 `documentation-maintenance` 列初步文件影响及目标项目双语要求，生效业务事实回写 product，过程留原需求记录。缺口给最低解阻动作，不能以技术方案、工期或发布日期代替业务确认；本技能不批准", "text_sha256": "3fbc562160c847db4cb826ddbe0c43789825ec4b3337d76e59f84f963367f7ab", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-b36b84366ca3f6d6", "source": "skills/03-solution-and-planning/contract-and-migration-design/SKILL.md", "execution_asset": "skills/03-solution-and-planning/contract-and-migration-design/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 13, "section": "契约与迁移设计", "summary": "为跨边界行为和数据演进定义可实现、可验证、可恢复的契约。仅在变更涉及接口、事件、共享数据、数据模型或迁移时使用；纯内部且无数据影响的变更无需强制使用。", "text_sha256": "edfadfddb8e48914f61a25f0d0444b49760dc7330f000678ab4ec06f8d1cc131", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-669f10539b8ce3d6", "source": "skills/03-solution-and-planning/contract-and-migration-design/SKILL.md", "execution_asset": "skills/03-solution-and-planning/contract-and-migration-design/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 17, "section": "输入", "summary": "选定方案、需求包、风险评估，以及现有接口、事件或数据模型。", "text_sha256": "82313fdd0f45dace0ad8a2978bd242428c6ee8697c799b077825fbd842845cd1", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-a602dc21c2907f88", "source": "skills/03-solution-and-planning/contract-and-migration-design/SKILL.md", "execution_asset": "skills/03-solution-and-planning/contract-and-migration-design/SKILL.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 18, "section": "输入", "summary": "生产数据规模、消费者/提供方、保留政策、兼容性和恢复约束（如适用）。", "text_sha256": "a5fd3a9d1ea448d9db4d719f434960b5e03a28ab85db866fb28ad215c6efaaa3", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
@@ -3409,7 +3394,7 @@
     {"id": "REQ-af39a07b7ff5f187", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源完整适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 17, "section": "SKILL 导航", "summary": "文档维护、独立验证和合入就绪按证据契约交接原始报告与受控来源，保持作者/评审者/发布者职责分离。", "text_sha256": "e3759c7ca60c9d7522732e0d368bf6c1cba521e72786284059a08733513894f6", "kind": "instruction", "controls": ["documentation", "lifecycle", "trust"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02", "GAP-03"]},
     {"id": "REQ-37821e428845856f", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 19, "section": "SKILL 导航", "summary": "阶段 | 何时进入 | SKILL", "text_sha256": "e18ef539d281f8890576307499431843e55a3ad6350dcbb1d8b9ca103ab7b34e", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
     {"id": "REQ-e3a7c399905bc14e", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 21, "section": "SKILL 导航", "summary": "01 需求与机会 | 收到需求、反馈、缺陷或改进线索 | 登记与分诊、问题界定、机会排序", "text_sha256": "d9c0e3b5c3c9395268647bc72e3c59d4c815709c3afb65d06d9f2302aceddf8c", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
-    {"id": "REQ-0add39f10ef8f251", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 22, "section": "SKILL 导航", "summary": "02 澄清与立项 | 需要把问题变为可投入的需求包 | 需求细化、风险评估、范围与依赖对齐", "text_sha256": "7fa576c055d43eb3198bae194f0684b15840fd16062dc06eced3a394cd002acc", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
+    {"execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-f547be9cd48cbc3d", "source": "skills/README.md", "line": 22, "section": "SKILL 导航", "summary": "[02 澄清与立项](02-refinement-and-initiation/) | 范围/验收需细化、风险需识别或依赖/设计投入需对齐 | [需求细化](02-refinement-and-initiation/requirements-refinement/SKILL.md)、[风险评估](02-refineme", "text_sha256": "d22107b14dd4c00e799b1671fe7601476582ebcea89e86d7040bd894b66a0361", "kind": "instruction", "controls": ["lifecycle", "content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01", "GAP-02"]},
     {"id": "REQ-60ab119900a4518d", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 23, "section": "SKILL 导航", "summary": "03 方案与计划 | 需要选择技术路径、验证和交付计划 | 方案决策、契约与迁移、验证策略、发布恢复预案、实现计划、设计评审", "text_sha256": "51c7942eae294eb0cec832348e3dc282488d46c5561a7cf4428636e194bed2fd", "kind": "instruction", "controls": ["content"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01"]},
     {"id": "REQ-5231c27ea4c6641a", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 24, "section": "SKILL 导航", "summary": "04 开发与自测 | 已有设计，正在实现并准备交付评审 | 通用：Git 任务分支管理、实现与自测、语言编码规范、数据与配置变更、本地质量验证、交接准备、文档维护；领域：移动端（共享/协调、CLI 执行、iOS、Android、HarmonyOS）、Web 前端（协调、UI/交互、状态/数据）、后端（协调、API、领域", "text_sha256": "499a7e4db450da8cc20b472d986c6ae675f66d58d76ef22a386bfe305493290b", "kind": "instruction", "controls": ["branch", "coding", "content", "documentation"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01", "GAP-03", "GAP-04"]},
     {"id": "REQ-a851d530117e5a56", "source": "skills/README.md", "execution_asset": "skills/README.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 25, "section": "SKILL 导航", "summary": "05 集成验证 | PR 需要 CI、独立评审和系统验证 | GitHub 小团队：Actions 初始化、仓库设置与引导收口、日常 PR 集成；通用：CI 门禁、PR 评审、系统级验证、合入就绪、独立文档验证；领域：移动端（CLI 执行、汇总、iOS、Android、HarmonyOS）、Web 前端（汇总、功能兼容", "text_sha256": "7ea048b4e11a2843b4a52e64a352f789aa98a2a361e9e309e38ac8057b75c74e", "kind": "instruction", "controls": ["content", "documentation", "governance"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01", "GAP-03", "GAP-04"]},
@@ -4953,13 +4938,13 @@
     "disposition": "replaced",
     "replacements": [
       "REQ-0a691fd2a4196973",
-      "REQ-0add39f10ef8f251",
       "REQ-1d9f6c7061022595",
       "REQ-22095eb7ba443ea9",
       "REQ-32bc3fdbca5e10fe",
       "REQ-37821e428845856f",
       "REQ-3b981600643d453c",
       "REQ-4045cd0117cdca13",
+      "REQ-504431797621d322",
       "REQ-5231c27ea4c6641a",
       "REQ-5d753a60cb7c1db3",
       "REQ-60ab119900a4518d",
@@ -4975,6 +4960,7 @@
       "REQ-d18e26031f21c427",
       "REQ-e3a7c399905bc14e",
       "REQ-f0cc406acf50d2ee",
+      "REQ-f547be9cd48cbc3d",
       "REQ-f871bd7c8d7cc115"
     ]
   },
@@ -4997,8 +4983,13 @@
     "decision": "2026-10-14 用户授权逐包实施；当前快照经独立验证后提交",
     "disposition": "replaced",
     "replacements": [
-      "REQ-4e6f499d41ef7f1b",
-      "REQ-a690c8035f4fe38c"
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
     ]
   },
   {
@@ -5921,6 +5912,701 @@
       "REQ-219ed6992a4e4179",
       "REQ-58b7150b94c98e13",
       "REQ-fc7bf6202965da40"
+    ]
+  },
+  {
+    "id": "REQ-2f4f7dc05dd92d80",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-2f1d4e9172a2378e",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-a718c9f2764b895d",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-98171b37881c5095",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-52b0580e38bc89a5",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-c91c4e64cd1d2ab5",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-2ba9015e5766c6e0",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-7b7fac3df64cc724",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-b348913f47277fa3",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-1c1ce3e4bb3e788a",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-95419d6ec02e179b",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-507310d273446656",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-06b8e71068bffdb9",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-2b9f00876f889c3c",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-8fef3e46c3492350",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-1272b77f978ab400",
+      "REQ-4fef826e011caf2a",
+      "REQ-5952deb1e9d12fac",
+      "REQ-5c064551615d56db",
+      "REQ-6f0b78e2a1076d76",
+      "REQ-ad3180e84edb2065",
+      "REQ-b2c75c1ba80cd832",
+      "REQ-edf71246de190b66"
+    ]
+  },
+  {
+    "id": "REQ-f833b32c9fca5c82",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-752e8b39401c1bb9",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-4edebdbed7767f11",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-9136e799597e9038",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-4b57a3ae1d1f66d7",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-1e9fd0ab3b33833a",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-ab12c11dcd0e7f9e",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-fa6fb5b9e99bd22a",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-9ab2b79a6b31b1ee",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-5cae937632580217",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-d5380adf258514df",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-06c8c94503fa2edc",
+      "REQ-0c7b983db84711e8",
+      "REQ-1b255186ce0a45be",
+      "REQ-3000ed7eddf9448f",
+      "REQ-3803998c1e27e8c1",
+      "REQ-9a39bfaca24e395d",
+      "REQ-c611cbf72d897bcf",
+      "REQ-cfb7d1f7c859fe44",
+      "REQ-fac889efe2682060"
+    ]
+  },
+  {
+    "id": "REQ-54aa84695e429b99",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-4e6f499d41ef7f1b",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-a690c8035f4fe38c",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-ba45f1dea07b1092",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-560b4b4b8011b055",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-b6e3d4b7399c9b0d",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-1af2ce71b3d5a1dc",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-26d965d2164b4626",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-86b94cbca21ecbfb",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-9226eb60b1150c1b",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-4cf3760f62be3101",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-04471c46789751a9",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-0a9dfa8713cfa9d9",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-3da5ff0f261c0812",
+      "REQ-593f6e0ce28caecd",
+      "REQ-9947def794e0764c",
+      "REQ-bd8894497070fc47",
+      "REQ-cb16d79fde86ec10",
+      "REQ-d301df33585234de",
+      "REQ-ecb69110ae23860e"
+    ]
+  },
+  {
+    "id": "REQ-0add39f10ef8f251",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段02优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-15 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-0a691fd2a4196973",
+      "REQ-1d9f6c7061022595",
+      "REQ-22095eb7ba443ea9",
+      "REQ-32bc3fdbca5e10fe",
+      "REQ-37821e428845856f",
+      "REQ-3b981600643d453c",
+      "REQ-4045cd0117cdca13",
+      "REQ-504431797621d322",
+      "REQ-5231c27ea4c6641a",
+      "REQ-5d753a60cb7c1db3",
+      "REQ-60ab119900a4518d",
+      "REQ-62b9a1278d69d2e0",
+      "REQ-804d2d95b98711c5",
+      "REQ-925ef241dfcbb32a",
+      "REQ-9b32028ac2b5e056",
+      "REQ-9e586be5c6914d42",
+      "REQ-a16942b8662872b1",
+      "REQ-a43f726074f097c0",
+      "REQ-a851d530117e5a56",
+      "REQ-af39a07b7ff5f187",
+      "REQ-d18e26031f21c427",
+      "REQ-e3a7c399905bc14e",
+      "REQ-f0cc406acf50d2ee",
+      "REQ-f547be9cd48cbc3d",
+      "REQ-f871bd7c8d7cc115"
     ]
   }
 ]
