@@ -23,6 +23,7 @@
 | 优化澄清与立项阶段 | [阶段 02 优化计划](docs/phase02-optimization-plan.md) | 查看已确认设计、四包实施与验收条件；本地通过不代表项目已采用 |
 | 阶段 02 验证 | [分步检查与独立试用](docs/phase02-validation.md) | 逐包证据、16 组原始场景与本地验收范围 |
 | 优化方案与计划阶段 | [阶段 03 优化计划](docs/phase03-optimization-plan.md) | 已确认设计、预研worktree、四包实施与验收条件 |
+| 阶段 03 验证 | [分步检查与独立预研试用](docs/phase03-validation.md) | 14组场景、实际worktree生命周期、证据及本地验收范围 |
 
 跨项目采用先选择安装范围，再选择语言适配方式：
 
