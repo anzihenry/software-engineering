@@ -33,7 +33,7 @@ updated: "2026-10-15"
 
 | 包 | 文件与产出 | 依赖与相对规模 | 状态 |
 | --- | --- | --- | --- |
-| S04-01 | workflow04 主契约、lifecycle、03/05 交接及技能路由 | 已确认设计；中：跨阶段语义 | 待实施 |
+| S04-01 | workflow04 主契约、lifecycle、03/05 交接及技能路由 | 已确认设计；中：跨阶段语义 | 已完成 |
 | S04-02 | 四核心技能及受影响领域入口；评估其他叶技能、编码/Git/文档技能 | S04-01；中：职责与消费者 | 待实施 |
 | S04-03 | change-handoff 中英模板、导航、登记配对 checker 和行为负例；核对验证矩阵消费者 | S04-01/02；中：模板与 Python | 待实施 |
 | S04-04 | 三演练仅阶段04、原始场景、独立前向试用、原始证据与验证报告，按观察修正 | S04-01–03；中：行为验收与收口 | 待实施 |
@@ -66,3 +66,7 @@ updated: "2026-10-15"
 每包使用现有 `.venv` 运行仓库四项：`ruff check scripts tests skills/05-integration-validation/github-actions-bootstrap/scripts`、同范围 `ruff format --check`、`python -m unittest discover --start-directory tests`、`python scripts/check_repository.py`。修改源码先读 language-coding-standards/common/Python 及实际配置。改动技能运行 quick_validate。机械报告绑定全文件摘要/执行位、实际命令/时间/退出码；独立内容/双语/场景复核绑定同对象，不自己批准。不新增工具链/依赖，不声称远端 CI 已执行。
 
 九域初步盘点：research 不适用（无真实产品研究）；product/design 无需目标文档变更（无产品/架构，交接输出模板按影响更新）；engineering 更新门槛、checker/tests；guides 更新 workflow/技能/演练；planning 本计划及验证；initiatives 不适用（harness 维护）；releases/CHANGELOG 不适用（无发布）；入口/导航/catalog 随源更新。每包记录实际文件/处理依据。harness 中文规则无强制翻译，目标输出模板必须中英同步并独立核对；保留现有组织、版本1/12字段、历史要求 ID 与替代关系，不批量迁移旧资产或改写旧验证结果。
+
+## S04-01 实施记录
+
+workflow04统一完成/自测/失败/证据/七状态及交接；lifecycle和03/05接口、skills导航同步。engineering/guides更新执行规则，planning本记录；入口/catalog随源更新；research/initiatives/releases不适用（无真实研究、目标专题或发布），product/design无需目标文档更新（无产品架构变化）。中文harness无需译文，本包未改目标输出模板。四检查及非作者独立内容复核绑定 `/private/tmp/phase04-implementation-evidence/S04-01`，实际通过后单独提交。
