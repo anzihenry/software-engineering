@@ -13,6 +13,7 @@ from scripts.check_repository import (
     PHASES,
     SUPPLEMENTAL_DELIVERY_TEMPLATES,
     TRACEABILITY_FIELDS,
+    TRANSLATED_DELIVERY_TEMPLATES,
     WORKFLOW_DELIVERY_TEMPLATES,
     check_adoption_documentation,
     check_content_governance,
@@ -41,6 +42,8 @@ def write_valid_delivery_templates(root: Path) -> None:
         f"# Templates\n\n{navigation_links}\n", encoding="utf-8"
     )
     for name, lifecycle_stages in DELIVERY_TEMPLATES.items():
+        if name in TRANSLATED_DELIVERY_TEMPLATES:
+            continue
         metadata = {
             "template_name": Path(name).stem,
             "template_version": 1,
@@ -69,7 +72,7 @@ def write_valid_delivery_templates(root: Path) -> None:
             encoding="utf-8",
         )
 
-    for name in SUPPLEMENTAL_DELIVERY_TEMPLATES:
+    for name in TRANSLATED_DELIVERY_TEMPLATES:
         for filename in [name, name.replace(".md", ".en.md")]:
             (templates_root / filename).write_text(
                 (REPOSITORY_ROOT / "templates/delivery" / filename).read_text(), encoding="utf-8"
@@ -499,13 +502,111 @@ class RepositoryCheckTests(unittest.TestCase):
 
             self.assertEqual(issues, [])
 
+    def test_missing_registered_translation_is_reported(self) -> None:
+        for stem in ("opportunity-record", "requirements-risk-package"):
+            with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                write_valid_delivery_templates(root)
+                translated = root / f"templates/delivery/{stem}.en.md"
+                translated.unlink()
+                self.assertTrue(
+                    any(
+                        issue.path == translated.resolve()
+                        and issue.message == "missing required delivery template"
+                        for issue in check_delivery_templates(root)
+                    )
+                )
+
+    def test_registered_translation_contract_mismatch_is_reported(self) -> None:
+        for stem in ("opportunity-record", "requirements-risk-package"):
+            with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                write_valid_delivery_templates(root)
+                translated = root / f"templates/delivery/{stem}.en.md"
+                translated.write_text(
+                    translated.read_text().replace("template_version: 1", "template_version: 2"),
+                    encoding="utf-8",
+                )
+                self.assertIn(
+                    "translation traceability contract mismatch",
+                    {issue.message for issue in check_delivery_templates(root)},
+                )
+
+    def test_registered_translation_cross_links_are_required(self) -> None:
+        for stem in ("opportunity-record", "requirements-risk-package"):
+            for filename, target in (
+                (f"{stem}.md", f"{stem}.en.md"),
+                (f"{stem}.en.md", f"{stem}.md"),
+            ):
+                with (
+                    self.subTest(stem=stem, filename=filename),
+                    tempfile.TemporaryDirectory() as directory,
+                ):
+                    root = Path(directory)
+                    write_valid_delivery_templates(root)
+                    path = root / "templates/delivery" / filename
+                    path.write_text(
+                        path.read_text().replace(f"]({target})", "](missing.md)"), encoding="utf-8"
+                    )
+                    self.assertIn(
+                        "delivery translation cross-links required",
+                        {issue.message for issue in check_delivery_templates(root)},
+                    )
+
+    def test_translated_traceability_gaps_are_reported(self) -> None:
+        for stem in ("opportunity-record", "requirements-risk-package"):
+            for missing, expected in (
+                ("## Traceability", "delivery translation traceability section required"),
+                (
+                    "- Decision authority:",
+                    "missing translated traceability field: decision_authority",
+                ),
+                (
+                    "- Updated at with timezone:",
+                    "missing translated traceability field: updated_at",
+                ),
+            ):
+                with (
+                    self.subTest(stem=stem, missing=missing),
+                    tempfile.TemporaryDirectory() as directory,
+                ):
+                    root = Path(directory)
+                    write_valid_delivery_templates(root)
+                    translated = root / f"templates/delivery/{stem}.en.md"
+                    translated.write_text(
+                        translated.read_text().replace(missing, "removed"), encoding="utf-8"
+                    )
+                    self.assertIn(
+                        expected, {issue.message for issue in check_delivery_templates(root)}
+                    )
+
+    def test_unexpected_delivery_translation_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_delivery_templates(root)
+            translated = root / "templates/delivery/arbitrary.en.md"
+            translated.write_text("# Unregistered template\n", encoding="utf-8")
+            self.assertTrue(
+                any(
+                    issue.path == translated.resolve()
+                    and issue.message == "unexpected delivery template"
+                    for issue in check_delivery_templates(root)
+                )
+            )
+
     def test_incomplete_traceability_contract_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             write_valid_delivery_templates(root)
             template = root / "templates" / "delivery" / "opportunity-record.md"
             content = template.read_text(encoding="utf-8")
-            template.write_text(content.replace("- updated_at\n", ""), encoding="utf-8")
+            parts = content.split("---", 2)
+            metadata = yaml.safe_load(parts[1])
+            metadata["traceability_fields"].remove("updated_at")
+            template.write_text(
+                "---\n" + yaml.safe_dump(metadata, sort_keys=False) + "---" + parts[2],
+                encoding="utf-8",
+            )
 
             messages = {issue.message for issue in check_delivery_templates(root)}
 

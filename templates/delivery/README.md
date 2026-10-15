@@ -33,8 +33,8 @@
 
 | 阶段 | 模板 | 主要交付物 |
 | --- | --- | --- |
-| 1 | [机会记录](opportunity-record.md) | 问题、证据、目标、范围和排序决定 |
-| 2 | [需求与风险包](requirements-risk-package.md) | 可验收需求、非功能要求、依赖和门禁 |
+| 1 | [机会记录](opportunity-record.md) / [English](opportunity-record.en.md) | 唯一机会主记录、六项判断、有限验证、状态迁移、排序与澄清交接 |
+| 2 | [需求与风险包](requirements-risk-package.md) / [English](requirements-risk-package.en.md) | 七项设计投入条件、可判定验收、风险/依赖/未知、基线变更与实际决定 |
 | 3 | [方案决策](solution-decision.md) | 方案取舍、契约/迁移、发布恢复和评审 |
 | 3–5 | [验证矩阵](verification-matrix.md) | 要求/风险到验证证据的映射 |
 | 4–5 | [变更交接](change-handoff.md) | 实现、自测、CI、评审和发布影响 |

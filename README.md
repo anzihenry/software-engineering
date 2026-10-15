@@ -19,6 +19,9 @@
 | 验证目标项目采用与加载 | [采用与复验](docs/harness-adoption.md) | 固定知识来源、实际入口和命令；以独立任务及平台正反例验收 |
 | 推进规范执行闭环 | [Harness P0 落实计划](docs/harness-p0-implementation-plan.md) | 查看四项 P0 的实施顺序、交付物与验收条件；计划不代表目标项目已生效 |
 | 查看后端与 Web 的规范落实 | [Harness P1 实施计划](docs/harness-p1-implementation-plan.md) | 查看四包完成状态与分步验证；本轮覆盖合成项目和隔离本地渠道 |
+| 优化需求与机会阶段 | [阶段 01 优化计划](docs/phase01-optimization-plan.md) | 查看四包实施、分步验证和验收场景；本地验证不代表目标项目已采用 |
+| 优化澄清与立项阶段 | [阶段 02 优化计划](docs/phase02-optimization-plan.md) | 查看已确认设计、四包实施与验收条件；本地通过不代表项目已采用 |
+| 阶段 02 验证 | [分步检查与独立试用](docs/phase02-validation.md) | 逐包证据、16 组原始场景与本地验收范围 |
 
 跨项目采用先选择安装范围，再选择语言适配方式：
 
