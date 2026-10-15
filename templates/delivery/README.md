@@ -37,7 +37,7 @@
 | 2 | [需求与风险包](requirements-risk-package.md) / [English](requirements-risk-package.en.md) | 七项设计投入条件、可判定验收、风险/依赖/未知、基线变更与实际决定 |
 | 3 | [方案决策](solution-decision.md) / [English](solution-decision.en.md) | 有据方案、worktree预研、计划/实际开发批准、基线/变更/交接 |
 | 3–5 | [验证矩阵](verification-matrix.md) / [English](verification-matrix.en.md) | 分节点规划、实际执行、独立核对及当前版本结论 |
-| 4–5 | [变更交接](change-handoff.md) | 实现、自测、CI、评审和发布影响 |
+| 4–5 | [变更交接](change-handoff.md) / [English](change-handoff.en.md) | 完整实现、当前自测、正式交接资格、七状态与05独立结论 |
 | 6 | [发布记录](release-record.md) | 候选身份、Go/No-Go、批次、健康和收口 |
 | 7 | [事件记录](incident-record.md) | 影响、时间线、处置、沟通和关闭依据 |
 | 8 | [效果复盘与行动](outcome-retrospective-actions.md) | 结果度量、系统学习和改进行动闭环 |

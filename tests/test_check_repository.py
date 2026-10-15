@@ -508,6 +508,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "requirements-risk-package",
             "solution-decision",
             "verification-matrix",
+            "change-handoff",
         ):
             with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -528,6 +529,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "requirements-risk-package",
             "solution-decision",
             "verification-matrix",
+            "change-handoff",
         ):
             with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -548,6 +550,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "requirements-risk-package",
             "solution-decision",
             "verification-matrix",
+            "change-handoff",
         ):
             for filename, target in (
                 (f"{stem}.md", f"{stem}.en.md"),
@@ -574,6 +577,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "requirements-risk-package",
             "solution-decision",
             "verification-matrix",
+            "change-handoff",
         ):
             for missing, expected in (
                 ("## Traceability", "delivery translation traceability section required"),
