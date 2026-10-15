@@ -76,6 +76,7 @@ TRANSLATED_DELIVERY_TEMPLATES = {
     "solution-decision.md",
     "verification-matrix.md",
     "change-handoff.md",
+    "release-record.md",
     *SUPPLEMENTAL_DELIVERY_TEMPLATES,
 }
 WORKFLOW_DELIVERY_TEMPLATES = {
