@@ -34,7 +34,7 @@ updated: "2026-10-15"
 | 包 | 文件与产出 | 依赖与相对规模 | 状态 |
 | --- | --- | --- | --- |
 | S04-01 | workflow04 主契约、lifecycle、03/05 交接及技能路由 | 已确认设计；中：跨阶段语义 | 已完成 |
-| S04-02 | 四核心技能及受影响领域入口；评估其他叶技能、编码/Git/文档技能 | S04-01；中：职责与消费者 | 待实施 |
+| S04-02 | 四核心技能及受影响领域入口；评估其他叶技能、编码/Git/文档技能 | S04-01；中：职责与消费者 | 已完成 |
 | S04-03 | change-handoff 中英模板、导航、登记配对 checker 和行为负例；核对验证矩阵消费者 | S04-01/02；中：模板与 Python | 待实施 |
 | S04-04 | 三演练仅阶段04、原始场景、独立前向试用、原始证据与验证报告，按观察修正 | S04-01–03；中：行为验收与收口 | 待实施 |
 
@@ -70,3 +70,7 @@ updated: "2026-10-15"
 ## S04-01 实施记录
 
 workflow04统一完成/自测/失败/证据/七状态及交接；lifecycle和03/05接口、skills导航同步。engineering/guides更新执行规则，planning本记录；入口/catalog随源更新；research/initiatives/releases不适用（无真实研究、目标专题或发布），product/design无需目标文档更新（无产品架构变化）。中文harness无需译文，本包未改目标输出模板。四检查及非作者独立内容复核绑定 `/private/tmp/phase04-implementation-evidence/S04-01`，实际通过后单独提交。
+
+## S04-02 实施记录
+
+四核心技能分别落实完整切片、真实本地结果/重验、有状态敏感变更、单一交接资格；三协调入口与八领域叶入口补本节点必需/已规划专项边界，保留平台/浏览器/事务/授权/失败语义。CLI技能已明确只执行/留原始结果，Git、语言规范（含Swift6.4）、文档技能职责正确，无需重写；已核对UI元信息仍与职责一致，无需改动。未把正常实现都改为worktree。engineering/guides为上述技能和workflow路由；planning本记录，导航/catalog同步；research/initiatives/releases无真实研究/目标专题/发布，product/design无目标行为架构变化无需更新。中文harness无需译文，无目标模板变更。15技能quick_validate原始结果、四检查及独立内容复核绑定 `/private/tmp/phase04-implementation-evidence/S04-02`，通过后提交。
