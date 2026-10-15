@@ -2,7 +2,7 @@
 title: "质量门禁、条件结论与例外边界"
 status: current
 owner: quality-lead
-updated: "2026-10-11"
+updated: "2026-10-16"
 ---
 
 # 质量门禁、条件结论与例外边界
@@ -20,11 +20,14 @@ updated: "2026-10-11"
 | local 本地自测 | 项目实际命令、变更与验收映射、当前报告 | implementation-lead | 准备评审交接 | 修复实现或环境，不删测降门禁 |
 | review 进入评审 | 自测通过、当前 diff、文档影响、待独立读取材料 | quality-lead | 开展独立验证，尚未可合入 | 补材料；未完成验证保持 Draft |
 | merge 合入 | 当前 head/base、必过 CI、独立评审、治理、无冲突及阻塞意见 | quality-lead | 交给项目合并机制 | 修复/重验；不得授权绕过失败 |
+| integration 集成收口 | 实际main合入SHA、每次功能合入后必需端到端、问题处置及06交接 | quality-lead | 指定已验证范围进入发布准备，不产生生产权限 | 失败版本暂停发布；修复/回退后重验，恢复基线不代表原功能交付 |
 | initiative 专题完成 | 完成标准、双语长期文档、验收与遗留转交 | delivery-lead | 记录 completed | 补验收/文档，不以发布成功替代 |
 | candidate 候选验收 | source SHA、制品摘要、构建与当前验证、版本文档 | release-manager | 记录 verified、准备环境推进 | 固定候选并补验，变更后重验 |
 | production 生产决策 | 候选通过、环境/观测/恢复/值守、人类 Go/No-Go | 有权限的人类 | 授权指定生产范围 | No-Go；条件 Go 的前置条件完成并重验前不得开始 |
 | batch 批次推进 | 同一制品、当前健康窗口、硬阈值和范围授权 | release-manager / operations-lead | 授权范围内下一批次 | 暂停扩大，按授权恢复 |
 | closure 发布收口 | 实际部署/制品/版本/范围、运行交接、双语说明、观察结果 | release-manager | 记录实际最终状态 | 保留暂停/恢复状态，不虚报成功 |
+
+`integration`是本表新增的人工集成收口节点；当前`quality_gate.py`未实现该node值，使用workflow和原始证据独立判断，不能声称现有CLI已执行此门禁。
 
 各节点的表格是最低输入类别，项目维护者必须从实际风险、领域规则及必过命令生成完整检查集合。不能省略必需检查，再凭剩余集合全绿声称通过。准备评审可以交接待独立评审材料；它不能替代 merge 节点的独立评审通过。
 
@@ -34,7 +37,7 @@ updated: "2026-10-11"
 
 每份[例外记录](../templates/delivery/gate-exception.md)保留 rule_id、规则依据、实际对象/范围、原结果、授权人及身份来源、原因、剩余风险、带时区的决定/到期时间、补救任务、撤销和复核条件。到期、撤销、范围/节点/候选变化或授权失效后停止采用，补验或重新取得有权决定；保留原失败结果与历史决定。
 
-正常且有效的非强制例外可形成 conditional，并仅在策略允许的 local/review/batch 节点推进指定范围。merge、initiative、candidate、production、closure 的条件结论只能用于补齐条件，不得推进；满足前置条件后按当前对象重新作出 passed。领域更严格规则优先，不能用通用表放行领域硬停止条件。
+正常且有效的非强制例外可形成 conditional，并仅在策略允许的 local/review/batch 节点推进指定范围。merge、integration、initiative、candidate、production、closure 的条件结论只能用于补齐条件，不得推进；满足前置条件后按当前对象重新作出 passed。领域更严格规则优先，不能用通用表放行领域硬停止条件。
 
 紧急恢复沿用[发布流程](workflows/06-release-and-change-management.md)已有授权和最小目标测试，不通过普通例外伪造完成。恢复可先执行，缺失验收仍记未完成，主线同步、文档、补验与复盘未完成前不关闭交付。
 

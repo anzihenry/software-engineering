@@ -36,3 +36,7 @@ python3 skills/05-integration-validation/github-actions-bootstrap/scripts/render
 ```
 
 已有输出默认拒绝覆盖。只有读取并比较现有 workflow、确认该文件由本次计划管理后才传 `--force`。生成后仍要执行 YAML 解析、项目本地门禁，并审查 `git diff`；生成器不判断命令是否足以覆盖项目风险。
+
+## 端到端接入能力边界
+
+生成器schema1仅基础CI模板，未独立配置每次功能合入前后端到端、逐合入版本保留/补跑或数据隔离。采用[阶段05](../../../../docs/workflows/05-integration-validation.md)时，先发现真实端到端命令与环境，按项目受控workflow接通PR/实际main版本验证，不能直接把基础CI的ref级取消策略当作逐次合入端到端保障；已取消必须补跑指定对象。模板生成/YAML通过不能证明这些平台行为已实现，保留实际正反例和限制。
