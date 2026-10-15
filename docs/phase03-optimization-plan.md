@@ -40,7 +40,7 @@ updated: "2026-10-15"
 | 包 | 主要文件与产出 | 依赖/相对规模 | 执行/评审角色 | 状态 |
 | --- | --- | --- | --- | --- |
 | S03-01 | workflow03完整契约，lifecycle及workflow02/04交接、skills路由 | 已确认设计；中：跨阶段判断 | technical-lead / quality-lead | 已完成 |
-| S03-02 | 六个阶段03 SKILL的职责/输入/判断/停止，实施启动消费者及Git路由按影响更新 | S03-01；中：六技能与消费者一致 | technical-lead / implementation-lead | 待实施 |
+| S03-02 | 六个阶段03 SKILL的职责/输入/判断/停止，实施启动消费者及Git路由按影响更新 | S03-01；中：六技能与消费者一致 | technical-lead / implementation-lead | 已完成 |
 | S03-03 | solution-decision/verification-matrix中英、模板导航、指定英文配对检查及负例，阶段04/05消费者核对 | S03-01/02；中：双语与代码 | implementation-lead / quality-lead | 待实施 |
 | S03-04 | 三演练阶段03、原始fixture、独立前向试用及worktree真实生命周期证据、验证报告/收口 | S03-01–03；中：行为与证据复核 | quality-lead / process-owner | 待实施 |
 
@@ -78,3 +78,7 @@ updated: "2026-10-15"
 ### S03-01 实施记录
 
 统一workflow03设计/未知/预研/计划/门禁/状态基线及七项交接，更新lifecycle、02/04接口及技能路由。产品/设计目标文档无需更新（无产品架构变化，设计执行规则已更新），研究不适用（无真实研究），工程/指南执行契约已更新，计划本记录，专题/发布不适用（harness本地维护），导航/catalog随源更新。均为中文harness资产，模板中英同步留S03-03。四检查、非作者内容与适用场景评审绑定 `/private/tmp/phase03-implementation-evidence/S03-01` 当前摘要；逐包通过后提交，不以计划文字自批。
+
+### S03-02 实施记录
+
+六技能围绕workflow各自做方案/预研、契约、验证、恢复、计划及独立技术评审；移除混合的可进入开发结论，预研worktree/证据保全/清理与实际授权统一。Git规范/技能和阶段04通用实现消费者接入，导航同步；小任务不新增六份记录。research不适用（无真实研究），product/design目标文档无需（无目标产品架构），engineering/guides已更新上述执行资产，planning本记录，initiatives/releases不适用（无目标专题/发布），入口/catalog更新。中文harness无需译文，本包未改目标输出模板。八技能quick_validate、四检查及非作者内容/场景核对绑定 `/private/tmp/phase03-implementation-evidence/S03-02`，通过后单独提交。

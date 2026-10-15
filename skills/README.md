@@ -10,7 +10,7 @@ SKILL 属于[项目三层边界](../docs/project-boundaries.md)的第一层“�
 
 GitHub 项目首次采用默认进入 [仓库初始化](05-integration-validation/github-repository-bootstrap/SKILL.md)，按[默认治理](../docs/github-repository-defaults.md)落实默认分支保护与合并后自动删分支；缺少真实 CI 时先进入 [Actions 初始化](05-integration-validation/github-actions-bootstrap/SKILL.md)，日常 PR 发现漂移时回流初始化。
 
-Git 项目修改前默认调用 [Git 任务分支管理](04-implementation-and-self-test/git-branch-management/SKILL.md)，执行[分支规范](../docs/git-branch-workflow.md)：阶段 4 的[实现与自测](04-implementation-and-self-test/implementation-and-self-test/SKILL.md)负责检查并建立/复用任务分支，[交接准备](04-implementation-and-self-test/change-handoff-preparation/SKILL.md)记录提交/推送目标；阶段 5 的[PR 集成](05-integration-validation/github-pr-integration/SKILL.md)和[合入就绪](05-integration-validation/merge-readiness/SKILL.md)核对同步与最新证据，合入后按同一规范安全清理。领域技能、文档和配置工作也必须在修改前遵循此入口要求。
+阶段 03 编码预研及 Git 项目修改前默认调用 [Git 任务分支管理](04-implementation-and-self-test/git-branch-management/SKILL.md)，执行[分支规范](../docs/git-branch-workflow.md)：阶段 4 的[实现与自测](04-implementation-and-self-test/implementation-and-self-test/SKILL.md)负责检查并建立/复用任务分支，[交接准备](04-implementation-and-self-test/change-handoff-preparation/SKILL.md)记录提交/推送目标；阶段 5 的[PR 集成](05-integration-validation/github-pr-integration/SKILL.md)和[合入就绪](05-integration-validation/merge-readiness/SKILL.md)核对同步与最新证据，合入后按同一规范安全清理。领域技能、文档和配置工作也必须在修改前遵循此入口要求。
 
 CI 门禁、合入就绪和发布就绪技能按[质量门禁规范](../docs/quality-gates.md)消费原结果、条件结论和例外；职责仍是判断，不自批授权或执行合并/发布。
 
