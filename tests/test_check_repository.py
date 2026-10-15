@@ -502,65 +502,83 @@ class RepositoryCheckTests(unittest.TestCase):
 
             self.assertEqual(issues, [])
 
-    def test_missing_opportunity_translation_is_reported(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            write_valid_delivery_templates(root)
-            translated = root / "templates/delivery/opportunity-record.en.md"
-            translated.unlink()
-            self.assertTrue(
-                any(
-                    issue.path == translated.resolve()
-                    and issue.message == "missing required delivery template"
-                    for issue in check_delivery_templates(root)
-                )
-            )
-
-    def test_opportunity_translation_contract_mismatch_is_reported(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            write_valid_delivery_templates(root)
-            translated = root / "templates/delivery/opportunity-record.en.md"
-            translated.write_text(
-                translated.read_text().replace("template_version: 1", "template_version: 2"),
-                encoding="utf-8",
-            )
-            self.assertIn(
-                "translation traceability contract mismatch",
-                {issue.message for issue in check_delivery_templates(root)},
-            )
-
-    def test_opportunity_translation_cross_links_are_required(self) -> None:
-        for filename, target in (
-            ("opportunity-record.md", "opportunity-record.en.md"),
-            ("opportunity-record.en.md", "opportunity-record.md"),
-        ):
-            with self.subTest(filename=filename), tempfile.TemporaryDirectory() as directory:
+    def test_missing_registered_translation_is_reported(self) -> None:
+        for stem in ("opportunity-record", "requirements-risk-package"):
+            with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 write_valid_delivery_templates(root)
-                path = root / "templates/delivery" / filename
-                path.write_text(
-                    path.read_text().replace(f"]({target})", "](missing.md)"), encoding="utf-8"
+                translated = root / f"templates/delivery/{stem}.en.md"
+                translated.unlink()
+                self.assertTrue(
+                    any(
+                        issue.path == translated.resolve()
+                        and issue.message == "missing required delivery template"
+                        for issue in check_delivery_templates(root)
+                    )
+                )
+
+    def test_registered_translation_contract_mismatch_is_reported(self) -> None:
+        for stem in ("opportunity-record", "requirements-risk-package"):
+            with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                write_valid_delivery_templates(root)
+                translated = root / f"templates/delivery/{stem}.en.md"
+                translated.write_text(
+                    translated.read_text().replace("template_version: 1", "template_version: 2"),
+                    encoding="utf-8",
                 )
                 self.assertIn(
-                    "delivery translation cross-links required",
+                    "translation traceability contract mismatch",
                     {issue.message for issue in check_delivery_templates(root)},
                 )
 
+    def test_registered_translation_cross_links_are_required(self) -> None:
+        for stem in ("opportunity-record", "requirements-risk-package"):
+            for filename, target in (
+                (f"{stem}.md", f"{stem}.en.md"),
+                (f"{stem}.en.md", f"{stem}.md"),
+            ):
+                with (
+                    self.subTest(stem=stem, filename=filename),
+                    tempfile.TemporaryDirectory() as directory,
+                ):
+                    root = Path(directory)
+                    write_valid_delivery_templates(root)
+                    path = root / "templates/delivery" / filename
+                    path.write_text(
+                        path.read_text().replace(f"]({target})", "](missing.md)"), encoding="utf-8"
+                    )
+                    self.assertIn(
+                        "delivery translation cross-links required",
+                        {issue.message for issue in check_delivery_templates(root)},
+                    )
+
     def test_translated_traceability_gaps_are_reported(self) -> None:
-        for missing, expected in (
-            ("## Traceability", "delivery translation traceability section required"),
-            ("- Decision authority:", "missing translated traceability field: decision_authority"),
-            ("- Updated at with timezone:", "missing translated traceability field: updated_at"),
-        ):
-            with self.subTest(missing=missing), tempfile.TemporaryDirectory() as directory:
-                root = Path(directory)
-                write_valid_delivery_templates(root)
-                translated = root / "templates/delivery/opportunity-record.en.md"
-                translated.write_text(
-                    translated.read_text().replace(missing, "removed"), encoding="utf-8"
-                )
-                self.assertIn(expected, {issue.message for issue in check_delivery_templates(root)})
+        for stem in ("opportunity-record", "requirements-risk-package"):
+            for missing, expected in (
+                ("## Traceability", "delivery translation traceability section required"),
+                (
+                    "- Decision authority:",
+                    "missing translated traceability field: decision_authority",
+                ),
+                (
+                    "- Updated at with timezone:",
+                    "missing translated traceability field: updated_at",
+                ),
+            ):
+                with (
+                    self.subTest(stem=stem, missing=missing),
+                    tempfile.TemporaryDirectory() as directory,
+                ):
+                    root = Path(directory)
+                    write_valid_delivery_templates(root)
+                    translated = root / f"templates/delivery/{stem}.en.md"
+                    translated.write_text(
+                        translated.read_text().replace(missing, "removed"), encoding="utf-8"
+                    )
+                    self.assertIn(
+                        expected, {issue.message for issue in check_delivery_templates(root)}
+                    )
 
     def test_unexpected_delivery_translation_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

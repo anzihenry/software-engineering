@@ -70,7 +70,11 @@ DELIVERY_TEMPLATES = {
 }
 # Conditional records supplement the eight-stage contract; exercises need not invent exceptions.
 SUPPLEMENTAL_DELIVERY_TEMPLATES = {"gate-exception.md": (4, 5, 6)}
-TRANSLATED_DELIVERY_TEMPLATES = {"opportunity-record.md", *SUPPLEMENTAL_DELIVERY_TEMPLATES}
+TRANSLATED_DELIVERY_TEMPLATES = {
+    "opportunity-record.md",
+    "requirements-risk-package.md",
+    *SUPPLEMENTAL_DELIVERY_TEMPLATES,
+}
 WORKFLOW_DELIVERY_TEMPLATES = {
     1: ("opportunity-record.md",),
     2: ("requirements-risk-package.md",),
