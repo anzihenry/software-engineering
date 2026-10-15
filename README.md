@@ -73,6 +73,8 @@ Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md
 
 workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见[内容治理](docs/content-governance.md)；过期内容由仓库自检阻止合入。
 
+阶段06维护见[优化计划](docs/phase06-optimization-plan.md)；发布的候选、授权、批次验证观察及运行接收以[发布流程](docs/workflows/06-release-and-change-management.md)为准。
+
 ## 仓库自检
 
 仓库使用 Python 3.14 执行确定性的结构与格式门禁，覆盖 YAML 解析、GitHub 自动化权限与固定 Action、SKILL frontmatter、workflow/SKILL 内容治理和复审期限、交付物模板及追溯契约、端到端演练覆盖、目录与名称一致性、站内相对链接、导航/workflow 覆盖以及 Markdown 基础格式。
