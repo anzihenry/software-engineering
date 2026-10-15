@@ -148,7 +148,7 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 | 独立核对本次文档影响、双语内容与证据 | [`documentation-delivery-validation`](../../skills/05-integration-validation/documentation-delivery-validation/SKILL.md) | 合入、专题完成或正式发布前 | 对应当前版本的通过/阻塞结论及修正复核 |
 | 为新 GitHub 仓库建立稳定 CI 与适配真实能力的 CD 基线 | [`github-actions-bootstrap`](../../skills/05-integration-validation/github-actions-bootstrap/SKILL.md) | 项目已有可本地执行的质量命令，需要生成安全 Actions workflow 并通过首次 PR 自动取得真实 check-run 时 | CI/CD workflow、首次 PR 运行证据及仓库设置交接 |
 | 为新 GitHub 仓库建立安全仓库设置并收口首次 CI PR | [`github-repository-bootstrap`](../../skills/05-integration-validation/github-repository-bootstrap/SKILL.md) | Actions 引导 PR 已自动产生成功稳定 check，或需要审计 Actions 权限、environments、ruleset 和删分支设置时 | 可验证的仓库治理设置、首次 PR 收口与分支清理证据 |
-| 编排 GitHub PR 从 Draft 到受保护合入 | [`github-pr-integration`](../../skills/05-integration-validation/github-pr-integration/SKILL.md) | 独立开发者或微型团队需要在 GitHub 上串联 CI、评审、专项/系统验证和合入判断时 | 对应最新提交的 PR 集成状态与下一动作 |
+| 编排PR正式验证、受控合入及合入后收口 | [`github-pr-integration`](../../skills/05-integration-validation/github-pr-integration/SKILL.md) | 独立开发者或微型团队需要在 GitHub 上串联 CI、评审、专项/系统验证和合入判断时 | 前后精确对象、PR/合入后结果及06交接 |
 | 在受控 CI 中解释和处置自动门禁结果 | [`ci-quality-gate-evaluation`](../../skills/05-integration-validation/ci-quality-gate-evaluation/SKILL.md) | PR 已触发构建、测试和安全检查时 | 门禁结论、失败处置与限制 |
 | 以独立视角审查变更及其测试证据 | [`pull-request-review`](../../skills/05-integration-validation/pull-request-review/SKILL.md) | 变更需人工评审时 | 可追溯的评审发现与审批结论 |
 | 规划并汇总跨平台移动验证 | [`mobile-validation`](../../skills/05-integration-validation/mobile-validation/SKILL.md) | 风险跨越 iOS/Android/HarmonyOS，或需验证共享行为、平台一致性与整体设备矩阵时 | 移动端整体结论、各平台证据和支持范围 |
@@ -166,7 +166,7 @@ Actions 应始终启动主 CI workflow，再在 job 内按变更路径决定是�
 | 验证后端性能和并发 | [`backend-performance-concurrency-validation`](../../skills/05-integration-validation/backend-performance-concurrency-validation/SKILL.md) | 风险涉及吞吐、延迟、资源、争用、容量、背压或性能预算时 | 负载指标、并发正确性和容量限制 |
 | 验证后端韧性和恢复 | [`backend-resilience-recovery-validation`](../../skills/05-integration-validation/backend-resilience-recovery-validation/SKILL.md) | 风险涉及超时、依赖故障、重启、降级、重放或恢复目标时 | 故障注入、降级恢复和可观测性证据 |
 | 验证后端安全和授权 | [`backend-security-authorization-validation`](../../skills/05-integration-validation/backend-security-authorization-validation/SKILL.md) | 风险涉及认证授权、资源/租户隔离、敏感数据、输入或滥用控制时 | 安全负向证据、缺口和专项评审需求 |
-| 验证并汇总跨领域、跨环境系统行为 | [`system-level-validation`](../../skills/05-integration-validation/system-level-validation/SKILL.md) | 风险跨越客户端、服务和外部依赖，或需完整用户旅程证据时 | 跨域系统验证证据与适用范围 |
+| 验证并汇总跨领域、跨环境系统行为 | [`system-level-validation`](../../skills/05-integration-validation/system-level-validation/SKILL.md) | 每次功能合入前后端到端及跨边界系统验证时 | 跨域系统验证证据与适用范围 |
 | 汇总反馈、豁免与最新状态以判断可合入性 | [`merge-readiness`](../../skills/05-integration-validation/merge-readiness/SKILL.md) | 准备合入目标分支时 | 可合入/阻塞结论及剩余事项 |
 
 `github-actions-bootstrap` 负责首次 Actions 接入并产生可信 check-run 交接，`github-repository-bootstrap` 消费该证据完成仓库治理或后续审计，`github-pr-integration` 是面向 GitHub 小团队的日常 PR 编排入口；领域专项验证提供各自风险证据，`mobile-cli-execution` 负责执行官方工具并保存原始产物但不做通过判断，`mobile-validation` 汇总 iOS/Android/HarmonyOS，`web-frontend-validation` 汇总前端三类专项，`backend-validation` 汇总后端五类专项，`system-level-validation` 再保持客户端、服务和外部依赖的跨域汇总责任。所有这些 SKILL 只形成验证与合入结论；生产发布控制由阶段 6 负责。
