@@ -531,18 +531,35 @@ class RepositoryCheckTests(unittest.TestCase):
             "verification-matrix",
             "change-handoff",
         ):
-            with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
-                root = Path(directory)
-                write_valid_delivery_templates(root)
-                translated = root / f"templates/delivery/{stem}.en.md"
-                translated.write_text(
-                    translated.read_text().replace("template_version: 1", "template_version: 2"),
-                    encoding="utf-8",
-                )
-                self.assertIn(
-                    "translation traceability contract mismatch",
-                    {issue.message for issue in check_delivery_templates(root)},
-                )
+            for field in (
+                "template_name",
+                "template_version",
+                "lifecycle_stages",
+                "traceability_fields",
+            ):
+                with (
+                    self.subTest(stem=stem, field=field),
+                    tempfile.TemporaryDirectory() as directory,
+                ):
+                    root = Path(directory)
+                    write_valid_delivery_templates(root)
+                    translated = root / f"templates/delivery/{stem}.en.md"
+                    _, header, body = translated.read_text().split("---", 2)
+                    metadata = yaml.safe_load(header)
+                    metadata[field] = {
+                        "template_name": "incorrect-name",
+                        "template_version": 2,
+                        "lifecycle_stages": [99],
+                        "traceability_fields": list(TRACEABILITY_FIELDS[:-1]),
+                    }[field]
+                    translated.write_text(
+                        "---\n" + yaml.safe_dump(metadata, sort_keys=False) + "---" + body,
+                        encoding="utf-8",
+                    )
+                    self.assertIn(
+                        "translation traceability contract mismatch",
+                        {issue.message for issue in check_delivery_templates(root)},
+                    )
 
     def test_registered_translation_cross_links_are_required(self) -> None:
         for stem in (
@@ -579,17 +596,28 @@ class RepositoryCheckTests(unittest.TestCase):
             "verification-matrix",
             "change-handoff",
         ):
-            for missing, expected in (
+            fields = (
+                "Record ID",
+                "Record type",
+                "Record status",
+                "Owner",
+                "Decision authority",
+                "Risk level",
+                "Related records",
+                "Source/artifact version",
+                "Environment and scope",
+                "Evidence",
+                "Created at with timezone",
+                "Updated at with timezone",
+            )
+            mutations = [
                 ("## Traceability", "delivery translation traceability section required"),
-                (
-                    "- Decision authority:",
-                    "missing translated traceability field: decision_authority",
+                *(
+                    (f"- {label}:", f"missing translated traceability field: {field}")
+                    for field, label in zip(TRACEABILITY_FIELDS, fields, strict=True)
                 ),
-                (
-                    "- Updated at with timezone:",
-                    "missing translated traceability field: updated_at",
-                ),
-            ):
+            ]
+            for missing, expected in mutations:
                 with (
                     self.subTest(stem=stem, missing=missing),
                     tempfile.TemporaryDirectory() as directory,
