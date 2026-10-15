@@ -39,7 +39,7 @@ updated: "2026-10-15"
 
 | 包 | 主要文件与产出 | 依赖/相对规模 | 执行/评审角色 | 状态 |
 | --- | --- | --- | --- | --- |
-| S03-01 | workflow03完整契约，lifecycle及workflow02/04交接、skills路由 | 已确认设计；中：跨阶段判断 | technical-lead / quality-lead | 待实施 |
+| S03-01 | workflow03完整契约，lifecycle及workflow02/04交接、skills路由 | 已确认设计；中：跨阶段判断 | technical-lead / quality-lead | 已完成 |
 | S03-02 | 六个阶段03 SKILL的职责/输入/判断/停止，实施启动消费者及Git路由按影响更新 | S03-01；中：六技能与消费者一致 | technical-lead / implementation-lead | 待实施 |
 | S03-03 | solution-decision/verification-matrix中英、模板导航、指定英文配对检查及负例，阶段04/05消费者核对 | S03-01/02；中：双语与代码 | implementation-lead / quality-lead | 待实施 |
 | S03-04 | 三演练阶段03、原始fixture、独立前向试用及worktree真实生命周期证据、验证报告/收口 | S03-01–03；中：行为与证据复核 | quality-lead / process-owner | 待实施 |
@@ -74,3 +74,7 @@ updated: "2026-10-15"
 初步九领域影响：research不适用（无真实产品研究，技术预研为合成规则/行为验收）；product/design目标文档无需更新（无目标产品/架构，适用输出模板更新）；engineering更新执行契约/检查测试；guides更新workflow/技能/演练及Git预研路由；planning本计划及逐步验证；initiatives不适用（harness资产）；releases/CHANGELOG不适用（无发布）；入口/导航/要求清单随源资产更新。逐包补实际文件/理由，保留已有组织/治理/追溯契约。中文harness规则/操作参考无需英文；触及目标输出模板必须中英同步、互链及独立语义核对，不扩大整库翻译迁移。
 
 本地规则/合成试用不证明所有目标项目已采用、真实批准身份、远端CI或生产已验证；实际开发、CI和发布属于各自后续节点。此前阶段01/02和Swift6.4成果保持原版本证据，不能用新规则改写旧报告。
+
+### S03-01 实施记录
+
+统一workflow03设计/未知/预研/计划/门禁/状态基线及七项交接，更新lifecycle、02/04接口及技能路由。产品/设计目标文档无需更新（无产品架构变化，设计执行规则已更新），研究不适用（无真实研究），工程/指南执行契约已更新，计划本记录，专题/发布不适用（harness本地维护），导航/catalog随源更新。均为中文harness资产，模板中英同步留S03-03。四检查、非作者内容与适用场景评审绑定 `/private/tmp/phase03-implementation-evidence/S03-01` 当前摘要；逐包通过后提交，不以计划文字自批。
