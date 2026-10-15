@@ -73,6 +73,8 @@ SUPPLEMENTAL_DELIVERY_TEMPLATES = {"gate-exception.md": (4, 5, 6)}
 TRANSLATED_DELIVERY_TEMPLATES = {
     "opportunity-record.md",
     "requirements-risk-package.md",
+    "solution-decision.md",
+    "verification-matrix.md",
     *SUPPLEMENTAL_DELIVERY_TEMPLATES,
 }
 WORKFLOW_DELIVERY_TEMPLATES = {

@@ -112,7 +112,7 @@ review_by: "2027-02-26"
 
 ## 输出与阶段 04 交接
 
-使用[方案决策模板](../../templates/delivery/solution-decision.md)和[验证矩阵](../../templates/delivery/verification-matrix.md)，完整规则以本 workflow为准；模板按本轮计划适配，不能把文档存在当验证或批准。小任务可合写Issue，独立记录ID和全部追溯字段保留，需求/方案/验证各有其事实来源。
+使用[方案决策模板](../../templates/delivery/solution-decision.md)和[验证矩阵](../../templates/delivery/verification-matrix.md)，完整规则以本 workflow为准；两模板中英配对，不能把文档存在当验证或批准。小任务可合写Issue，独立记录ID和全部追溯字段保留，需求/方案/验证各有其事实来源。
 
 交接七项：当前需求与批准范围；方案关键决定；证据/局限与剩余未知边界/责任/节点；实施计划；验证/质量要求与实际命令；后续控制及文档/译文任务；实际开发批准及权限/版本/范围/理由/时间/来源。指定接收人及逐项响应位置，资料直接引用确定版本，无需复填六份文档。
 

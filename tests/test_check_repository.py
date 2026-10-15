@@ -503,7 +503,12 @@ class RepositoryCheckTests(unittest.TestCase):
             self.assertEqual(issues, [])
 
     def test_missing_registered_translation_is_reported(self) -> None:
-        for stem in ("opportunity-record", "requirements-risk-package"):
+        for stem in (
+            "opportunity-record",
+            "requirements-risk-package",
+            "solution-decision",
+            "verification-matrix",
+        ):
             with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 write_valid_delivery_templates(root)
@@ -518,7 +523,12 @@ class RepositoryCheckTests(unittest.TestCase):
                 )
 
     def test_registered_translation_contract_mismatch_is_reported(self) -> None:
-        for stem in ("opportunity-record", "requirements-risk-package"):
+        for stem in (
+            "opportunity-record",
+            "requirements-risk-package",
+            "solution-decision",
+            "verification-matrix",
+        ):
             with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 write_valid_delivery_templates(root)
@@ -533,7 +543,12 @@ class RepositoryCheckTests(unittest.TestCase):
                 )
 
     def test_registered_translation_cross_links_are_required(self) -> None:
-        for stem in ("opportunity-record", "requirements-risk-package"):
+        for stem in (
+            "opportunity-record",
+            "requirements-risk-package",
+            "solution-decision",
+            "verification-matrix",
+        ):
             for filename, target in (
                 (f"{stem}.md", f"{stem}.en.md"),
                 (f"{stem}.en.md", f"{stem}.md"),
@@ -554,7 +569,12 @@ class RepositoryCheckTests(unittest.TestCase):
                     )
 
     def test_translated_traceability_gaps_are_reported(self) -> None:
-        for stem in ("opportunity-record", "requirements-risk-package"):
+        for stem in (
+            "opportunity-record",
+            "requirements-risk-package",
+            "solution-decision",
+            "verification-matrix",
+        ):
             for missing, expected in (
                 ("## Traceability", "delivery translation traceability section required"),
                 (

@@ -41,7 +41,7 @@ updated: "2026-10-15"
 | --- | --- | --- | --- | --- |
 | S03-01 | workflow03完整契约，lifecycle及workflow02/04交接、skills路由 | 已确认设计；中：跨阶段判断 | technical-lead / quality-lead | 已完成 |
 | S03-02 | 六个阶段03 SKILL的职责/输入/判断/停止，实施启动消费者及Git路由按影响更新 | S03-01；中：六技能与消费者一致 | technical-lead / implementation-lead | 已完成 |
-| S03-03 | solution-decision/verification-matrix中英、模板导航、指定英文配对检查及负例，阶段04/05消费者核对 | S03-01/02；中：双语与代码 | implementation-lead / quality-lead | 待实施 |
+| S03-03 | solution-decision/verification-matrix中英、模板导航、指定英文配对检查及负例，阶段04/05消费者核对 | S03-01/02；中：双语与代码 | implementation-lead / quality-lead | 已完成 |
 | S03-04 | 三演练阶段03、原始fixture、独立前向试用及worktree真实生命周期证据、验证报告/收口 | S03-01–03；中：行为与证据复核 | quality-lead / process-owner | 待实施 |
 
 用户决定本轮方向，执行 Agent `/root`维护资产，非作者独立上下文评审，另起上下文执行前向试用；不向真实专业人员伪派任务。相对规模不承诺日历工期，未知消费者/权限/范围改变时重估。正式计划先独立验证提交，以便后续要求历史基于真实提交逐包替代。
@@ -82,3 +82,7 @@ updated: "2026-10-15"
 ### S03-02 实施记录
 
 六技能围绕workflow各自做方案/预研、契约、验证、恢复、计划及独立技术评审；移除混合的可进入开发结论，预研worktree/证据保全/清理与实际授权统一。Git规范/技能和阶段04通用实现消费者接入，导航同步；小任务不新增六份记录。research不适用（无真实研究），product/design目标文档无需（无目标产品架构），engineering/guides已更新上述执行资产，planning本记录，initiatives/releases不适用（无目标专题/发布），入口/catalog更新。中文harness无需译文，本包未改目标输出模板。八技能quick_validate、四检查及非作者内容/场景核对绑定 `/private/tmp/phase03-implementation-evidence/S03-02`，通过后单独提交。
+
+### S03-03 实施记录
+
+方案/验证矩阵中英同步保留版本1、12字段和各阶段归属；方案六状态不混开发批准，矩阵分规划/实际执行和各节点结论，原条件通过门禁不变。只新增登记两个英文配对，行为负例显式覆盖四个指定模板的缺译文、契约、双向互链和英文追溯，未知英文仍拒绝。已核对阶段04实现及05workflow消费者，引用同一矩阵，原验收/当前SHA/独立文档要求保留；无需迁移既有记录或更改其结果。工程更新checker/tests，指南/导航/计划/catalog更新，研究无真实研究、产品/设计无目标行为架构、专题/发布无事件。目标模板双语逐节复核；Python沿现有3.14/Ruff配置，无新增依赖/工具链。四检查及独立源码/中英/消费者证据在 `/private/tmp/phase03-implementation-evidence/S03-03`，通过后提交。
