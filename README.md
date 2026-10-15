@@ -26,6 +26,7 @@
 | 阶段 03 验证 | [分步检查与独立预研试用](docs/phase03-validation.md) | 14组场景、实际worktree生命周期、证据及本地验收范围 |
 | 优化开发与自测阶段 | [阶段 04 优化计划](docs/phase04-optimization-plan.md) | 已确认完成边界、四包实施及行为验收 |
 | 阶段 04 验证 | [分步检查与独立自测试用](docs/phase04-validation.md) | 14组场景、隔离实测与证据范围 |
+| 优化集成验证阶段 | [阶段 05 优化计划](docs/phase05-optimization-plan.md) | 合入前后端到端、独立评审、四包实施及收口 |
 
 跨项目采用先选择安装范围，再选择语言适配方式：
 
