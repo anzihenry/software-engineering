@@ -35,7 +35,7 @@ updated: "2026-10-15"
 | --- | --- | --- | --- |
 | S04-01 | workflow04 主契约、lifecycle、03/05 交接及技能路由 | 已确认设计；中：跨阶段语义 | 已完成 |
 | S04-02 | 四核心技能及受影响领域入口；评估其他叶技能、编码/Git/文档技能 | S04-01；中：职责与消费者 | 已完成 |
-| S04-03 | change-handoff 中英模板、导航、登记配对 checker 和行为负例；核对验证矩阵消费者 | S04-01/02；中：模板与 Python | 待实施 |
+| S04-03 | change-handoff 中英模板、导航、登记配对 checker 和行为负例；核对验证矩阵消费者 | S04-01/02；中：模板与 Python | 已完成 |
 | S04-04 | 三演练仅阶段04、原始场景、独立前向试用、原始证据与验证报告，按观察修正 | S04-01–03；中：行为验收与收口 | 待实施 |
 
 执行者 `/root`；非作者独立 Agent 按[文档交付验证](../skills/05-integration-validation/documentation-delivery-validation/SKILL.md)审查当前快照，另起上下文前向试用。角色不冒充真实专业人员，不虚派任务。规模不是日期承诺，发现范围或消费者变化重估。状态只维护本表。
@@ -74,3 +74,7 @@ workflow04统一完成/自测/失败/证据/七状态及交接；lifecycle和03/
 ## S04-02 实施记录
 
 四核心技能分别落实完整切片、真实本地结果/重验、有状态敏感变更、单一交接资格；三协调入口与八领域叶入口补本节点必需/已规划专项边界，保留平台/浏览器/事务/授权/失败语义。CLI技能已明确只执行/留原始结果，Git、语言规范（含Swift6.4）、文档技能职责正确，无需重写；已核对UI元信息仍与职责一致，无需改动。未把正常实现都改为worktree。engineering/guides为上述技能和workflow路由；planning本记录，导航/catalog同步；research/initiatives/releases无真实研究/目标专题/发布，product/design无目标行为架构变化无需更新。中文harness无需译文，无目标模板变更。15技能quick_validate原始结果、四检查及独立内容复核绑定 `/private/tmp/phase04-implementation-evidence/S04-02`，通过后提交。
+
+## S04-03 实施记录
+
+变更交接中英保留版本1、阶段4/5、12字段及七状态；新增完整批准/实际对象、自测映射、原始失败/后续验证、配套与正式交出/接收/转换事实。checker仅新增登记change-handoff英文，四类负例显式扩展至五个主配对模板，未知英文仍拒绝。已核对verification-matrix中英及04/05消费者，它们已有规划/实际执行/独立汇总及六结果语义，无需改写或迁移记录。engineering为checker/tests，guides/导航为模板入口，planning本记录及catalog；research/initiatives/releases无事件，product/design无目标产品架构变化。目标输出模板同步中英并独立语义核对，中文harness规则无需译文。Python使用现有配置，无依赖升级；38项模板checker测试与四检查原始结果在 `/private/tmp/phase04-implementation-evidence/S04-03`，独立源码/中英/消费者复核通过后提交。检查器只验证模板结构，不能冒充目标项目交接实例语义或CI强制。

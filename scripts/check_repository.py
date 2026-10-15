@@ -75,6 +75,7 @@ TRANSLATED_DELIVERY_TEMPLATES = {
     "requirements-risk-package.md",
     "solution-decision.md",
     "verification-matrix.md",
+    "change-handoff.md",
     *SUPPLEMENTAL_DELIVERY_TEMPLATES,
 }
 WORKFLOW_DELIVERY_TEMPLATES = {
