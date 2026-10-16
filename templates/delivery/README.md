@@ -40,7 +40,7 @@
 | 4–5 | [变更交接](change-handoff.md) / [English](change-handoff.en.md) | 完整实现/自测、七状态、05前后验证/收口及06交接 |
 | 6 | [发布记录](release-record.md) | [中英配对](release-record.en.md)，候选修订/组合、有效授权、批次/观察、中断恢复及07接收 |
 | 7 | [事件记录](incident-record.md)（[English](incident-record.en.md)） | 责任/时钟、分诊、实际恢复与关闭、受限引用及08接收 |
-| 8 | [效果复盘与行动](outcome-retrospective-actions.md) | 结果度量、系统学习和改进行动闭环 |
+| 8 | [效果复盘与行动](outcome-retrospective-actions.md) / [English](outcome-retrospective-actions.en.md) | 按类型填写评估/复盘/行动/规则；口径与决定、实施与效果、实际接收及回流分开 |
 
 按风险裁剪正文中的非必需章节，但保留统一追溯字段和对应阶段的质量门禁。跨阶段合并记录时，仍为各类交付物分配独立 ID，避免一个状态同时代表需求、变更和发布状态。
 

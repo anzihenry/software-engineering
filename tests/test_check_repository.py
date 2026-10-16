@@ -512,6 +512,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "release-record",
             "incident-record",
             "operations-record",
+            "outcome-retrospective-actions",
         ):
             with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -536,6 +537,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "release-record",
             "incident-record",
             "operations-record",
+            "outcome-retrospective-actions",
         ):
             for field in (
                 "template_name",
@@ -577,6 +579,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "release-record",
             "incident-record",
             "operations-record",
+            "outcome-retrospective-actions",
         ):
             for filename, target in (
                 (f"{stem}.md", f"{stem}.en.md"),
@@ -607,6 +610,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "release-record",
             "incident-record",
             "operations-record",
+            "outcome-retrospective-actions",
         ):
             fields = (
                 "Record ID",
