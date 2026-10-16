@@ -76,6 +76,7 @@ workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见[
 阶段06维护见[优化计划](docs/phase06-optimization-plan.md)和[验证报告](docs/phase06-validation.md)；发布的候选、授权、批次验证观察及运行接收以[发布流程](docs/workflows/06-release-and-change-management.md)为准。
 
 阶段07维护见[优化计划](docs/phase07-optimization-plan.md)和[验证报告](docs/phase07-validation.md)，工作单元、责任/分诊、恢复和08接收以[运行与支持](docs/workflows/07-operations-and-support.md)为准。
+- [阶段08优化计划](docs/phase08-optimization-plan.md)：工作单元、可信度量、复盘与行动效果闭环。
 
 ## 仓库自检
 
