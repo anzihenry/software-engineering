@@ -39,7 +39,9 @@
 | 3–5 | [验证矩阵](verification-matrix.md) / [English](verification-matrix.en.md) | 分节点规划/执行、前后端到端集合、精确合入对象、独立复核及阶段收口 |
 | 4–5 | [变更交接](change-handoff.md) / [English](change-handoff.en.md) | 完整实现/自测、七状态、05前后验证/收口及06交接 |
 | 6 | [发布记录](release-record.md) | [中英配对](release-record.en.md)，候选修订/组合、有效授权、批次/观察、中断恢复及07接收 |
-| 7 | [事件记录](incident-record.md) | 影响、时间线、处置、沟通和关闭依据 |
+| 7 | [事件记录](incident-record.md)（[English](incident-record.en.md)） | 责任/时钟、分诊、实际恢复与关闭、受限引用及08接收 |
 | 8 | [效果复盘与行动](outcome-retrospective-actions.md) | 结果度量、系统学习和改进行动闭环 |
 
 按风险裁剪正文中的非必需章节，但保留统一追溯字段和对应阶段的质量门禁。跨阶段合并记录时，仍为各类交付物分配独立 ID，避免一个状态同时代表需求、变更和发布状态。
+
+阶段07常规工作使用补充[运行与支持记录](operations-record.md)（[English](operations-record.en.md)），按接收/健康/维护/支持适用章节填写，独立工作单元有各自ID；没有事件不创建假事故。两套模板均保留版本1/12字段，事件过程、健康、支持状态及结案原因分开。

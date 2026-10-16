@@ -68,8 +68,11 @@ DELIVERY_TEMPLATES = {
     "incident-record.md": (7,),
     "outcome-retrospective-actions.md": (8,),
 }
-# Conditional records supplement the eight-stage contract; exercises need not invent exceptions.
-SUPPLEMENTAL_DELIVERY_TEMPLATES = {"gate-exception.md": (4, 5, 6)}
+# Supplemental records are selected by applicability; exercises need not invent incidents.
+SUPPLEMENTAL_DELIVERY_TEMPLATES = {
+    "gate-exception.md": (4, 5, 6),
+    "operations-record.md": (7,),
+}
 TRANSLATED_DELIVERY_TEMPLATES = {
     "opportunity-record.md",
     "requirements-risk-package.md",
@@ -77,6 +80,7 @@ TRANSLATED_DELIVERY_TEMPLATES = {
     "verification-matrix.md",
     "change-handoff.md",
     "release-record.md",
+    "incident-record.md",
     *SUPPLEMENTAL_DELIVERY_TEMPLATES,
 }
 WORKFLOW_DELIVERY_TEMPLATES = {
@@ -86,7 +90,7 @@ WORKFLOW_DELIVERY_TEMPLATES = {
     4: ("change-handoff.md", "verification-matrix.md"),
     5: ("change-handoff.md", "verification-matrix.md"),
     6: ("release-record.md",),
-    7: ("incident-record.md",),
+    7: ("incident-record.md", "operations-record.md"),
     8: ("outcome-retrospective-actions.md",),
 }
 END_TO_END_EXERCISES = {
