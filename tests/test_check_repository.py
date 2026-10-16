@@ -509,6 +509,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "solution-decision",
             "verification-matrix",
             "change-handoff",
+            "release-record",
         ):
             with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
@@ -530,6 +531,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "solution-decision",
             "verification-matrix",
             "change-handoff",
+            "release-record",
         ):
             for field in (
                 "template_name",
@@ -568,6 +570,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "solution-decision",
             "verification-matrix",
             "change-handoff",
+            "release-record",
         ):
             for filename, target in (
                 (f"{stem}.md", f"{stem}.en.md"),
@@ -595,6 +598,7 @@ class RepositoryCheckTests(unittest.TestCase):
             "solution-decision",
             "verification-matrix",
             "change-handoff",
+            "release-record",
         ):
             fields = (
                 "Record ID",

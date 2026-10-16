@@ -2,7 +2,7 @@
 title: "隔离本地交付渠道参考"
 status: current
 owner: release-manager
-updated: "2026-10-12"
+updated: "2026-10-16"
 ---
 
 # 隔离本地交付渠道参考
@@ -44,3 +44,7 @@ updated: "2026-10-12"
 实际浏览器工具路径按[领域参考](domain-validation.md)发现已有安装，通过NODE_PATH/REFERENCE_CHROMIUM使用；不安装新生产依赖。REFERENCE_URL仅接受http/127.0.0.1根路径，无凭据/查询/片段；实际不同端口服务来自本次子进程。`--browser-timeout`在40秒内指定受控采集截止；`--cancel-after-ready`用于独立新目录内的受控取消演练；保留实际ready后的取消与stopped记录，不将其当真实发布事故。
 
 使用[双语渠道报告](../templates/documentation/local-delivery-channel.md)，记录授权/预案、候选与不可变制品、构建/配置/依赖/工具、目标与逐阶段raw、健康/API/浏览器、失败停止/恢复/取消、剩余限制和独立核准。通过仅表示指定本地渠道演练满足声明范围；main合入、正式发布、生产和其他渠道另行判断。P1-04将核对采用/升级/真实GitHub门禁及不可变证据保留，不预先写其成功。
+
+## 执行结果与渠道验收的区别
+
+现有CLI允许不传browser-script；此时restored/退出0只证明已执行的HTTP制品/进程/恢复子范围，不证明完整Web渠道验收。调用者必须逐项核对实际报告的覆盖；Web候选和恢复缺真实浏览器证据仍按上文保持完整渠道验收阻塞，不能用HTML200或CLI退出码替代。仅HTTP机制试用可记录自身范围通过及浏览器not-run，保留完整渠道未通过事实。此说明不增加新CLI门禁、平台分发或生产权限。

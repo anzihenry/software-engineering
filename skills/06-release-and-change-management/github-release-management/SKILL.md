@@ -10,45 +10,23 @@ description: "在独立开发者或微型团队中，用 GitHub Actions、Enviro
 
 # GitHub 发布与变更管理
 
-为小团队提供一条可追溯、成本可控且保留人类生产决策的发布主线。此 SKILL 编排发布阶段，不自行创建标签、发布 Release、批准 Environment、部署生产或执行恢复。
+编排[阶段06发布契约](../../../docs/workflows/06-release-and-change-management.md)，不代替人类生产决定或自动取得标签、Release、Environment、部署与恢复权限。使用[发布主记录](../../../templates/delivery/release-record.md)链接原始证据，各技能不维护第二套状态。
 
-## 输入
+## 依据与路由
 
-- 已合入提交、风险等级、交付渠道、验收/集成验证证据和发布恢复预案。
-- GitHub Actions 工作流、可用 Environments/保护规则、制品存储、部署目标和观测能力。
-- 版本策略、迁移、特性开关、发布批次、健康阈值和值守安排。
+- 先核对05正式交接、实际合入SHA和合入后端到端通过、风险/范围/问题/发布约束；不把main绿当候选verified。
+- `release-candidate-preparation` 固定候选修订、完整变更组合、每平台制品/配置/迁移和验证映射。GitHub采用[Draft自动化契约](references/draft-release-automation.md)，先dry-run，再按已有精确授权创建Draft；Draft不等于正式交付。
+- `release-readiness` 核对候选、环境、预演、观测/样本、恢复/值守、当前授权。支持有权人类单次、分段或预批准低风险策略；独立开发者仍保留实际人类决定。范围内后续批次不重复请示，前置未完成不执行。
+- `progressive-release-execution` 一批执行，`release-health-assessment` 判断继续/观察/异常/无法判定；冲突部署/配置/开关/迁移互斥涵盖观察期，单个job的concurrency不足以证明全程互斥。
+- 异常立即停止扩大，按预授权交 `release-recovery-execution`；严重或超预案转07事故/安全隐私专项。当前严重事件且标准时序不满足恢复目标才走 `emergency-change-management`。
+- `release-closure` 核对八项成功条件或其他结案要求，记录真实渠道/覆盖和07接收；恢复旧基线不补记原功能成功。
 
-## 运行模型
+## GitHub执行边界
 
-1. **选择模式**：普通变更走标准发布；已预先批准、可自动恢复且影响受控的低风险变更可走连续发布；正在缓解生产影响的最小修复转交 `emergency-change-management`。时间压力本身不构成紧急变更。
-2. **准备候选**：使用 `release-candidate-preparation` 固定 source SHA、版本、制品摘要、迁移、发布说明和工作流运行。制品只构建一次，后续环境提升同一份已验证制品，不从不同分支或环境重新构建。本仓库采用[Draft Release 自动化契约](references/draft-release-automation.md)：先 dry-run，再由人类以版本精确确认创建 Draft Release。
-3. **设计 GitHub 控制面**：用 Actions 执行确定性步骤，用 `staging`/`production` Environment 隔离目标、变量和密钥，用 `production` concurrency 防止并发部署；云认证优先使用短期 OIDC 身份。套餐不支持 required reviewers 时，以明确的人工 `workflow_dispatch`/Go-No-Go 记录替代，不声称存在平台强制审批。
-4. **形成发布决策**：使用 `release-readiness` 核对候选、环境、观测、恢复、值守和授权。独立开发者必须亲自确认生产 Go/No-Go；Agent 只能准备证据和建议。
-5. **预演并推进**：先在非生产环境验证部署、迁移、健康检查与恢复路径，再由 `progressive-release-execution` 一次推进一个批次。每批次保持制品摘要、配置差异和 GitHub deployment/run 可追溯。
-6. **观察与控制**：每批次使用 `release-health-assessment` 对照预设业务和技术阈值决定继续、暂停、恢复或转入事件响应；部署任务成功不等于健康。
-7. **执行恢复或收口**：达到暂停条件时停止扩大范围，在明确授权后使用 `release-recovery-execution`；稳定达到目标范围后使用 `release-closure` 更新 GitHub Release、变更记录和运行交接。
+用 `gh` 核对Actions、Environments、Deployments、Release/标签和真实保护能力；Git数据用git。用Actions执行确定性步骤、同仓库reusable workflow复用逻辑，以staging/production Environment隔离变量和密钥。默认最小权限，云身份优先OIDC，密钥仅对应environment/job。生产部署串行且不自动取消正在执行任务；观察期另有跨运行协调证据。套餐无required reviewers时使用实际人工触发/决策记录，不虚报平台强制。workflow_dispatch本身不证明授权内容完整，按候选/范围/窗口核对。
 
-## 交付渠道差异
+多渠道分别核对候选/授权/结果，依赖协同的单侧完成只记部分；服务按流量/实例、客户端按测试/商店、包按预发布/正式渠道推进，客户端固定签名物并预置远程开关、兼容后端和前滚路径；包/CLI先附齐Draft/Prerelease制品再授权公开。具体恢复限制按workflow。新候选或越界变化暂停受影响推进，刷新证据和批准；不得覆盖公开版本或移动已发布标签。
 
-- Web/服务：可按实例、区域、租户或流量渐进；优先特性开关和可快速恢复的旧制品。
-- 移动/桌面应用：签名制品必须固定；利用测试渠道和商店分阶段发布。商店版本通常无法即时回滚，应预置远程开关、兼容后端和前滚修复。
-- 库、CLI 和可下载制品：先创建 Draft/Prerelease 并附齐制品，再发布标签、GitHub Release 和包；已公开版本不得用同版本覆盖不同内容。
+## 输出与停止
 
-## 输出格式
-
-```markdown
-## GitHub 发布状态
-- 模式、渠道、版本、source SHA 与制品摘要：
-- GitHub workflow / deployment / environment：
-- 就绪结论与人类 Go/No-Go：
-- 当前环境、批次、范围和健康判定：
-- 迁移、配置、开关与恢复状态：
-- 发布状态：候选准备中 | 待批准 | 进行中 | 暂停 | 恢复中 | 已完成
-- 下一动作、授权要求与责任人：
-```
-
-## 停止条件
-
-- 候选、授权、环境、观测或恢复条件不足时停止在对应门禁，不用管理员旁路制造进度。
-- 任何生产部署、Environment 批准、标签/Release 发布、商店提交、回滚或前滚都必须有针对该动作的明确授权。
-- 发布稳定收口后交给运行与支持；存在用户影响时转入恢复或事件响应。
+输出候选ID/修订及证据、就绪与独立授权、环境/渠道/批次/健康、配置迁移/恢复、过程状态及最终结果、下一动作/责任/复查时间。来源或授权不足停在对应门禁；外发通知和平台写入均按实际授权，不以编排技能名义执行。只有批准目标、验证观察、文档及运行接收齐备才成功收口。
