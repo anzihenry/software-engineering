@@ -175,7 +175,7 @@
   },
   {
     "path": "README.md",
-    "sha256": "c2a968ae5b9a4142bda57b32a1e1bacf823149d22c78366b9e9091458f80c1cb",
+    "sha256": "6b7717fa8de4c49f3e82981d9c5fe157b13e7315c5b4e43155db2b18dc752058",
     "translation": null
   },
   {
@@ -1147,7 +1147,7 @@
     {"id": "REQ-44d2ad808b8491b7", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 74, "section": "三层能力边界", "summary": "workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见内容治理；过期内容由仓库自检阻止合入。", "text_sha256": "0d329caea73014c6ed6c07f53a829deebbe5198bab4f4119456baaff3941efc8", "kind": "instruction", "controls": ["content", "lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-01", "GAP-02"]},
     {"execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-e15c222c71860931", "source": "README.md", "line": 76, "section": "三层能力边界", "summary": "阶段06维护见[优化计划](docs/phase06-optimization-plan.md)和[验证报告](docs/phase06-validation.md)；发布的候选、授权、批次验证观察及运行接收以[发布流程](docs/workflows/06-release-and-change-management.", "text_sha256": "b0e07e634bfc69dfe7aab34e77f49ea0a6be7973b6a51cba85e5c1380744d74f", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-8c4fb2def4e051da", "source": "README.md", "line": 78, "section": "三层能力边界", "summary": "阶段07维护见[优化计划](docs/phase07-optimization-plan.md)和[验证报告](docs/phase07-validation.md)，工作单元、责任/分诊、恢复和08接收以[运行与支持](docs/workflows/07-operations-and-support.md)为准。", "text_sha256": "7391d8064264799696fc084a85d457cc71545fdbf17401da853138bcdb02e17f", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
-    {"execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-db18acc72a53d5a6", "source": "README.md", "line": 79, "section": "三层能力边界", "summary": "- [阶段08优化计划](docs/phase08-optimization-plan.md)：工作单元、可信度量、复盘与行动效果闭环。", "text_sha256": "ddebdb67ee87130c7d897bf06a30dbc3cf2a13f70e595188c26a9bff0e2175f5", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
+    {"execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "id": "REQ-f80e0dc1e6442ed4", "source": "README.md", "line": 79, "section": "三层能力边界", "summary": "- [阶段08优化计划](docs/phase08-optimization-plan.md)：工作单元、可信度量、复盘与行动效果闭环。[验证与证据](docs/phase08-validation.md)。", "text_sha256": "62b8cb7fcb7ba9ae0194741a1c598e061058e551f31852d735a91897a1fe2c44", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-705f9b7d1eb51352", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 83, "section": "仓库自检", "summary": "仓库使用 Python 3.14 执行确定性的结构与格式门禁，覆盖 YAML 解析、GitHub 自动化权限与固定 Action、SKILL frontmatter、workflow/SKILL 内容治理和复审期限、交付物模板及追溯契约、端到端演练覆盖、目录与名称一致性、站内相对链接、导航/workflow 覆盖以及 ", "text_sha256": "3ad1378033ed64f36da2f56ec985409fa7a28395f84d95b963fc8fd727bce9db", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-2bb8523e1b4803f7", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 85, "section": "仓库自检", "summary": "日常开发优先使用统一的本地开发入口：", "text_sha256": "363fbcea48349aae10b468f42dd1bde252f5aed239bd5220226064ea19687487", "kind": "instruction", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
     {"id": "REQ-a738d61e7cdd8cad", "source": "README.md", "execution_asset": "templates/codex/AGENTS.md", "applicability": "按原来源的适用范围、章节前置条件及推荐/可选上下文判断；不从分类推导无条件要求", "line": 92, "section": "仓库自检", "summary": "Dependabot 每周为 Python 开发依赖和固定 SHA 的 GitHub Actions 创建更新 PR；更新仍须通过相同门禁并由人类审查后合入。", "text_sha256": "5ad3b795fcac58e99b547b756de668353f50b281ef69bef4fbea75f427e07239", "kind": "mandatory", "controls": ["lifecycle"], "capability": "manual-executable", "adoption": "unverified", "gaps": ["GAP-02"]},
@@ -17321,6 +17321,16 @@
     "replacements": [
       "REQ-158ace3bad4533a1",
       "REQ-e57d488a34236099"
+    ]
+  },
+  {
+    "id": "REQ-db18acc72a53d5a6",
+    "owner": "process-owner",
+    "reason": "按用户确认的阶段08优化计划修订；以同职责完整条款承接并保留原要求历史",
+    "decision": "2026-10-16 用户授权逐包实施；当前快照经独立验证后提交",
+    "disposition": "replaced",
+    "replacements": [
+      "REQ-f80e0dc1e6442ed4"
     ]
   }
 ]
