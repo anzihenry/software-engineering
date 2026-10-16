@@ -81,6 +81,7 @@ TRANSLATED_DELIVERY_TEMPLATES = {
     "change-handoff.md",
     "release-record.md",
     "incident-record.md",
+    "outcome-retrospective-actions.md",
     *SUPPLEMENTAL_DELIVERY_TEMPLATES,
 }
 WORKFLOW_DELIVERY_TEMPLATES = {
