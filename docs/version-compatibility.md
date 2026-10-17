@@ -8,7 +8,8 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | `v1.0.0` | 可复现旧基线 | schema 1 | 仅 `full` | 仅保留项目现有实现 | 无 | 无 |
 | `v1.1.0` | 可复现旧基线 | schema 3 | `governance`、`incident`、`release`、`full` | Python、Node、Swift、Go、external/custom | 无 | 无 |
-| `v1.2.0` | 当前稳定版 | schema 3 | 同 `v1.1.0` | 同 `v1.1.0` | 有 | 有；已验证从 `v1.0.0`、`v1.1.0` 升级 |
+| `v1.2.0` | 可复现旧基线 | schema 3 | 同 `v1.1.0` | 同 `v1.1.0` | 有 | 有；已验证从 `v1.0.0`、`v1.1.0` 升级 |
+| `v1.3.0` | 本轮版本；正式状态以GitHub Release为准 | schema 3 | 同 `v1.1.0` | 同 `v1.1.0` | 有 | 有；按原安装记录/固定包三方比较，不自动覆盖定制 |
 | `main` | 下一版本开发线，不视为稳定发布 | 以仓库内容为准 | 以仓库内容为准 | 以仓库内容为准 | 以仓库内容为准 | 以仓库内容为准 |
 
 schema 1 和 2 可以被当前读取器作为 legacy bundle 读取，但只支持 `full`。schema 3 定义两个互斥组件和四种安装 profile。manifest schema 描述包结构，不等同于 Git tag 或 lifecycle policy schema。
@@ -44,3 +45,7 @@ schema 1 和 2 可以被当前读取器作为 legacy bundle 读取，但只支�
 - 正式 Release、部署、回滚、高风险批准和敏感事故存储不在自动化兼容承诺内。
 
 具体迁移命令和冲突恢复见 [`UPGRADING.md`](../UPGRADING.md)。真实平台证据见 [GitHub canary 验收](github-canary-validation.md)。
+
+## v1.3.0采用范围
+
+第一层八阶段工作流、技能、模板和证据通过固定tag源码获取，不进入github-lifecycle.zip；第二/三层仍用schema3及原profile/adapter/upgrade契约。此次没有新增生产权限或将完整八阶段门禁自动接入目标CI。v1.2.0到v1.3.0升级应先核原包/新包摘要、原profile/adapter及dry-run计划，再在实际目标独立PR验证；既有canary保留原版本范围，不能当作v1.3.0真实平台验收。

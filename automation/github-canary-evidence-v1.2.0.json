@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "repository": "anzihenry/software-engineering-canary",
+  "source_ref": "87e70a2b28397e384179dfee87981ccad70d0bb4",
+  "upgrade_from_ref": "v1.1.0",
+  "synthetic_only": true,
+  "automatic_repository_lifecycle": false,
+  "checked_at": "2026-09-06T16:19:08Z",
+  "cases": [
+    {
+      "adapter": "python",
+      "profile": "full",
+      "pull_request": "https://github.com/anzihenry/software-engineering-canary/pull/1",
+      "pull_request_state": "closed",
+      "head_sha": "af14bbb61571000e5ba5ebfc3be49a58ae3863e4",
+      "upgrade": true,
+      "result": "passed",
+      "checks": {
+        "lifecycle-policy": "https://github.com/anzihenry/software-engineering-canary/actions/runs/34044454908/job/101516904374",
+        "validate": "https://github.com/anzihenry/software-engineering-canary/actions/runs/34044454942/job/101516904122"
+      }
+    },
+    {
+      "adapter": "node",
+      "profile": "governance",
+      "pull_request": "https://github.com/anzihenry/software-engineering-canary/pull/2",
+      "pull_request_state": "closed",
+      "head_sha": "347882e392b9faf44349fa6cfbc7427faff26b20",
+      "upgrade": false,
+      "result": "passed",
+      "checks": {
+        "lifecycle-policy": "https://github.com/anzihenry/software-engineering-canary/actions/runs/34044502922/job/101517034318",
+        "validate": "https://github.com/anzihenry/software-engineering-canary/actions/runs/34044502929/job/101517034036"
+      }
+    },
+    {
+      "adapter": "swift",
+      "profile": "release",
+      "pull_request": "https://github.com/anzihenry/software-engineering-canary/pull/3",
+      "pull_request_state": "closed",
+      "head_sha": "b2a4a0fe1b8021f41cdfb6af2eb0651f07a7bad6",
+      "upgrade": false,
+      "result": "passed",
+      "checks": {
+        "lifecycle-policy": "https://github.com/anzihenry/software-engineering-canary/actions/runs/34044580890/job/101517241746",
+        "validate": "https://github.com/anzihenry/software-engineering-canary/actions/runs/34044580915/job/101517241002"
+      }
+    },
+    {
+      "adapter": "go",
+      "profile": "incident",
+      "pull_request": "https://github.com/anzihenry/software-engineering-canary/pull/4",
+      "pull_request_state": "closed",
+      "head_sha": "09ef706f9486e923ba006b32effb72e46aa5bda4",
+      "upgrade": false,
+      "result": "passed",
+      "checks": {
+        "lifecycle-policy": "https://github.com/anzihenry/software-engineering-canary/actions/runs/34044675095/job/101517496177",
+        "validate": "https://github.com/anzihenry/software-engineering-canary/actions/runs/34044675099/job/101517496147"
+      }
+    }
+  ],
+  "governance": {
+    "ruleset_id": 22393223,
+    "ruleset_enforcement": "active",
+    "required_checks": [
+      "lifecycle-policy",
+      "validate"
+    ],
+    "ruleset_has_bypass": false,
+    "delete_branch_on_merge": true,
+    "actions_default_permission": "read",
+    "actions_can_approve_pull_requests": false,
+    "private_vulnerability_reporting": true,
+    "lifecycle_label_count": 13,
+    "full_doctor_healthy": true
+  }
+}

@@ -2,7 +2,7 @@
 
 升级命令以固定的新旧发布包和目标仓库当前文件做三方比较。它只自动修改仍与可信旧基线一致的文件；不会覆盖本地定制、自动删除上游移除项、切换 adapter、缩小 profile 或执行 GitHub 设置写入。
 
-当前稳定版 `v1.2.0` 首次提供 `upgrade` 命令。该命令从新版本工具运行，以固定的 `v1.0.0` 或 `v1.1.0` 发布包建立旧基线；旧版本本身不需要包含升级代码。
+`v1.2.0` 首次提供 `upgrade` 命令。该命令从新版本工具运行，以固定的 `v1.0.0` 或 `v1.1.0` 发布包建立旧基线；旧版本本身不需要包含升级代码。
 
 ## 升级前
 
@@ -11,6 +11,24 @@
 3. 从 GitHub Release 下载官方旧包、新包及各自 `.sha256`，分别核验摘要。
 4. 使用安装时相同的 repository、默认分支、profile 和 adapter；升级不会替你推断迁移。
 5. 不要从浮动分支、重新打包的目录或未知 ZIP 建立旧基线。
+
+## 采用 v1.3.0
+
+八阶段知识资产从固定tag `v1.3.0` 的仓库源码读取，按项目采用规范合并入口/规则并独立核验；不通过install/upgrade自动复制，也不覆盖目标项目文档。
+
+现有自动化安装保留原profile/adapter，用原官方包及新 `github-lifecycle.zip` 生成三方计划，例如已安装v1.2.0/full：
+
+```sh
+python3 -m scripts.github_lifecycle upgrade \
+  --from-package /path/to/github-lifecycle-v1.2.0.zip \
+  --to-package /path/to/github-lifecycle-v1.3.0.zip \
+  --target /absolute/path/to/target-repository \
+  --repository OWNER/REPOSITORY --default-branch main \
+  --from-ref v1.2.0 --to-ref v1.3.0 --profile full \
+  --output /tmp/lifecycle-v1.3.0-plan.json
+```
+
+替换为实际安装版本、profile及同一adapter条件；复核后才在已有授权内用相同参数加 `--no-dry-run --confirmation upgrade:OWNER/REPOSITORY:v1.2.0:v1.3.0`。旧版来源的既有示例保留如下，不表示必须先停在v1.2.0。不得把本地离线通过当成目标GitHub或生产就绪；后续run-adapter、doctor、独立PR和恢复要求不变。
 
 ## 从 v1.1.0 升级
 

@@ -35,7 +35,7 @@
 - Adapter：Python、Node、Swift、Go 使用内置本地检查与 Dependabot 生态；成熟项目使用 `external` 保留现有实现，或使用 `custom` 显式提供配置。
 - 验证：所有写入默认 dry-run；安装 PR 必须真实产生 `validate` 与 `lifecycle-policy`，再运行只读 `doctor`，最后才按需显式执行 `bootstrap`。
 
-当前稳定版本为 [`v1.2.0`](https://github.com/anzihenry/software-engineering/releases/tag/v1.2.0)，包含版本感知升级、真实 GitHub canary 和完整采用文档。采用前应先查看[兼容矩阵](docs/version-compatibility.md)，只使用固定 tag、完整 commit SHA 或已核验的发布包。
+版本入口：[`v1.3.0`](https://github.com/anzihenry/software-engineering/releases/tag/v1.3.0)（正式状态以GitHub Release为准），包含八阶段执行契约、双语交付模板和独立验证资产。[中英发布说明](docs/releases/v1.3.0.md)解释源码与自动化ZIP的分发区别；采用前查看[兼容矩阵](docs/version-compatibility.md)，仅使用固定tag、完整commit或已核验发布包。
 
 使用 harness 的 GitHub 项目默认必须完成[仓库治理基线](docs/github-repository-defaults.md)：保护默认分支（新项目为 `main`）并开启 PR 合并后自动删除功能分支；首次采用自动路由到现有初始化技能，实际应用和验证后才算完成。
 

@@ -15,7 +15,7 @@
 | Swift | `release` | `macos-15` 上真实编译 Swift Package | [PR #3](https://github.com/anzihenry/software-engineering-canary/pull/3) |
 | Go | `incident` | Go 1.27 与事故治理边界 | [PR #4](https://github.com/anzihenry/software-engineering-canary/pull/4) |
 
-机器可读结果见 [`automation/github-canary-evidence.json`](../automation/github-canary-evidence.json)。仓库自检固定检查四种组合、不可变源码 SHA、升级样本、两项成功 check 的证据 URL，以及最终治理结果；它不联网重新解释已经固定的历史记录。
+历史机器结果保存在 [`v1.2.0原始证据`](../automation/github-canary-evidence-v1.2.0.json)；当前机器记录使用 [`automation/github-canary-evidence.json`](../automation/github-canary-evidence.json)。仓库自检固定检查四种组合、不可变源码 SHA、升级样本、两项成功 check 的证据 URL，以及最终治理结果；它不联网重新解释已经固定的历史记录。
 
 ## 单条链路
 
@@ -53,3 +53,13 @@ P1 使用新的隔离 PR，复用已有保护，不重新执行历史四组合�
 独立评审与 snapshot 由未参与修改者实际读取/执行后产生；维护者只发布经内容审查和公开出站授权的精确 envelope，其他原始材料按本地保留策略保存。不可变记录位于 [fa7f2a0 的 review-evidence.json](https://github.com/anzihenry/software-engineering-canary/blob/fa7f2a0ab852ce36000fbd63a6c63abb2da43b16/review-evidence.json)。候选文件不能携带自身批准，必需检查不能豁免；固定 clean 读取器核对原报告、当前开放 PR、head/base/merge、发布者、实际 CI/App 与权限。
 
 本轮 ruleset 22393223 的 validate/lifecycle-policy 仍绑定 App 15368，harness-independent-review 仍为已授权现存必过状态，strict 和无旁路保持；不增加设置写入。单 owner 的 API 可见审计不覆盖组织/第三方 App/token 的全部写入路径。读取通过后仍不获得合入或生产授权，试点关闭而不合入，实际时间和结果见[分步记录](harness-p1-validation.md)。
+
+## v1.3.0发布前复验（2026-10-17）
+
+本轮固定自动化源码 `283f9ee85763dc9e8f47f4717b172e6862be9949`，从既有干净main分别建立4条不合入测试分支：[Python/full #9](https://github.com/anzihenry/software-engineering-canary/pull/9)、[Node/governance #10](https://github.com/anzihenry/software-engineering-canary/pull/10)、[Swift/release #11](https://github.com/anzihenry/software-engineering-canary/pull/11)、[Go/incident #12](https://github.com/anzihenry/software-engineering-canary/pull/12)。当前8项实际Actions检查通过，全部已关闭而未合入；测试分支/提交和首次失败保留。
+
+Python从官方v1.2.0包实际安装并提交，再升级至固定新源码；4项目本地原生测试均通过，远端按实际runner再验。Swift沿用既有tools-version6.0合成fixture，不等Swift6.4最低规范已在adapter强制；不借验证自动升级工具链。原4条PR因测试正文change-id含小写被policy拒绝，保留原body/失败run，仅修大写后重验，不改代码或弱化门禁。
+
+每组doctor健康，bootstrap dry-run的actions/blockers均空；随后实际执行零动作幂等apply并再次doctor健康，未改规则/标签/权限。ruleset22393223保留strict、无旁路及原P1的harness-independent-review第三项，当前自检精确核3项；该保护存在不等本轮PR取得第三项状态，更不授权合入。原v1.2.0证据原字节归档，当前JSON承接本轮结果，机器结构检查不联网认证真实性。
+
+最终发布文档/自检/证据提交与此源码不同时，独立核对manifest/full全部33项逐字节一致及ZIP摘要相同；该canary仅复用相同自动化制品的有效范围，最终完整候选仍另跑检查/PR/main及Actions，源代码变化不得沿用。当前原始日志、平台响应、升级/诊断/零动作证明随本版发布验证附件保全。
