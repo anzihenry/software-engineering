@@ -18,6 +18,16 @@
 | 需要判断检查失败、条件结论或例外是否允许推进 | [质量门禁与例外](docs/quality-gates.md) | 节点决策与不可豁免边界 |
 | 验证目标项目采用与加载 | [采用与复验](docs/harness-adoption.md) | 固定知识来源、实际入口和命令；以独立任务及平台正反例验收 |
 | 推进规范执行闭环 | [Harness P0 落实计划](docs/harness-p0-implementation-plan.md) | 查看四项 P0 的实施顺序、交付物与验收条件；计划不代表目标项目已生效 |
+| 查看后端与 Web 的规范落实 | [Harness P1 实施计划](docs/harness-p1-implementation-plan.md) | 查看四包完成状态与分步验证；本轮覆盖合成项目和隔离本地渠道 |
+| 优化需求与机会阶段 | [阶段 01 优化计划](docs/phase01-optimization-plan.md) | 查看四包实施、分步验证和验收场景；本地验证不代表目标项目已采用 |
+| 优化澄清与立项阶段 | [阶段 02 优化计划](docs/phase02-optimization-plan.md) | 查看已确认设计、四包实施与验收条件；本地通过不代表项目已采用 |
+| 阶段 02 验证 | [分步检查与独立试用](docs/phase02-validation.md) | 逐包证据、16 组原始场景与本地验收范围 |
+| 优化方案与计划阶段 | [阶段 03 优化计划](docs/phase03-optimization-plan.md) | 已确认设计、预研worktree、四包实施与验收条件 |
+| 阶段 03 验证 | [分步检查与独立预研试用](docs/phase03-validation.md) | 14组场景、实际worktree生命周期、证据及本地验收范围 |
+| 优化开发与自测阶段 | [阶段 04 优化计划](docs/phase04-optimization-plan.md) | 已确认完成边界、四包实施及行为验收 |
+| 阶段 04 验证 | [分步检查与独立自测试用](docs/phase04-validation.md) | 14组场景、隔离实测与证据范围 |
+| 优化集成验证阶段 | [阶段 05 优化计划](docs/phase05-optimization-plan.md) | 合入前后端到端、独立评审、四包实施及收口 |
+| 阶段 05 验证 | [分步检查与独立集成试用](docs/phase05-validation.md) | 20组场景、CLI真实链路、前后版本及失败处置证据 |
 
 跨项目采用先选择安装范围，再选择语言适配方式：
 
@@ -25,7 +35,7 @@
 - Adapter：Python、Node、Swift、Go 使用内置本地检查与 Dependabot 生态；成熟项目使用 `external` 保留现有实现，或使用 `custom` 显式提供配置。
 - 验证：所有写入默认 dry-run；安装 PR 必须真实产生 `validate` 与 `lifecycle-policy`，再运行只读 `doctor`，最后才按需显式执行 `bootstrap`。
 
-当前稳定版本为 [`v1.2.0`](https://github.com/anzihenry/software-engineering/releases/tag/v1.2.0)，包含版本感知升级、真实 GitHub canary 和完整采用文档。采用前应先查看[兼容矩阵](docs/version-compatibility.md)，只使用固定 tag、完整 commit SHA 或已核验的发布包。
+版本入口：[`v1.3.0`](https://github.com/anzihenry/software-engineering/releases/tag/v1.3.0)（正式状态以GitHub Release为准），包含八阶段执行契约、双语交付模板和独立验证资产。[中英发布说明](docs/releases/v1.3.0.md)解释源码与自动化ZIP的分发区别；采用前查看[兼容矩阵](docs/version-compatibility.md)，仅使用固定tag、完整commit或已核验发布包。
 
 使用 harness 的 GitHub 项目默认必须完成[仓库治理基线](docs/github-repository-defaults.md)：保护默认分支（新项目为 `main`）并开启 PR 合并后自动删除功能分支；首次采用自动路由到现有初始化技能，实际应用和验证后才算完成。
 
@@ -59,9 +69,14 @@ Git 项目的日常开发默认调用[Git 任务分支管理](skills/04-implemen
 
 项目文档治理见[项目文档规范](docs/documentation-standard.md)、[双语模板](templates/documentation/README.md)与[接入说明](docs/documentation-integration.md)。它们是面向目标项目的第一层 harness 资产，已接入入口、八阶段 workflow 与文档维护/独立验证 SKILL；目标项目检查器与 CI 模板已提供，实际平台门禁须由项目接入并验证。
 
-Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md)，当前覆盖 TypeScript 7、ArkTS、Python 3.14、Swift 6.2、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20。
+Coding Agent 的跨项目语言约束见 [编码规范](docs/coding-standards.md)，当前覆盖 TypeScript 7、ArkTS、Python 3.14、Swift 6.4 及以上、Kotlin 2.4、Go 1.27、SQL、zsh 和 C++20。
 
 workflow 与 SKILL 的所有者、适用范围、状态和定期复审规则见[内容治理](docs/content-governance.md)；过期内容由仓库自检阻止合入。
+
+阶段06维护见[优化计划](docs/phase06-optimization-plan.md)和[验证报告](docs/phase06-validation.md)；发布的候选、授权、批次验证观察及运行接收以[发布流程](docs/workflows/06-release-and-change-management.md)为准。
+
+阶段07维护见[优化计划](docs/phase07-optimization-plan.md)和[验证报告](docs/phase07-validation.md)，工作单元、责任/分诊、恢复和08接收以[运行与支持](docs/workflows/07-operations-and-support.md)为准。
+- [阶段08优化计划](docs/phase08-optimization-plan.md)：工作单元、可信度量、复盘与行动效果闭环。[验证与证据](docs/phase08-validation.md)。
 
 ## 仓库自检
 

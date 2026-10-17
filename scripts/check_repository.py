@@ -68,8 +68,22 @@ DELIVERY_TEMPLATES = {
     "incident-record.md": (7,),
     "outcome-retrospective-actions.md": (8,),
 }
-# Conditional records supplement the eight-stage contract; exercises need not invent exceptions.
-SUPPLEMENTAL_DELIVERY_TEMPLATES = {"gate-exception.md": (4, 5, 6)}
+# Supplemental records are selected by applicability; exercises need not invent incidents.
+SUPPLEMENTAL_DELIVERY_TEMPLATES = {
+    "gate-exception.md": (4, 5, 6),
+    "operations-record.md": (7,),
+}
+TRANSLATED_DELIVERY_TEMPLATES = {
+    "opportunity-record.md",
+    "requirements-risk-package.md",
+    "solution-decision.md",
+    "verification-matrix.md",
+    "change-handoff.md",
+    "release-record.md",
+    "incident-record.md",
+    "outcome-retrospective-actions.md",
+    *SUPPLEMENTAL_DELIVERY_TEMPLATES,
+}
 WORKFLOW_DELIVERY_TEMPLATES = {
     1: ("opportunity-record.md",),
     2: ("requirements-risk-package.md",),
@@ -77,7 +91,7 @@ WORKFLOW_DELIVERY_TEMPLATES = {
     4: ("change-handoff.md", "verification-matrix.md"),
     5: ("change-handoff.md", "verification-matrix.md"),
     6: ("release-record.md",),
-    7: ("incident-record.md",),
+    7: ("incident-record.md", "operations-record.md"),
     8: ("outcome-retrospective-actions.md",),
 }
 END_TO_END_EXERCISES = {
@@ -438,8 +452,14 @@ def check_github_canary_evidence(root: Path) -> list[Issue]:
     else:
         if not isinstance(governance["ruleset_id"], int) or governance["ruleset_id"] <= 0:
             issues.append(Issue(evidence, "GitHub canary ruleset_id must be positive"))
-        if governance["required_checks"] != ["lifecycle-policy", "validate"]:
-            issues.append(Issue(evidence, "GitHub canary must require both stable checks"))
+        if governance["required_checks"] != [
+            "harness-independent-review",
+            "lifecycle-policy",
+            "validate",
+        ]:
+            issues.append(
+                Issue(evidence, "GitHub canary must preserve all three controlled required checks")
+            )
         expected_governance_values = {
             "ruleset_enforcement": "active",
             "ruleset_has_bypass": False,
@@ -1340,7 +1360,7 @@ def check_delivery_templates(root: Path) -> list[Issue]:
     all_templates = DELIVERY_TEMPLATES | SUPPLEMENTAL_DELIVERY_TEMPLATES
     expected_paths = {templates_root / name for name in all_templates}
     translations = {
-        templates_root / name.replace(".md", ".en.md") for name in SUPPLEMENTAL_DELIVERY_TEMPLATES
+        templates_root / name.replace(".md", ".en.md") for name in TRANSLATED_DELIVERY_TEMPLATES
     }
     actual_paths = set(templates_root.glob("*.md")) - {navigation}
     for path in sorted((expected_paths | translations) - actual_paths):
@@ -1393,7 +1413,7 @@ def check_delivery_templates(root: Path) -> list[Issue]:
             if f"- {label}：" not in content:
                 issues.append(Issue(path, f"missing visible traceability field: {field}"))
 
-        if name in SUPPLEMENTAL_DELIVERY_TEMPLATES:
+        if name in TRANSLATED_DELIVERY_TEMPLATES:
             translated = path.with_name(path.stem + ".en.md")
             if translated.is_file():
                 translation = translated.read_text(encoding="utf-8")
@@ -1408,6 +1428,32 @@ def check_delivery_templates(root: Path) -> list[Issue]:
                     issues.append(Issue(translated, "translation traceability contract mismatch"))
                 if f"]({translated.name})" not in content or f"]({path.name})" not in translation:
                     issues.append(Issue(translated, "delivery translation cross-links required"))
+                if "## Traceability\n" not in translation:
+                    issues.append(
+                        Issue(translated, "delivery translation traceability section required")
+                    )
+                for field, label in zip(
+                    TRACEABILITY_FIELDS,
+                    (
+                        "Record ID",
+                        "Record type",
+                        "Record status",
+                        "Owner",
+                        "Decision authority",
+                        "Risk level",
+                        "Related records",
+                        "Source/artifact version",
+                        "Environment and scope",
+                        "Evidence",
+                        "Created at with timezone",
+                        "Updated at with timezone",
+                    ),
+                    strict=True,
+                ):
+                    if f"- {label}:" not in translation:
+                        issues.append(
+                            Issue(translated, f"missing translated traceability field: {field}")
+                        )
 
     for phase, template_names in WORKFLOW_DELIVERY_TEMPLATES.items():
         workflow = root / "docs" / "workflows" / f"{PHASES[phase]}.md"

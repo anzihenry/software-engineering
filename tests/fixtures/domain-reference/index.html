@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Domain reference</title>
+<style>body{font:18px system-ui;max-width:42rem;margin:3rem auto;padding:1rem;color:#17202a;background:#fff}button,input{font:inherit;margin:.5rem;padding:.5rem}button:focus-visible,input:focus-visible{outline:3px solid #1456b8;outline-offset:3px}#result{padding:1rem;border:1px solid #17202a;min-height:3rem}</style>
+<h1>Domain reference</h1>
+<p>Synthetic loopback fixture. Reference actors are not production authentication.</p>
+<fieldset role="radiogroup" aria-label="Scenario">
+<legend>Scenario</legend>
+<label><input id="scenario-normal" type="radio" name="scenario" value="normal" checked> Normal</label><br>
+<label><input id="scenario-fault" type="radio" name="scenario" value="fault"> Service failure</label><br>
+<label><input id="scenario-expired" type="radio" name="scenario" value="expired"> Expired session</label><br>
+<label><input id="scenario-empty" type="radio" name="scenario" value="empty"> Empty</label>
+</fieldset>
+<button id="load">Load item</button>
+<div id="result" role="status" aria-live="polite">Ready</div>
+<script>
+const result = document.querySelector('#result');
+const button = document.querySelector('#load');
+button.addEventListener('click', async () => {
+  const restoreFocus = document.activeElement === button;
+  button.disabled = true;
+  result.textContent = 'Loading';
+  const started = performance.now();
+  const mode = document.querySelector('input[name=scenario]:checked').value;
+  const query = mode === 'fault' ? '?fault=1' : mode === 'empty' ? '?empty=1' : '';
+  try {
+    const response = await fetch('/api/item' + query, {
+      headers: mode === 'expired' ? {} : {'X-Reference-Actor': 'actor-a'},
+      signal: AbortSignal.timeout(2000)
+    });
+    const body = await response.json();
+    result.textContent = response.ok ? body.value : `Error ${response.status}: ${body.error}. Select Normal and retry.`;
+    console.info(JSON.stringify({scenario:mode,status:response.status,elapsed_ms:performance.now()-started,body}));
+  } catch (error) {
+    result.textContent = 'Request failed. Select Normal and retry.';
+    console.error(String(error));
+  } finally {
+    button.disabled = false;
+    if (restoreFocus) button.focus();
+  }
+});
+</script>
+</html>
