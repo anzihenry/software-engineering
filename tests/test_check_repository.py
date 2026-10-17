@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from datetime import date
@@ -193,6 +194,24 @@ class RepositoryCheckTests(unittest.TestCase):
 
             self.assertIn("missing adopter-facing documentation", messages)
             self.assertIn("missing adopter-facing README", messages)
+
+    def test_canary_required_checks_preserve_existing_review_gate(self) -> None:
+        source = REPOSITORY_ROOT / "automation/github-canary-evidence.json"
+        for checks in (
+            ["lifecycle-policy", "validate"],
+            ["harness-independent-review", "lifecycle-policy", "unexpected", "validate"],
+        ):
+            with self.subTest(checks=checks), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                evidence = root / "automation/github-canary-evidence.json"
+                evidence.parent.mkdir(parents=True)
+                data = json.loads(source.read_text(encoding="utf-8"))
+                data["governance"]["required_checks"] = checks
+                evidence.write_text(json.dumps(data), encoding="utf-8")
+                self.assertIn(
+                    "GitHub canary must preserve all three controlled required checks",
+                    {issue.message for issue in check_github_canary_evidence(root)},
+                )
 
     def test_incomplete_github_canary_evidence_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

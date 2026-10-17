@@ -452,8 +452,14 @@ def check_github_canary_evidence(root: Path) -> list[Issue]:
     else:
         if not isinstance(governance["ruleset_id"], int) or governance["ruleset_id"] <= 0:
             issues.append(Issue(evidence, "GitHub canary ruleset_id must be positive"))
-        if governance["required_checks"] != ["lifecycle-policy", "validate"]:
-            issues.append(Issue(evidence, "GitHub canary must require both stable checks"))
+        if governance["required_checks"] != [
+            "harness-independent-review",
+            "lifecycle-policy",
+            "validate",
+        ]:
+            issues.append(
+                Issue(evidence, "GitHub canary must preserve all three controlled required checks")
+            )
         expected_governance_values = {
             "ruleset_enforcement": "active",
             "ruleset_has_bypass": False,
