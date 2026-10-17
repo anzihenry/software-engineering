@@ -1,6 +1,6 @@
 # 10 分钟快速开始
 
-本页帮助一个已有 GitHub 仓库采用生命周期自动化。它不会安装第一层研发知识，也不会自动发布、部署、回滚、批准变更或写入敏感事故内容。第一次采用使用当前稳定版本 `v1.2.0`；更早版本的现有安装按 [`UPGRADING.md`](../UPGRADING.md) 迁移。
+本页帮助一个已有 GitHub 仓库采用生命周期自动化。它不会安装第一层研发知识，也不会自动发布、部署、回滚、批准变更或写入敏感事故内容。本页以固定版本 `v1.3.0` 演示；使用前确认其GitHub Release已正式发布并核验附件；更早版本的现有安装按 [`UPGRADING.md`](../UPGRADING.md) 迁移。
 
 完整 harness 采用默认要求[分支保护与合并后自动删分支](github-repository-defaults.md)。`full`/`governance` 已实现这两项，但必须执行第 6 步并重新验证；仅安装文件不会生效。显式单项 profile 保持原范围，完整治理另走仓库初始化技能。
 
@@ -11,9 +11,9 @@
 下载并核验固定发布包：
 
 ```sh
-mkdir -p /tmp/github-lifecycle-v1.2.0
-cd /tmp/github-lifecycle-v1.2.0
-gh release download v1.2.0 \
+mkdir -p /tmp/github-lifecycle-v1.3.0
+cd /tmp/github-lifecycle-v1.3.0
+gh release download v1.3.0 \
   --repo anzihenry/software-engineering \
   --pattern 'github-lifecycle.zip*'
 shasum -a 256 --check github-lifecycle.zip.sha256
@@ -53,14 +53,14 @@ unzip github-lifecycle.zip -d package
 以下示例选择 `governance` 和 `external`。先在发布包目录生成计划：
 
 ```sh
-cd /tmp/github-lifecycle-v1.2.0/package
+cd /tmp/github-lifecycle-v1.3.0/package
 python3 -m scripts.github_lifecycle install \
   --target /absolute/path/to/target-repository \
   --repository OWNER/REPOSITORY \
   --default-branch main \
   --profile governance \
   --adapter external \
-  --source-ref v1.2.0 \
+  --source-ref v1.3.0 \
   --output /tmp/lifecycle-install-plan.json
 ```
 
@@ -73,7 +73,7 @@ python3 -m scripts.github_lifecycle install \
   --default-branch main \
   --profile governance \
   --adapter external \
-  --source-ref v1.2.0 \
+  --source-ref v1.3.0 \
   --no-dry-run \
   --confirmation install:OWNER/REPOSITORY
 ```

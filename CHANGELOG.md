@@ -4,13 +4,32 @@
 
 ## [Unreleased]
 
+## [v1.3.0] - 2026-10-17
+
+发布说明：[Software Engineering Harness v1.3.0](docs/releases/v1.3.0.md)（[English](docs/releases/v1.3.0.en.md)）。正式发布时间以GitHub Release为准。
+
 ### Added
+
+
+- 八阶段各自的优化计划、验证报告及152条独立场景输入/输出，包含worktree预研、合入前后CLI、发布恢复、运行数据恢复和行动效果的限定真实隔离验证。
+- 完成生命周期交付模板的10组中英配对及适用结构负例；新增运行与支持补充记录，保留原稳定ID和12字段契约。
+
+
 
 - 文档治理第三阶段：增加目标项目 check/snapshot/gate、配置/独立评审 JSON 与可复用 CI 模板；行为测试覆盖交付失败场景，不修改安装器或替目标项目启用远端规则。
 - 增加面向目标项目的双语文档规范、按需使用的文档/交付检查模板及接入说明；保留资产仓库边界和既有治理/追溯契约。
 - 增加文档维护与独立交付验证 SKILL，将文档影响、英文同步、当前版本证据和非作者评审接入 harness 入口、八阶段 workflow、交付模板及合入/发布就绪要求；目标项目检查器和 CI 模板已提供，安装包保持不变。
 
 ### Changed
+
+
+- 阶段01仅批准澄清，02仅批准方案投入，03分别核技术评审、实施准备和实际开发批准；编码预研用worktree隔离，保全后收口。
+- 阶段04形成完整实现/可信自测，05独立验证且每次功能合入前后端到端，06绑定明确候选/有效授权/批次观察/恢复及运行接收。
+- 阶段07按运行工作单元分清缓解/恢复/关闭，08分清结果/证据/归因/决定及行动实施/效果/规则试行。
+- 编码规范明确Swift最低6.4；所有版本遵循目标项目实际工具链，不自动升级。
+
+
+
 
 - 将 Git 分支操作封装为 `git-branch-management` 并接入修改前与 PR 路由；harness 规范、workflow、SKILL 及操作参考改为只需中文，目标项目文档及其输出模板保留双语要求。
 
@@ -62,7 +81,8 @@
 - Draft Release 候选准备、普通事故状态流转、安全/隐私受限入口、复盘、改进行动和只读审计。
 - 确定性 `package`、默认 dry-run 的 `install`、只读 `doctor` 和证据 PR 约束的 `bootstrap`。
 
-[Unreleased]: https://github.com/anzihenry/software-engineering/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/anzihenry/software-engineering/compare/v1.3.0...HEAD
+[v1.3.0]: https://github.com/anzihenry/software-engineering/compare/v1.2.0...v1.3.0
 [v1.2.0]: https://github.com/anzihenry/software-engineering/compare/v1.1.0...v1.2.0
 [v1.1.0]: https://github.com/anzihenry/software-engineering/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/anzihenry/software-engineering/releases/tag/v1.0.0
