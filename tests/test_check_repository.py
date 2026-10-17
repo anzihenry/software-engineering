@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from datetime import date
@@ -13,6 +14,7 @@ from scripts.check_repository import (
     PHASES,
     SUPPLEMENTAL_DELIVERY_TEMPLATES,
     TRACEABILITY_FIELDS,
+    TRANSLATED_DELIVERY_TEMPLATES,
     WORKFLOW_DELIVERY_TEMPLATES,
     check_adoption_documentation,
     check_content_governance,
@@ -41,6 +43,8 @@ def write_valid_delivery_templates(root: Path) -> None:
         f"# Templates\n\n{navigation_links}\n", encoding="utf-8"
     )
     for name, lifecycle_stages in DELIVERY_TEMPLATES.items():
+        if name in TRANSLATED_DELIVERY_TEMPLATES:
+            continue
         metadata = {
             "template_name": Path(name).stem,
             "template_version": 1,
@@ -69,7 +73,7 @@ def write_valid_delivery_templates(root: Path) -> None:
             encoding="utf-8",
         )
 
-    for name in SUPPLEMENTAL_DELIVERY_TEMPLATES:
+    for name in TRANSLATED_DELIVERY_TEMPLATES:
         for filename in [name, name.replace(".md", ".en.md")]:
             (templates_root / filename).write_text(
                 (REPOSITORY_ROOT / "templates/delivery" / filename).read_text(), encoding="utf-8"
@@ -190,6 +194,24 @@ class RepositoryCheckTests(unittest.TestCase):
 
             self.assertIn("missing adopter-facing documentation", messages)
             self.assertIn("missing adopter-facing README", messages)
+
+    def test_canary_required_checks_preserve_existing_review_gate(self) -> None:
+        source = REPOSITORY_ROOT / "automation/github-canary-evidence.json"
+        for checks in (
+            ["lifecycle-policy", "validate"],
+            ["harness-independent-review", "lifecycle-policy", "unexpected", "validate"],
+        ):
+            with self.subTest(checks=checks), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                evidence = root / "automation/github-canary-evidence.json"
+                evidence.parent.mkdir(parents=True)
+                data = json.loads(source.read_text(encoding="utf-8"))
+                data["governance"]["required_checks"] = checks
+                evidence.write_text(json.dumps(data), encoding="utf-8")
+                self.assertIn(
+                    "GitHub canary must preserve all three controlled required checks",
+                    {issue.message for issue in check_github_canary_evidence(root)},
+                )
 
     def test_incomplete_github_canary_evidence_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -499,13 +521,179 @@ class RepositoryCheckTests(unittest.TestCase):
 
             self.assertEqual(issues, [])
 
+    def test_missing_registered_translation_is_reported(self) -> None:
+        for stem in (
+            "opportunity-record",
+            "requirements-risk-package",
+            "solution-decision",
+            "verification-matrix",
+            "change-handoff",
+            "release-record",
+            "incident-record",
+            "operations-record",
+            "outcome-retrospective-actions",
+        ):
+            with self.subTest(stem=stem), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                write_valid_delivery_templates(root)
+                translated = root / f"templates/delivery/{stem}.en.md"
+                translated.unlink()
+                self.assertTrue(
+                    any(
+                        issue.path == translated.resolve()
+                        and issue.message == "missing required delivery template"
+                        for issue in check_delivery_templates(root)
+                    )
+                )
+
+    def test_registered_translation_contract_mismatch_is_reported(self) -> None:
+        for stem in (
+            "opportunity-record",
+            "requirements-risk-package",
+            "solution-decision",
+            "verification-matrix",
+            "change-handoff",
+            "release-record",
+            "incident-record",
+            "operations-record",
+            "outcome-retrospective-actions",
+        ):
+            for field in (
+                "template_name",
+                "template_version",
+                "lifecycle_stages",
+                "traceability_fields",
+            ):
+                with (
+                    self.subTest(stem=stem, field=field),
+                    tempfile.TemporaryDirectory() as directory,
+                ):
+                    root = Path(directory)
+                    write_valid_delivery_templates(root)
+                    translated = root / f"templates/delivery/{stem}.en.md"
+                    _, header, body = translated.read_text().split("---", 2)
+                    metadata = yaml.safe_load(header)
+                    metadata[field] = {
+                        "template_name": "incorrect-name",
+                        "template_version": 2,
+                        "lifecycle_stages": [99],
+                        "traceability_fields": list(TRACEABILITY_FIELDS[:-1]),
+                    }[field]
+                    translated.write_text(
+                        "---\n" + yaml.safe_dump(metadata, sort_keys=False) + "---" + body,
+                        encoding="utf-8",
+                    )
+                    self.assertIn(
+                        "translation traceability contract mismatch",
+                        {issue.message for issue in check_delivery_templates(root)},
+                    )
+
+    def test_registered_translation_cross_links_are_required(self) -> None:
+        for stem in (
+            "opportunity-record",
+            "requirements-risk-package",
+            "solution-decision",
+            "verification-matrix",
+            "change-handoff",
+            "release-record",
+            "incident-record",
+            "operations-record",
+            "outcome-retrospective-actions",
+        ):
+            for filename, target in (
+                (f"{stem}.md", f"{stem}.en.md"),
+                (f"{stem}.en.md", f"{stem}.md"),
+            ):
+                with (
+                    self.subTest(stem=stem, filename=filename),
+                    tempfile.TemporaryDirectory() as directory,
+                ):
+                    root = Path(directory)
+                    write_valid_delivery_templates(root)
+                    path = root / "templates/delivery" / filename
+                    path.write_text(
+                        path.read_text().replace(f"]({target})", "](missing.md)"), encoding="utf-8"
+                    )
+                    self.assertIn(
+                        "delivery translation cross-links required",
+                        {issue.message for issue in check_delivery_templates(root)},
+                    )
+
+    def test_translated_traceability_gaps_are_reported(self) -> None:
+        for stem in (
+            "opportunity-record",
+            "requirements-risk-package",
+            "solution-decision",
+            "verification-matrix",
+            "change-handoff",
+            "release-record",
+            "incident-record",
+            "operations-record",
+            "outcome-retrospective-actions",
+        ):
+            fields = (
+                "Record ID",
+                "Record type",
+                "Record status",
+                "Owner",
+                "Decision authority",
+                "Risk level",
+                "Related records",
+                "Source/artifact version",
+                "Environment and scope",
+                "Evidence",
+                "Created at with timezone",
+                "Updated at with timezone",
+            )
+            mutations = [
+                ("## Traceability", "delivery translation traceability section required"),
+                *(
+                    (f"- {label}:", f"missing translated traceability field: {field}")
+                    for field, label in zip(TRACEABILITY_FIELDS, fields, strict=True)
+                ),
+            ]
+            for missing, expected in mutations:
+                with (
+                    self.subTest(stem=stem, missing=missing),
+                    tempfile.TemporaryDirectory() as directory,
+                ):
+                    root = Path(directory)
+                    write_valid_delivery_templates(root)
+                    translated = root / f"templates/delivery/{stem}.en.md"
+                    translated.write_text(
+                        translated.read_text().replace(missing, "removed"), encoding="utf-8"
+                    )
+                    self.assertIn(
+                        expected, {issue.message for issue in check_delivery_templates(root)}
+                    )
+
+    def test_unexpected_delivery_translation_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            write_valid_delivery_templates(root)
+            translated = root / "templates/delivery/arbitrary.en.md"
+            translated.write_text("# Unregistered template\n", encoding="utf-8")
+            self.assertTrue(
+                any(
+                    issue.path == translated.resolve()
+                    and issue.message == "unexpected delivery template"
+                    for issue in check_delivery_templates(root)
+                )
+            )
+
     def test_incomplete_traceability_contract_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             write_valid_delivery_templates(root)
             template = root / "templates" / "delivery" / "opportunity-record.md"
             content = template.read_text(encoding="utf-8")
-            template.write_text(content.replace("- updated_at\n", ""), encoding="utf-8")
+            parts = content.split("---", 2)
+            metadata = yaml.safe_load(parts[1])
+            metadata["traceability_fields"].remove("updated_at")
+            template.write_text(
+                "---\n" + yaml.safe_dump(metadata, sort_keys=False) + "---" + parts[2],
+                encoding="utf-8",
+            )
 
             messages = {issue.message for issue in check_delivery_templates(root)}
 

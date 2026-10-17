@@ -33,13 +33,15 @@
 
 | 阶段 | 模板 | 主要交付物 |
 | --- | --- | --- |
-| 1 | [机会记录](opportunity-record.md) | 问题、证据、目标、范围和排序决定 |
-| 2 | [需求与风险包](requirements-risk-package.md) | 可验收需求、非功能要求、依赖和门禁 |
-| 3 | [方案决策](solution-decision.md) | 方案取舍、契约/迁移、发布恢复和评审 |
-| 3–5 | [验证矩阵](verification-matrix.md) | 要求/风险到验证证据的映射 |
-| 4–5 | [变更交接](change-handoff.md) | 实现、自测、CI、评审和发布影响 |
-| 6 | [发布记录](release-record.md) | 候选身份、Go/No-Go、批次、健康和收口 |
-| 7 | [事件记录](incident-record.md) | 影响、时间线、处置、沟通和关闭依据 |
-| 8 | [效果复盘与行动](outcome-retrospective-actions.md) | 结果度量、系统学习和改进行动闭环 |
+| 1 | [机会记录](opportunity-record.md) / [English](opportunity-record.en.md) | 唯一机会主记录、六项判断、有限验证、状态迁移、排序与澄清交接 |
+| 2 | [需求与风险包](requirements-risk-package.md) / [English](requirements-risk-package.en.md) | 七项设计投入条件、可判定验收、风险/依赖/未知、基线变更与实际决定 |
+| 3 | [方案决策](solution-decision.md) / [English](solution-decision.en.md) | 有据方案、worktree预研、计划/实际开发批准、基线/变更/交接 |
+| 3–5 | [验证矩阵](verification-matrix.md) / [English](verification-matrix.en.md) | 分节点规划/执行、前后端到端集合、精确合入对象、独立复核及阶段收口 |
+| 4–5 | [变更交接](change-handoff.md) / [English](change-handoff.en.md) | 完整实现/自测、七状态、05前后验证/收口及06交接 |
+| 6 | [发布记录](release-record.md) | [中英配对](release-record.en.md)，候选修订/组合、有效授权、批次/观察、中断恢复及07接收 |
+| 7 | [事件记录](incident-record.md)（[English](incident-record.en.md)） | 责任/时钟、分诊、实际恢复与关闭、受限引用及08接收 |
+| 8 | [效果复盘与行动](outcome-retrospective-actions.md) / [English](outcome-retrospective-actions.en.md) | 按类型填写评估/复盘/行动/规则；口径与决定、实施与效果、实际接收及回流分开 |
 
 按风险裁剪正文中的非必需章节，但保留统一追溯字段和对应阶段的质量门禁。跨阶段合并记录时，仍为各类交付物分配独立 ID，避免一个状态同时代表需求、变更和发布状态。
+
+阶段07常规工作使用补充[运行与支持记录](operations-record.md)（[English](operations-record.en.md)），按接收/健康/维护/支持适用章节填写，独立工作单元有各自ID；没有事件不创建假事故。两套模板均保留版本1/12字段，事件过程、健康、支持状态及结案原因分开。
